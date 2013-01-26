@@ -1,0 +1,33 @@
+/**
+ * Tooltip Styles
+ */
+
+.uiTooltip {
+  display: none;
+  left: -20px;
+  position: absolute;
+  width: auto;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.uiTooltip .uiTooltipStage {
+  background-color: #fff;
+  border: 1px solid #888;
+  color: #333;
+  display: block;
+  line-height: 15px;
+  padding: 6px 9px;
+}
+
+.uiTooltip .uiTooltipNub {
+  background: url(/img/tooltip_nub_white.png) no-repeat 15px 0;
+  display: block;
+  height: 8px;
+  margin-top: -1px;
+}
+
+/* Should this be *:hover? */
+a:hover .uiTooltip {
+  display: block;
+}

@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /error.php
+Disallow: /activate.php
+
+# E-mail webmaster@onolog.com if you're authorized to access these, but getting denied.
+# Sitemap: http://www.onolog.com/sitemap.php

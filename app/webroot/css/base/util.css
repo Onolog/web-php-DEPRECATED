@@ -1,0 +1,43 @@
+/**
+ * Util CSS
+ */
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+
+/* Shows a loading image during ajax requests */
+.loader_big {
+  background-image: url('/img/indicator_blue_large.gif');
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  padding-top: 120px !important;
+}
+
+.loader_small {
+  background-image: url('/img/indicator_blue_small.gif');
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  padding-top: 20px !important;
+}
+
+.middot {
+  color: #808080;
+  padding: 0 5px;
+}
+
+/* Just add a max-width to the element for this to work */
+.ellipses {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

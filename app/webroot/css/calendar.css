@@ -1,0 +1,136 @@
+/**
+ * calendar.css
+ *
+ * Provides css for calendar view of user's workouts
+ */
+
+table.calendar {
+  background-color: #fff;
+  border-color: #e9e9e9;
+  border-style: solid;
+  border-width: 0 0 1px 1px;
+  height: 100%;
+  width: 100%;
+}
+
+table.calendar h3 {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: #808080;
+  margin-bottom: 5px;
+}
+
+table.calendar td,
+table.calendar th  {
+  border-color: #e9e9e9;
+  border-style: solid;
+  border-width: 1px 1px 0 0;
+}
+
+table.calendar th {
+  background-color: #f0f0f0;
+  color: #666;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 3px;
+  text-align: left;
+  text-shadow: rgba(255, 255, 255, 1) 0 1px 0;
+}
+
+table.calendar td {
+  vertical-align: top;
+  width: 12.5%;
+  height: 115px;
+  padding: 5px;
+}
+
+table.calendar .wrapper {
+  height: 100%;
+  position: relative;
+}
+
+table.calendar ul {
+  list-style: none;
+  margin: 0 0 16px;
+}
+
+table.calendar li {
+  margin-bottom: 3px;
+}
+
+/* Hover + Today */
+table.calendar td:hover,
+table.calendar td.today {
+  background-color: #f2f6fe;
+}
+table.calendar td:hover h3,
+table.calendar td.today h3 {
+  color: #7d9cb6;
+}
+table.calendar td:hover a,
+table.calendar td.today .workout {
+  background-color: #d6e1ec;
+  border-bottom: 1px solid #aec1d4;
+  color: #6a8cae;
+}
+
+table.calendar .workout {
+  background-color: #e9e9cf;
+  border-bottom: 1px solid #d3d3aa;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  color: #7b7b5d;
+  display: block;
+  font-size: 13px;
+  padding: 4px 8px 2px;
+  text-align: right;
+  text-shadow: rgba(255, 255, 255, 1) 0 1px 0;
+}
+table.calendar .workout:hover,
+table.calendar .today .workout:hover {
+  background-color: #a2b8cb;
+  border-bottom: 1px solid #7896b4;
+  color: #fff;
+  text-decoration: none;
+  text-shadow: rgba(120, 150, 180, 1) 0 -1px 0;
+}
+
+table.calendar .workout .distance {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1em;
+}
+
+/* Next Month + Previous Month */
+table.calendar td.last_month h3,
+table.calendar td.next_month h3 {
+  color: #d7d7d7;
+}
+
+table.calendar .add {
+  bottom: 0;
+  left: 0;
+  padding: 4px 5px;
+  position: absolute;
+  visibility: hidden;
+}
+table.calendar td:hover .add {
+  visibility: visible;
+}
+
+table.calendar .total {
+  bottom: 0;
+  color: #808080;
+  font-size: 9px;
+  position: absolute;
+  right: 0;
+  text-align: right;
+}
+
+table.calendar .total .distance {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-size: 13px;
+}
