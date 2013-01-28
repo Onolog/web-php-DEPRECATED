@@ -97,6 +97,10 @@ class WorkoutsController extends AppController {
 		$this->set(compact('shoes', 'date', 'title'));
 	}
 
+  public function sms_add($date=null) {
+    $this->set('title_for_layout', 'SMS');
+  }
+
   /**
    * Lets the user add a workout via ajax from a modal or flyout
    * 
