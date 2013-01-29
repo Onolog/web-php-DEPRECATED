@@ -1,2 +1,5 @@
 # tmp files #
 /app/tmp/
+
+# DB Config
+/app/config/database.php
