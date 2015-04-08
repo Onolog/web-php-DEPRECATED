@@ -1,37 +1,43 @@
 <?php
 
-$this->Include->css('profile');
-$this->Chart->setWorkouts($workouts);
+$this->Include->css(array(
+  'app/Profile',
+  'components/Graph',
+  'components/Topline'
+));
 $this->set('page_classes', array('profile'));
 
 $src = 'https://graph.facebook.com/' . $user['User']['id'] . '/picture';
-
-$page_header =
+$this->set(
+  'page_header',
   '<h2 class="clearfix">' .
-    '<div class="user_img">' .
+    '<div class="userImg">' .
       $this->Html->image($src) .
     '</div>' .
-    '<div class="user_name">' .
+    '<div class="userName">' .
       $user['User']['name'] .
     '</div>' .
-  '</h2>';
+  '</h2>'
+);
 
-$r =
-  '<div id="summary" class="clearfix">' .
+echo
+  '<div id="reactRoot">' .
+    '<div class="loader loader-lg"></div>' .
+  '</div>';
 
-    // Render the topline summary of the user's data
-    $this->element('topline',
-      array(
-        'stats' => array(
-          'Miles' => number_format(array_sum($workouts['day']), 2),
-          'Runs'  => number_format(count($workouts['runs'])),
-          'Shoes' => $shoe_count
-        )
-      )
-    ) .
-  '</div>' .  
-  $this->Chart->render();
-
-echo $r;
-
-$this->set('page_header', $page_header);
+$this->Html->scriptStart(array('inline' => false));
+echo "
+  require([
+    'utils/reactRender',
+    'lib/react/jsx!app/Users/Profile/Profile.react'
+  ], function(reactRender, Profile) {
+    reactRender(Profile, {
+      shoeCount: $shoe_count,
+      totalMiles: $total_miles,
+      totalRuns: $total_runs,
+      workoutData: $json_workoutData,
+      workoutDataByWeek: $json_workoutDataByWeek
+    }, 'reactRoot');
+  });
+";
+$this->Html->scriptEnd();

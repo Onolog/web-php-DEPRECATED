@@ -1,0 +1,116 @@
+/*
+ * bs-override.css
+ *
+ * These override the base styles in bootstrap.css
+ */
+
+/* Nav */
+.navbar-nav.navbar-right:last-child {
+  margin-right: 0;
+}
+
+
+/* Buttons */
+.btn {
+  border: 0;
+  /* box-shadow: 0 1px 1px rgba(100, 100, 100, 0.15); */
+  /* text-shadow: rgba(0, 0, 0, 0.1) 0 -1px 0; */
+}
+
+/* Reduce border-radius */
+.alert,
+.btn,
+.btn-group-lg > .btn,
+.dropdown-menu,
+.form-control,
+.input-group-addon,
+.progress,
+.well {
+  border-radius: 3px;
+}
+.nav-tabs > li > a {
+  border-radius: 3px 3px 0 0;
+}
+
+.btn + .btn {
+  margin-left: 5px;
+}
+
+.btn-default {
+  background-color: #fff;
+  border: 1px solid #e7e7e7;
+  text-shadow: #fff 0 1px 0;
+}
+
+/* Add spacing when button has an icon and label */
+.glyphicon + .btnLabel,
+.btnLabel + .glyphicon {
+  margin-left: 5px;
+}
+
+a.btn-default {
+  color: #666;
+}
+
+a.close {
+  line-height: 18px;
+  opacity: 0.5;
+}
+
+.btn-toolbar {
+  padding-top: 15px;
+}
+
+
+/* Forms */
+.form-control::-moz-placeholder {
+  color: #bbb;
+}
+.form-control:-ms-input-placeholder {
+  color: #bbb;
+}
+.form-control::-webkit-input-placeholder {
+  color: #bbb;
+}
+
+
+/* Modal */
+.modal-content {
+  background-color: #f9f9f9;
+  border-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-body {
+  background-color: #fff;
+  min-height: 100px;
+}
+
+.modal-backdrop {
+  background-color: #fff;
+}
+
+
+/* Popover */
+.popover {
+  padding: 0;
+}
+
+
+/* MOBILE */
+@media (max-width: 767px) {
+  /* For mobile layouts, make buttons block-level and stack them */
+  .btn-toolbar > .btn {
+    display: block;
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .btn-toolbar > .btn + .btn {
+    margin-left: 0;
+    margin-top: 5px;
+  }
+}

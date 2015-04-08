@@ -1,0 +1,76 @@
+/**
+ * workout.css
+ *
+ * CSS for Workout views: Edit, Add, View, etc.
+ */
+
+/* Workout Add/Edit */
+.workoutForm input,
+.workoutForm select,
+.workoutForm textarea {
+  display: inline-block;
+}
+
+.distance {
+  width: 75px;
+}
+
+.time input {
+  text-align: center;
+  width: 50px;
+}
+
+.time input:-moz-placeholder {
+  text-align: center;
+}
+.time input::-webkit-input-placeholder {
+  text-align: center;
+}
+
+.colon {
+  color: #999;
+  margin: 0 5px;
+}
+
+
+/* Workout View */
+.workoutAdd #main.container,
+.workoutEdit #main.container,
+.workoutView #main.container {
+  max-width: 600px;
+}
+
+.workoutView .leftCol {
+  float: left;
+  width: 65px;
+}
+
+.workoutView .rightCol {
+  margin-left: 65px;
+}
+
+.workoutView .workoutSection {
+  margin-bottom: 20px;
+}
+
+/* Should match labeledStatLabel from Topline.css */
+.workoutView .workoutSectionTitle {
+  color: #aaa;
+  font-size: 10px;
+  font-weight: normal;
+  margin-bottom: 3px;
+  text-transform: uppercase;
+}
+
+.workoutView .profilePhotoLink {
+  display: inline-block;
+}
+
+.workoutView .profilePhotoLink + .profilePhotoLink {
+  margin-left: 1px;
+}
+
+.workoutView .workoutViewNotes {
+  font-size: 15px;
+  white-space: pre-wrap;
+}

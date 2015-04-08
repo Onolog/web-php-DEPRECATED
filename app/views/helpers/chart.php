@@ -16,28 +16,24 @@ class ChartHelper extends AppHelper {
   private
     $scale      = 3.0, // 1 mile = $scale px
     $baseHeight = 50,
-    $workoutsByDay,
-    $workoutsByMonth,
-    $workoutsByYear,
-    $workoutsFilled;
+    $workouts;
+
+  const SCALE = 3.0; // 1 mile = SCALE px;
+  const BASE_HEIGHT = 50;
 
   /**
    * @param   arr   $workouts
    */
   public function setWorkouts($workouts) {
-    $this->workoutsByDay   = $workouts['day'];
-    $this->workoutsByMonth = $workouts['month'];
-    $this->workoutsByYear  = $workouts['year'];
-    $this->workoutsFilled  = $workouts['filled'];
+    krsort($workouts);
+    $this->workouts = $workouts;
     return $this;
   }
 
   public function render() {
     $this->Include->css('chart');
 
-    $by_year  = $this->workoutsByYear;
-    $by_month = $this->workoutsByMonth;
-    $detailed = $this->workoutsFilled;
+    $grouped  = $this->workouts;
 
     // Calendar info
     $info = cal_info(CALENDAR_TYPE);
@@ -47,29 +43,21 @@ class ChartHelper extends AppHelper {
     $html = '<div id="daily">' .
               '<ol class="chart">';
   
-    foreach ($detailed as $year => $months) {
-      $year_mileage_total = 0;
-      $year_workout_total = 0;
-      if (isset($by_year[$year])) {
-        $year_mileage_total = array_sum($by_year[$year]);
-        $year_workout_total = count($by_year[$year]);
-      }
-      $class = ($year == $y_curr) ? ' current_year' : '';
+    foreach ($grouped as $year => $yData) {
+      $months = $yData['months'];
+      $class = ($year == $y_curr) ? ' currentYear' : '';
       $class.= $year % 2 ? ' y_odd' : '';
 
       $html.=
-        '<li class="year clearfix' . $class . '">' .
-          $this->renderYearHeader(
-            $year,
-            $year_mileage_total,
-            $year_workout_total
-          ) .
-          '<ol class="month_container">';
+        '<li class="year clearfix panel panel-default' . $class . '">' .
+          $this->renderYearHeader($yData) .
+          '<div class="panel-body clearfix">' .
+            '<ol class="monthContainer">';
 
-      foreach ($months as $month => $days) {
+      foreach ($months as $month => $mData) {
+        $days = $mData['days'];
         $class = $month % 2 ? ' m_odd' : '';
-        $monthly_total = isset($by_month[$year][$month]) ?
-          array_sum($by_month[$year][$month]) : 0;
+        $monthly_total = $mData['miles'];
 
         $html.=
           '<li class="month clearfix' . $class . '">' .
@@ -78,31 +66,23 @@ class ChartHelper extends AppHelper {
             // TODO: add ability to aggregate by week or month
             $this->renderDays($days, $year, $month) .
 
-            '<div class="month_label">' .
+            '<div class="monthLabel">' .
               '<h4>' . $cal_months[$month] . '</h4>' .
-              '<div class="month_total">' .
+              '<div class="monthTotal">' .
                 render_distance($monthly_total, 2) .
               '</div>' .
             '</div>' .
           '</li>';
       }
 
-      $html.=     '</ol>' // Months
-            .   '</li>';
+      $html.=
+            '</ol>' . // monthContainer
+          '</div>' .
+        '</li>';
     }
-    $html.=   '</ol>' // Years
-          . '</div>'  // #daily
-
-          /*
-          Eventualy add weekly and monthly aggregations
-          . '<div id="weekly">'
-          .   'Weekly'
-          . '</div>'
-          . '<div id="monthly">'
-          .   'Monthly'
-          . '</div>'
-          */
-          . '';
+    $html.=
+        '</ol>' . // Years
+      '</div>';  // #daily
 
     return $html;
   }
@@ -112,19 +92,18 @@ class ChartHelper extends AppHelper {
    */
   protected function renderDays($days, $year, $month) {
     $html = '<ol>'; // Days
-    $by_month = $this->workoutsByMonth;
+    $grouped = $this->workouts;
 
-    foreach ($days as $num => $day) {
+    foreach ($days as $day => $data) {
 
       // Calculate and set the top margin for each day
-      $distance = isset($by_month[$year][$month][$num]) ?
-        $by_month[$year][$month][$num] : 0;
-      $total_height = (int) ($this->getBaseHeight() * $this->getScale());
-      $height = (int) ($distance * $this->getScale());
-      $margin = $total_height - $height - (count($day) - 1);
+      $distance = $data['miles'];
+      $total_height = self::BASE_HEIGHT * self::SCALE;
+      $height = round($distance) * self::SCALE;
+      $margin = $total_height - $height - ($data['run_count'] > 1 ? $data['run_count'] + 2 : 0);
 
       $classes = array('day');
-      if ($distance == 0) {
+      if ($distance === 0) {
         $classes[] = 'noWorkouts';
       }
 
@@ -133,9 +112,9 @@ class ChartHelper extends AppHelper {
           'class="'.implode(' ', $classes).'" ' .
           'style="margin-top: '.$margin.'px;">';
 
-      foreach ($day as $workout) {
+      foreach ($data['workouts'] as $workout) {
         if (isset($workout['id'])) {
-          $height = (int) (idx($workout, 'distance', 0) * $this->getScale());
+          $height = round(idx($workout, 'distance', 0)) * self::SCALE;
 
           $html .= $this->Html->link(
             $this->renderWorkoutTooltip($workout),
@@ -166,7 +145,7 @@ class ChartHelper extends AppHelper {
   protected function renderWorkoutTooltip($workout) {
 
     // Set the position of the tooltip
-    $bottom = $workout['distance'] * $this->getScale() + 3;
+    $bottom = $workout['distance'] * self::SCALE + 3;
 
     // If the distance is 1 miles, use singular form
     $units = ($workout['distance'] == 1) ? 2 : 1;
@@ -180,10 +159,10 @@ class ChartHelper extends AppHelper {
           '</span>' .
         '</span>';
 
-    if (isset($workout['time']) && $workout['time'] != 0) {
+    if (isset($workout['time']) && $workout['time'] !== 0) {
       $html.=
         '<span class="time">' .
-          format_time($workout['time_arr']) .
+          format_time($workout['time']) .
         '</span>';
     }
 
@@ -197,38 +176,21 @@ class ChartHelper extends AppHelper {
     return $tooltip;
   }
 
-  protected function getScale() {
-    return $this->scale;
-  }
+  private function renderYearHeader($yearData) {
 
-  protected function getBaseHeight() {
-    return $this->baseHeight;
-  }
-
-  private function renderYearHeader(
-      $year,
-      $year_mileage_total,
-      $year_workout_total) {
-
-    $run_label = $year_workout_total == 1 ? 'run' : 'runs';
+    $run_label = $yearData['run_count'] === 1 ? 'run' : 'runs';
 
     return
-      '<div class="yearHeader clearfix">' .
-      '<h3>' . $year . '</h3>' .
-      '<ul class="year_totals clearfix">' .
-        '<li>' .
-          render_distance($year_mileage_total, 1) .
-        '</li>' .
-        '<li>' .
-          $year_workout_total . ' ' . $run_label .
-        '</li>' .
-      '</ul>' .
-    '</div>';
+      '<div class="yearHeader clearfix panel-heading">' .
+        '<h3 class="panel-title">' . $yearData['year'] . '</h3>' .
+        '<ul class="yearTotals clearfix">' .
+          '<li>' .
+            render_distance($yearData['miles'], 1) .
+          '</li>' .
+          '<li>' .
+            $yearData['run_count'] . ' ' . $run_label .
+          '</li>' .
+        '</ul>' .
+      '</div>';
   }
-
-  protected function renderGoogleMapImage($params) {
-    $src = 'http://maps.google.com/maps/api/staticmap?' . $params;
-    return render_image($src);
-  }
-
 }

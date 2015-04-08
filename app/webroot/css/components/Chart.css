@@ -1,0 +1,128 @@
+/**
+ * chart.css
+ *
+ * Styles for data graph
+ */
+
+.chart,
+.chart ol,
+.chart ul {
+  list-style: none;
+  padding: 0;
+}
+
+.chart li.year {
+  margin-top: 30px;
+}
+.chart li.year.currentYear {
+  padding-top: 0;
+}
+
+.chart .yearHeader {
+  color: #aaa;
+  text-shadow: #fff 0 1px 0;
+}
+
+.chart h3 {
+  color: #333;
+  float: left;
+  font-size: 20px;
+  margin: 0;
+}
+
+.chart .yearTotals {
+  float: left;
+  margin-top: 1px;
+}
+.chart .yearTotals li {
+  float: left;
+  margin-left: 10px;
+}
+
+.year ol,
+.year li {
+  float: left;
+}
+
+.monthLabel {
+  border-left: 1px solid #d7d7d7;
+  border-top: 1px solid #d7d7d7;
+  clear: both;
+  color: #aaa;
+  padding: 5px 0 0 5px;
+}
+
+.m_odd ol {
+  background-color: #f9f9f9;
+}
+
+.chart .monthTotal {
+  font-size: 11px;
+  line-height: 1.2em;
+  visibility: hidden;
+}
+
+.monthLabel h4 {
+  font-size: 14px;
+  margin-bottom: 3px;
+  line-height: 1em;
+}
+
+.month:hover .monthLabel h4 {
+  color: #333;
+}
+
+.month:hover .monthTotal {
+  visibility: visible;
+}
+
+.day {
+  border-bottom: 1px solid #7e99b1;
+  margin: 0 1px -1px 0;
+  width: 2px;
+}
+
+.noWorkouts {
+  visibility: hidden;
+}
+
+.chart .workout {
+  background-color: #95b7cf;
+  bottom: 0;
+  display: block;
+  position: relative;
+  text-decoration: none;
+  width: 100%;
+}
+
+.workout + .workout {
+  margin-top: 1px;
+}
+
+.day a:hover .workout {
+  background-color: #f60;
+}
+
+/* Tooltip */
+.details .date {
+  color: #808080;
+  display: block;
+  font-size: 11px;
+  margin-bottom: 5px;
+}
+
+.details .time {
+  display: block;
+  padding: 1px 0 0;
+}
+
+.details .notes {
+  white-space: pre-wrap;
+}
+
+/* Tablet & Mobile */
+@media (max-width: 767px) {
+  .chart .monthTotal {
+    visibility: visible;
+  }
+}

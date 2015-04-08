@@ -91,10 +91,18 @@ class Shoe extends AppModel {
 
       if (isset($result['Workout'])) {
         // Calculate mileage and workouts for each shoe
+        $numWorkouts = count($result['Workout']);
         $results[$key]['Shoe']['mileage'] = $this->getShoeMileage($result);
-        $results[$key]['Shoe']['workouts'] = count($result['Workout']);
+        $results[$key]['Shoe']['workouts'] = $numWorkouts;
 
-        // Get the last workout
+        // Get the date of the first workout for each shoe.
+        // Note: Workouts are sorted from oldest to newest, so the first workout
+        // will be the last item in the array
+        if (isset($result['Workout'][$numWorkouts - 1]['date'])) {
+          $results[$key]['Shoe']['first'] =
+            $result['Workout'][$numWorkouts - 1]['date'];
+        }
+        // Get the date of the last workout for each shoe
         if (isset($result['Workout'][0]['date'])) {
           $results[$key]['Shoe']['last'] = $result['Workout'][0]['date'];
         }
@@ -131,14 +139,113 @@ class Shoe extends AppModel {
   }
 
   /**
+   * Similar to sortActiveShoes, but returns a format more conducive to JSON
+   *
+   * @returns   arr
+   */
+  public function sortShoesForJSON($shoes) {
+    if (empty($shoes)) {
+      return array();
+    }
+
+    $result = array(
+      array(
+        'label' => 'Active',
+        'options' => array(),
+      ),
+      array(
+        'label' => 'Inactive',
+        'options' => array(),
+      ),
+    );
+
+    foreach ($shoes as $shoe) {
+      $activity = $shoe['Shoe']['inactive'] ? 1 : 0;
+      $result[$activity]['options'][] = array(
+        'value' => $shoe['Shoe']['id'],
+        'label' => $shoe['Shoe']['name']
+      );
+    }
+    return $result;
+  }
+
+  /**
+   * Group shoes into active and inactive arrays
+   */
+  public function groupByActivity(/*array*/ $shoes) /*array*/ {
+    if (empty($shoes)) {
+      return array();
+    }
+
+    $result = array(
+      'active'   => array(),
+      'inactive' => array()
+    );
+
+    foreach ($shoes as $shoe) {
+      $activity = $shoe['Shoe']['inactive'] ? 'inactive' : 'active';
+      $result[$activity][] = $shoe['Shoe'];
+    }
+    return $result;
+  }
+
+  /**
    * Calculate the mileage for a single shoe
    */
-  public function getShoeMileage($results) {
+  public function getShoeMileage(/*array*/ $results) /*float*/ {
     $mileage = array();
     foreach ($results['Workout'] as $workout) {
       $mileage[] = $workout['distance'];
     }
     return array_sum($mileage);
+  }
+
+  /**
+   * Filter out any shoes that were not used during the given date range
+   */
+  public function getActiveShoesForDateRange($shoes, $start, $end) {
+    $range = array(
+      'start' => $start,
+      'end'   => $end,
+    );
+    return array_filter($shoes, function($shoe) use($range) {
+      return
+        $shoe['Shoe']['last'] >= $range['start'] &&
+        $shoe['Shoe']['first'] <= $range['end'];
+    });
+  }
+
+  /**
+   * Get the name and count for the most-used brand of shoes
+   * in the given dataset.
+   */
+  public function getTopBrandData($shoes) {
+    $brands = array();
+    foreach ($shoes as $shoe) {
+      $brand = $shoe['Shoe']['brand'];
+      if (!isset($brands[$brand])) {
+        $brands[$brand] = array(
+          'models' => array(),
+          'name' => $brand,
+        );
+      }
+      $brands[$brand]['models'][] = $shoe['Shoe']['model'];
+    }
+
+    usort($brands, function($brand1, $brand2) {
+      $count1 = count($brand1['models']);
+      $count2 = count($brand2['models']);
+
+      if ($count1 === $count2) {
+        return 0;
+      }
+      return $count1 > $count2 ? -1 : 1;
+    });
+
+    // Return only the top result
+    $top_brand = $brands[0];
+    $top_brand['count'] = count($top_brand['models']);
+    return $top_brand;
   }
 
 }

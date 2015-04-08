@@ -1,36 +1,36 @@
 /**
  * Util CSS
  */
-.clearfix {
-  *zoom: 1;
-}
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-  line-height: 0;
-}
-.clearfix:after {
-  clear: both;
-}
 
 /* Shows a loading image during ajax requests */
-.loader_big {
-  background-image: url('/img/indicator_blue_large.gif');
+.loader {
   background-position: 50% 50%;
   background-repeat: no-repeat;
-  padding-top: 120px !important;
+  display: block;
+  min-height: 200px;
 }
 
-.loader_small {
+.loader-lg {
+  background-image: url('/img/indicator_blue_large.gif');
+}
+
+.loader-sm {
   background-image: url('/img/indicator_blue_small.gif');
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  padding-top: 20px !important;
+  height: 16px;
+  width: 16px;
+  vertical-align: text-bottom;
+}
+
+/* Takes up the full height and width of its container */
+.full {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .middot {
-  color: #808080;
   padding: 0 5px;
 }
 
@@ -40,4 +40,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.innerBorder {
+  position: relative;
+  display: block;
+}
+.innerBorder:after {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  bottom: 0;
+  content: '';
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
 }

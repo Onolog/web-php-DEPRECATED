@@ -1,0 +1,121 @@
+/* 
+ * login.css
+ */
+
+.login .navbar-toggle {
+  /* No menu in logged-out state */
+  visibility: hidden;
+}
+
+.login #mainWrapper {
+  padding: 0;
+}
+
+.login #footerWrapper {
+  display: none;
+}
+
+.login .jumbotronContainer {
+  display: table;
+  height: 750px;
+  position: relative;
+  width: 100%;
+  z-index: 0;
+}
+
+.login .bgImage {
+  background-image: url(/img/home/home-bg.jpg);
+  background-position: 50%;
+  background-size: cover;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.login .jumbotron {
+  background-color: transparent;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.login h1 {
+  background-image: url(/img/home/logo-home.png);
+  background-size: cover;
+  color: #fff;
+  height: 78px;
+  margin: 0 auto;
+  text-indent: -9999px;
+  width: 275px;
+}
+
+.login .lead {
+  color: #fff;
+  font-size: 32px;
+  margin-bottom: 40px;
+  text-shadow: 0 0 5px #000;
+}
+
+.fbLogin {
+  background-color: #3b5998;
+  box-shadow: 0 0 60px #000;
+  color: #fff;
+  line-height: 23px;
+  padding-left: 48px;
+  position: relative;
+  text-shadow: 0 -1px 0 #26407d;
+}
+
+.fbLogin:hover,
+.fbLogin:focus,
+.fbLogin:active {
+  background-color: #324c8e;
+}
+
+.fbIcon {
+  background: url('/img/fb_logo_inverted@2x.png') no-repeat;
+  background-size: 30px;
+  border-radius: 2px;
+  display: inline-block;
+  height: 29px;
+  position: absolute;
+  width: 30px;
+  left: 7px;
+  top: 7px;
+}
+
+.marketingSection {
+  padding: 100px 0;
+}
+
+.marketingSection:nth-child(even) {
+  background-color: #fff;
+}
+
+/* MOBILE & TABLET */
+@media (max-width: 767px) {
+  .login .jumbotronContainer {
+    height: 650px;
+  }
+
+  .login .bgImage {
+    background-position: 35% 50%;
+  }
+
+  .login h1 {
+    background-image: url(/img/home/logo-home-mobile.png);
+    height: 60px;
+    width: 215px;
+  }
+
+  .login .lead {
+    font-size: 20px;
+  }
+
+  .fbLogin {
+    font-size: 15px;
+  }
+}

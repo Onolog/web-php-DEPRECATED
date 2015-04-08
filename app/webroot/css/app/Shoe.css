@@ -1,0 +1,29 @@
+.shoeList {
+  table-layout: fixed;
+}
+
+.workoutDescription {
+  width: 75%;
+}
+
+.workoutDescriptionTruncator {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+/* TABLET & SMALL SCREEN */
+@media (min-width: 768px) and (max-width: 991px) {
+  .workoutDescription {
+    width: 65%;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 767px) {
+  .workoutDescription {
+    width: 50%;
+  }
+}

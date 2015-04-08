@@ -1,47 +1,54 @@
 <?php
 
 $page_header =
-  '<h2>' . $this->Form->value('Shoe.name') . '</h2>';
+  '<h2>' . $this->Form->value('Shoe.name') . '</h2>' .
+  '<div class="btn-group auxContent">' .
+    $this->Html->link(
+	    '<span class="glyphicon glyphicon-trash"></span>',
+	    array(
+        'action' => 'delete',
+        $shoe['Shoe']['id']
+      ),
+	    array(
+	     'class' => 'btn btn-default',
+	     'rel' => 'tooltip',
+	     'title' => __('Delete Shoe', 1),
+	     'escape' => false,
+      ),
+      'Are you sure you want to delete this shoe?'
+    ) .
+    $this->Html->link(
+	    '<span class="glyphicon glyphicon-th"></span>',
+      array(
+	     'controller' => 'users',
+	     'action' => 'shoes'
+      ),
+	    array(
+	     'class' => 'btn btn-default',
+	     'rel' => 'tooltip',
+	     'title' => __('All Shoes', 1),
+	     'escape' => false,
+      )
+    ) .
+  '</div>';
+
+$this->set('page_header', $page_header);
+
 
 $r =
-  $this->Form->create('Shoe') .
-    '<fieldset>' .
-      $this->Form->input('id') .
-      $this->Form->input(
-        'brand_id',
-        array(
-          'options'  => $brands,
-          'selected' => $this->Form->value('Shoe.brand_id'),
-          'empty'    => 'Select a brand:'
-        )
-      ) .
-      $this->Form->input('model') .
-      $this->Form->input('inactive') .
-    '</fieldset>' .
-  $this->Form->end(__('Save', true));
+  $this->element('shoe_fields',
+    array(
+      'label'  => __('Update Shoe', 1)
+    )
+  );
 
 echo $r;
 
-$sidebar =
-    $this->element('sidebar',
-      array(
-        'items' => array(
-          array(
-            'label' => __('Delete', true),
-            'actions' => array(
-              'action' => 'delete',
-              $this->Form->value('Shoe.id')
-            ),
-            null,
-            __('Are you sure you want to delete this shoe?', true)
-          ),
-          array(
-            'label' => __('All Shoes', true),
-            'actions' => array('action' => 'index')
-          ),
-        )
-      )
-    );
 
-$this->set('page_header', $page_header);
-$this->set('sidebar', $sidebar);
+$this->Html->scriptStart(array('inline' => false));
+echo "
+  require(['lib/bootstrap.min'], function() {
+    $('.btn').tooltip({ container: 'body' });
+  });
+";
+$this->Html->scriptEnd();

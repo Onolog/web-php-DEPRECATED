@@ -1,22 +1,20 @@
 <?php
 
 /**
- * /app/views/helpers/calendar.ctp
+ * /app/views/helpers/calendar.php
  *
  * Class for rendering the Calendar view of workouts
  */
 class CalendarHelper extends AppHelper {
 
-  var $helpers = array('Html');
+  var $helpers = array('Button', 'Html');
 
   private $month;
   private $year;
   private $day;
   private $date;
   private $workouts = array();
-
-  // This should probably be private...
-  protected $week   = array();
+  private $week = array();
 
   /**
    * By default, sets today as the date. If no other date is set, the calendar
@@ -152,7 +150,7 @@ class CalendarHelper extends AppHelper {
 
         // Calculate the days from the previous month to display
         $day    = (($i+1)-$start_day);
-        $class  = 'last_month'; // Add the CSS class
+        $class  = 'lastMonth'; // Add the CSS class
 
         $r .= $this->renderCalendarCell($day, $class);
       }
@@ -190,7 +188,7 @@ class CalendarHelper extends AppHelper {
       // Continue incrementing $day; ex: Oct 32nd == Nov. 1st
       for ($i; $i < $items; $i++, $day++) {
 
-        $class  = 'next_month'; // Add a CSS class
+        $class  = 'nextMonth'; // Add a CSS class
         $r .=   $this->renderCalendarCell($day, $class);
       }
       $r .= '</tr>'; // Complete the row
@@ -223,21 +221,19 @@ class CalendarHelper extends AppHelper {
       '</div>';
   }
 
-  protected function renderAddLink($date) {
-    $icon = '<b class="icon-plus"></b>';
-    return
-      $this->Html->link(
-        $icon,
-        '#',
-        array(
-          'id' => $date,
-          'class' => 'add btn btn-small',
-          'escape' => false,
-          'rel' => 'tooltip',
-          'title' => __('Add workout', 1),
-          'data-placement' => 'right',
-        )
-      );
+  protected function renderAddLink($date) { 
+    return $this->Button->set(array(
+      'href' => '#',
+      'id' => $date,
+      'glyph' => 'plus',
+      'class' => 'add',
+      'use' => 'default',
+      'escape' => false,
+      'rel' => 'tooltip',
+      'title' => __('Add workout', 1),
+      'data-placement' => 'right',
+      'size' => 'xsmall',
+    ))->render();
   }
 
   protected function renderWorkouts($date) {
@@ -246,7 +242,6 @@ class CalendarHelper extends AppHelper {
 
     // If the user has any workouts to display
     if (!empty($workouts)) {
-      $r .= '<ul>';
 
       foreach ($workouts as $day) {
         foreach ($day as $workout) {
@@ -267,39 +262,31 @@ class CalendarHelper extends AppHelper {
             */
 
             $r .=
-              '<li>' .
-                $this->Html->link(
-                  render_distance($distance, 2),
-                  array(
-                    'controller' => 'workouts',
-                    'action' => 'view',
-                    $workout['id']
-                  ),
-                  array(
-                    'id' => $workout['id'],
-                    'class' => 'workout',
-                    'escape' => false
-                  )
-                ) .
-              '</li>';
+              $this->Html->link(
+                render_distance($distance, 2),
+                /*
+                array(
+                  'controller' => 'workouts',
+                  'action' => 'view',
+                  $workout['id']
+                )
+                */
+                'javascript:;',
+                array(
+                  'id' => $workout['id'],
+                  'class' => 'workout',
+                  'escape' => false,
+                )
+              );
           }
         }
       } // End foreach
-      $r .= '</ul>';
     }
     return $r;
   }
 
   protected function getWeekdays() {
-    return array(
-      0 => 'Sun',
-      1 => 'Mon',
-      2 => 'Tue',
-      3 => 'Wed',
-      4 => 'Thu',
-      5 => 'Fri',
-      6 => 'Sat'
-    );
+    return array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
   }
 
 } // End class

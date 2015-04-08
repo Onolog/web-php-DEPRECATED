@@ -43,6 +43,7 @@ class AppController extends Controller {
   );
 
   var $helpers = array(
+    'Button',
     'Html',
     'Form',
     'Session',
@@ -51,8 +52,6 @@ class AppController extends Controller {
     'Facebook.Facebook',
     'Meta'
   );
-
-  private $isMobile = false;
 
   function beforeFilter() {
     // Configure AuthComponent
@@ -68,23 +67,23 @@ class AppController extends Controller {
     $this->Auth->actionPath = 'controllers/';
     $this->Auth->allowedActions = array('display');
 
-    // Mobile
-    // $this->initMobile();
-
     // Set Facebook user data for views
     // TODO: Is this needed or is it already in the Connect Session?
     $this->set('fb_user', $this->Connect->user());
   }
 
-  public function getIsMobile() {
-    return $this->isMobile;
+  /**
+   * 
+   */
+  public function getLoggedInUser() {
+    return $this->Auth->User('id');
   }
 
   /**
    * Checks to see if the user is logged in. If not, redirect to the login page.
    */
   public function requireLoggedInUser() {
-    $uid = $this->Auth->User('id');
+    $uid = $this->getLoggedInUser();
     if (!isset($uid)) {
       $this->redirect($this->Auth->logout());
     }
@@ -107,24 +106,86 @@ class AppController extends Controller {
   /**
    * Gets an object containing the logged-in user's FB friend data (name + id)
    *
-   * @return obj
+   * @return arr
    */
-  protected function getFriends() {
-    if (!$this->getAccessToken()) {
-      return array();
+  protected function getFbFriends() {
+    $friends = array();
+    $id = $this->getLoggedInUser();
+
+    if (!$this->getAccessToken() || !$id) {
+      return $friends;
     }
 
-    return json_decode(file_get_contents(
-      'https://graph.facebook.com/' .
-        $this->Connect->user('id') .
-        '/friends?access_token=' . $this->getAccessToken()
-    ));
+    // TODO: Add timeout handling
+    $friendString = file_get_contents(
+      'https://graph.facebook.com/' . $id . '/friends?' .
+        'access_token=' . $this->getAccessToken()
+    );
+
+    if (!$friendString) {
+      return $friends;
+    }
+
+    $friendObj = json_decode($friendString);
+
+    // Convert to an array
+    if ($friendObj) {
+      foreach ($friendObj->data as $friend) {
+        $friends[$friend->id] = array(
+          'id' => $friend->id,
+          'name' => $friend->name
+        );
+      }
+    }
+
+    return $friends;
+  }
+
+  /**
+   * Given an array of user ids, retrieves the public data for each one
+   */
+  protected function getPublicFbUserData(/*array*/ $users) /*array*/ {
+    // Build the query
+    $query = array();
+    foreach($users as $uid) {
+      $query[] = array(
+        'method' => 'GET',
+        'relative_url' => $uid,
+      );
+    }
+
+    $data =
+      'access_token=' . $this->getAccessToken() . '&' .
+      'batch=' . json_encode($query) . '&' .
+      'include_headers=false';
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://graph.facebook.com/');
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+    $response = json_decode(curl_exec($ch));
+    curl_close($ch);
+
+    // Convert to an array
+    $friends = array();
+    foreach ($response as $friend) {
+      $data = json_decode($friend->body);
+      $friends[$data->id] = array(
+        'id' => $data->id,
+        'name' => $data->name,
+      );
+    }
+    return $friends;
   }
 
   /**
    * Retrieves the user's access token for the Connect session
    */
-  protected function getAccessToken() {
+  private function getAccessToken() {
     $facebook = new Facebook(array(
       'appId'  => FB_APP_ID,
       'secret' => FB_SECRET,
@@ -132,39 +193,10 @@ class AppController extends Controller {
     return $facebook->getAccessToken();
   }
 
-  /**
-   * Returns a list of all the friends the user ran with for a given set of
-   * workouts, ordered by frequency, and with a frequency count.
-   *
-   * @param   arr   $workouts   Set of workouts
-   *
-   * @returns arr
-   */
-  public function getTopFriends($workouts) {
-    // Write this function
-    return array();
+  public function setIsAjax() {
+    $this->layout = 'ajax';
+    $this->autoLayout = false;
+    $this->autoRender = false;
+    App::import('Lib', 'Response');
   }
-
-  protected function initMobile() {
-    $this->isMobile = !!idx($this->params, 'mobile', false);
-
-    // Redirect if mobile a mobile device, not yet in the mobile site, and doesn't have the cookie yet.
-    $visited = $this->Cookie->read('Info.Visited') || null;
-
-    // Not on the mobile site, is a mobile device, and a first-time visitor
-    if (!$visited) {
-      $this->Cookie->write('Info.Visited', 1);
-
-      if (!$this->isMobile && $this->RequestHandler->isMobile()) {
-        $this->redirect(array('controller' => 'posts', 'action' => 'index', 'mobile' => true));
-      }
-    }
-
-    $this->set('mobile', $this->isMobile);
-
-    if ($this->isMobile) {
-      $this->layout = 'mobile';
-    }
-  }
-
 }

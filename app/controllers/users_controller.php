@@ -25,6 +25,7 @@ class UsersController extends AppController {
    * - Once the new User is created, send them on to the site
    */
   function login() {
+    $this->layout = 'marketing';
     $this->set('title_for_layout', 'Welcome');
 
     if (!$this->Auth->User() && $this->Connect->user('id')) {
@@ -103,23 +104,52 @@ class UsersController extends AppController {
       $month = date('m');
     }
 
+    $shoes = $this->User->Shoe->find('all', array(
+		  'conditions' => array(
+        'Shoe.user_id' => $this->Auth->User('id'),
+      ),
+    ));
+    $json_shoes = json_encode(
+      $this->User->Shoe->sortShoesForJSON($shoes)
+    );
+
+    $json_friends = json_encode(
+      array_values($this->getFbFriends())
+    );
+
     $this->set(
       'title_for_layout',
       $this->Auth->User('name')
     );
 
-    $this->helpers[] = 'Calendar';
-    $workouts = $this->User->Workout->find('all', array(
-		  'conditions' => array(
-        'Workout.user_id' => $user,
-      ),
+    $this->set(compact(
+      'year',
+      'month',
+      'json_shoes',
+      'json_friends'
     ));
-
-    // Get workout distances for the stats sidebar
-    $stats = $this->User->Workout->getWorkoutStats($workouts);
-
-    $this->set(compact('workouts', 'stats', 'year', 'month'));
 	}
+
+  public function ajax_calendar() {
+    $user = $this->requireLoggedInUser();
+
+    $this->setIsAjax();
+    $response = new Response();
+
+    $year = idx($this->params['url'], 'year', 0);
+    $month = idx($this->params['url'], 'month', 0);
+
+    if (!$year || !$month) {
+      $response
+        ->setMessage('Please enter a valid date.')
+        ->get();
+    }
+
+    return $response
+      ->setSuccess(true)
+      ->setPayload($this->getUserWorkoutsForMonth($user, $year, $month))
+      ->get();
+  }
 
   /**
    * Test view of index using Runs + RunDetails
@@ -168,38 +198,60 @@ class UsersController extends AppController {
 		  'conditions' => array(
         'Workout.user_id' => $id,
       ),
-      'order'  => 'Workout.date ASC'
     ));
 
-    // Format and sort the data
-    $workouts = $this->User->Workout->sortWorkouts($workouts);
+    $workoutData = $this->User->Workout->groupWorkoutsByYearMonthDay($workouts);
+    $workoutDataByWeek = $this->User->Workout->groupWorkoutsByWeek($workouts);
+
+    $json_workoutData = json_encode($workoutData);
+    $json_workoutDataByWeek = json_encode($workoutDataByWeek);
+
+    $total_runs = 0;
+    $total_miles = 0;
+    foreach ($workoutData as $years) {
+      $total_runs += $years['run_count'];
+      $total_miles += $years['miles'];
+    }
 
     $shoe_count = $this->User->Shoe->find(
       'count', array(
         'conditions' => array('Shoe.user_id' => $id),
       )
     );
+
     $this->set('title_for_layout', $user['User']['name']);
-		$this->set(compact('workouts', 'user', 'shoe_count'));
+		$this->set(compact(
+		  'json_workoutData',
+		  'json_workoutDataByWeek',
+      'shoe_count',
+      'total_miles',
+      'total_runs',
+      'user',
+      'workoutData'
+		));
 	}
 
   /**
    * Default view for users, like a profile
    * This view is public to everyone.
    */
-	function report($id=null) {
+	function report($id=null, $year=null) {
+    $this->layout = 'no_header';
+
     // Validation
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid user', true));
 			$this->redirect(array('action' => 'index'));
 		}
 
-    $this->helpers[] = 'Chart';
-
     $user = $this->User->read(null, $id);
 
-    $start_date = mktime(0, 0, 0, 1, 1, 2012);
-    $end_date   = mktime(23, 59, 59, 4, 7, 2012);
+    if (!$year) {
+      $year = date('Y');
+    }
+    // First and last days of the year
+    $start_date = mktime(0, 0, 0, 1, 1, $year);
+    $end_date   = mktime(11, 59, 59, 12, 31, $year);
 
     // Why does this query return different results depending on
     // if the user is logged in or out?
@@ -212,24 +264,82 @@ class UsersController extends AppController {
       'order'  => 'Workout.date ASC'
     ));
 
-    // Format and sort the data
-    $workouts = $this->User->Workout->sortWorkouts($workouts);
+    $json_friends = json_encode(
+      $this->getTopFriends($workouts)
+    );
 
-    $shoe_count = $this->User->Shoe->find(
-      'count', array(
-        'conditions' => array('Shoe.user_id' => $id),
+    // Format and sort the data
+    $workouts = $this->User->Workout->groupWorkouts($workouts);
+    
+    $total_miles = $workouts['grouped'][$year]['miles'];
+    $total_runs = $workouts['grouped'][$year]['run_count'];
+    $total_time = $workouts['grouped'][$year]['time'];
+
+    $json_workoutData = json_encode($workouts['grouped'][$year]);
+    $json_workoutDataByWeek = json_encode($workouts['week'][$year]);
+
+    // Shoe Data
+    $shoes = $this->User->Shoe->find(
+      'all', array(
+        'conditions' => array(
+          'Shoe.user_id' => $id,
+        ),
       )
     );
-    $this->set('title_for_layout', $user['User']['name']);
+
+    $shoes = $this->User->Shoe->getActiveShoesForDateRange(
+      $shoes,
+      $start_date,
+      $end_date
+    );
+
+    $shoe_count = count($shoes);
+    $top_brand = json_encode($this->User->Shoe->getTopBrandData($shoes));
+
+    $extremes = array();
+    if ($workouts['grouped'][$year]['run_count'] >= 2) {
+      usort($workouts['workouts'], function($a, $b) {
+        $distanceA = $a['Workout']['distance'];
+        $distanceB = $b['Workout']['distance'];
+        if ($distanceA === $distanceB) {
+          // TODO: If multiple runs are the same distance, display the number of
+          // runs instead of the date for one of them.
+          return 0;
+        }
+        return $distanceA > $distanceB ? 1 : -1;
+      });
+
+      $max = end($workouts['workouts']);
+      $min = reset($workouts['workouts']);
+      $extremes = array(
+        'max' => array(
+          'date' => $max['Workout']['date'],
+          'distance' => $max['Workout']['distance'],
+        ),
+        'min' => array(
+          'date' => $min['Workout']['date'],
+          'distance' => $min['Workout']['distance'],
+        ),
+      );
+    }
+    $json_extremes = json_encode($extremes);
+
+    $this->set('title_for_layout', $year . ' In Miles');
 		$this->set(compact(
-		  'workouts',
-		  'user',
+		  'end_date',
+		  'json_extremes',
+		  'json_friends',
+		  'json_workoutData',
+		  'json_workoutDataByWeek',
 		  'shoe_count',
 		  'start_date',
-		  'end_date'
+		  'top_brand',
+		  'total_miles',
+		  'total_runs',
+		  'total_time',
+		  'user'
 		));
 	}
-
 
   /**
    * Allows the user to edit their information. Most of this should be done
@@ -252,6 +362,7 @@ class UsersController extends AppController {
 				$this->Session->setFlash(__('The user could not be saved. Please, try again.', true));
 			}
 		}
+
 		if (empty($this->data)) {
 			$this->data = $this->User->read(null, $id);
 		}
@@ -281,14 +392,14 @@ class UsersController extends AppController {
     $user = $this->requireLoggedInUser();
     $this->set('title_for_layout', 'Friends');
 
-    $fb_friends = $this->getFriends();
+    $fb_friends = $this->getFbFriends();
     $friends = array();
 
     // Only display friends that are in the system
     if (!empty($fb_friends)) {
-      foreach ($fb_friends->data as $key => $friend) {
+      foreach ($fb_friends as $friend) {
         $f = $this->User->find('first', array(
-          'conditions' => array('User.id' => $friend->id)
+          'conditions' => array('User.id' => $friend['id'])
         ));
   
         if ($f) {
@@ -311,13 +422,13 @@ class UsersController extends AppController {
     $user = $this->requireLoggedInUser();
 
     // Retrieve all the user's friends
-    $fb_friends = $this->getFriends();
+    $fbFriends = $this->getFbFriends();
     $friends = array();
 
     // Only display friends that are in the system
-    foreach ($fb_friends->data as $key => $friend) {
+    foreach ($fbFriends as $friend) {
       $f = $this->User->find('first', array(
-        'conditions' => array('User.id' => $friend->id)
+        'conditions' => array('User.id' => $friend['id'])
       ));
 
       if ($f) {
@@ -330,7 +441,6 @@ class UsersController extends AppController {
     $this->set('friends', $friends);
   }
 
-
   /**
    * Ajax endpoint controller for friend tokenizer.
    * Takes a search query and retrieves matching friends
@@ -342,16 +452,16 @@ class UsersController extends AppController {
     $user = $this->requireLoggedInUser();
 
     // Retrieve all the user's friends
-    $friends = $this->getFriends();
+    $friends = $this->getFbFriends();
 
     // Get the query param from the url
     $q = idx($this->params['url'], 'q');
 
     $query = '/'.$q.'/i'; // case-insensitive
     $results = array();
-    foreach ($friends->data as $friend) {
+    foreach ($friends as $friend) {
       // Only return the set of friends that matches the query string
-      if (preg_match($query, $friend->name)) {
+      if (preg_match($query, $friend['name'])) {
         $results[] = $friend;
       }
     }
@@ -376,6 +486,7 @@ class UsersController extends AppController {
       )
     );
 
+    $shoes = $this->User->Shoe->groupByActivity($shoes);
     $this->set('shoes', $shoes);
   }
 
@@ -420,6 +531,24 @@ class UsersController extends AppController {
   }
 
   /**
+   * Retrieves all workouts for a given month, including the last week of the
+   * previous month and the first week of the next month.
+   */
+  public function getUserWorkoutsForMonth($user, $year, $month) {
+    $workouts = $this->User->Workout->find('all', array(
+		  'conditions' => array(
+        'Workout.user_id' => $user,
+        // Only get workouts for the selected month, + or - a week
+        'Workout.date >=' => mktime(0, 0, 0, $month, -7, $year),
+        'Workout.date <=' => mktime(0, 0, 0, $month+1, 7, $year),
+      ),
+      'order'  => 'Workout.date ASC'
+    ));
+
+    return $this->User->Workout->flattenWorkouts($workouts);
+  }
+
+  /**
    * Takes an array of fbids and checks to see if they are already Onolog users.
    * If not, they are added.
    *
@@ -436,6 +565,40 @@ class UsersController extends AppController {
     if (count($users) != count($friends)) {
       
     }
+  }
+
+  /**
+   * Ranks friends by number of runs, then miles
+   */
+  private function getTopFriends($workouts) {
+    $grouped = $this->User->Workout->groupWorkoutsByFriend($workouts);
+
+    function friendSort($a, $b) {
+      $aRuns = count($a['runs']);
+      $bRuns = count($b['runs']);
+
+      // First sort by # of runs, then by total mileage
+      if ($aRuns === $bRuns) {
+        $aMiles = array_sum($a['runs']);
+        $bMiles = array_sum($b['runs']);
+        if ($aMiles === $bMiles) {
+          return 0;
+        }
+        return $aMiles > $bMiles ? -1 : 1;
+      }
+      return $aRuns > $bRuns ? -1 : 1;
+    }
+
+    // Add friend names, since all we currently have is the id.
+    $friendData = $this->getPublicFbUserData(array_keys($grouped));
+    foreach($grouped as $id => $friend) {
+      $grouped[$id]['name'] = $friendData[$id]['name'];
+    }
+
+    // Sort first by number of runs, then by mileage.
+    usort($grouped, 'friendSort');
+
+    return $grouped;
   }
 
 }

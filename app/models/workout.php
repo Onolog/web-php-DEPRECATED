@@ -72,35 +72,92 @@ class Workout extends AppModel {
 		)
 	);
 
+  const YEAR_FORMAT = 'Y';
+  const MONTH_FORMAT = 'n';
+  const WEEK_FORMAT = 'W';
+  const DAY_FORMAT = 'j';
+
+  /**
+   * 
+   */
   function afterFind($results) {
     foreach($results as $key => $result) {
-      if (isset($result['Workout'])) {
-        // Convert from seconds to time array
-        $results[$key]['Workout']['time_arr'] =
-          $this->secToTime(idx($result['Workout'], 'time', 0));
-      }
+      $workout = $result['Workout'];
+
+      // Decode any escaped characters
+      $results[$key]['Workout']['notes'] = html_entity_decode(
+        idx($workout, 'notes', ''),
+        ENT_QUOTES
+      );
     }
     return $results;
   }
 
   /**
+   * Convert the data before saving
+   */
+  function beforeSave($data) {
+    /*
+    if ($this->layout !== 'ajax') {
+      // Take hh:mm:ss and convert to seconds
+      $this->data['Workout']['time'] = time_to_sec(array(
+        $this->data['Workout']['hh'],
+        $this->data['Workout']['mm'],
+        $this->data['Workout']['ss']
+      ));
+  
+      // Unset the hh:mm:ss data
+      unset($this->data['Workout']['hh']);
+      unset($this->data['Workout']['mm']);
+      unset($this->data['Workout']['ss']);
+    }
+
+    // Convert friends to a string if they're in array form
+    $friends = idx($this->data['Workout'], 'friends', array());
+    if (is_array($friends) && !empty($friends)) {
+      $f = array();
+      foreach ($friends as $friend) {
+        $f[] = $friend['id'];
+      }
+      $this->data['Workout']['friends'] = implode($f, ',');
+    }
+
+    // Be sure to escape notes entries
+	  $this->data['Workout']['notes'] =
+      htmlspecialchars(idx($this->data['Workout'], 'notes'), ENT_QUOTES);
+    */
+    return true;
+  }
+
+  /**
    * Format the workout data the way we want:
-   *    - Key each workout by date
+   *    - Key each workout by id
    *    - Unnest the workouts
    *    - Format some of the data (time, distance, date)
    */
-  public function formatWorkouts($results) {
+  private function formatWorkouts($workouts) {
     $data = array();
-    foreach($results as $result) {
-      if (isset($result['Workout'])) {
+    foreach($workouts as $workout) {
+      if (isset($workout['Workout'])) {
 
-        $date = $result['Workout']['date'];
-        $id   = $result['Workout']['id'];
+        $date = $workout['Workout']['date'];
+        $id   = $workout['Workout']['id'];
 
-        $data[$date][$id] = $result['Workout'];
+        $data[$date][] = $workout['Workout'];
       }
     }
     return $data;
+  }
+
+  /**
+   * Strip out extraneous data (User, Shoe) from the data set
+   */
+  public function flattenWorkouts($workouts) {
+    $data = array();
+    foreach($workouts as $workout) {
+      $data[] = $workout['Workout'];
+    }
+    return $data;    
   }
 
   /**
@@ -120,8 +177,8 @@ class Workout extends AppModel {
     $week_total = $month_total = $year_total = $all_total = 0;
 
     if (!empty($workouts)) {
-      $year   = date('Y');
-      $month  = date('n');
+      $year   = date(self::YEAR_FORMAT);
+      $month  = date(self::MONTH_FORMAT);
       $sorted = $this->sortWorkouts($workouts);
 
       // If there are no workouts for the current month,
@@ -183,198 +240,204 @@ class Workout extends AppModel {
   }
 
   /**
-   * Takes an array of all the user's workouts and sorts them into a
-   * multi-dimensional array containing the following:
+   * Takes an array of all the user's workouts and sorts them into several
+   * multi-dimensional arrays grouped as follows:
    *
-   * 1. Array of total mileage per day
-   * 2. Array of total mileage per day, grouped by year
-   * 3. Array of total mileage per day, grouped by year and month
-   * 4. Array of each workout by day, with empty days/weeks/months/years filled in
-   * 5. Array of each workout by day, with detailed info
-   * 6. Array of each workout
-   * 7. Array of each workout grouped by week
+   * 1. Grouped: Array or workout toals and workout data grouped by year, month,
+   *    and day.
+   * 2. Week: Array of workout totals grouped by year then week
+   * 3. Workouts: Flat, sorted array of all the workouts
    *
    * @param   $workouts   arr
    * @return  $sorted     arr
    */
-  public function sortWorkouts($data) {
+  public function groupWorkouts($workouts) {
+    return array(
+      'grouped'  => $this->groupWorkoutsByYearMonthDay($workouts),
+      'week'     => $this->groupWorkoutsByWeek($workouts),
+      'workouts' => $workouts,
+    );
+  }
 
-    // Format the Workouts array the way we want
-    $data = $this->formatWorkouts($data);
+  /**
+   * Groups the workout data by year, then month, then day. Provides topline
+   * data for each grouping:
+   *
+   *    - Total number of runs
+   *    - Total number of miles
+   *    - Day
+   *    - Month
+   *    - Year
+   *
+   * $fill  bool  Whether or not to fill the array with empty data
+   */
+  public function groupWorkoutsByYearMonthDay($workouts, $fill=true) {
+    $workouts = $this->formatWorkouts($workouts);
+    // Init an array with zeroed-out data for all the years, months, and days
+    // starting from the first day of the first year containing data and going
+    // until the last day of the current year.
+    $arr = $this->initYearMonthDays(reset(array_keys($workouts)));
 
-    $by_year  = array();
-    $by_month = array();
-    $by_week  = array();
-    $by_day   = array();
-    $detailed = array();
-    $runs   = array();
-  
-    // Default year/month/week
-    $y = $m = $w = 0;
+    foreach($workouts as $date => $dayData) {
+      // Add the mileage and number of runs for each day to the yearly total.
+      $year = date(self::YEAR_FORMAT, $date);
+      $month = date(self::MONTH_FORMAT, $date);
+      $day = date(self::DAY_FORMAT, $date);
 
-    foreach($data as $date => $day) {
+      foreach ($dayData as $id => $workout) {
+        $distance = idx($workout, 'distance', 0);
+        $time = idx($workout, 'time', 0);
 
-      $workout_y = date('Y', $date);
-      $workout_m = date('n', $date);
-      $workout_w = date('W', $date);
-      $workout_d = date('d', $date);
+        // Top-level year data
+        $arr[$year]['miles'] += $distance;
+        $arr[$year]['run_count']++;
+        $arr[$year]['time'] += $time;
 
-      // If the current workout year doesn't match the previous year, set them equal
-      // and start a new array with the current workout year
-      if ($workout_y != $y) {
-        $y = $workout_y;
+        // Top-level month data
+        $arr[$year]['months'][$month]['miles'] += $distance;
+        $arr[$year]['months'][$month]['run_count']++;
+        $arr[$year]['months'][$month]['time'] += $time;
+
+        // Top-level day data
+        $arr[$year]['months'][$month]['days'][$day]['miles'] += $distance;
+        $arr[$year]['months'][$month]['days'][$day]['run_count']++;
+        $arr[$year]['months'][$month]['days'][$day]['time'] += $time;
+        $arr[$year]['months'][$month]['days'][$day]['workouts'][$id] = $workout;
       }
+    }
+    return $arr;
+  }
 
-      // Same with the month
-      if ($workout_m != $m) {
-        $m = $workout_m;
+  /**
+   * Creates a nested array of all the workouts, grouped first by year, then by
+   * month, then by day. Each grouping contains high-level data like total miles
+   * and runs.
+   */
+  private function initYearMonthDays(/*int*/ $firstDate) /*arr*/ {
+    $firstYear = date(self::YEAR_FORMAT, $firstDate);
+    $currentYear = date(self::YEAR_FORMAT);
+    $arr = array();
+    for ($year=$firstYear; $year<=$currentYear; $year++) {
+      $arr[$year] = array(
+        'miles' => 0,
+        'run_count' => 0,
+        'time' => 0,
+        'year' => $year,
+        'months' => array(),
+      );
+      for ($month=1; $month<=12; $month++) {
+        $arr[$year]['months'][$month] = array(
+          'days' => array(),
+          'miles' => 0,
+          'month' => $month,
+          'run_count' => 0,
+          'time' => 0,
+          'year' => $year,
+        );
+        $daysInMonth = cal_days_in_month(CALENDAR_TYPE, $month, $year);
+        for ($day=1; $day<=$daysInMonth; $day++) {
+          $arr[$year]['months'][$month]['days'][$day] = array(
+            'day' => $day,
+            'miles' => 0,
+            'month' => $month,
+            'run_count' => 0,
+            'time' => 0,
+            'year' => $year,
+            'workouts' => array(),
+          );
+        }
       }
+    }
+    return $arr;
+  }
 
-      // Start a new week if the day is Sunday.
-      // TODO: Adapt for when week starts on a day other than Sunday
-      if ($workout_w != $w) {
-        $w = $workout_w;
-      }
+  /**
+   * Groups the workout data by year then week. Provides topline
+   * data for the weekly grouping:
+   *
+   *    - Total number of runs
+   *    - Total number of miles
+   *    - Week number (01-53)
+   */
+  public function groupWorkoutsByWeek($workouts) {
+    $workouts = $this->formatWorkouts($workouts);
+    $byWeek = $this->initYearWeeks(reset(array_keys($workouts)));
+    foreach($workouts as $date => $dayData) {
+      // Use ISO year since we're working with weeks
+      $year = date('o', $date);
+      $week = date(self::WEEK_FORMAT, $date);
 
       // Get the total mileage for each day, and add the
       // workout to the detailed workout array
-      $day_mileage = array();
-      foreach ($day as $id => $workout) {
-        $day_mileage[] = idx($workout, 'distance');
-        $detailed[$y][$m][date('j', $date)][$id] = $workout;
-        $runs[$id] = $workout;
+      foreach ($dayData as $id => $workout) {
+        $byWeek[$year]['weeks'][$week]['time'] += idx($workout, 'time', 0);
+        $byWeek[$year]['weeks'][$week]['miles'] += idx($workout, 'distance', 0);
+        $byWeek[$year]['weeks'][$week]['run_count']++;
       }
-      $day_total = array_sum($day_mileage);
-
-      $by_day[$date] = $day_total;
-      $by_week[$y][$w][$date] = $day_total;
-      $by_year[$y][$date] = $day_total;
-      $by_month[$y][$m][date('j', $date)] = $day_total;
     }
-
-    // Prepare the detailed array by filling any missing months, days or years
-    // and sorting by date
-    $filled = $this->fillWorkouts($detailed);
-    krsort($filled);
-
-    return array(
-      'day'      => $by_day,
-      'week'     => $by_week,
-      'month'    => $by_month,
-      'year'     => $by_year,
-      'filled'   => $filled,
-      'detailed' => $detailed,
-      'runs'     => $runs,
-    );
+    return $byWeek;
   }
 
   /**
-   * Fills any missing days/months/years with empty space
+   * Creates a nested array of all the workouts, grouped first by year, then by
+   * week. Each grouping contains high-level data like total miles and runs.
    */
-  protected function fillWorkouts($detailed) {
-    if (empty($detailed)) {
-      return array();
+  private function initYearWeeks(/*int*/ $firstDate) /*arr*/ {
+    $firstYear = date(self::YEAR_FORMAT, $firstDate);
+    $currentYear = date(self::YEAR_FORMAT);
+    $arr = array();
+    for ($year=$firstYear; $year<=$currentYear; $year++) {
+      $arr[$year] = array(
+        'year' => $year,
+        'weeks' => array(),
+      );
+
+      // Find the number of weeks in a year
+      $date = new DateTime();
+      $date->setISODate($year, 53);
+      $maxWeeksInYear = $date->format('W') === '53' ? 53 : 52;
+
+      for ($week=1; $week<=$maxWeeksInYear; $week++) {
+        // ISO week numbers are 2-digit: 01, 02...52, so the key needs to
+        // reflect this.
+        $key = $week < 10 ? add_leading_zero($week) : $week;
+        $arr[$year]['weeks'][$key] = array(
+          'miles' => 0,
+          'run_count' => 0,
+          'time' => 0,
+          'week' => $week,
+          'year' => $year,
+        );
+      }
     }
+    return $arr;
+  }
 
-    $y = key($detailed); // Initial year
-    $y_curr = date('Y'); // Current year
-    $m = 1; // January
-    $m_curr = date('n');
-    $d = 1; // 1st day
-
-    for ($y; $y<=$y_curr; $y++) {
-      if (!isset($detailed[$y])) {
-        // Add missing years
-        $detailed[$y] = $this->addEmptyYear($y);
-      } else {
-        // For the current year, end at the current month
-        $end_month = ($y == $y_curr) ? $m_curr : 12;
-        for ($m; $m<=$end_month; $m++) {
-          if (!isset($detailed[$y][$m])) {
-            $detailed[$y][$m] = $this->addEmptyMonth($m, $y);
-          } else {
-            $num_days = cal_days_in_month(CALENDAR_TYPE, $m, $y);
-            for ($d; $d<=$num_days; $d++) {
-              if (!isset($detailed[$y][$m][$d])) {
-                $detailed[$y][$m][$d] = $this->addEmptyDay($d, $m, $y);
-              }
-            }
-            $d=1; // Reset day
-            ksort($detailed[$y][$m]);
+  /**
+   * Given a set of workouts, this finds all the workouts that were done with
+   * friends and provides the number of runs and total mileage with each friend.
+   */
+  public function groupWorkoutsByFriend($workouts) {
+    $grouped = array();
+    foreach ($workouts as $workout) {
+      if (isset($workout['Workout']['friends'])) {
+        $friends = array_filter(explode(',', $workout['Workout']['friends']));
+        foreach ($friends as $id) {
+          if (!isset($grouped[$id])) {
+            // Init the friend array
+            $grouped[$id] = array(
+              'id' => $id,
+              // Name must be added later, since it depends either on the user
+              // being logged in, or knowing the if to fetch from FB, which is
+              // done as a batch call.
+              'name' => '',
+              'runs' => array(),
+            );
           }
+          $grouped[$id]['runs'][] = $workout['Workout']['distance'];
         }
-        $m=1; // Reset month
-        ksort($detailed[$y]);
       }
     }
-
-    return $detailed;
+    return $grouped;
   }
-
-  /**
-   * Adds a missing year of empty months and days
-   */
-  protected function addEmptyYear($year) {
-    $y = array();
-    for ($m=1; $m<=12; $m++) {
-      $y[$m] = $this->addEmptyMonth($m, $year);
-    }
-    return $y;
-  }
-
-  /**
-   * Adds a missing month of empty days
-   */
-  protected function addEmptyMonth($month, $year) {
-    $m = array();
-    $num_days = cal_days_in_month(CALENDAR_TYPE, $month, $year);
-    for ($day=1; $day<=$num_days; $day++) {
-      $m[$day] = $this->addEmptyDay($day, $month, $year);
-    }
-    return $m;
-  }
-
-  protected function addEmptyDay($day, $month, $year) {
-    // Add an empty workout
-    return array(
-      array('date' => mktime(0, 0, 0, $day, $month, $year))
-    );
-  }
-
-  /**
-   * Takes a time in seconds and calculates the hours, minutes and seconds.
-   * Returns an array with h/m/s (NO leading zero):
-   *
-   *    3273 -> array(00, 54, 33)
-   *
-   * @param   int   $seconds
-   * @returns arr
-   */
-  public function secToTime($seconds) {
-    $time = array(
-      'hh' => (int) ($seconds / 3600),
-      'mm' => (int) date('i', $seconds),
-      'ss' => (int) date('s', $seconds)
-    );
-
-    // Pad minutes and seconds with a leading zero
-    foreach ($time as $key => $unit) {
-      if ($key != 'hh') {
-        $time[$key] = add_leading_zero($unit);
-      }
-    }
-
-    return $time;
-  }
-
-  /**
-   * Takes an array of hours/mins/secs and converts to seconds
-   *
-   * @param   arr   $time
-   * @return  int
-   */
-  public function timeToSec($time) {
-    return (int)($time[0]*3600 + $time[1]*60 + $time[2]);
-  }
-
 }

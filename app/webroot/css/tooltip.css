@@ -4,7 +4,7 @@
 
 .uiTooltip {
   display: none;
-  left: -20px;
+  left: -22px;
   position: absolute;
   width: auto;
   white-space: nowrap;
@@ -21,7 +21,8 @@
 }
 
 .uiTooltip .uiTooltipNub {
-  background: url(/img/tooltip_nub_white.png) no-repeat 15px 0;
+  background: url(/img/tooltip_nub_white@2x.png) no-repeat 15px 0;
+  background-size: 16px;
   display: block;
   height: 8px;
   margin-top: -1px;

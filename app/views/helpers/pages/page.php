@@ -51,17 +51,17 @@ class PageHelper extends AppHelper {
       $this->Html->doctype('xhtml-strict') .
         $this->Facebook->html() . // Namespace for FB Platform/Connect
           '<head>' .
-            $this->Html->meta('icon') .
+            // $this->Html->meta('icon') .
+            '<link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">' .
             $this->Html->meta('keywords') .
             $this->Html->meta('description') .
             $this->Html->meta(array(
               'name' => 'viewport',
-              'content' => 'width=device-width, initial-scale=1.0'
+              'content' => 'width=device-width, initial-scale=1.0, user-scalable=no'
             )) .
             $this->getPageMeta() .
             $this->Html->charset() .
             '<title>' . $this->renderPageTitle() . '</title>' .
-            (Configure::read('debug') > 0 ? $this->Html->css('/css/debug') : '') .
             $this->getBaseCSS() .
             $this->getPageCSS() .
           '</head>' .

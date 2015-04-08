@@ -3,7 +3,7 @@
 /**
  * Renders a standard tooltip
  */
-$this->Include->css('topline');
+$this->Include->css('components/Topline');
 
 if (!isset($stats)) {
   return;
@@ -15,8 +15,10 @@ $r =
 foreach ($stats as $label => $stat) {
   $r .=
     '<li>' .
-      '<div class="label">' . $label . '</div>' .
-      '<div class="number">' . $stat . '</div>' .
+      '<div class="labeledStat">' .
+        '<div class="labeledStatLabel">' . $label . '</div>' .
+        '<div class="labeledStatData">' . $stat . '</div>' .
+      '</div>' .
     '</li>';
 }
 $r .= '</ul>';

@@ -3,61 +3,95 @@
  * Displays a list of all the user's shoes
  */
 
-$page_header = '<h2>' . __('Shoes', 1) . '</h2>';
+$page_header =
+  '<h2>' . __('Shoes', 1) . '</h2>' .
+  '<div class="btn-group auxContent">' .
+    $this->Html->link(
+	    '<span class="glyphicon glyphicon-plus"></span> New Shoe',
+	    array(
+	     'controller' => 'shoes',
+	     'action' => 'add'
+      ),
+	    array(
+	     'class' => 'btn btn-default',
+	     'escape' => false,
+      )
+    ) .
+  '</div>';
 
-$r =
-  '<table cellpadding="0" cellspacing="0" class="item_list">' .
+$this->set('page_header', $page_header);
 
-    /*
-  	'<tr>' .
-      '<th>' . __('Brand', 1) . '</th>' .
-  		'<th>' . __('Name', 1) . '</th>' .
-  		'<th>' . __('Runs', 1) . '</th>' .
-  		'<th>' . __('Miles', 1) . '</th>' .
-  		'<th class="actions">' . __('Actions', 1) . '</th>' .
-  	'</tr>';
-  	*/
-  '';
+$r = '';
+if (empty($shoes)) {
+  $r =
+    '<section class="panel panel-default">' .
+      '<div class="panel-body emptyState">' .
+        'You don\'t have any shoes to display. ' .
+        $this->Html->link(
+          'Add some',
+    	    array(
+    	     'controller' => 'shoes',
+    	     'action' => 'add'
+          )
+        ) .
+      '.</div>' .
+    '</section>';
+}
 
-	$i = 0;
-	foreach ($shoes as $shoe) {
+foreach ($shoes as $status => $shoeGroup) {
+  $r .=
+    '<section class="panel panel-default">' .
+      '<div class="panel-heading">' .
+        '<h3 class="panel-title">' . ucfirst($status) . '</h3>' .
+      '</div>' .
+      '<div class="panel-body">' .
+        '<table cellpadding="0" cellspacing="0" class="item_list">';
+
+	foreach ($shoeGroup as $shoe) {
 		$classes = array();
-		/*
-		if ($i++ % 2 == 0) {
-			$classes[] = 'altrow';
-		}
-		*/
-
     $token = __('Active', 1);
-		if ($shoe['Shoe']['inactive']) {
+		if ($shoe['inactive']) {
 		  $classes[] = 'inactive';
 		  $token = __('Inactive', 1);
 		}
 		$class = empty($classes) ? '' : ' class="' . implode(' ', $classes) . '"';
 
     // Print the correct label for number of runs
-		$runs_label = $shoe['Shoe']['workouts'] > 1 ? __('runs', 1) : __('run', 1);
+		$runs_label = $shoe['workouts'] > 1 ? __('runs', 1) : __('run', 1);
 
     $r .=
     	'<tr' . $class . '>' .
-        '<td class="activity"><div class="token">' . $token . '</div></td>' .
-    		'<td>' . $shoe['Shoe']['brand'] . '</td>' .
-    		'<td>' . $this->Html->link($shoe['Shoe']['model'], array('controller' => 'shoes', 'action' => 'view', $shoe['Shoe']['id'])) . '</td>' .
-        '<td>' . $shoe['Shoe']['workouts'] . ' ' . $runs_label .'</td>' .
+        '<td class="activity">' .
+          $this->Html->link(
+      	    '',
+      	    '#',
+      	    array(
+      	     'class' => 'token',
+      	     'rel' => 'tooltip',
+      	     'title' => $token
+            )
+          ) .
+        '</td>' .
+    		'<td>' . $shoe['brand'] . '</td>' .
+    		'<td>' . $this->Html->link($shoe['model'], array('controller' => 'shoes', 'action' => 'view', $shoe['id'])) . '</td>' .
+        '<td>' . $shoe['workouts'] . ' ' . $runs_label .'</td>' .
         '<td class="mileage">' .
-          render_distance($shoe['Shoe']['mileage'], 2) .
+          render_distance($shoe['mileage'], 2) .
         '</td>' .
     		'<td class="actions">' .
     			$this->Html->link(__('Edit', 1), array(
             'controller' => 'shoes',
             'action' => 'edit',
-            $shoe['Shoe']['id']
+            $shoe['id']
           )) .
           $this->element('close_button', array(
             'link' => array(
               'controller' => 'shoes',
               'action' => 'delete',
-              $shoe['Shoe']['id']
+              $shoe['id']
+            ),
+            'params' => array(
+              'tooltip' => __('Delete', 1)
             ),
             'confirmation' => __('Are you sure you want to delete this shoe?', 1)
           )) .
@@ -65,20 +99,19 @@ $r =
     	'</tr>';
   }
 
-$r .= '</table>';
+  $r .=
+        '</table>' .
+      '</div>' .
+    '</section>';
+}
+
 echo $r;
 
-$sidebar =
-  $this->element('sidebar',
-    array(
-      'items' => array(
-        array(
-          'label' => __('New Shoe', 1),
-          'actions' => array('controller' => 'shoes', 'action' => 'add')
-        ),
-      )
-    )
-  );
-
-$this->set('page_header', $page_header);
-$this->set('sidebar', $sidebar);
+// Set JS for the page
+$this->Html->scriptStart(array('inline' => false));
+echo "
+  require(['lib/bootstrap.min'], function() {
+    $('.token').tooltip();
+  });
+";
+$this->Html->scriptEnd();

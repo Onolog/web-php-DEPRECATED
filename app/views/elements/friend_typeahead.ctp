@@ -8,7 +8,6 @@
  */
 
 $this->Include->css('token-input-facebook');
-$this->Include->js('jquery.tokeninput');
 
 // This shouldn't be necessary, but it's an extra precaution
 // in case the friends data isn't set. Default to null.
@@ -18,17 +17,23 @@ if (!isset($friends) || !$friends) {
 
 // Render the typeahead
 $r =
-  $form->input(
-    'friends',
-    array('id' => 'typeahead')
-  );
+  '<div class="typeahead-container">' .
+    $form->input(
+      'friends',
+      array(
+        'id' => 'typeahead',
+        'class' => 'form-control',
+        'placeholder' => 'Friends'
+      )
+    ) .
+  '</div>';
 
 echo $r;
 
 // Set JS for the element
 $this->Html->scriptStart(array('inline' => false));
 echo "
-  $(document).ready(function () {
+  require(['lib/TokenInput'], function(tokenInput) {
     $('#typeahead').tokenInput('/ajax/users/friends_list/', {
       theme: 'facebook',
       hintText: 'Type a friend\'s name',

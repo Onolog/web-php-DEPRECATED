@@ -34,8 +34,10 @@ echo $r;
 
 $this->Html->scriptStart(array('inline' => false));
 echo "
-  $('#sidebar a').click(function() {
-    toggle_sidebar(this.parentNode);
+  require(['lib/bootstrap.min'], function() {
+    $('#sidebar a').click(function() {
+      toggle_sidebar(this.parentNode);
+    });
   });
 ";
 $this->Html->scriptEnd();

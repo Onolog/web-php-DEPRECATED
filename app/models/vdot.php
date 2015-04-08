@@ -62,9 +62,7 @@ class Vdot extends AppModel {
    */
   public function getPacesFromVdot($vdot) {
     $vdot_paces = $this->getPaces();
-    $paces = $vdot_paces[$vdot];
-    
-    return $paces;
+    return $vdot_paces[$vdot];
   }
 
 /*
@@ -141,9 +139,9 @@ class Vdot extends AppModel {
       58 => array('e' => array('mile' => 454), 'm' => array('mile' => 385), 't' => array('400m' => 90, '1000m' => 225, 'mile' => 364), 'i' => array('400m' => 83, '1000m' => 208, 250, null), 'r' => array(38, 77, null)),
       59 => array('e' => array('mile' => 448), 'm' => array('mile' => 379), 't' => array('400m' => 89, '1000m' => 223, 'mile' => 359), 'i' => array('400m' => 82, '1000m' => 205, 247, null), 'r' => array(37, 76, null)),
       60 => array('e' => array('mile' => 442), 'm' => array('mile' => 374), 't' => array('400m' => 88, '1000m' => 220, 'mile' => 354), 'i' => array('400m' => 81, '1000m' => 203, 243, null), 'r' => array(37, 75, 150)),
-      61 => array('e' => array('mile' => 436), 'm' => array('mile' => 369), 't' => array('400m' => 86,'1000m' =>  217, 'mile' => 350), 'i' => array('400m' => 80, '1000m' => 200, 240, null), 'r' => array(36, 74, 148)),
-      62 => array('e' => array('mile' => 431), 'm' => array('mile' => 364), 't' => array('400m' => 85,'1000m' =>  214, 'mile' => 345), 'i' => array('400m' => 79, '1000m' => 197, 237, null), 'r' => array(36, 73, 146)),
-      63 => array('e' => array('mile' => 425), 'm' => array('mile' => 359), 't' => array('400m' => 84,'1000m' =>  212, 'mile' => 341), 'i' => array('400m' => 78, '1000m' => 195, 234, null), 'r' => array(35, 72, 144)),
+      61 => array('e' => array('mile' => 436), 'm' => array('mile' => 369), 't' => array('400m' => 86, '1000m' => 217, 'mile' => 350), 'i' => array('400m' => 80, '1000m' => 200, 240, null), 'r' => array(36, 74, 148)),
+      62 => array('e' => array('mile' => 431), 'm' => array('mile' => 364), 't' => array('400m' => 85, '1000m' => 214, 'mile' => 345), 'i' => array('400m' => 79, '1000m' => 197, 237, null), 'r' => array(36, 73, 146)),
+      63 => array('e' => array('mile' => 425), 'm' => array('mile' => 359), 't' => array('400m' => 84, '1000m' => 212, 'mile' => 341), 'i' => array('400m' => 78, '1000m' => 195, 234, null), 'r' => array(35, 72, 144)),
       64 => array('e' => array('mile' => 420), 'm' => array('mile' => 354), 't' => array('400m' => 83, '1000m' => 209, 'mile' => 336), 'i' => array('400m' => 77, '1000m' => 192, 231, null), 'r' => array(35, 71, 142)),
       65 => array('e' => array('mile' => 414), 'm' => array('mile' => 349), 't' => array('400m' => 82, '1000m' => 206, 'mile' => 332), 'i' => array('400m' => 76, '1000m' => 190, 228, null), 'r' => array(34, 70, 140)),
       66 => array('e' => array('mile' => 409), 'm' => array('mile' => 345), 't' => array('400m' => 81, '1000m' => 204, 'mile' => 328), 'i' => array('400m' => 75, '1000m' => 188, 225, 300), 'r' => array(34, 69, 138)),

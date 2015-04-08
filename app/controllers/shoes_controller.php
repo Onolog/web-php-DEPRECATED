@@ -16,7 +16,7 @@ class ShoesController extends AppController {
 		$shoe = $this->Shoe->read(null, $id);
 
     // Does the shoe belong to the person viewing it?
-		$is_owner = ($shoe['User']['id'] == $this->Auth->User('id'));
+		$is_owner = $shoe['User']['id'] === $this->Auth->User('id');
 
 		$this->set('shoe', $shoe);
 		$this->set('is_owner', $is_owner);
@@ -106,5 +106,24 @@ class ShoesController extends AppController {
 		$this->Session->setFlash(__('Shoe was not deleted', true));
 		$this->redirect(array('action' => 'index'));
 	}
+
+  public function ajax_get() {
+    $this->layout = 'ajax';
+    $this->autoLayout = false;
+    $this->autoRender = false;
+
+    $user = $this->requireLoggedInUser();
+    $this->set('title_for_layout', 'Shoes');
+
+    // Get all the user's shoes
+    $shoes = $this->Shoe->find(
+      'all', array(
+        'conditions' => array('Shoe.user_id' => $user),
+      )
+    );
+
+    $shoes = $this->User->Shoe->groupByActivity($shoes);
+    return json_encode($shoes);
+  }
 
 }

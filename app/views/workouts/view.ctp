@@ -5,15 +5,16 @@
  * File: /app/views/workouts/view.ctp
  */
 
-// Array of the info we want to display
-// TODO: Should all this go in the Model or Controller?
+$this->Include->css(array(
+  'app/Workout',
+  'components/Topline'
+));
 
-$this->Include->css('workout');
-$this->set('page_classes', array('workout_view'));
+$this->set('page_classes', array('workoutView'));
 
 $page_url = 'http://www.onolog.com/workouts/view/'.$workout['Workout']['id'];
 $date = date('F jS, Y', $workout['Workout']['date']);
-$time = format_time($workout['Workout']['time_arr']);
+$time = format_time(sec_to_time($workout['Workout']['time']));
 $distance = number_format($workout['Workout']['distance'], 2);
 
 // Set OG meta tags
@@ -26,104 +27,83 @@ $this->Meta->og('onolog:distance', $distance);
 $this->Meta->og('onolog:time', $time);
 $this->Meta->og('fb:app_id', FB_APP_ID);
 
-
-$shoe = null;
-if (idx($brand['Brand'], 'name') && idx($workout['Shoe'], 'model')) {
-  $shoe = $brand['Brand']['name']. ' ' .$workout['Shoe']['model'];
-}
-
-$user_img = 'https://graph.facebook.com/' . $workout['User']['id'] . '/picture';
-
-
 $page_header = '<h2>' . $date . '</h2>';
 
-// Render the markup
-$r =
-  '<div class="clearfix">' .
-    '<div class="left_col">' .
-      $this->Html->image($user_img, array(
-        'class' => 'owner_img'
-      )) .
-      '<fb:like ' .
-        'href="onolog.com/workouts/view/'.$workout['Workout']['id'].'" ' .
-        'send="true" ' .
-        'layout="box_count" ' .
-        'width="50" ' .
-        'show_faces="false" ' .
-        'action="like" ' .
-        'font="lucida grande">' .
-      '</fb:like>' .
-    '</div>' .
-
-    '<div class="right_col">' .
-        $this->element('topline',
-          array(
-            'stats' => array(
-              'Miles' => $distance,
-              'Time'  => $time,
-              'Pace'  => calculate_pace($workout['Workout']['time'], $workout['Workout']['distance'])
-            )
-          )
-        );
-
-      // Friends
-      if (!empty($friends)) {
-        $r .= '<div class="friends">';
-
-        foreach ($friends as $friend) {
-          $src = 'https://graph.facebook.com/' . $friend['id'] . '/picture';
-          $r .= $this->Html->image($src);
-        }
-        $r .= '</div>';
-      }
-
-    // Notes
-    $r .=
-      '<div class="notes">' .
-        idx($workout['Workout'], 'notes') .
-      '</div>' .
-
-      // Comments
-      '<fb:comments href="'. $page_url . '" num_posts="4" width="600">' .
-      '</fb:comments>' .
-    '</div>' .
-  '</div>';
-
-echo $r;
-
-// Sidebar
-$sidebar = '';
 if ($is_owner) {
-  $sidebar =
-    $this->element(
-      'sidebar',
-      array(
-        'items' => array(
-          array(
-            'label' => __('Edit Workout', 1),
-            'actions' => array('action' => 'edit', $workout['Workout']['id'])
-          ),
-  
-          array(
-            'label' => __('Delete Workout', 1),
-            'actions' => array(
-              'action' => 'delete',
-              $workout['Workout']['id']
-            ),
-            'confirmation' => __('Are you sure you want to delete this workout?', 1)
-          ),
-          array(
-            'label' => __('All Workouts', 1),
-            'actions' => array('controller' => 'users', 'action' => 'index')
-          ),
-          array(
-            'label' => __('New Workout', 1),
-            'actions' => array('action' => 'add')
-          ),
+  $page_header .=
+    '<div class="btn-group auxContent">' .
+      /*
+      $this->Html->link(
+  	    '<span class="glyphicon glyphicon-pencil"></span>',
+        array('action' => 'edit', $workout['Workout']['id']),
+  	    array(
+  	     'class' => 'btn btn-default',
+  	     'rel' => 'tooltip',
+  	     'title' => __('Edit Workout', 1),
+  	     'escape' => false,
         )
-      )
-    );
+      ) .
+      */
+      $this->Html->link(
+  	    '<span class="glyphicon glyphicon-trash"></span>',
+  	    array(
+          'action' => 'delete',
+          $workout['Workout']['id']
+        ),
+  	    array(
+  	     'class' => 'btn btn-default',
+  	     'rel' => 'tooltip',
+  	     'title' => __('Delete Workout', 1),
+  	     'escape' => false,
+        ),
+        'Are you sure you want to delete this workout?'
+      ) .
+      /*
+      $this->Html->link(
+  	    '<span class="glyphicon glyphicon-plus"></span>',
+  	    array('action' => 'add'),
+  	    array(
+  	     'class' => 'btn btn-default',
+  	     'rel' => 'tooltip',
+  	     'title' => __('New Workout', 1),
+  	     'escape' => false,
+        )
+      ) .
+      */
+      $this->Html->link(
+  	    '<span class="glyphicon glyphicon-th"></span>',
+  	    array('controller' => 'users', 'action' => 'index'),
+  	    array(
+  	     'class' => 'btn btn-default',
+  	     'rel' => 'tooltip',
+  	     'title' => __('All Workouts', 1),
+  	     'escape' => false,
+        )
+      ) .
+    '</div>';
 }
 
 $this->set('page_header', $page_header);
-$this->set('sidebar', $sidebar);
+
+echo
+  '<section class="panel panel-default">' .
+    '<div class="panel-body" id="reactRoot">' .
+      '<div class="loader loader-lg"></div>' .
+    '</div>' .
+  '</section>';
+
+// Set JS for the page
+$json_workout = json_encode($workout['Workout']);
+$this->Html->scriptStart(array('inline' => false));
+echo "
+  require([
+    'utils/reactRender',
+    'lib/react/jsx!app/Workouts/WorkoutView.react',
+    'lib/bootstrap.min'
+  ], function(reactRender, WorkoutView) {
+    reactRender(WorkoutView, { workout: $json_workout }, 'reactRoot');
+
+    $('.btn').tooltip({ container: 'body' });
+  });
+";
+$this->Html->scriptEnd();

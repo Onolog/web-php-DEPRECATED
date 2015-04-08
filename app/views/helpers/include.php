@@ -9,6 +9,10 @@ class IncludeHelper extends AppHelper {
 
     var $helpers = array('Html');
 
+    public function __construct() {
+      $this->Html = new HtmlHelper();
+    }
+
     /**
      * Wrapper around Html helper so we don't have
      * to specify inline = false all the time
@@ -22,7 +26,7 @@ class IncludeHelper extends AppHelper {
      * to specify inline = false all the time
      */
     public function js($name, $inline=false) {
-      return $this->Html->script($name, array('inline' => false));
+      return $this->Html->script($name, array('inline' => $inline));
     }
 
 }

@@ -1,16 +1,55 @@
 <?php
 
-$page_header = '<h2>' . __('Edit User', 1) . '</h2>';
+$defaults = array(
+  'class' => 'form-horizontal',
+  'inputDefaults' => array(
+    'div' => false,
+    'label' => false
+  )
+);
+
+$page_header = '<h2>' . __('Edit Settings', 1) . '</h2>';
 
 $r =
-  '<div class="users form">' .
-    $this->Form->create('User') .
-      $this->Form->input('id') .
-      $this->Form->input('first_name') .
-		  $this->Form->input('last_name') .
-		  $this->Form->input('email') .
-		  $this->Form->input('password') .
-    $this->Form->end(__('Submit', 1)) .
+  '<div class="card settingsForm">' .
+    $this->Form->create('User', $defaults) .
+    $this->Form->input('id') .
+
+    '<div class="form-group">' .
+      '<label for="distance" class="col-sm-2 control-label">' .
+        __('First Name', 1) .
+      '</label>' .
+		  '<div class="col-sm-10">' .
+		    $this->Form->input('first_name', array(
+          'class' => 'form-control'
+        )) .
+      '</div>' .
+    '</div>' .
+
+    '<div class="form-group">' .
+      '<label for="distance" class="col-sm-2 control-label">' .
+        __('Last Name', 1) .
+      '</label>' .
+		  '<div class="col-sm-10">' .
+		    $this->Form->input('last_name', array(
+          'class' => 'form-control'
+        )) .
+      '</div>' .
+    '</div>' .
+
+    '<div class="btn-toolbar">' .
+      $this->Button->set(array(
+        'label' => __('Update Settings', 1),
+        'size' => 'large',
+        'type' => 'submit',
+        'use' => 'primary'
+      ))->render() .
+      $this->Button->set(array(
+        'label' => __('Cancel', 1),
+        'href' => '/',
+        'size' => 'large'
+      ))->render() .
+    '</div>' .
   '</div>';
 
 echo $r;

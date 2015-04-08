@@ -1,3 +1,7 @@
 <?php
+$this->Include->css('garmin');
 
-echo 'This is a static page that will tell you information about this website.';
+$page_header = '<h2>' . __('About Onolog', 1) . '</h2>';
+$this->set('page_header', $page_header);
+
+echo 'About';

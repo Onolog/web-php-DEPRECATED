@@ -4,9 +4,11 @@ $page_header =
   '<h2>' . __('Friends', 1) . '</h2>';
 
 $r =
-  $this->element('friend_list', array(
-    'friends' => $friends,
-  ));
+  '<div class="card">' .
+    $this->element('friend_list', array(
+      'friends' => $friends,
+    )) .
+  '</div>';
 
 echo $r;
 

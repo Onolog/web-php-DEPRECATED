@@ -1,0 +1,46 @@
+/**
+ * topline.css
+ *
+ * Provides css for topline data summaries
+ */
+
+.topline {
+  list-style: none;
+  margin: 0;
+}
+
+.topline li {
+  float: left;
+  margin-left: 30px;
+}
+
+.topline li:first-child {
+  margin-left: 0;
+}
+
+.labeledStat {
+  color: #aaa;
+  font-size: 10px;
+  line-height: 1em;
+}
+
+.labeledStatLabel {
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.labeledStatData {
+  color: #333;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 1em;
+}
+
+
+/* Tablet & Mobile */
+@media (max-width: 767px) {
+  .labeledStatData {
+    font-size: 24px;
+  }
+}

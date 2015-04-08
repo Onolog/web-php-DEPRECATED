@@ -49,6 +49,17 @@ define('FB_SECRET', '756380338bb32d062402d8aea5b1a352');
 define('GOOGLE_ANALYTICS_CODE', 'UA-5839822-1');
 
 /**
+ * Garmin Communicator API Key
+ */
+define('GARMIN_API_KEY', '2b3f4a3a13900af73dd5a19c1c8f77e3');
+
+/**
+ * Google API Key
+ * https://code.google.com/apis/console/?pli=1#project:227714135206:access
+ */
+define('GOOGLE_API_KEY', 'AIzaSyBI2oBuFbYuvwmHpNrQGjvmg7r-eIFKtEM');
+
+/**
  * The settings below can be used to set additional paths to models, views and controllers.
  * This is related to Ticket #470 (https://trac.cakephp.org/ticket/470)
  *
@@ -130,14 +141,20 @@ function idx($arr, $idx, $default=null) {
  */
 function sec_to_time($seconds) {
   $time = array(
-    'hh' => (int) ($seconds / 3600),
-    'mm' => (int) date('i', $seconds),
-    'ss' => (int) date('s', $seconds)
+    'hh' => 0,
+    'mm' => 0,
+    'ss' => 0
   );
+  
+  if (is_numeric($seconds)) {
+    $time['hh'] = (int) ($seconds / 3600);
+    $time['mm'] = (int) date('i', $seconds);
+    $time['ss'] = (int) date('s', $seconds);
+  }
 
   // Pad minutes and seconds with a leading zero
   foreach ($time as $key => $unit) {
-    if ($key != 'hh') {
+    if ($key !== 'hh') {
       $time[$key] = add_leading_zero($unit);
     }
   }
@@ -162,6 +179,8 @@ function time_to_sec($time) {
  * @returns str
  */
 function format_time($time) {
+  $time = sec_to_time($time);
+
   if ($time['hh'] === 0) {
     unset($time['hh']);
   }

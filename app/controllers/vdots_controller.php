@@ -9,10 +9,6 @@ class VdotsController extends AppController {
   }
 
 	function index() {
-    $title_for_layout = __(
-      'Calculate Your Current VDOT Level and Training Intensity', 1
-    );
-
     $paces = array();
     if (isset($this->params['data'])) {
       $data = $this->params['data']['Vdot'];
@@ -38,7 +34,7 @@ class VdotsController extends AppController {
 
         switch($vdot) {
           case -1:
-            $errors[] = __('Dear lord you are slow.', 1);
+            $errors[] = __("Dear lord you're slow.", 1);
             break;
           case 0:
             $errors[] = __('Oh really? That fast?', 1);
@@ -60,8 +56,10 @@ class VdotsController extends AppController {
       }
     }
 
-    $distances = $this->Vdot->getDistancesForDropdown();
-    $this->set(compact('distances', 'title_for_layout'));
+    $this->set(
+      'distances',
+      $this->Vdot->getDistancesForDropdown()
+    );
 	}
 
 }
