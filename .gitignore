@@ -3,3 +3,4 @@
 
 # DB Config
 /app/config/database.php
+/app/config/core.php
