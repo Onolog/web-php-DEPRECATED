@@ -1,6 +1,10 @@
-# tmp files #
-/app/tmp/
+# Local bash files
+.bashrc
+
+# tmp files
+app/tmp/
 
 # DB Config
-/app/config/database.php
-/app/config/core.php
+app/config/database.php
+app/config/core.php
+
