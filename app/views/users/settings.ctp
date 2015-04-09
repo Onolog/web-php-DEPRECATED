@@ -25,7 +25,7 @@ echo "
     'lib/bootstrap.min'
   ], function(reactRender, Settings) {
     reactRender(Settings, {
-      user: $user
+      user: $json_user
     }, 'reactRoot');
   });
 ";
