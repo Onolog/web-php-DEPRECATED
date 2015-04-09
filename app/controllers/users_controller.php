@@ -28,11 +28,13 @@ class UsersController extends AppController {
     $this->layout = 'marketing';
     $this->set('title_for_layout', 'Welcome');
 
-    if (!$this->Auth->User() && $this->Connect->user('id')) {
+    $fbid = $this->Connect->user('id');
+
+    if (!$this->Auth->User() && $fbid) {
 
       // See if this facebook id is in the User database
       $data = $this->User->find('first', array(
-        'conditions' => array('User.id' => $this->Connect->user('id')),
+        'conditions' => array('User.id' => $fbid),
       ));
 
       // Create new user if no records exist
@@ -42,7 +44,7 @@ class UsersController extends AppController {
 
   		  // Add the user's info
         $data['User'] = array(
-          'id' => $this->Connect->user('id'),
+          'id' => $fbid,
           'first_name' => $this->Connect->user('first_name'),
           'last_name' => $this->Connect->user('last_name'),
           'email' => $this->Connect->user('email'),
@@ -190,7 +192,7 @@ class UsersController extends AppController {
 
     $this->helpers[] = 'Chart';
 
-    $user = $this->User->read(null, $id);
+    $user = $this->User->read();
 
     // Why does this query return different results depending on
     // if the user is logged in or out?
@@ -226,8 +228,7 @@ class UsersController extends AppController {
       'shoe_count',
       'total_miles',
       'total_runs',
-      'user',
-      'workoutData'
+      'user'
 		));
 	}
 
@@ -342,17 +343,11 @@ class UsersController extends AppController {
 	}
 
   /**
-   * Allows the user to edit their information. Most of this should be done
-   * through Facebook, but we'll probably want to allow users to edit certain
-   * Onolog-specific settings here, like distance units (miles vs. kilometers)
+   * Allows the user to edit their information and modify account-specific
+   * settings.
    */
-	function edit($id = null) {
+	function settings() {
     $user = $this->requireLoggedInUser();
-
-		if (!$id || $user != $id) {
-			$this->Session->setFlash(__('You are not allowed to see this page.', true));
-			$this->redirect(array('action' => 'index'));
-		}
 
 		if (!empty($this->data)) {
 			if ($this->User->save($this->data)) {
@@ -364,7 +359,7 @@ class UsersController extends AppController {
 		}
 
 		if (empty($this->data)) {
-			$this->data = $this->User->read(null, $id);
+			$this->data = $this->User->read();
 		}
 	}
 

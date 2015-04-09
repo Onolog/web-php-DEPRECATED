@@ -166,8 +166,12 @@ class NavigationHelper extends AppHelper {
             // Settings Link
             array(
               'content' => __('Settings', 1),
-              'href' => '#'
+              'href' => array(
+                'controller' => 'users',
+                'action' => 'settings',
+              )
             ),
+            /*
             array(
               'content' => __('Friends', 1),
               'href' => array(
@@ -175,6 +179,7 @@ class NavigationHelper extends AppHelper {
                 'action' => 'friends',
               )
             ),
+            */
             array('divider' => true),
             // Logout Link
             array(
