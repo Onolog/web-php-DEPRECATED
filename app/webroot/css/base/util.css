@@ -11,7 +11,9 @@
 }
 
 .loader-lg {
-  background-image: url('/img/indicator_blue_large.gif');
+  /* background-image: url('/img/indicator_blue_large.gif'); */
+  background-image: url('/img/loaders/spinner-large-bgLight-2x.gif');
+  background-size: 24px;
 }
 
 .loader-sm {
