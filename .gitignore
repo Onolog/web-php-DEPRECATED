@@ -1,10 +1,10 @@
-# Local bash files
-.bashrc
+# CakePHP files to ignore
 
 # tmp files
-app/tmp/
+app/tmp/*
 
 # DB Config
 app/config/database.php
 app/config/core.php
 
+vendors/*
