@@ -361,6 +361,8 @@ class UsersController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->User->read();
 		}
+
+    $this->set('json_user', json_encode($this->data));
 	}
 
   /**
