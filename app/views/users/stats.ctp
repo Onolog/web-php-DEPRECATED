@@ -29,14 +29,13 @@ $this->Html->scriptStart(array('inline' => false));
 echo "
   require([
     'utils/reactRender',
-    'lib/react/jsx!app/Users/Profile/Profile.react'
-  ], function(reactRender, Profile) {
-    reactRender(Profile, {
-      friends: $json_friends,
+    'lib/react/jsx!app/Users/Stats/Stats.react'
+  ], function(reactRender, Stats) {
+    reactRender(Stats, {
       shoeCount: $shoe_count,
       totalMiles: $total_miles,
       totalRuns: $total_runs,
-      // workoutData: $json_workoutData,
+      workoutData: $json_workoutData,
       workoutDataByWeek: $json_workoutDataByWeek
     }, 'reactRoot');
   });
