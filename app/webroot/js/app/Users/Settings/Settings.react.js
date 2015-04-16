@@ -68,7 +68,7 @@ define([
                 type="text"
               />
             </FormGroup>
-            <FormGroup>
+            <FormGroup label="">
               <Button use="primary" label="Save Changes" type="submit" />
             </FormGroup>
             <input
