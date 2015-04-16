@@ -25,7 +25,6 @@ define(['lib/Moment/Moment'], function(moment) {
         date = date.getTime();
       }
       format = format || 'MMMM Do, YYYY'; // Default
-      debugger;
       return moment(date).format(format);
     },
     /**
