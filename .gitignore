@@ -8,3 +8,8 @@ app/config/database.php
 app/config/core.php
 
 vendors/*
+
+# Ignore minified JS libs
+# Local versions are unminified
+app/webroot/js/lib/react/*
+app/webroot/js/lib/moment/*
