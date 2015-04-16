@@ -7,7 +7,7 @@ define([
   'lib/react/react',
   'lib/Moment/Moment'
 
-], function(React, Moment) {
+], function(React, moment) {
 
   var DAYS_IN_WEEK = 7;
   var ISO_DAY_OF_WEEK = 'E';
@@ -67,6 +67,7 @@ define([
         format = 'dd';
         substr = true;
       }
+
       var formatted = moment(day, ISO_DAY_OF_WEEK).format(format);
       return substr ? formatted.substr(0, 1) : formatted;
     }

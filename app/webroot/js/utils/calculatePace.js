@@ -8,7 +8,7 @@ define([
   'lib/Moment/Moment',
   'utils/DateTimeUtils'
 
-], function(Moment, DateTimeUtils) {
+], function(moment, DateTimeUtils) {
 
   var calculatePace = {
   

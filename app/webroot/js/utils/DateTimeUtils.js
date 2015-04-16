@@ -3,7 +3,7 @@
  *
  * Date and time utils, mostly for formatting
  */
-define(['lib/Moment/Moment'], function(Moment) {
+define(['lib/Moment/Moment'], function(moment) {
 
   function pad(n, width, z) {
     z = z || '0';
@@ -25,6 +25,7 @@ define(['lib/Moment/Moment'], function(Moment) {
         date = date.getTime();
       }
       format = format || 'MMMM Do, YYYY'; // Default
+      debugger;
       return moment(date).format(format);
     },
     /**

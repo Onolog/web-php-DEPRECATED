@@ -12,7 +12,7 @@ define([
   'lib/Moment/Moment',
   'lib/jquery/jquery.min'
 
-], function(React, cakePHP) {
+], function(React, cakePHP, moment) {
 
   return React.createClass({
     displayName: 'TimeInput',

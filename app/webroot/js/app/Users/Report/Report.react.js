@@ -23,7 +23,7 @@ define([
 
 ], function(
 
-  Moment,
+  moment,
   React,
 
   LabeledStat,
