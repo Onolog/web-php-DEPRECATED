@@ -40,7 +40,7 @@ define([
       var user = this.props.user;
       return (
         <Panel className="form-horizontal">
-          <form action={'/users/settings/' + user.id} method="post">
+          <form action={'/users/settings/'} method="post">
             <FormGroup label="First Name">
               <input
                 className="form-control"
@@ -71,6 +71,11 @@ define([
             <FormGroup>
               <Button use="primary" label="Save Changes" type="submit" />
             </FormGroup>
+            <input
+              name={cakePHP.encodeFormFieldName('id', FORM_NAME)}
+              type="hidden"
+              value={user.id}
+            />
           </form>
         </Panel>
       );

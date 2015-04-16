@@ -144,21 +144,8 @@ fieldset {
   padding: 20px;
 }
 
-.panel,
-.panel-default {
-  border: 1px solid #e7e7e7;
-  box-shadow: 0 1px 0 rgba(100, 100, 100, 0.02);
-  margin-bottom: 0;
-}
-
-.panel-default > .panel-heading,
-.panel-footer {
-  border-color: #e7e7e7;
-}
-
-section + section,
-.panel + .panel {
-  margin-top: 15px;
+.narrow-page #main.container {
+  max-width: 600px;
 }
 
 /* Footer */

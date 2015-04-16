@@ -350,19 +350,30 @@ class UsersController extends AppController {
     $user = $this->requireLoggedInUser();
 
 		if (!empty($this->data)) {
+      if ($this->data['User']['id'] !== $user) {
+        $this->Session->setFlash(
+          __('You may not change the settings for this user.', 1)
+        );
+        $this->redirect(array('action' => 'index'));
+      }
+
 			if ($this->User->save($this->data)) {
-				$this->Session->setFlash(__('The user has been saved', true));
-				$this->redirect(array('action' => 'index'));
+				$this->Session->setFlash(
+          __('Your changes were saved.', 1)
+        );
+				// $this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The user could not be saved. Please, try again.', true));
+				$this->Session->setFlash(
+          __('Your changes could not be saved. Please try again.', 1)
+        );
 			}
 		}
 
 		if (empty($this->data)) {
-			$this->data = $this->User->read();
+			$this->data = $this->User->read(null, $user);
 		}
 
-    $this->set('json_user', json_encode($this->data));
+    $this->set('json_user', json_encode($this->data['User']));
 	}
 
   /**

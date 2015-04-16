@@ -3,7 +3,10 @@
 $this->Include->css(array(
   'app/Settings',
 ));
-$this->set('page_classes', array('settings'));
+$this->set('page_classes', array(
+  'settings',
+  'narrow-page'
+));
 
 $this->set(
   'page_header',
