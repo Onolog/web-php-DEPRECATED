@@ -11,5 +11,5 @@ vendors/*
 
 # Ignore minified JS libs
 # Local versions are unminified
-app/webroot/js/lib/react/*
-app/webroot/js/lib/moment/*
+app/webroot/js/lib/react/react.js
+app/webroot/js/lib/moment/Moment.js
