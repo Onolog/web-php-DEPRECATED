@@ -31,11 +31,10 @@ echo "
     'lib/react/jsx!app/Users/Profile/Profile.react'
   ], function(reactRender, Profile) {
     reactRender(Profile, {
-      friends: $json_friends,
       shoeCount: $shoe_count,
       totalMiles: $total_miles,
       totalRuns: $total_runs,
-      // workoutData: $json_workoutData,
+      workoutData: $json_workoutData,
       workoutDataByWeek: $json_workoutDataByWeek
     }, 'reactRoot');
   });

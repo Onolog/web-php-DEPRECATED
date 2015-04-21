@@ -184,79 +184,11 @@ class UsersController extends AppController {
    * This view is public to everyone.
    */
 	function profile($id=null) {
-    $user = $this->User->read(null, $id);
-    $year = date('Y');
-
-    // Date range should be YTD
-    $start_date = mktime(0, 0, 0, 1, 1, $year);
-    $end_date   = time();
-
-    $workouts = $this->User->Workout->find('all', array(
-      'conditions' => array(
-        'Workout.user_id' => $id,
-        'Workout.date >=' => $start_date,
-        'Workout.date <=' => $end_date,
-      ),
-      'order'  => 'Workout.date ASC'
-    ));
-
-    $json_friends = json_encode(
-      $this->getTopFriends($workouts)
-    );
-
-    // Format and sort the data
-    $workouts = $this->User->Workout->groupWorkouts($workouts);
-    
-    $total_miles = $workouts['grouped'][$year]['miles'];
-    $total_runs = $workouts['grouped'][$year]['run_count'];
-    $total_time = $workouts['grouped'][$year]['time'];
-
-    $json_workoutData = json_encode($workouts['grouped'][$year]);
-    $json_workoutDataByWeek = json_encode($workouts['week'][$year]);
-
-    // Shoe Data
-    $shoes = $this->User->Shoe->find(
-      'all', array(
-        'conditions' => array(
-          'Shoe.user_id' => $id,
-        ),
-      )
-    );
-
-    $shoes = $this->User->Shoe->getActiveShoesForDateRange(
-      $shoes,
-      $start_date,
-      $end_date
-    );
-
-    $shoe_count = count($shoes);
-    $top_brand = json_encode($this->User->Shoe->getTopBrandData($shoes));
-
-    $this->set('title_for_layout', $year . ' In Miles');
-    $this->set(compact(
-      'end_date',
-      'json_friends',
-      'json_workoutData',
-      'json_workoutDataByWeek',
-      'shoe_count',
-      'start_date',
-      'top_brand',
-      'total_miles',
-      'total_runs',
-      'total_time',
-      'user'
-    ));
-	}
-
-  /**
-   * Stats page with all the user's historical data
-   */
-  function stats($id=null) {
     // Validation
-    if (!$id) {
-      $this->Session->setFlash(__('Invalid user', true));
-      $this->redirect(array('action' => 'index'));
-    }
+		if (!$id) {
+			$this->Session->setFlash(__('Invalid user', true));
+			$this->redirect(array('action' => 'index'));
+		}
 
     $this->helpers[] = 'Chart';
 
@@ -265,7 +197,7 @@ class UsersController extends AppController {
     // Why does this query return different results depending on
     // if the user is logged in or out?
     $workouts = $this->User->Workout->find('all', array(
-      'conditions' => array(
+		  'conditions' => array(
         'Workout.user_id' => $id,
       ),
     ));
@@ -290,15 +222,15 @@ class UsersController extends AppController {
     );
 
     $this->set('title_for_layout', $user['User']['name']);
-    $this->set(compact(
-      'json_workoutData',
-      'json_workoutDataByWeek',
+		$this->set(compact(
+		  'json_workoutData',
+		  'json_workoutDataByWeek',
       'shoe_count',
       'total_miles',
       'total_runs',
       'user'
-    ));
-  }
+		));
+	}
 
   /**
    * Default view for users, like a profile
