@@ -1,5 +1,5 @@
 /**
- * YearInReviewController.react
+ * Report.react
  * @jsx React.DOM
  */
 define([
