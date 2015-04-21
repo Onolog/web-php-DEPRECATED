@@ -15,10 +15,9 @@ $this->set(
   '</h2>'
 );
 
-echo
-  '<div id="reactRoot">' .
-    '<div class="loader loader-lg"></div>' .
-  '</div>';
+echo $this->element('loader', array(
+  'id' => 'reactRoot'
+));
 
 $this->Html->scriptStart(array('inline' => false));
 echo "

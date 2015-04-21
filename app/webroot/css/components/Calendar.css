@@ -1,7 +1,7 @@
 /**
- * calendar.css
+ * Calendar.css
  *
- * Provides css for calendar view of user's workouts
+ * Provides general calendar styles
  */
 
 table.calendar {
@@ -40,7 +40,6 @@ table.calendar th {
 table.calendar td {
   vertical-align: top;
   width: 12.5%;
-  height: 115px;
   padding: 5px;
 }
 

@@ -21,9 +21,9 @@ define([
 
   return {
 
-    initCalendar: function(year, month) {
+    fetchWorkouts: function(year, month) {
       AppDispatcher.dispatch({
-        eventName: ActionTypes.CALENDAR_INIT
+        eventName: ActionTypes.WORKOUTS_FETCH
       });
 
       // Fetch all the workouts from the DB
@@ -34,16 +34,16 @@ define([
           month: month
         },
         type: 'GET',
-        success: this.onInitCalendarSuccess.bind(this),
-        error: this.onInitCalendarError.bind(this)
+        success: this.onFetchWorkoutsSuccess.bind(this),
+        error: this.onFetchWorkoutsError.bind(this)
       });
     },
 
-    onInitCalendarSuccess: function(/*string*/ response) {
+    onFetchWorkoutsSuccess: function(/*string*/ response) {
       var handler = new ResponseHandler(response);
       if (handler.getWasSuccessful()) {
         AppDispatcher.dispatch({
-          eventName: ActionTypes.CALENDAR_INIT_SUCCESS,
+          eventName: ActionTypes.WORKOUTS_FETCH_SUCCESS,
           workouts: handler.getPayload()
         });
       } else {
@@ -51,10 +51,10 @@ define([
       }
     },
 
-    onInitCalendarError: function(/*string|object*/ response) {
+    onFetchWorkoutsError: function(/*string|object*/ response) {
       var handler = new ResponseHandler(response);
       AppDispatcher.dispatch({
-        eventName: ActionTypes.CALENDAR_INIT_ERROR,
+        eventName: ActionTypes.WORKOUTS_FETCH_ERROR,
         alertMessage: response.getMessage()
       });
     }

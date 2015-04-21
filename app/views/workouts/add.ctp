@@ -24,9 +24,9 @@ $this->set(
 echo
   '<section class="panel panel-default">' .
     '<div class="panel-body">' .
-      '<div id="reactRoot">' .
-        '<div class="loader loader-lg"></div>' .
-      '</div>' .
+      $this->element('loader', array(
+        'id' => 'reactRoot'
+      )) .
       '<div class="btn-toolbar">' .
         $this->Button->set(array(
           'label' => __('Add Workout', 1),

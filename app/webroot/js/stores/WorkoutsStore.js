@@ -60,7 +60,7 @@ define([
   AppDispatcher.register(function(payload) {
     switch(payload.eventName) {
 
-      case ActionTypes.CALENDAR_INIT_SUCCESS:
+      case ActionTypes.WORKOUTS_FETCH_SUCCESS:
         _workouts = payload.workouts;
         WorkoutsStore.trigger(ActionTypes.CHANGE);
         break;

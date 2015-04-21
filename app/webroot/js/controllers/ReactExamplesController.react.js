@@ -7,12 +7,16 @@
 define([
 
   'lib/react/react',
+
+  'lib/react/jsx!app/Chrome/PageHeader.react',
+
   'lib/react/jsx!components/Alert/Alert.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Calendar/Calendar.react',
   'lib/react/jsx!components/Tokenizer/FriendTokenizer.react',
   'lib/react/jsx!components/Graph/BarGraph/BarGraph.react',
+  'lib/react/jsx!components/LeftRight/LeftRight.react',
   'lib/react/jsx!components/Modal/Modal.react',
   'lib/react/jsx!components/Panel/Panel.react',
 
@@ -28,6 +32,9 @@ define([
 
   React,
 
+  // Chrome
+  PageHeader,
+
   // Components
   Alert,
   Button,
@@ -35,6 +42,7 @@ define([
   Calendar,
   FriendTokenizer,
   Graph,
+  LeftRight,
   Modal,
   Panel,
 
@@ -119,12 +127,13 @@ define([
 
       return (
         <div>
+          <PageHeader title="React Component Examples" />
           <Panel title="Calendar">
-            <div className="clearfix" style={{'marginBottom': '10px'}}>
-              <h3 className="pull-left">
+            <LeftRight style={{'marginBottom': '10px'}}>
+              <h3>
                 {DateTimeUtils.formatDate(calendarDate, 'MMMM YYYY')}
               </h3>
-              <div className="btn-group auxContent pull-right">
+              <ButtonGroup>
                 <Button
             	    glyph="chevron-left"
             	    id="lastMonth"
@@ -149,8 +158,8 @@ define([
                   }}
                   onClick={this.onNextMonthClick}
                 />
-              </div>
-            </div>
+              </ButtonGroup>
+            </LeftRight>
             <Calendar
               month={this.state.month}
               year={this.state.year}

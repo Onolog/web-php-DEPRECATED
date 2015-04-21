@@ -87,9 +87,10 @@ $this->set('page_header', $page_header);
 
 echo
   '<section class="panel panel-default">' .
-    '<div class="panel-body" id="reactRoot">' .
-      '<div class="loader loader-lg"></div>' .
-    '</div>' .
+    $this->element('loader', array(
+      'class' => 'panel-body',
+      'id' => 'reactRoot',
+    )) .
   '</section>';
 
 // Set JS for the page

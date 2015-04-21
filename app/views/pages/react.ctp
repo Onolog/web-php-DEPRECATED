@@ -6,8 +6,8 @@ $this->Include->css(array(
   'token-input-facebook',
 ));
 
-$page_header = '<h2>' . __('React Component Examples', 1) . '</h2>';
-$this->set('page_header', $page_header);
+// $page_header = '<h2>' . __('React Component Examples', 1) . '</h2>';
+// $this->set('page_header', $page_header);
 
 echo '<div id="reactRoot"></div>';
 

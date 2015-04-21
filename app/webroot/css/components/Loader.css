@@ -1,0 +1,36 @@
+/**
+ * Loader.css
+ */
+
+.loader {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  display: block;
+  min-height: 200px;
+}
+
+.loader-bg {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Takes up the full height and width of its container */
+.loader-full {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+
+.loader-lg {
+  background-image: url('/img/loaders/spinner-large-bgLight-2x.gif');
+  background-size: 24px;
+}
+
+.loader-sm {
+  background-image: url('/img/indicator_blue_small.gif');
+  height: 16px;
+  width: 16px;
+  vertical-align: text-bottom;
+}

@@ -7,10 +7,6 @@ define({
   // Some change occured, necessitating an update
   CHANGE: 'change',
 
-  CALENDAR_INIT: 'calendar-init',
-  CALENDAR_INIT_ERROR: 'calendar-init-error',
-  CALENDAR_INIT_SUCCESS: 'calendar-init-success',
-
   // Workout Actions
   WORKOUT_ADD: 'workout-add',
   WORKOUT_ADD_CANCEL: 'workout-add',
@@ -33,5 +29,10 @@ define({
 
   WORKOUT_VIEW: 'workout-view',
   WORKOUT_VIEW_ERROR: 'workout-view-error',
-  WORKOUT_VIEW_SUCCESS: 'workout-view-success'
+  WORKOUT_VIEW_SUCCESS: 'workout-view-success',
+
+  // Fetch a set of workouts from the server
+  WORKOUTS_FETCH: 'workouts-fetch',
+  WORKOUTS_FETCH_ERROR: 'workouts-fetch-error',
+  WORKOUTS_FETCH_SUCCESS: 'workouts-fetch-success'
 });

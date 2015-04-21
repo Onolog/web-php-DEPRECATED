@@ -1,0 +1,13 @@
+/**
+ * UserCalendar.css
+ *
+ * Specific CSS for UserCalendar page
+ */
+
+.calendarContainer {
+  position: relative;
+}
+
+table.calendar td {
+  height: 115px;
+}

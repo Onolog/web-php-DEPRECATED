@@ -19,10 +19,9 @@ $this->set(
 echo
   '<div id="reactRoot">' .
     '<section class="panel panel-default">' .
-      '<div class="panel-body">' .
-        '<div class="loader loader-lg">' .
-        '</div>' .
-      '</div>' .
+      $this->element('loader', array(
+        'class' => 'panel-body'
+      )) .
     '</section>' .
   '</div>';
 
