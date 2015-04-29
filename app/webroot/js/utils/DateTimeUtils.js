@@ -5,6 +5,10 @@
  */
 define(['lib/Moment/Moment'], function(moment) {
 
+  // Ex: October 21st, 1978
+  // For more formats, see: http://momentjs.com/docs/#/displaying/format/
+  var DEFAULT_DATE_FORMAT = 'MMMM Do, YYYY';
+
   function pad(n, width, z) {
     z = z || '0';
     n = n + '';
@@ -19,12 +23,12 @@ define(['lib/Moment/Moment'], function(moment) {
      */
     formatDate: function(
       /*Date|number|array*/ date,
-      /*string*/ format
+      /*?string*/ format
     ) /*string*/ {
       if (date instanceof Date) {
         date = date.getTime();
       }
-      format = format || 'MMMM Do, YYYY'; // Default
+      format = format || DEFAULT_DATE_FORMAT;
       return moment(date).format(format);
     },
     /**

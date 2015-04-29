@@ -57,7 +57,7 @@ foreach ($shoes as $status => $shoeGroup) {
 		$class = empty($classes) ? '' : ' class="' . implode(' ', $classes) . '"';
 
     // Print the correct label for number of runs
-		$runs_label = $shoe['workouts'] > 1 ? __('runs', 1) : __('run', 1);
+		$runs_label = $shoe['activity_count'] === 1 ? __('run', 1) : __('runs', 1);
 
     $r .=
     	'<tr' . $class . '>' .
@@ -74,7 +74,7 @@ foreach ($shoes as $status => $shoeGroup) {
         '</td>' .
     		'<td>' . $shoe['brand'] . '</td>' .
     		'<td>' . $this->Html->link($shoe['model'], array('controller' => 'shoes', 'action' => 'view', $shoe['id'])) . '</td>' .
-        '<td>' . $shoe['workouts'] . ' ' . $runs_label .'</td>' .
+        '<td>' . $shoe['activity_count'] . ' ' . $runs_label .'</td>' .
         '<td class="mileage">' .
           render_distance($shoe['mileage'], 2) .
         '</td>' .

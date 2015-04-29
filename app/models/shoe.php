@@ -93,7 +93,7 @@ class Shoe extends AppModel {
         // Calculate mileage and workouts for each shoe
         $numWorkouts = count($result['Workout']);
         $results[$key]['Shoe']['mileage'] = $this->getShoeMileage($result);
-        $results[$key]['Shoe']['workouts'] = $numWorkouts;
+        $results[$key]['Shoe']['activity_count'] = $numWorkouts;
 
         // Get the date of the first workout for each shoe.
         // Note: Workouts are sorted from oldest to newest, so the first workout

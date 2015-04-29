@@ -1,5 +1,8 @@
 <?php
-$this->Include->css('app/Shoe');
+$this->Include->css(array(
+  'app/Shoe',
+  'components/Topline'
+));
 
 $page_header = '<h2>' . $shoe['Shoe']['name'] . '</h2>';
 
@@ -57,58 +60,27 @@ if ($is_owner) {
 }
 $this->set('page_header', $page_header);
 
+echo $this->element('loader', array(
+  'id' => 'reactRoot'
+));
 
-$r =
-  '<section class="panel panel-default">' .
-    '<div class="panel-body">' .
-      $this->element('topline',
-        array(
-          'stats' => array(
-            'Miles'  => $shoe['Shoe']['mileage'],
-            'Runs' => $shoe['Shoe']['workouts'],
-          )
-        )
-      ) .
-    '</div>' .
-  '</section>' .
-
-  // Display Workouts
-  '<section class="related panel panel-default">' .
-    '<div class="panel-body">';
-
-  if (!empty($shoe['Workout'])) {
-
-    $r .= '<table cellpadding="0" cellspacing="0" class="shoeList item_list">';
-
-		foreach ($shoe['Workout'] as $workout) {
-		  $time_arr = sec_to_time($workout['time']);
-		  $r .=
-    		'<tr>' .
-    			'<td>' . date('n/j/y', $workout['date']) . '</td>' .
-    			'<td class="workoutDescription">' .
-            '<div class="workoutDescriptionTruncator">' .
-              $this->Html->link($workout['notes'], array(
-                'controller' => 'workouts',
-                'action' => 'view',
-                $workout['id']
-              )) .
-            '</div>' .
-          '</td>' .
-    			'<td class="mileage">' . render_distance($workout['distance'], 2) . '</td>' .
-    			'<td class="time">' . format_time($time_arr) . '</td>' .
-    		'</tr>';
-    }
-    $r .= '</table>';
-  }
-  $r .=
-      '</div>' .
-    '</section>';
-
-echo $r;
+$activity_count = $shoe['Shoe']['activity_count'];
+$json_activities = json_encode($shoe['Workout']);
+$mileage = $shoe['Shoe']['mileage'];
 
 $this->Html->scriptStart(array('inline' => false));
 echo "
-  require(['lib/bootstrap.min'], function() {
+  require([
+    'utils/reactRender',
+    'lib/react/jsx!app/Shoes/ShoeView.react',
+    'lib/bootstrap.min'
+  ], function(reactRender, ShoeView) {
+    reactRender(ShoeView, {
+      activityCount: $activity_count,
+      activities: $json_activities,
+      mileage: $mileage
+    }, 'reactRoot');
+
     $('.btn').tooltip({ container: 'body' });
   });
 ";
