@@ -21,7 +21,8 @@ define([
   'stores/WorkoutsStore',
 
   'utils/cx',
-  'utils/DateTimeUtils'
+  'utils/DateTimeUtils',
+  'utils/pad'
 
 ], function(
 
@@ -39,7 +40,8 @@ define([
   WorkoutsStore,
 
   cx,
-  DateTimeUtils
+  DateTimeUtils,
+  pad
 
 ) {
 
@@ -170,7 +172,7 @@ define([
         // Title
         '',
         // URL
-        '/' + year + '/' + '0' + (month + 1) + '/'
+        '/' + year + '/' + pad(month + 1, 2) + '/'
       );
 
       CalendarActions.fetchWorkouts(
@@ -195,7 +197,7 @@ define([
 
     _onThisMonthClick: function() {
       var today = new Date();
-      this._updateCalendar(today.getUTCMonth(), today.getUTCFullYear());
+      this._updateCalendar(today.getMonth(), today.getFullYear());
     },
 
     _onNextMonthClick: function() {

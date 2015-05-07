@@ -3,17 +3,21 @@
  *
  * Date and time utils, mostly for formatting
  */
-define(['lib/Moment/Moment'], function(moment) {
+define([
+
+  'lib/Moment/Moment',
+  'utils/pad'
+
+], function(
+
+  moment,
+  pad
+
+) {
 
   // Ex: October 21st, 1978
   // For more formats, see: http://momentjs.com/docs/#/displaying/format/
   var DEFAULT_DATE_FORMAT = 'MMMM Do, YYYY';
-
-  function pad(n, width, z) {
-    z = z || '0';
-    n = n + '';
-    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-  }
 
   return {
     /**
