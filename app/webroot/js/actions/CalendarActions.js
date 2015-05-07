@@ -17,7 +17,7 @@ define([
 
 ) {
 
-  var CALENDAR_WORKOUTS_FETCH = '/ajax/users/calendar/';
+  var CALENDAR_WORKOUTS_FETCH = '/ajax/workouts/calendar/';
 
   return {
 

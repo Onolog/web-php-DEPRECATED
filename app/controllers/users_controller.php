@@ -132,27 +132,6 @@ class UsersController extends AppController {
     ));
 	}
 
-  public function ajax_calendar() {
-    $user = $this->requireLoggedInUser();
-
-    $this->setIsAjax();
-    $response = new Response();
-
-    $year = idx($this->params['url'], 'year', 0);
-    $month = idx($this->params['url'], 'month', 0);
-
-    if (!$year || !$month) {
-      return $response
-        ->setMessage('Please enter a valid date.')
-        ->get();
-    }
-
-    return $response
-      ->setSuccess(true)
-      ->setPayload($this->getUserWorkoutsForMonth($user, $year, $month))
-      ->get();
-  }
-
   /**
    * Test view of index using Runs + RunDetails
    */
@@ -507,24 +486,6 @@ class UsersController extends AppController {
 
     $stats = $this->User->Workout->getWorkoutStats($workouts);
     $this->set('stats', $stats);
-  }
-
-  /**
-   * Retrieves all workouts for a given month, including the last week of the
-   * previous month and the first week of the next month.
-   */
-  public function getUserWorkoutsForMonth($user, $year, $month) {
-    $workouts = $this->User->Workout->find('all', array(
-		  'conditions' => array(
-        'Workout.user_id' => $user,
-        // Only get workouts for the selected month, + or - a week
-        'Workout.date >=' => mktime(0, 0, 0, $month, -7, $year),
-        'Workout.date <=' => mktime(0, 0, 0, $month+1, 7, $year),
-      ),
-      'order'  => 'Workout.date ASC'
-    ));
-
-    return $this->User->Workout->flattenWorkouts($workouts);
   }
 
   /**

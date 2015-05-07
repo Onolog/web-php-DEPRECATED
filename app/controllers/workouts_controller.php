@@ -5,8 +5,43 @@ class WorkoutsController extends AppController {
 
 	function beforeFilter() {
     parent::beforeFilter();
-
     $this->Auth->allowedActions = array('*');
+  }
+
+  /**
+   * Retrieves all workouts for a given month, including the last week of
+   * the previous month and the first week of the next month.
+   */
+  public function ajax_calendar() {
+    $user = $this->requireLoggedInUser();
+
+    $this->setIsAjax();
+    $response = new Response();
+
+    $url = $this->params['url'];
+    $year = idx($url, 'year', 0);
+    $month = idx($url, 'month', 0);
+
+    if (!$year || !$month) {
+      return $response
+        ->setMessage('Please enter a valid date.')
+        ->get();
+    }
+
+    $workouts = $this->Workout->find('all', array(
+      'conditions' => array(
+        'Workout.user_id' => $user,
+        // Only get workouts for the selected month, + or - a week
+        'Workout.date >=' => mktime(0, 0, 0, $month, -7, $year),
+        'Workout.date <=' => mktime(0, 0, 0, $month+1, 7, $year),
+      ),
+      'order'  => 'Workout.date ASC'
+    ));
+
+    return $response
+      ->setSuccess(true)
+      ->setPayload($this->Workout->flattenWorkouts($workouts))
+      ->get();
   }
 
   /**

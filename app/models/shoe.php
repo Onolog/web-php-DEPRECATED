@@ -90,9 +90,8 @@ class Shoe extends AppModel {
         $shoes[$key]['name'] = $shoes[$key]['brand'].' '.$shoes[$key]['model'];
       }
 
-      $workouts = $result['Workout'];
-
-      if (isset($workouts)) {
+      if (isset($result['Workout'])) {
+        $workouts = $result['Workout'];
         $numActivities = count($workouts);
 
         // Add total mileage and workouts for each shoe
