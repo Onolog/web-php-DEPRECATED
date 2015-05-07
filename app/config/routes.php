@@ -57,12 +57,22 @@ Router::connect(
   )
 );
 
-Router::connect('/login', array('controller' => 'users', 'action' => 'login'));
-Router::connect('/shoes', array('controller' => 'users', 'action' => 'shoes'));
-Router::connect('/', array('controller' => 'users', 'action' => 'index'));
-Router::connect('/daniels', array('controller' => 'vdots', 'action' => 'index'));
+Router::connect('/login', array(
+  'controller' => 'users',
+  'action' => 'login'
+));
 
-// Mobile
-// Probably remove this since we're using responsive CSS to control mobile layout
-Router::connect('/m', array('controller' => 'users', 'action' => 'index', 'mobile' => true));
-Router::connect('/m/:controller/:action/*', array('controller' => 'users', 'action' => 'index', 'mobile' => true));
+Router::connect('/shoes', array(
+  'controller' => 'users',
+  'action' => 'shoes'
+));
+
+Router::connect('/', array(
+  'controller' => 'users',
+  'action' => 'index'
+));
+
+Router::connect('/daniels', array(
+  'controller' => 'vdots',
+  'action' => 'index'
+));

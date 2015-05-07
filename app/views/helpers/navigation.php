@@ -94,8 +94,7 @@ class NavigationHelper extends AppHelper {
         'content' => __('Shoes', 1),
         'href' => array(
           'controller' => 'users',
-          'action' => 'shoes',
-          $this->userID
+          'action' => 'shoes'
         )
       ),
     );

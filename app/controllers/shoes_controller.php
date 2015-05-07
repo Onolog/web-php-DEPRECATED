@@ -8,6 +8,27 @@ class ShoesController extends AppController {
     $this->Auth->allowedActions = array('*');
   }
 
+  /**
+   * Retrieve all the user's shoes
+   */
+  public function ajax_all() {
+    $user = $this->requireLoggedInUser();
+    $this->setIsAjax();
+    $response = new Response();
+
+    // Get all the user's shoes
+    $shoes = $this->Shoe->find(
+      'all', array(
+        'conditions' => array('Shoe.user_id' => $user),
+      )
+    );
+
+    return $response
+      ->setSuccess(true)
+      ->setPayload($this->Shoe->groupByActivity($shoes))
+      ->get();
+  }
+
 	function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid shoe', true));
@@ -16,10 +37,13 @@ class ShoesController extends AppController {
 		$shoe = $this->Shoe->read(null, $id);
 
     // Does the shoe belong to the person viewing it?
-		$is_owner = $shoe['User']['id'] === $this->Auth->User('id');
+		$can_edit = $shoe['user_id'] === $this->Auth->User('id');
+    $shoe = json_encode($shoe);
 
-		$this->set('shoe', $shoe);
-		$this->set('is_owner', $is_owner);
+		$this->set(compact(
+      'can_edit',
+      'shoe'
+    ));
 	}
 
 	function add() {
@@ -62,11 +86,11 @@ class ShoesController extends AppController {
 
     // Get all the data for the shoe
 		if (empty($this->data)) {
-			$this->data = $this->Shoe->read(null, $id);
+			$this->data['Shoe'] = $this->Shoe->read(null, $id);
 		}
 
     // Validate that the person trying to edit actually owns the shoe
-    if ($this->data['Shoe']['user_id'] != $user) {
+    if ($this->data['Shoe']['user_id'] !== $user) {
       $this->Session->setFlash(__('You are not allowed to edit this shoe', true));
       $this->redirect(array(
         'controller' => 'users',
@@ -75,6 +99,7 @@ class ShoesController extends AppController {
     }
 
 		$this->set('brands', $this->Shoe->Brand->find('list'));
+    $this->set('shoe', $this->data['Shoe']);
 	}
 
 	function delete($sid = null) {
@@ -91,7 +116,7 @@ class ShoesController extends AppController {
       ));
 
     // Validate that the person trying to delete actually owns the shoe
-    if ($data['Shoe']['user_id'] != $user) {
+    if ($data['user_id'] !== $user) {
       $this->Session->setFlash(__('You are not allowed to delete this shoe', true));
       $this->redirect(array(
         'controller' => 'users',

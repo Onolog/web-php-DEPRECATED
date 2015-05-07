@@ -9,7 +9,9 @@ app/config/core.php
 
 vendors/*
 
-# Ignore minified JS libs
+# Ignore certain JS libs
 # Local versions are unminified
+app/webroot/js/lib/react/react.js
 app/webroot/js/lib/react/react.min.js
+app/webroot/js/lib/moment/Moment.js
 app/webroot/js/lib/moment/Moment.min.js

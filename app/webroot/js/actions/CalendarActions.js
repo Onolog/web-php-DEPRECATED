@@ -47,7 +47,7 @@ define([
           workouts: handler.getPayload()
         });
       } else {
-        this.onInitCalendarError(response);
+        this.onFetchWorkoutsError(response);
       }
     },
 

@@ -25,6 +25,7 @@
 .form-control,
 .input-group-addon,
 .progress,
+.tooltip-inner,
 .well {
   border-radius: 3px;
 }
@@ -52,9 +53,8 @@ a.btn-default {
   color: #666;
 }
 
-a.close {
-  line-height: 18px;
-  opacity: 0.5;
+.close {
+  line-height: 16px;
 }
 
 .btn-toolbar {
@@ -115,6 +115,12 @@ section + section,
 /* Popover */
 .popover {
   padding: 0;
+}
+
+
+/* Tooltip */
+.tooltip-inner {
+  padding: 5px 10px;
 }
 
 

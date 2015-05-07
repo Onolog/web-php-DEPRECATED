@@ -142,7 +142,7 @@ class UsersController extends AppController {
     $month = idx($this->params['url'], 'month', 0);
 
     if (!$year || !$month) {
-      $response
+      return $response
         ->setMessage('Please enter a valid date.')
         ->get();
     }
@@ -486,35 +486,6 @@ class UsersController extends AppController {
   public function shoes() {
     $user = $this->requireLoggedInUser();
     $this->set('title_for_layout', 'Shoes');
-
-    // Get all the user's shoes
-    $shoes = $this->User->Shoe->find(
-      'all', array(
-        'conditions' => array('Shoe.user_id' => $user),
-      )
-    );
-
-    $shoes = $this->User->Shoe->groupByActivity($shoes);
-    $this->set('shoes', $shoes);
-  }
-
-  /**
-   * Ajax version of the above
-   */
-  public function ajax_shoes() {
-    $this->layout = 'ajax';
-    $user = $this->requireLoggedInUser();
-
-    // Get all the user's shoes
-    $shoes = $this->User->Shoe->find(
-      'all', array(
-        'conditions' => array(
-          'Shoe.user_id' => $user,
-          'Shoe.inactive' => 0
-        ),
-      )
-    );
-    $this->set('shoes', $shoes);
   }
 
   /**

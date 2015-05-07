@@ -7,6 +7,16 @@ define({
   // Some change occured, necessitating an update
   CHANGE: 'change',
 
+  // All Shoes
+  ALL_SHOES_FETCH: 'all-shoes-fetch',
+  ALL_SHOES_FETCH_ERROR: 'all-shoes-fetch-error',
+  ALL_SHOES_FETCH_SUCCESS: 'all-shoes-fetch-success',
+
+  // Individual Shoe
+  SHOE_DELETE: 'shoe-delete',
+  SHOE_EDIT: 'shoe-edit',
+  SHOE_VIEW: 'shoe-view',
+
   // Workout Actions
   WORKOUT_ADD: 'workout-add',
   WORKOUT_ADD_CANCEL: 'workout-add',

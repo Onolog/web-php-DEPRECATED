@@ -17,13 +17,11 @@ define([
   'lib/react/jsx!components/Panel/Panel.react',
 
   'actions/CalendarActions',
-
+  'constants/ActionTypes',
   'stores/WorkoutsStore',
 
   'utils/cx',
-  'utils/DateTimeUtils',
-
-  'constants/ActionTypes'
+  'utils/DateTimeUtils'
 
 ], function(
 
@@ -37,13 +35,11 @@ define([
   Panel,
 
   CalendarActions,
-
+  ActionTypes,
   WorkoutsStore,
 
   cx,
-  DateTimeUtils,
-
-  ActionTypes
+  DateTimeUtils
 
 ) {
 
