@@ -2,7 +2,7 @@
  * ShoeView.react
  * @jsx React.DOM
  *
- * View for a single shoe
+ * Data (mileage, total activities, and activity summary) for a single shoe.
  */
 
 define([
@@ -80,9 +80,9 @@ define([
       var activities = this.props.activities;
       if (!activities.length) {
         return (
-          <div>
-            Empty State
-          </div>
+          <Panel className="emptyState">
+            No runs to display.
+          </Panel>
         );
       }
 

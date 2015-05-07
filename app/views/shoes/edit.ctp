@@ -7,7 +7,7 @@ $page_header =
 	    '<span class="glyphicon glyphicon-trash"></span>',
 	    array(
         'action' => 'delete',
-        $shoe['Shoe']['id']
+        $shoe['id']
       ),
 	    array(
 	     'class' => 'btn btn-default',

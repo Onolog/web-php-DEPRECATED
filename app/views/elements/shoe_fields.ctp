@@ -10,6 +10,9 @@ $defaults = array(
 
 $options = isset($options) ? array_merge($options, $defaults) : $defaults;
 
+$shoe_id = $this->Form->value('Shoe.id');
+$cancel_href = $shoe_id ? '/shoes/view/' . $shoe_id : '/shoes';
+
 $r =
   '<section class="shoeForm panel panel-default">' .
     '<div class="panel-body">' .
@@ -69,7 +72,7 @@ $r =
         ))->render() .
         $this->Button->set(array(
           'label' => __('Cancel', 1),
-          'href' => '/shoes',
+          'href' => $cancel_href,
           'size' => 'large'
         ))->render() .
       '</div>' .

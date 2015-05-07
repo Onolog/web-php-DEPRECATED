@@ -75,43 +75,47 @@ class Shoe extends AppModel {
 	);
 
   function afterFind($results) {
+    $shoes = array();
+
     foreach ($results as $key => $result) {
+      $shoes[$key] = $result['Shoe'];
 
       // Get the Brand name
       if (isset($result['Brand'])) {
-        $results[$key]['Shoe']['brand'] = $result['Brand']['name'];
+        $shoes[$key]['brand'] = $result['Brand']['name'];
       }
 
       // Concatenate Brand and name for convenience
-      if (isset($results[$key]['Shoe']['brand']) &&
-          isset($result['Shoe']['model'])) {
-        $results[$key]['Shoe']['name'] =
-          $results[$key]['Shoe']['brand'].' '.$result['Shoe']['model'];
+      if (isset($shoes[$key]['brand']) && isset($shoes[$key]['model'])) {
+        $shoes[$key]['name'] = $shoes[$key]['brand'].' '.$shoes[$key]['model'];
       }
 
-      if (isset($result['Workout'])) {
-        // Calculate mileage and workouts for each shoe
-        $numWorkouts = count($result['Workout']);
-        $results[$key]['Shoe']['mileage'] = $this->getShoeMileage($result);
-        $results[$key]['Shoe']['activity_count'] = $numWorkouts;
+      $workouts = $result['Workout'];
+
+      if (isset($workouts)) {
+        $numActivities = count($workouts);
+
+        // Add total mileage and workouts for each shoe
+        $shoes[$key]['activity_count'] = $numActivities;
+        $shoes[$key]['activities'] = $workouts;
+        $shoes[$key]['mileage'] = $this->getShoeMileage($workouts);
 
         // Get the date of the first workout for each shoe.
         // Note: Workouts are sorted from oldest to newest, so the first workout
         // will be the last item in the array
-        if (isset($result['Workout'][$numWorkouts - 1]['date'])) {
-          $results[$key]['Shoe']['first'] =
-            $result['Workout'][$numWorkouts - 1]['date'];
+        if (isset($workouts[$numActivities - 1]['date'])) {
+          $shoes[$key]['first'] = $workouts[$numActivities - 1]['date'];
         }
         // Get the date of the last workout for each shoe
-        if (isset($result['Workout'][0]['date'])) {
-          $results[$key]['Shoe']['last'] = $result['Workout'][0]['date'];
+        if (isset($workouts[0]['date'])) {
+          $shoes[$key]['last'] = $workouts[0]['date'];
         }
       }
     }
 
     // Sort the list of shoes by date of last workout.
     // Show most recently used shoes first
-    return Set::sort($results, '{n}.Shoe.last', 'desc');
+    return Set::sort($shoes, '{n}.last', 'desc');
   }
 
   /**
@@ -130,10 +134,10 @@ class Shoe extends AppModel {
       'Inactive' => array()
     );
     foreach ($shoes as $shoe) {
-      $activity = $shoe['Shoe']['inactive'] ? 'Inactive' : 'Active';
-      $id = $shoe['Shoe']['id'];
+      $activity = $shoe['inactive'] ? 'Inactive' : 'Active';
+      $id = $shoe['id'];
 
-      $result[$activity][$id] = $shoe['Shoe']['name'];
+      $result[$activity][$id] = $shoe['name'];
     }
     return $result;
   }
@@ -160,10 +164,10 @@ class Shoe extends AppModel {
     );
 
     foreach ($shoes as $shoe) {
-      $activity = $shoe['Shoe']['inactive'] ? 1 : 0;
+      $activity = $shoe['inactive'] ? 1 : 0;
       $result[$activity]['options'][] = array(
-        'value' => $shoe['Shoe']['id'],
-        'label' => $shoe['Shoe']['name']
+        'value' => $shoe['id'],
+        'label' => $shoe['name']
       );
     }
     return $result;
@@ -183,8 +187,8 @@ class Shoe extends AppModel {
     );
 
     foreach ($shoes as $shoe) {
-      $activity = $shoe['Shoe']['inactive'] ? 'inactive' : 'active';
-      $result[$activity][] = $shoe['Shoe'];
+      $activity = $shoe['inactive'] ? 'inactive' : 'active';
+      $result[$activity][] = $shoe;
     }
     return $result;
   }
@@ -192,9 +196,9 @@ class Shoe extends AppModel {
   /**
    * Calculate the mileage for a single shoe
    */
-  public function getShoeMileage(/*array*/ $results) /*float*/ {
+  public function getShoeMileage(/*array*/ $workouts) /*float*/ {
     $mileage = array();
-    foreach ($results['Workout'] as $workout) {
+    foreach ($workouts as $workout) {
       $mileage[] = $workout['distance'];
     }
     return array_sum($mileage);
@@ -210,8 +214,8 @@ class Shoe extends AppModel {
     );
     return array_filter($shoes, function($shoe) use($range) {
       return
-        $shoe['Shoe']['last'] >= $range['start'] &&
-        $shoe['Shoe']['first'] <= $range['end'];
+        $shoe['last'] >= $range['start'] &&
+        $shoe['first'] <= $range['end'];
     });
   }
 
