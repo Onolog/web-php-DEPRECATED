@@ -57,17 +57,17 @@ define([
   AppDispatcher.register(function(payload) {
     switch(payload.eventName) {
 
-      case ActionTypes.ALL_SHOES_FETCH_SUCCESS:
-        _shoes = payload.shoes;
+      case ActionTypes.ALL_SHOES_FETCH:
+        _shoes = payload.data;
         AllShoesStore.trigger(ActionTypes.CHANGE);
         break;
 
-      case ActionTypes.SHOE_ADD_SUCCESS:
-        _shoes.push(payload.shoe);
+      case ActionTypes.SHOE_ADD:
+        _shoes.push(payload.data);
         AllShoesStore.trigger(ActionTypes.CHANGE);
         break;
 
-      case ActionTypes.SHOE_DELETE_SUCCESS:
+      case ActionTypes.SHOE_DELETE:
         _shoes = _shoes.filter(function(shoe) {
           return shoe.id !== payload.shoeID;
         });
@@ -75,10 +75,10 @@ define([
         break;
 
       case ActionTypes.SHOE_EDIT_SUCCESS:
-      case ActionTypes.SHOE_VIEW_SUCCESS:
-        var shoeID = payload.shoe.id;
+      case ActionTypes.SHOE_VIEW:
+        var shoeID = payload.data.id;
         _shoes = _shoes.map(function(shoe) {
-          return shoe.id === shoeID ? payload.shoe : shoe;
+          return shoe.id === shoeID ? payload.data : shoe;
         });
         _cache.push(shoeID);
         AllShoesStore.trigger(ActionTypes.CHANGE);

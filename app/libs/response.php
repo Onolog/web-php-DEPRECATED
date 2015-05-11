@@ -17,7 +17,7 @@ class Response {
    * By default, encode the response as JSON, since we're generally sending
    * this to the client to be used in javascript.
    */
-  public function get($asJson=true) {
+  public function send($asJson=true) {
     if ($asJson) {
       return json_encode($this->response);
     }

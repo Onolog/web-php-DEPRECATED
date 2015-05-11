@@ -30,8 +30,7 @@ define([
 
   'utils/DateTimeUtils',
   'utils/formatDistance',
-  'utils/cakePHP',
-  'lib/jquery/jquery.min',
+  'utils/cakePHP'
 
 ], function(
 
@@ -63,10 +62,6 @@ define([
   cakePHP
 
 ) {
-
-  function clone(object) {
-    return $.extend({}, object);
-  }
 
   var ALERT = Components.ALERT;
   var ENDPOINT = Workouts.ENDPOINT;
@@ -116,6 +111,7 @@ define([
      * When in a temporary state (adding or editing), use the workout store
      */
     _workoutChanged: function() {
+      debugger;
       var workout = WorkoutStore.getWorkout();
       if (workout && workout.id === this.props.workout.id) {
         this.setState({
@@ -133,7 +129,7 @@ define([
      * When fetching or writing data, use WorkoutsStore, which holds all the
      * workouts for the view.
      */
-    _workoutsChanged: function(storeName) {
+    _workoutsChanged: function() {
       // After the workout is deleted, this callback will fire.
       if (this.isMounted()) {
         var workout = WorkoutsStore.getWorkoutByID(this.props.workout.id);

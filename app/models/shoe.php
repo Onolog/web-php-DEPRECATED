@@ -90,6 +90,12 @@ class Shoe extends AppModel {
         $shoes[$key]['name'] = $shoes[$key]['brand'].' '.$shoes[$key]['model'];
       }
 
+      // TODO: For some reason, certain values are coming back as a strings from
+      // the DB. Find out why they're coming back as the wrong type. In the
+      // meantime, cast to the correct type.
+      $shoes[$key]['inactive'] = (int) $shoes[$key]['inactive'];
+      $shoes[$key]['id'] = (int) $shoes[$key]['id'];
+
       if (isset($result['Workout'])) {
         $workouts = $result['Workout'];
         $numActivities = count($workouts);

@@ -25,7 +25,7 @@ class WorkoutsController extends AppController {
     if (!$year || !$month) {
       return $response
         ->setMessage('Please enter a valid date.')
-        ->get();
+        ->send();
     }
 
     $workouts = $this->Workout->find('all', array(
@@ -41,7 +41,7 @@ class WorkoutsController extends AppController {
     return $response
       ->setSuccess(true)
       ->setPayload($this->Workout->flattenWorkouts($workouts))
-      ->get();
+      ->send();
   }
 
   /**
@@ -101,7 +101,7 @@ class WorkoutsController extends AppController {
           );
       }
 		}
-    return $response->get();
+    return $response->send();
 	}
 
   /**
@@ -194,7 +194,7 @@ class WorkoutsController extends AppController {
 				$response->setMessage('Your workout could not be added. Please try again.');
 			}
 		}
-    return $response->get();
+    return $response->send();
 	}
 
   public function sms_add($date=null) {
@@ -269,7 +269,7 @@ class WorkoutsController extends AppController {
 		if (!$wid && empty($this->data)) {
       return $response
         ->setMessage('Invalid workout.')
-        ->get();
+        ->send();
 		}
 
     // On submit, update the workout
@@ -278,7 +278,7 @@ class WorkoutsController extends AppController {
       if ($this->data['Workout']['user_id'] !== $user) {
         return $response
           ->setMessage('You are not allowed to edit this workout.')
-          ->get();
+          ->send();
       }
 
       $this->formatWorkoutDataForWrite();
@@ -299,7 +299,7 @@ class WorkoutsController extends AppController {
 			}
 		}
 
-		return $response->get();
+		return $response->send();
 	}
 
   /**
@@ -366,7 +366,7 @@ class WorkoutsController extends AppController {
 		  );
 		}
 
-    return $response->get();
+    return $response->send();
 	}
 
   /**

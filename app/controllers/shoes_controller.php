@@ -23,13 +23,22 @@ class ShoesController extends AppController {
       )
     );
 
+    // Unset all the activities
+    // TODO: We don't *really* need to do this, but character encoding is
+    // currently not UTF-8, so when we try to json_encode the shoe data, nothing
+    // gets returned :/
+    foreach ($shoes as $key => $shoe) {
+      unset($shoe['activities']);
+      $shoes[$key] = $shoe;
+    }
+
     return $response
       ->setSuccess(true)
-      ->setPayload($this->Shoe->groupByActivity($shoes))
-      ->get();
+      ->setPayload($shoes)
+      ->send();
   }
 
-	function view($id = null) {
+	public function view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid shoe', true));
 			$this->redirect(array('action' => 'index'));
@@ -46,7 +55,28 @@ class ShoesController extends AppController {
     ));
 	}
 
-	function add() {
+  /**
+   * Retrieve data for a single shoe
+   */
+  public function ajax_view($id = null) {
+    $this->setIsAjax();
+    $response = new Response();
+
+    if (!$id) {
+      return $response
+        ->setMessage('That shoe doesn\'t exist.')
+        ->send();
+    }
+
+    $shoe = $this->Shoe->read(null, $id);
+
+    return $response
+      ->setSuccess(true)
+      ->setPayload($shoe)
+      ->send();
+  }
+
+	public function add() {
     $user = $this->requireLoggedInUser();
 
 		if (!empty($this->data)) {
@@ -67,7 +97,7 @@ class ShoesController extends AppController {
 		$this->set('brands', $brands);
 	}
 
-	function edit($id = null) {
+	public function edit($id = null) {
     $user = $this->requireLoggedInUser();
 
 		if (!$id && empty($this->data)) {
@@ -102,7 +132,7 @@ class ShoesController extends AppController {
     $this->set('shoe', $this->data['Shoe']);
 	}
 
-	function delete($sid = null) {
+	public function delete($sid = null) {
     $user = $this->requireLoggedInUser();
 
 		if (!$sid) {

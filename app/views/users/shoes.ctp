@@ -2,6 +2,10 @@
 /**
  * Displays a list of all the user's shoes
  */
+$this->Include->css(array(
+  'app/Shoe',
+  'components/Topline'
+));
 
 echo $this->element('loader', array(
   'id' => 'reactRoot'

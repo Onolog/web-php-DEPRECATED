@@ -42,7 +42,7 @@ define([
     },
 
     componentWillMount: function() {
-      ShoeActions.fetchShoes();
+      ShoeActions.fetch();
     },
 
     componentDidMount: function() {

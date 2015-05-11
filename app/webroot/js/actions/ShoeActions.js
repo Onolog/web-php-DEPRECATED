@@ -6,6 +6,7 @@ define([
 
   'dispatcher/AppDispatcher',
   'constants/ActionTypes',
+  'constants/Shoes',
   'utils/ResponseHandler',
   'lib/jquery/jquery.min'
 
@@ -13,46 +14,73 @@ define([
 
   AppDispatcher,
   ActionTypes,
+  SHOES,
   ResponseHandler
 
 ) {
 
-  var ALL_SHOES_FETCH = '/ajax/shoes/all';
+  function _onError(response, eventName) {
+    var handler = new ResponseHandler(response);
+    AppDispatcher.dispatch({
+      eventName: eventName,
+      alertMessage: handler.getMessage()
+    });
+  }
 
   return {
-
-    fetchShoes: function() {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.ALL_SHOES_FETCH
-      });
-
-      // Fetch all the workouts from the DB
+    fetch: function() {
+      // Fetch the collection of items from the DB
       $.ajax({
-        url: ALL_SHOES_FETCH,
+        url: SHOES.ENDPOINT.ALL_SHOES_FETCH,
         type: 'GET',
-        success: this.onFetchShoesSuccess.bind(this),
-        error: this.onFetchShoesError.bind(this)
+        success: this.onFetchSuccess.bind(this),
+        error: this.onFetchError.bind(this)
       });
     },
 
-    onFetchShoesSuccess: function(/*string*/ response) {
+    onFetchSuccess: function(/*string*/ response) {
       var handler = new ResponseHandler(response);
       if (handler.getWasSuccessful()) {
         AppDispatcher.dispatch({
-          eventName: ActionTypes.ALL_SHOES_FETCH_SUCCESS,
-          shoes: handler.getPayload()
+          eventName: ActionTypes.ALL_SHOES_FETCH,
+          data: handler.getPayload()
         });
       } else {
-        this.onFetchShoesError(response);
+        this.onFetchError(response);
       }
     },
 
-    onFetchShoesError: function(/*string|object*/ response) {
-      var handler = new ResponseHandler(response);
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.ALL_SHOES_FETCH_ERROR,
-        alertMessage: response.getMessage()
+    onFetchError: function(/*string|object*/ response) {
+      _onError(response, ActionTypes.ALL_SHOES_FETCH_ERROR);
+    },
+
+    /**
+     * View an individual shoe
+     */
+    view: function(id) {
+      // Fetch the item from the DB
+      $.ajax({
+        url: SHOES.ENDPOINT.SHOE_VIEW + id,
+        type: 'GET',
+        success: this.onViewSuccess,
+        error: this.onViewError
       });
+    },
+
+    onViewSuccess: function(/*string*/ response) {
+      var handler = new ResponseHandler(response);
+      if (handler.getWasSuccessful()) {
+        AppDispatcher.dispatch({
+          eventName: ActionTypes.SHOE_VIEW,
+          data: handler.getPayload()
+        });
+      } else {
+        this.onViewError(response);
+      }
+    },
+
+    onViewError: function(/*string|object*/ response) {
+      _onError(response, ActionTypes.SHOE_VIEW_ERROR);
     }
 
   };

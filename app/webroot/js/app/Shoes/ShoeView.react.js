@@ -78,7 +78,7 @@ define([
 
     _renderActivities: function() {
       var activities = this.props.activities;
-      if (!activities.length) {
+      if (!activities || !activities.length) {
         return (
           <Panel className="emptyState">
             No runs to display.

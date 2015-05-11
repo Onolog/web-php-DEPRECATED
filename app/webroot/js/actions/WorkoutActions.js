@@ -25,15 +25,6 @@ define([
   var ENDPOINT = Workouts.ENDPOINT;
   var FORM_NAME = Workouts.FORM_NAME;
 
-  function _onSuccess(response, options, errorEvent) {
-    var handler = new ResponseHandler(response);
-    if (handler.getWasSuccessful()) {
-      AppDispatcher.dispatch(options);
-    } else {
-      _onError(response, errorEvent);
-    }
-  }
-
   function _onError(response, eventName) {
     var handler = new ResponseHandler(response);
     AppDispatcher.dispatch({

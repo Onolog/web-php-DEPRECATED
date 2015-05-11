@@ -10,7 +10,6 @@
 define([
 
   'constants/ActionTypes',
-  'constants/Workouts',
   'dispatcher/AppDispatcher',
   'lib/MicroEvent/microevent',
   'lib/jquery/jquery.min'
@@ -18,7 +17,6 @@ define([
 ], function(
 
   ActionTypes,
-  Workouts,
   AppDispatcher,
   MicroEvent
 

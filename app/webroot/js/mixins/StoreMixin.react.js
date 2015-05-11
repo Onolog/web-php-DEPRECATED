@@ -41,7 +41,7 @@ define([
       var actionType;
       this.stores.forEach(function(storeInfo) {
         actionType = storeInfo.actionType || ActionTypes.CHANGE;
-        storeInfo.store.unbind(ActionTypes.CHANGE, storeInfo.callback);
+        storeInfo.store.unbind(actionType, storeInfo.callback);
       });
     }
   };

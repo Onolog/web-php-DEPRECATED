@@ -8,6 +8,7 @@ define([
 
   'lib/react/react',
 
+  'lib/react/jsx!app/Shoes/ShoeViewLink.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Button/CloseButton.react',
   'lib/react/jsx!components/Link/Link.react',
@@ -19,6 +20,7 @@ define([
 
   React,
 
+  ShoeViewLink,
   Button,
   CloseButton,
   Link,
@@ -32,32 +34,47 @@ define([
     displayName: 'AllShoesView',
 
     propTypes: {
-      shoes: React.PropTypes.object.isRequired
+      shoes: React.PropTypes.array.isRequired
     },
 
     render: function() {
       var shoes = this.props.shoes;
+      var activeShoes = [];
+      var inactiveShoes = [];
+
+      // Split the shoes into groups by inactive state
+      shoes.forEach(function(shoe) {
+        if (shoe.inactive) {
+          inactiveShoes.push(shoe);
+        } else {
+          activeShoes.push(shoe);
+        }
+      });
 
       return (
         <div>
-          {this._renderActiveShoes(shoes.active)}
-          {this._renderInactiveShoes(shoes.inactive)}
+          {this._renderActiveShoes(activeShoes)}
+          {this._renderInactiveShoes(inactiveShoes)}
         </div>
       );
     },
 
-    _renderEmptyState: function() {
-
-    },
-
     _renderActiveShoes: function(/*array*/ activeShoes) {
+      var contents;
       if (activeShoes && activeShoes.length) {
-        return (
-          <Panel title="Active">
-            {this._renderShoeTable(activeShoes)}
-          </Panel>
-        );
+        contents = this._renderShoeTable(activeShoes);
+      } else {
+        contents =
+          <div className="emptyState">
+            You do not have any active shoes to display.
+          </div>;
       }
+
+      return (
+        <Panel title="Active">
+          {contents}
+        </Panel>
+      );
     },
 
     _renderInactiveShoes: function(/*array*/ inactiveShoes) {
@@ -79,9 +96,10 @@ define([
             })}
             key={idx}>
             <td>
-              <Link href={'/shoes/view/' + shoe.id}>
-                {shoe.name}
-              </Link>
+              <ShoeViewLink
+                shoeID={+shoe.id}
+                shoeName={shoe.name}
+              />
             </td>
             <td className="activities">
               {shoe.activity_count + ' runs'}
