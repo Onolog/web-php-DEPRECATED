@@ -59,21 +59,6 @@ define([
       });
     },
 
-/*
-    componentWillReceiveProps: function(nextProps) {
-      debugger;
-      this.props;
-    },
-
-    componentWillUpdate: function(nextProps, nextState) {
-      debugger;
-    },
-
-    componentDidUpdate: function(prevProps, prevState) {
-      debugger;
-    },
-*/
-
     render: function() {
       return (
         <div className="typeahead-container">

@@ -111,7 +111,6 @@ define([
      * When in a temporary state (adding or editing), use the workout store
      */
     _workoutChanged: function() {
-      debugger;
       var workout = WorkoutStore.getWorkout();
       if (workout && workout.id === this.props.workout.id) {
         this.setState({
