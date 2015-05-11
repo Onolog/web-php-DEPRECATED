@@ -29,7 +29,6 @@ define([
   MicroEvent.mixin(DialogStore);
 
   AppDispatcher.register(function(payload) {
-    debugger;
     switch(payload.eventName) {
       case ActionTypes.WORKOUT_ADD:
       case ActionTypes.WORKOUT_DELETE:

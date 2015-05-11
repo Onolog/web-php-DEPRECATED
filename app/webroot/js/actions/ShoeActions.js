@@ -43,7 +43,6 @@ define([
 
   return {
     add: function(data) {
-      debugger;
       $.ajax({
         url: SHOES.ENDPOINT.SHOE_ADD,
         type: 'POST',
