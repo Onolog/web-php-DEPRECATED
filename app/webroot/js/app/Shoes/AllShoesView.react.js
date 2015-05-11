@@ -11,6 +11,7 @@ define([
   'lib/react/jsx!app/Shoes/ShoeViewLink.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Button/CloseButton.react',
+  'lib/react/jsx!components/EmptyState.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Panel/Panel.react',
 
@@ -23,6 +24,7 @@ define([
   ShoeViewLink,
   Button,
   CloseButton,
+  EmptyState,
   Link,
   Panel,
 
@@ -65,9 +67,9 @@ define([
         contents = this._renderShoeTable(activeShoes);
       } else {
         contents =
-          <div className="emptyState">
-            You do not have any active shoes to display.
-          </div>;
+          <EmptyState
+            message="You do not have any active shoes to display."
+          />;
       }
 
       return (

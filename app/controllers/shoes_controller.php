@@ -97,6 +97,39 @@ class ShoesController extends AppController {
 		$this->set('brands', $brands);
 	}
 
+  /**
+   * Add a new shoe ansynchronously
+   */
+  public function ajax_add() {
+    $this->setIsAjax();
+    $response = new Response();
+    $user = $this->requireLoggedInUser();
+
+    if (!empty($this->data)) {
+      // Add the user id and activity state to the data
+      $this->data['Shoe']['user_id'] = $user;
+      $this->data['Shoe']['inactive'] = 0; // A newly created shoe is active
+
+      $this->Shoe->create();
+
+      if ($this->Shoe->save($this->data)) {
+        // Return the newly added shoe in the response.
+        $shoe = $this->Shoe->read(null, $this->Shoe->id);
+        return $response
+          ->setSuccess(true)
+          ->setPayload($shoe['Shoe'])
+          ->setMessage('Your shoe was added.')
+          ->send();
+      }
+
+      return $response
+        ->setMessage('The shoe could not be saved. Please try again.')
+        ->send();
+    }
+
+    return $response->send();
+  }
+
 	public function edit($id = null) {
     $user = $this->requireLoggedInUser();
 

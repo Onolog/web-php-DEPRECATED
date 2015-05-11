@@ -10,6 +10,7 @@ define([
 
   'lib/react/jsx!app/Chrome/PageHeader.react',
   'lib/react/jsx!app/Shoes/AllShoesView.react',
+  'lib/react/jsx!app/Shoes/ShoeAddButton.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Loader/Loader.react',
 
@@ -23,6 +24,7 @@ define([
 
   PageHeader,
   AllShoesView,
+  ShoeAddButton,
   Button,
   Loader,
 
@@ -63,11 +65,7 @@ define([
       return (
         <div>
           <PageHeader title="Shoes">
-            <Button
-              glyph="plus"
-              href="/shoes/add"
-              label="New Shoe"
-            />
+            <ShoeAddButton />
           </PageHeader>
           {this._renderContent()}
         </div>
