@@ -53,7 +53,6 @@ define([
   AppDispatcher.register(function(payload) {
     switch(payload.eventName) {
       case ActionTypes.WORKOUT_INIT:
-      case ActionTypes.WORKOUT_EDIT_START:
         _workout = _copy(payload.workout);
         _initialWorkout = _copy(payload.workout);
         break;
@@ -70,13 +69,12 @@ define([
         WorkoutStore.trigger(ActionTypes.CHANGE);
         break;
 
-      case ActionTypes.WORKOUT_ADD_CANCEL:
-      case ActionTypes.WORKOUT_ADD_SUCCESS:
-      case ActionTypes.WORKOUT_EDIT_CANCEL:
-      case ActionTypes.WORKOUT_EDIT_SUCCESS:
-      case ActionTypes.WORKOUT_DELETE_SUCCESS:
-        // When cancelling and add/edit action, or when an action was
-        // successful, reset the data.
+      case ActionTypes.WORKOUT_ADD:
+      case ActionTypes.WORKOUT_CANCEL:
+      case ActionTypes.WORKOUT_EDIT:
+      case ActionTypes.WORKOUT_DELETE:
+        // Whenever a successful action has been taken, or the action was
+        // cancelled, reset the data.
         _resetData();
         WorkoutStore.trigger(ActionTypes.CHANGE);
         break;

@@ -29,13 +29,15 @@ define([
   MicroEvent.mixin(DialogStore);
 
   AppDispatcher.register(function(payload) {
+    debugger;
     switch(payload.eventName) {
-      case ActionTypes.WORKOUT_ADD_SUCCESS:
+      case ActionTypes.WORKOUT_ADD:
+      case ActionTypes.WORKOUT_DELETE:
         _isShown = false;
         DialogStore.trigger(ActionTypes.CHANGE);
         break;
 
-      case ActionTypes.WORKOUT_EDIT_SUCCESS:
+      case ActionTypes.WORKOUT_EDIT:
         _isEditing = false;
         DialogStore.trigger(ActionTypes.CHANGE);
         break;

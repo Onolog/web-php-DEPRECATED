@@ -43,11 +43,6 @@ define([
     },
 
     addWorkout: function(workoutData) {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUT_ADD,
-        workout: workoutData
-      });
-
       // Add the new workout to the DB
       $.ajax({
         url: ENDPOINT.WORKOUT_ADD + workoutData.date,
@@ -62,7 +57,7 @@ define([
       var handler = new ResponseHandler(response);
       if (handler.getWasSuccessful()) {
         AppDispatcher.dispatch({
-          eventName: ActionTypes.WORKOUT_ADD_SUCCESS,
+          eventName: ActionTypes.WORKOUT_ADD,
           workout: handler.getPayload()
         });
       } else {
@@ -76,16 +71,11 @@ define([
 
     cancelAddWorkout: function() {
       AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUT_ADD_CANCEL
+        eventName: ActionTypes.WORKOUT_CANCEL
       });
     },
 
     deleteWorkout: function(workoutID) {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUT_DELETE,
-        workoutID: workoutID
-      });
-
       // Delete the workout from the DB
       $.ajax({
         url: ENDPOINT.WORKOUT_DELETE + workoutID,
@@ -99,7 +89,7 @@ define([
       var handler = new ResponseHandler(response);
       if (handler.getWasSuccessful()) {
         AppDispatcher.dispatch({
-          eventName: ActionTypes.WORKOUT_DELETE_SUCCESS,
+          eventName: ActionTypes.WORKOUT_DELETE,
           workoutID: handler.getPayload()
         });
       } else {
@@ -113,15 +103,14 @@ define([
 
     startEditWorkout: function(workoutData) {
       AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUT_EDIT_START,
+        eventName: ActionTypes.WORKOUT_INIT,
         workoutData: workoutData
       });
     },
 
     cancelEditWorkout: function(workoutID) {
       AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUT_EDIT_CANCEL,
-        workoutID: workoutID
+        eventName: ActionTypes.WORKOUT_CANCEL
       });
     },
 
@@ -140,11 +129,6 @@ define([
      * Save an edited workout to the DB
      */
     saveWorkout: function(workoutData) {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUT_EDIT_SAVE,
-        workout: workoutData
-      });
-
       // Update the workout in the DB
       $.ajax({
         url: ENDPOINT.WORKOUT_EDIT + workoutData.id,
@@ -159,7 +143,7 @@ define([
       var handler = new ResponseHandler(response);
       if (handler.getWasSuccessful()) {
         AppDispatcher.dispatch({
-          eventName: ActionTypes.WORKOUT_EDIT_SUCCESS,
+          eventName: ActionTypes.WORKOUT_EDIT,
           alertMessage: handler.getMessage(),
           workout: handler.getPayload()
         });
@@ -173,11 +157,6 @@ define([
     },
 
     viewWorkout: function(workoutID) {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUT_VIEW,
-        id: workoutID
-      });
-
       // Fetch the workout from the DB
       $.ajax({
         url: ENDPOINT.WORKOUT_VIEW + workoutID,
@@ -191,7 +170,7 @@ define([
       var handler = new ResponseHandler(response);
       if (handler.getWasSuccessful()) {
         AppDispatcher.dispatch({
-          eventName: ActionTypes.WORKOUT_VIEW_SUCCESS,
+          eventName: ActionTypes.WORKOUT_VIEW,
           workout: handler.getPayload()
         });
       } else {

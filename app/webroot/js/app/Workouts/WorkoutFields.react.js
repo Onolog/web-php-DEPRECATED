@@ -17,9 +17,7 @@ define([
   'constants/Workouts',
   'stores/WorkoutStore',
   'utils/cakePHP',
-  'utils/calculatePace',
-
-  'lib/jquery/jquery.min'
+  'utils/calculatePace'
 
 ], function(
 

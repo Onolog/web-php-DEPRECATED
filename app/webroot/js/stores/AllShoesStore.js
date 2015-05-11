@@ -74,7 +74,7 @@ define([
         AllShoesStore.trigger(ActionTypes.CHANGE);
         break;
 
-      case ActionTypes.SHOE_EDIT_SUCCESS:
+      case ActionTypes.SHOE_EDIT:
       case ActionTypes.SHOE_VIEW:
         var shoeID = payload.data.id;
         _shoes = _shoes.map(function(shoe) {

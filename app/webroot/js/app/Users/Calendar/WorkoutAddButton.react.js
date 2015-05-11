@@ -152,7 +152,6 @@ define([
             </div>
           }>
           <WorkoutFields
-            action="add"
             friends={this.props.friends}
             shoes={this.props.shoes}
             workout={this.state.workoutData}

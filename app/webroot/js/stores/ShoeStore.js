@@ -69,11 +69,10 @@ define([
         ShoeStore.trigger(ActionTypes.CHANGE);
         break;
 
-      case ActionTypes.SHOE_ADD_CANCEL:
-      case ActionTypes.SHOE_ADD_SUCCESS:
-      case ActionTypes.SHOE_EDIT_CANCEL:
-      case ActionTypes.SHOE_EDIT_SUCCESS:
-      case ActionTypes.SHOE_DELETE_SUCCESS:
+      case ActionTypes.SHOE_ADD:
+      case ActionTypes.SHOE_CANCEL:
+      case ActionTypes.SHOE_EDIT:
+      case ActionTypes.SHOE_DELETE:
         // When cancelling and add/edit action, or when an action was
         // successful, reset the data.
         _resetData();

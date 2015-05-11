@@ -22,10 +22,6 @@ define([
   return {
 
     fetchWorkouts: function(year, month) {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUTS_FETCH
-      });
-
       // Fetch all the workouts from the DB
       $.ajax({
         url: CALENDAR_WORKOUTS_FETCH,
@@ -43,7 +39,7 @@ define([
       var handler = new ResponseHandler(response);
       if (handler.getWasSuccessful()) {
         AppDispatcher.dispatch({
-          eventName: ActionTypes.WORKOUTS_FETCH_SUCCESS,
+          eventName: ActionTypes.WORKOUTS_FETCH,
           workouts: handler.getPayload()
         });
       } else {

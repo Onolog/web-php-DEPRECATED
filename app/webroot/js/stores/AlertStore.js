@@ -36,9 +36,9 @@ define([
   AppDispatcher.register(function(payload) {
     _alertMessage = payload.alertMessage;
     switch(payload.eventName) {
-      case ActionTypes.WORKOUT_ADD_SUCCESS:
-      case ActionTypes.WORKOUT_DELETE_SUCCESS:
-      case ActionTypes.WORKOUT_EDIT_SUCCESS:
+      case ActionTypes.WORKOUT_ADD:
+      case ActionTypes.WORKOUT_DELETE:
+      case ActionTypes.WORKOUT_EDIT:
         _alertType = ALERT.SUCCESS;
         AlertStore.trigger(ActionTypes.CHANGE);
         break;

@@ -263,9 +263,6 @@ define([
         isLoading: false,
         alert: null
       });
-
-      // Closing the dialog resets the editing state
-      WorkoutActions.cancelEditWorkout(this.props.workout.id);
     },
 
     _onViewClick: function() {
@@ -293,10 +290,7 @@ define([
     },
 
     _onCancelEdit: function() {
-      this.setState({
-        isEditing: false,
-        alert: null
-      });
+      this._toggleModal();
       WorkoutActions.cancelEditWorkout(this.props.workout.id);
     },
 
