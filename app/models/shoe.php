@@ -78,6 +78,10 @@ class Shoe extends AppModel {
     $shoes = array();
 
     foreach ($results as $key => $result) {
+      if (!isset($result['Shoe'])) {
+        continue;
+      }
+
       $shoes[$key] = $result['Shoe'];
 
       // Get the Brand name

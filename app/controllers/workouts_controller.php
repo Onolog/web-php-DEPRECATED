@@ -424,7 +424,10 @@ class WorkoutsController extends AppController {
     }
 
     // Be sure to escape notes entries
-	  $this->data['Workout']['notes'] =
-      htmlspecialchars(idx($this->data['Workout'], 'notes'), ENT_QUOTES);
+	  $this->data['Workout']['notes'] = htmlspecialchars(
+      idx($this->data['Workout'],'notes'),
+      ENT_QUOTES,
+      'UTF-8'
+    );
   }
 }

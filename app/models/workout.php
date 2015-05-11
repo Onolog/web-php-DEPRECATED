@@ -87,9 +87,11 @@ class Workout extends AppModel {
       // Decode any escaped characters
       $results[$key]['Workout']['notes'] = html_entity_decode(
         idx($workout, 'notes', ''),
-        ENT_QUOTES
+        ENT_QUOTES,
+        'UTF-8'
       );
     }
+
     return $results;
   }
 

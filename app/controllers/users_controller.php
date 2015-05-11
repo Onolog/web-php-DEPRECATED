@@ -169,16 +169,12 @@ class UsersController extends AppController {
 			$this->redirect(array('action' => 'index'));
 		}
 
-    $this->helpers[] = 'Chart';
-
     $user = $this->User->read();
 
     // Why does this query return different results depending on
     // if the user is logged in or out?
     $workouts = $this->User->Workout->find('all', array(
-		  'conditions' => array(
-        'Workout.user_id' => $id,
-      ),
+		  'conditions' => array('Workout.user_id' => $id),
     ));
 
     $workoutData = $this->User->Workout->groupWorkoutsByYearMonthDay($workouts);
@@ -194,11 +190,10 @@ class UsersController extends AppController {
       $total_miles += $years['miles'];
     }
 
-    $shoe_count = $this->User->Shoe->find(
-      'count', array(
-        'conditions' => array('Shoe.user_id' => $id),
-      )
-    );
+    $shoes = $this->User->Shoe->find('all', array(
+      'conditions' => array('Shoe.user_id' => $id),
+    ));
+    $shoe_count = count($shoes);
 
     $this->set('title_for_layout', $user['User']['name']);
 		$this->set(compact(
