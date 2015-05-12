@@ -70,7 +70,7 @@ requirejs.config({
 });
 
 // Globally required files
-require(['utils/LoginDetect']);
+require(['utils/LogoutDetect']);
 // require(['lib/fb']);
 
 // Load Google Maps API asynchronously
