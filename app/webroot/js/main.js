@@ -69,7 +69,8 @@ requirejs.config({
   }
 });
 
-// Need Facebook API on all pages
+// Globally required files
+require(['utils/LoginDetect']);
 // require(['lib/fb']);
 
 // Load Google Maps API asynchronously
