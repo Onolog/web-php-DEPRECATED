@@ -15,7 +15,7 @@ define(['lib/Facebook/fb'], function() {
       ) {
         document.location = '/login';
       }
-    }
+    });
   }, INTERVAL);
 
 });
