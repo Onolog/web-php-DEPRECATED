@@ -154,6 +154,42 @@ class ShoesController extends AppController {
     $this->set('shoe', $this->data['Shoe']);
 	}
 
+  public function ajax_edit($shoe_id = null) {
+    $user = $this->requireLoggedInUser();
+    $this->setIsAjax();
+    $response = new Response();
+
+    if (!$shoe_id && empty($this->data)) {
+      return $response
+        ->setMessage('Invalid shoe.')
+        ->send();
+    }
+
+    if (!empty($this->data)) {
+      // Make sure users only edit their own workouts!
+      if ($this->data['Shoe']['user_id'] !== $user) {
+        return $response
+          ->setMessage('You are not allowed to edit this shoe.')
+          ->send();
+      }
+
+      if ($this->Shoe->save($this->data)) {
+        $shoe = $this->Shoe->read(null, $shoe_id);
+        return $response
+          ->setSuccess(true)
+          ->setMessage('Your workout was successfully updated.')
+          ->setPayload($shoe)
+          ->send();
+      }
+
+      $response->setMessage(
+        'The workout could not be saved. Please try again.'
+      );
+    }
+
+    return $response->send();
+  }
+
 	public function delete($sid = null) {
     $user = $this->requireLoggedInUser();
 

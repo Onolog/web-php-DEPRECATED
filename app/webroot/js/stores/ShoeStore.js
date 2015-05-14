@@ -43,6 +43,11 @@ define([
 
     getData: function() {
       return _data;
+    },
+
+    setData: function(data) {
+      _data = _copy(data);
+      _initialData = _copy(data);
     }
   };
 
@@ -51,7 +56,6 @@ define([
   AppDispatcher.register(function(payload) {
     switch(payload.eventName) {
       case ActionTypes.SHOE_VIEW:
-      case ActionTypes.SHOE_EDIT_START:
         _data = _copy(payload.data);
         _initialData = _copy(payload.data);
         ShoeStore.trigger(ActionTypes.CHANGE);
@@ -73,8 +77,7 @@ define([
       case ActionTypes.SHOE_CANCEL:
       case ActionTypes.SHOE_EDIT:
       case ActionTypes.SHOE_DELETE:
-        // When cancelling and add/edit action, or when an action was
-        // successful, reset the data.
+        // Reset data when adding/deleting an item, or cancelling an action
         _resetData();
         ShoeStore.trigger(ActionTypes.CHANGE);
         break;

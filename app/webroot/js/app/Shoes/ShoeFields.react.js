@@ -50,10 +50,12 @@ define([
     },
 
     render: function() {
+      var shoe = this.props.shoe;
       return (
         <div className="form-horizontal workoutForm">
           <FormGroup label="Brand" className="time">
             <BrandSelector
+              defaultValue={shoe && shoe.brand_id}
               name={cakePHP.encodeFormFieldName('brand_id', FORM_NAME)}
               onChange={this._onUpdate}
             />
@@ -61,6 +63,7 @@ define([
           <FormGroup label="Model">
             <input
               className="form-control"
+              defaultValue={shoe && shoe.model}
               name={cakePHP.encodeFormFieldName('model', FORM_NAME)}
               onChange={this._onUpdate}
               ref="distance"
@@ -77,12 +80,14 @@ define([
      * that all newly created shoes are active.
      */
     _renderInactiveCheckbox: function() {
-      if (this.props.shoe) {
+      var shoe = this.props.shoe;
+      if (shoe) {
         return (
           <FormGroup>
             <div className="checkbox">
               <label>
                 <input
+                  defaultChecked={!!shoe.inactive}
                   name={cakePHP.encodeFormFieldName('inactive', FORM_NAME)}
                   onChange={this._onUpdate}
                   type="checkbox"

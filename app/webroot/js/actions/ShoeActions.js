@@ -21,12 +21,15 @@ define([
 
 ) {
 
+  var ENDPOINT = SHOES.ENDPOINT;
+  var FORM_NAME = SHOES.FORM_NAME;
+
   return {
     add: function(data) {
       $.ajax({
-        url: SHOES.ENDPOINT.ADD,
+        url: ENDPOINT.ADD,
         type: 'POST',
-        data: cakePHP.encodeFormData(data, SHOES.FORM_NAME),
+        data: cakePHP.encodeFormData(data, FORM_NAME),
         success: this.onAddSuccess,
         error: this.onAddError
       });
@@ -52,7 +55,7 @@ define([
 
     delete: function(id) {
       $.ajax({
-        url: SHOES.ENDPOINT.DELETE + id,
+        url: ENDPOINT.DELETE + id,
         type: 'POST',
         success: this.onDeleteSuccess,
         error: this.onDeleteError
@@ -74,7 +77,7 @@ define([
     fetch: function() {
       // Fetch the collection of items from the DB
       $.ajax({
-        url: SHOES.ENDPOINT.FETCH,
+        url: ENDPOINT.FETCH,
         type: 'GET',
         success: this.onFetchSuccess,
         error: this.onFetchError
@@ -93,6 +96,29 @@ define([
       ActionUtils.onError(response, ActionTypes.ALL_SHOES_FETCH_ERROR);
     },
 
+    save: function(data) {
+      // Update the workout in the DB
+      $.ajax({
+        url: ENDPOINT.EDIT + data.id,
+        type: 'POST',
+        data: cakePHP.encodeFormData(data, FORM_NAME),
+        success: this.onSaveSuccess,
+        error: this.onSaveError
+      });
+    },
+
+    onSaveSuccess: function(/*string*/ response) {
+      ActionUtils.onSuccess(
+        response,
+        ActionTypes.SHOE_EDIT,
+        ActionTypes.SHOE_EDIT_ERROR
+      );
+    },
+
+    onSaveError: function(/*string|object*/ response) {
+      ActionUtils.onError(response, ActionTypes.SHOE_EDIT_ERROR);
+    },
+
     /**
      * Updates the temporary state of a workout, whie editing or adding.
      */
@@ -108,9 +134,8 @@ define([
      * View an individual shoe
      */
     view: function(id) {
-      // Fetch the item from the DB
       $.ajax({
-        url: SHOES.ENDPOINT.VIEW + id,
+        url: ENDPOINT.VIEW + id,
         type: 'GET',
         success: this.onViewSuccess,
         error: this.onViewError

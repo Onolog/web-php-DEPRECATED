@@ -8,6 +8,7 @@ define([
 
   'lib/react/react',
 
+  'lib/react/jsx!app/Shoes/ShoeEditLink.react',
   'lib/react/jsx!app/Shoes/ShoeViewLink.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Button/CloseButton.react',
@@ -22,6 +23,7 @@ define([
 
   React,
 
+  ShoeEditLink,
   ShoeViewLink,
   Button,
   CloseButton,
@@ -110,9 +112,7 @@ define([
             </td>
             <td className="mileage">{shoe.mileage + ' mi'}</td>
             <td className="actions">
-              <Link href={'/shoes/edit/' + shoe.id}>
-                Edit
-              </Link>
+              <ShoeEditLink shoe={shoe} />
               <CloseButton
                 onClick={this._onDeleteClick.bind(this, shoe.id)}
                 tooltip={{title: 'Delete'}}

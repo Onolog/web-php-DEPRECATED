@@ -55,13 +55,26 @@ define([
     },
 
     render: function() {
+      var options = this._getBrandOptions();
+      if (!options.length) {
+        // Hacky placeholder while we wait for the brands to load.
+        // TODO: figure out a better solution?
+        return (
+          <input
+            className="form-control"
+            disabled={true}
+            type="text"
+            value="Select a shoe:"
+          />
+        );
+      }
+
       return (
         <Select
           {...this.props}
           className="form-control"
-          defaultLabel="Select a shoe:"
-          defaultValue={0}
-          options={this._getBrandOptions()}
+          disabled={!options.length}
+          options={options}
         />
       );
     },
@@ -79,6 +92,14 @@ define([
           value: +brand.id
         });
       });
+
+      // We're adding a new shoe; display a prompt
+      if (!this.props.defaultValue) {
+        options.unshift({
+          label: 'Select a shoe:',
+          value: 0
+        });
+      }
 
       return options;
     }

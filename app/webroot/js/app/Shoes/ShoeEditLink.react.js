@@ -1,13 +1,14 @@
 /**
- * ShoeAddButton.react
+ * ShoeEditLink.react
  * @jsx React.DOM
  *
- * Button that opens a dialog to add a new shoe.
+ * Link that opens a dialog with the editable fields for the shoe.
  */
 define([
 
   'lib/react/react',
   'lib/react/jsx!app/Shoes/ShoeFields.react',
+  'lib/react/jsx!app/Shoes/ShoeView.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Modal/Modal.react',
@@ -16,7 +17,6 @@ define([
   'mixins/StoreMixin.react',
 
   'actions/ShoeActions',
-  'constants/Shoes',
   'stores/AllShoesStore',
   'stores/ShoeStore',
 
@@ -26,6 +26,7 @@ define([
 
   React,
   ShoeFields,
+  ShoeView,
   Button,
   Link,
   Modal,
@@ -34,7 +35,6 @@ define([
   StoreMixin,
 
   ShoeActions,
-  SHOES,
   AllShoesStore,
   ShoeStore,
 
@@ -43,14 +43,18 @@ define([
 ) {
 
   return React.createClass({
-    displayName: 'ShoeAddButton',
+    displayName: 'ShoeEditLink',
 
     mixins: [LayerMixin, StoreMixin],
+
+    propTypes: {
+      shoe: React.PropTypes.object
+    },
 
     getInitialState: function() {
       return {
         isLoading: false,
-        shoe: null,
+        shoe: this.props.shoe,
         shown: false
       };
     },
@@ -63,48 +67,34 @@ define([
 
     _shoeChanged: function() {
       var shoe = ShoeStore.getData();
-
-      // Since Stores are in the global space, the update may have come from
-      // another component, probably in the `edit` state. Therefore, check to
-      // make sure the update is coming from this component. If the shoe already
-      // has an ID, then by definition it isn't new, and we should ignore it.
-      if (shoe && !shoe.id) {
-        // When data in the ShoeStore gets reset, it means an action was
-        // taken that calls for closing the dialog.
-        var closeDialog = (
-          this.state.shoe &&
-          !!Object.keys(this.state.shoe).length &&
-          shoe &&
-          !Object.keys(shoe).length
-        );
-
-        if (closeDialog) {
-          this._toggleModal();
-        } else {
-          this.setState({shoe: shoe});
-        }
+      if (shoe && shoe.id === this.props.shoe.id) {
+        this.setState({
+          isLoading: false,
+          shoe: shoe
+        });
+      } else if (shoe && !shoe.id && this.state.shown) {
+        this._toggleModal();
       }
     },
 
     render: function() {
       return (
-        <Button
-          glyph="plus"
-          onClick={this._toggleModal}
-          label="New Shoe"
-        />
+        <Link href="javascript:;" onClick={this._onEdit}>
+          Edit
+        </Link>
       );
     },
 
     renderLayer: function() {
+      var shoe = this.state.shoe;
       return (
         <Modal
           alert={this.state.alert}
-          onRequestClose={this._onCancel}
           isLoading={this.state.isLoading}
           shown={this.state.shown}
           size="small"
-          title="Add a New Shoe"
+          onRequestClose={this._toggleModal}
+          title={shoe.name}
           footer={
             <div>
               <Button
@@ -113,14 +103,14 @@ define([
                 onClick={this._onCancel}
               />
               <Button
-                label="Add Shoe"
-                use="primary"
+                label="Update Shoe"
                 disabled={this.state.isLoading}
-                onClick={this._onAddShoeClick}
+                onClick={this._onSave}
+                use="primary"
               />
             </div>
           }>
-          <ShoeFields />
+          <ShoeFields shoe={shoe} />
         </Modal>
       );
     },
@@ -133,14 +123,19 @@ define([
 
       this.setState({
         isLoading: false,
-        shoe: null,
+        shoe: this.props.shoe,
         shown: !this.state.shown
       });
     },
 
-    _onAddShoeClick: function(event) {
+    _onEdit: function() {
+      this._toggleModal();
+      ShoeStore.setData(this.state.shoe);
+    },
+
+    _onSave: function() {
       this.setState({ isLoading: true });
-      ShoeActions.add(this.state.shoe);
+      ShoeActions.save(this.state.shoe);
     },
 
     _onCancel: function() {

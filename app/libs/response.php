@@ -19,7 +19,10 @@ class Response {
    */
   public function send($asJson=true) {
     if ($asJson) {
-      return json_encode($this->response);
+      return json_encode(
+        $this->response,
+        JSON_NUMERIC_CHECK // Encode numeric strings as numbers
+      );
     }
     return $this->response;
   }
