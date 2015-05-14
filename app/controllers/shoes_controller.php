@@ -83,8 +83,7 @@ class ShoesController extends AppController {
 			}
 		}
 
-		$brands = $this->Shoe->Brand->find('list');
-		$this->set('brands', $brands);
+		$this->set('brands', $this->Shoe->Brand->find('all'));
 	}
 
   /**
@@ -151,7 +150,7 @@ class ShoesController extends AppController {
       ));
     }
 
-		$this->set('brands', $this->Shoe->Brand->find('list'));
+		$this->set('brands', $this->Shoe->Brand->find('all'));
     $this->set('shoe', $this->data['Shoe']);
 	}
 

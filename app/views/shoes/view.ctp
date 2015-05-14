@@ -3,6 +3,7 @@ $this->Include->css(array(
   'app/Shoe',
   'components/Topline'
 ));
+$this->set('page_classes', array('narrow-page'));
 
 echo $this->element('loader', array(
   'id' => 'reactRoot'

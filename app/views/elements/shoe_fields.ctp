@@ -13,11 +13,15 @@ $options = isset($options) ? array_merge($options, $defaults) : $defaults;
 $shoe_id = $this->Form->value('Shoe.id');
 $cancel_href = $shoe_id ? '/shoes/view/' . $shoe_id : '/shoes';
 
+$brands_sorted = array();
+foreach ($brands as $brand) {
+  $brands_sorted[$brand['id']] = $brand['name'];
+}
+
 $r =
   '<section class="shoeForm panel panel-default">' .
     '<div class="panel-body">' .
       $this->Form->create('Shoe', $defaults) .
-      '<fieldset>' .
 
         // Brand
         '<div class="form-group">' .
@@ -30,7 +34,7 @@ $r =
               'brand_id',
               array(
                 'class' => 'form-control',
-                'options'  => $brands,
+                'options'  => $brands_sorted,
                 'selected' => $this->Form->value('Shoe.brand_id'),
                 'empty'    => 'Select a brand:'
               )
@@ -48,8 +52,10 @@ $r =
               'class' => 'form-control'
             )) .
     		  '</div>' .
-    		'</div>' .
+    		'</div>';
 
+  if ($shoe_id) {
+    $r .=
         '<div class="form-group">' .
     		  '<div class="col-sm-offset-2 col-sm-10">' .
     		    '<div class="checkbox">' .
@@ -59,21 +65,19 @@ $r =
               '</label>' .
             '</div>' .
     		  '</div>' .
-    		'</div>' .
+    		'</div>';
+  }
 
-      '</fieldset>' .
-
-      '<div class="btn-toolbar">' .
-        $this->Button->set(array(
-          'label' => $label,
-          'size' => 'large',
-          'type' => 'submit',
-          'use' => 'primary'
-        ))->render() .
+  $r .=
+      '<div class="btn-toolbar pull-right">' .
         $this->Button->set(array(
           'label' => __('Cancel', 1),
           'href' => $cancel_href,
-          'size' => 'large'
+        ))->render() .
+        $this->Button->set(array(
+          'label' => $label,
+          'type' => 'submit',
+          'use' => 'primary'
         ))->render() .
       '</div>' .
     '</div>' .

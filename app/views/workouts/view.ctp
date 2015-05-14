@@ -9,8 +9,10 @@ $this->Include->css(array(
   'app/Workout',
   'components/Topline'
 ));
-
-$this->set('page_classes', array('workoutView'));
+$this->set('page_classes', array(
+  'narrow-page',
+  'workoutView'
+));
 
 $page_url = 'http://www.onolog.com/workouts/view/'.$workout['Workout']['id'];
 $date = date('F jS, Y', $workout['Workout']['date']);

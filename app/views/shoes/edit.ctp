@@ -1,4 +1,5 @@
 <?php
+$this->set('page_classes', array('narrow-page'));
 
 $page_header =
   '<h2>' . $this->Form->value('Shoe.name') . '</h2>' .
@@ -33,7 +34,6 @@ $page_header =
   '</div>';
 
 $this->set('page_header', $page_header);
-
 
 $r =
   $this->element('shoe_fields',

@@ -1,4 +1,5 @@
 <?php
+$this->set('page_classes', array('narrow-page'));
 
 $page_header =
   '<h2>' . __('Add a new shoe', 1) . '</h2>';
