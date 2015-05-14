@@ -17,20 +17,9 @@ class ShoesController extends AppController {
     $response = new Response();
 
     // Get all the user's shoes
-    $shoes = $this->Shoe->find(
-      'all', array(
-        'conditions' => array('Shoe.user_id' => $user),
-      )
-    );
-
-    // Unset all the activities
-    // TODO: We don't *really* need to do this, but character encoding is
-    // currently not UTF-8, so when we try to json_encode the shoe data, nothing
-    // gets returned :/
-    foreach ($shoes as $key => $shoe) {
-      unset($shoe['activities']);
-      $shoes[$key] = $shoe;
-    }
+    $shoes = $this->Shoe->find('all', array(
+      'conditions' => array('Shoe.user_id' => $user)
+    ));
 
     return $response
       ->setSuccess(true)
@@ -83,6 +72,7 @@ class ShoesController extends AppController {
 		  // Add the user id and activity state to the data
       $this->data['Shoe']['user_id'] = $user;
       $this->data['Shoe']['inactive'] = 0; // A newly created shoe is active
+      unset($this->data['Shoe']['id']); // Unset the placeholder ID
 
 			$this->Shoe->create();
 			if ($this->Shoe->save($this->data)) {
@@ -117,7 +107,7 @@ class ShoesController extends AppController {
         $shoe = $this->Shoe->read(null, $this->Shoe->id);
         return $response
           ->setSuccess(true)
-          ->setPayload($shoe['Shoe'])
+          ->setPayload($shoe)
           ->setMessage('Your shoe was added.')
           ->send();
       }
@@ -194,6 +184,40 @@ class ShoesController extends AppController {
 		$this->Session->setFlash(__('Shoe was not deleted', true));
 		$this->redirect(array('action' => 'index'));
 	}
+
+  public function ajax_delete($shoe_id = null) {
+    $user = $this->requireLoggedInUser();
+    $this->setIsAjax();
+    $response = new Response();
+
+    if (!$shoe_id) {
+      $this->goHome(__('Sorry, you can\'t delete that.', true));
+    }
+
+    $shoe = $this->Shoe->find('first', array(
+      'conditions' => array('Shoe.id' => $shoe_id),
+    ));
+
+    // Make sure users only delete their own workouts!
+    if ($shoe['user_id'] !== $user) {
+      $this->goHome(__('You are not allowed to delete this shoe.', true));
+    }
+
+    // The shoe was successfully deleted
+    if ($this->Shoe->delete($shoe_id)) {
+      return $response
+        ->setSuccess(true)
+        ->setPayload($shoe_id)
+        ->setMessage('Your shoe was deleted')
+        ->send();
+    }
+
+    // Something went wrong
+    return $response
+      ->setMessage('Sorry, we couldn\'t delete your shoe for some reason')
+      ->send();
+  }
+
 
   public function ajax_get() {
     $this->layout = 'ajax';

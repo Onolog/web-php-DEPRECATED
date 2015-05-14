@@ -16,6 +16,7 @@ define([
   'mixins/StoreMixin.react',
 
   'actions/ShoeActions',
+  'constants/Shoes',
   'stores/AllShoesStore',
   'stores/ShoeStore',
 
@@ -33,6 +34,7 @@ define([
   StoreMixin,
 
   ShoeActions,
+  SHOES,
   AllShoesStore,
   ShoeStore,
 
@@ -49,7 +51,6 @@ define([
       return {
         isLoading: false,
         shoe: null,
-        shoeData: null,
         shown: false
       };
     },
@@ -62,11 +63,18 @@ define([
 
     _shoeChanged: function() {
       var shoe = ShoeStore.getData();
-      if (shoe && shoe.id === this.props.shoeID) {
-        this.setState({
-          isLoading: false,
-          shoe: shoe
-        });
+
+      // When data in the ShoeStore gets reset, it means an action was
+      // taken that calls for closing the dialog.
+      var closeDialog = (
+        this.state.shoe && Object.keys(this.state.shoe).length &&
+        shoe && !Object.keys(shoe).length
+      );
+
+      if (closeDialog) {
+        this._toggleModal();
+      } else {
+        this.setState({shoe: shoe});
       }
     },
 
@@ -83,10 +91,11 @@ define([
     renderLayer: function() {
       return (
         <Modal
-          shown={this.state.shown}
+          alert={this.state.alert}
           onRequestClose={this._onCancel}
           isLoading={this.state.isLoading}
-          alert={this.state.alert}
+          shown={this.state.shown}
+          size="small"
           title="Add a New Shoe"
           footer={
             <div>
@@ -115,14 +124,15 @@ define([
       }
 
       this.setState({
-        shown: !this.state.shown,
         isLoading: false,
+        shoe: null,
+        shown: !this.state.shown
       });
     },
 
     _onAddShoeClick: function(event) {
       this.setState({ isLoading: true });
-      ShoeActions.add(this.state.shoeData);
+      ShoeActions.add(this.state.shoe);
     },
 
     _onCancel: function() {

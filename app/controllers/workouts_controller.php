@@ -336,7 +336,6 @@ class WorkoutsController extends AppController {
 
 	public function ajax_delete($wid = null) {
     $user = $this->requireLoggedInUser();
-
     $this->setIsAjax();
     $response = new Response();
 

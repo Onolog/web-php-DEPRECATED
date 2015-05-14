@@ -18,4 +18,15 @@ class Brand extends AppModel {
 		)
 	);
 
+  function afterFind($results) {
+    $brands = array();
+    foreach ($results as $result) {
+      if (isset($result['Brand'])) {
+      	// Only return the brand data, since we don't need anything else.
+        $brands[] = $result['Brand'];
+      }
+    }
+    return $brands;
+  }
+
 }

@@ -125,6 +125,12 @@ section + section,
 }
 
 
+@media (min-width: 768px) {
+  .modal-sm {
+    width: 425px;
+  }
+}
+
 /* MOBILE */
 @media (max-width: 767px) {
   /* For mobile layouts, make buttons block-level and stack them */

@@ -69,7 +69,7 @@ define([
 
       case ActionTypes.SHOE_DELETE:
         _shoes = _shoes.filter(function(shoe) {
-          return shoe.id !== payload.shoeID;
+          return shoe.id !== +payload.data;
         });
         AllShoesStore.trigger(ActionTypes.CHANGE);
         break;

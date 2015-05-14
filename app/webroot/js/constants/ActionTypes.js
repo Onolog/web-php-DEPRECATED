@@ -52,6 +52,8 @@ define({
    */
   ALL_SHOES_FETCH: 'all-shoes-fetch',
   ALL_SHOES_FETCH_ERROR: 'all-shoes-fetch-error',
+  BRANDS_FETCH: 'brands-fetch',
+  BRANDS_FETCH_ERROR: 'brands-fetch-error',
   WORKOUTS_FETCH: 'workouts-fetch',
   WORKOUTS_FETCH_ERROR: 'workouts-fetch-error'
 });

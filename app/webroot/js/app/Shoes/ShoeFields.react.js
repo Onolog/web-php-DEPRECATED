@@ -7,11 +7,10 @@
 define([
 
   'lib/react/react',
+  'lib/react/jsx!app/Shoes/BrandSelector.react',
   'lib/react/jsx!components/Forms/FormGroup.react',
-  'lib/react/jsx!components/Select/Select.react',
 
   'actions/ShoeActions',
-  'constants/ActionTypes',
   'constants/Shoes',
   'stores/ShoeStore',
   'utils/cakePHP'
@@ -19,10 +18,10 @@ define([
 ], function(
 
   React,
+  BrandSelector,
   FormGroup,
-  Select,
+
   ShoeActions,
-  ActionTypes,
   SHOES,
   ShoeStore,
   cakePHP
@@ -46,33 +45,19 @@ define([
 
     getDefaultProps: function() {
       return {
-        shoe: {}
+        shoe: null
       };
     },
 
-    componentWillMount: function() {
-      // TODO: What's the best way to handle this?
-      // ShoeActions.initShoe(this.props.shoe);
-    },
-
     render: function() {
-      // Existing shoe data
-      var shoe = ShoeStore.getData();
-
       return (
         <div className="form-horizontal workoutForm">
-
           <FormGroup label="Brand" className="time">
-            <Select
-              name={cakePHP.encodeFormFieldName('brand', FORM_NAME)}
-              className="form-control"
+            <BrandSelector
+              name={cakePHP.encodeFormFieldName('brand_id', FORM_NAME)}
               onChange={this._onUpdate}
-              defaultLabel="Select a shoe:"
-              defaultValue={0}
-              options={[]}
             />
-           </FormGroup>
-
+          </FormGroup>
           <FormGroup label="Model">
             <input
               className="form-control"
@@ -82,7 +67,18 @@ define([
               type="text"
             />
           </FormGroup>
+          {this._renderInactiveCheckbox()}
+        </div>
+      );
+    },
 
+    /**
+     * Don't render this input when creating a new shoe, since we'll assume
+     * that all newly created shoes are active.
+     */
+    _renderInactiveCheckbox: function() {
+      if (this.props.shoe) {
+        return (
           <FormGroup>
             <div className="checkbox">
               <label>
@@ -95,8 +91,8 @@ define([
               </label>
             </div>
           </FormGroup>
-        </div>
-      );
+        );
+      }
     },
 
     _onUpdate: function(event) {

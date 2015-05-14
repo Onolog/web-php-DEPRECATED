@@ -15,6 +15,7 @@ define([
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Panel/Panel.react',
 
+  'actions/ShoeActions',
   'utils/cx'
 
 ], function(
@@ -28,6 +29,7 @@ define([
   Link,
   Panel,
 
+  ShoeActions,
   cx
 
 ) {
@@ -120,12 +122,16 @@ define([
         );
       }.bind(this));
 
-      return <table className="item_list">{rows}</table>;
+      return (
+        <table className="item_list">
+          <tbody>{rows}</tbody>
+        </table>
+      );
     },
 
     _onDeleteClick: function(id, evt) {
       if (confirm('Are you sure you want to delete this shoe?')) {
-        document.location = '/shoes/delete/' + id;
+        ShoeActions.delete(id);
       }
     }
   });

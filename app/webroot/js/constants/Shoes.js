@@ -4,11 +4,11 @@
 define({
   // Endpoints for mutating and viewing workouts
   ENDPOINT: {
-    ALL_SHOES_FETCH: '/ajax/shoes/all',
-    SHOE_ADD:        '/ajax/shoes/add/',
-    SHOE_DELETE:     '/ajax/shoes/delete/',
-    SHOE_EDIT:       '/ajax/shoes/edit/',
-    SHOE_VIEW:       '/ajax/shoes/view/'
+    FETCH:  '/ajax/shoes/all',
+    ADD:    '/ajax/shoes/add/',
+    DELETE: '/ajax/shoes/delete/',
+    EDIT:   '/ajax/shoes/edit/',
+    VIEW:   '/ajax/shoes/view/'
   },
 
   // For integration with CakePHP, we need to use specific naming
