@@ -11,6 +11,7 @@ define([
   'lib/react/jsx!app/Workouts/WorkoutStats.react',
   'lib/react/jsx!components/Data/DataGroup.react',
   'lib/react/jsx!components/Data/DataRow.react',
+  'lib/react/jsx!components/Forms/FileInput.react',
 
   'lib/garmin/activity/GpxActivityFactory',
   'lib/garmin/activity/TcxActivityFactory',
@@ -30,6 +31,7 @@ define([
   WorkoutStats,
   DataGroup,
   DataRow,
+  FileInput,
 
   // Garmin
   GpxActivityFactory,
@@ -57,7 +59,7 @@ define([
         <div>
           <DataGroup display="horizontal">
             <DataRow label="Choose a .tcx file">
-              <input onChange={this._onChange} type="file" />
+              <FileInput onChange={this._onChange} />
             </DataRow>
           </DataGroup>
           <hr />
