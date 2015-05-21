@@ -4,9 +4,10 @@
  */
 define([
 
-  'lib/react/react'
+  'lib/react/react',
+  'utils/cx'
 
-], function(React) {
+], function(React, cx) {
 
   return React.createClass({
 
@@ -17,8 +18,6 @@ define([
     },
   
     render: function() {
-      var cx = React.addons.classSet;
-
       return (
         <div className="form-group">
           <label for={this.props.name} className={cx({

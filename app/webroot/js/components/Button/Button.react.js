@@ -5,9 +5,18 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!components/Button/AbstractButton.react'
+  'lib/react/jsx!components/Button/AbstractButton.react',
+  'utils/cx',
+  'utils/joinClasses'
 
-], function(React, AbstractButton) {
+], function(
+
+  React,
+  AbstractButton,
+  cx,
+  joinClasses
+
+) {
 
   return React.createClass({
     displayName: 'Button',
@@ -34,9 +43,7 @@ define([
     render: function() {
       var use = this.props.use || 'default';
       var size = this.props.size || 'default';
-
-      var cx = React.addons.classSet;
-      var className = cx({
+      var classNames = cx({
         'btn': true,
 
         // Use
@@ -57,8 +64,11 @@ define([
         'selected': use !== 'default'
       });
   
-      return this.transferPropsTo(
-        <AbstractButton className={className} />
+      return (
+        <AbstractButton
+          {...this.props}
+          className={joinClasses(classNames, this.props.className)}
+        />
       );
     }
 

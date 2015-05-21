@@ -8,9 +8,10 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!components/Button/CloseButton.react',
-  'constants/Components'
+  'constants/Components',
+  'utils/cx'
 
-], function(React, CloseButton, Components) {
+], function(React, CloseButton, Components, cx) {
 
   var ALERT = Components.ALERT;
 
@@ -45,7 +46,6 @@ define([
         return <span />;
       }
 
-      var cx = React.addons.classSet;
       var props = this.props;
       return (
         <div

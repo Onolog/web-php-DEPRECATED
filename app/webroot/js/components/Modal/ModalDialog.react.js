@@ -7,9 +7,10 @@
 define([
 
   'lib/react/react',
+  'utils/cx',
   'lib/jquery/jquery.min'
 
-], function(React) {
+], function(React, cx) {
 
   return React.createClass({
     displayName: 'ModalDialog',
@@ -32,9 +33,7 @@ define([
     },
 
     render: function() {
-      var cx = React.addons.classSet;
       var size = this.props.size;
-
       var modal =
         <div
           className={cx({

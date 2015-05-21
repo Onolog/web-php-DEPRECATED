@@ -7,9 +7,10 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!components/Link/Link.react'
+  'lib/react/jsx!components/Link/Link.react',
+  'utils/cx'
 
-], function(React, Link) {
+], function(React, Link, cx) {
 
   return React.createClass({
     propTypes: {
@@ -45,7 +46,6 @@ define([
     },
 
     render: function() {
-      var cx = React.addons.classSet;
       return (
         <Link
           href={this.props.href || '#'}

@@ -16,6 +16,8 @@ define([
   'lib/react/jsx!app/Garmin/GarminActivityList.react',
   'lib/react/jsx!app/Garmin/GarminSingleWorkoutView.react',
 
+  'utils/cx'
+
 ], function(
 
     React,
@@ -26,7 +28,9 @@ define([
 
     GarminDeviceInfo,
     GarminActivityList,
-    GarminSingleWorkoutView
+    GarminSingleWorkoutView,
+
+    cx
 
 ) {
 
@@ -44,7 +48,6 @@ define([
     },
 
     render: function() {
-      var cx = React.addons.classSet;
       return (
         <div>
         	<div id="pluginObject"></div>

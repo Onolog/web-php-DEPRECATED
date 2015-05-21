@@ -7,8 +7,9 @@ define([
   'lib/react/react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!mixins/TooltipMixin.react',
+  'utils/cx',
 
-], function(React, Link, TooltipMixin) {
+], function(React, Link, TooltipMixin, cx) {
 
   return React.createClass({
     displayName: 'AbstractButton',
@@ -41,7 +42,6 @@ define([
     },
 
     render: function() {
-      var cx = React.addons.classSet;
       var cloneWithProps = React.addons.cloneWithProps;
       
       var className = cx({

@@ -13,14 +13,23 @@ define([
   'lib/react/jsx!app/Daniels/PaceTable.react',
   'lib/react/jsx!app/Daniels/DistanceTable.react',
 
+  'utils/cx',
   'lib/bootstrap.min'
 
-], function(React, Button, Panel, PaceTable, DistanceTable) {
+], function(
+
+  React,
+  Button,
+  Panel,
+  PaceTable,
+  DistanceTable,
+  cx
+
+) {
 
   return React.createClass({
 
     render: function() {
-      var cx = React.addons.classSet;
       var sections = [{
       /*
         id: 'calculator',

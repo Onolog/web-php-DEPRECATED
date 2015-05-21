@@ -5,9 +5,10 @@
 define([
 
   'lib/react/react',
+  'utils/cx',
   'utils/joinClasses'
 
-], function(React, joinClasses) {
+], function(React, cx, joinClasses) {
 
   var SIZE = {
     large: 'large',
@@ -41,8 +42,6 @@ define([
     render: function() {
       var size = this.props.size;
       var isVerticalLayout = this.props.layout === LAYOUT.vertical;
-
-      var cx = React.addons.classSet;
       var className = joinClasses(cx({
         'btn-group': !isVerticalLayout,
         'btn-group-lg': size === SIZE.large,

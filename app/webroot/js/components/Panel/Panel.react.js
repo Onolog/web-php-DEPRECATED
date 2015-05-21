@@ -8,9 +8,10 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!components/LeftRight/LeftRight.react',
+  'utils/cx',
   'utils/joinClasses'
 
-], function(React, LeftRight, joinClasses) {
+], function(React, LeftRight, cx, joinClasses) {
 
   return React.createClass({
     displayName: 'Panel',
@@ -26,8 +27,6 @@ define([
     },
 
     render: function() {
-      var cx = React.addons.classSet;
-
       return (
         <section className={joinClasses(
           'panel',

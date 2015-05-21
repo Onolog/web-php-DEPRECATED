@@ -7,9 +7,10 @@
  */
 define([
 
-  'lib/react/react'
+  'lib/react/react',
+  'utils/cx'
 
-], function(React) {
+], function(React, cx) {
 
   return React.createClass({
 
@@ -29,15 +30,14 @@ define([
         }
       });
 
-      var cx = React.addons.classSet;
       var className = cx({
         'clearfix': true,
         'form-horizontal': this.props.display === 'horizontal',
         'form-inline': this.props.display === 'inline',
       });
 
-      return this.transferPropsTo(
-        <div className={className}>
+      return (
+        <div {...this.props} className={className}>
           {this.props.children}
         </div>
       );

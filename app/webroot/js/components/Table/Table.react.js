@@ -4,7 +4,12 @@
  *
  * Wrapper around standard HTML table, with Boostrap support.
  */
-define(['lib/react/react'], function(React) {
+define([
+
+  'lib/react/react',
+  'utils/cx'
+
+], function(React, cx) {
 
   return React.createClass({
     displayName: 'Table',
@@ -17,7 +22,6 @@ define(['lib/react/react'], function(React) {
     },
 
     render: function() {
-      var cx = React.addons.classSet;
       var props = this.props;
       return (
         <table className={cx({

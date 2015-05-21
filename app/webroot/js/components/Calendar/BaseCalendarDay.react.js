@@ -4,7 +4,12 @@
  *
  * Renders a single day for a month-view calendar
  */
-define(['lib/react/react'], function(React) {
+define([
+
+  'lib/react/react',
+  'utils/cx'
+
+], function(React, cx) {
 
   return React.createClass({
     displayName: 'BaseCalendarDay',
@@ -21,7 +26,6 @@ define(['lib/react/react'], function(React) {
     },
 
     render: function() {
-      var cx = React.addons.classSet;
       var dateObject = this.props.date;
       var month = dateObject.getUTCMonth();
       var calMonth = this.props.month;
