@@ -93,7 +93,7 @@ define([
 
     componentDidMount: function() {
       // Auto-focus the first field
-      this.refs.distance.getDOMNode().focus();
+      this.refs.distance.focus();
     },
 
     render: function() {

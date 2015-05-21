@@ -29,6 +29,16 @@ define([
       );
     },
 
+    blur: function() {
+      this.getDOMNode().blur();
+      return this;
+    },
+
+    focus: function() {
+      this.getDOMNode().focus();
+      return this;
+    },
+
     getValue: function() {
       return this.getDOMNode().value;
     }
