@@ -66,7 +66,7 @@ define([
         var value = payload.value;
 
         _data[field] = value;
-        if (!value || ($.isArray(value) && !value.length)) {
+        if (value == null || ($.isArray(value) && !value.length)) {
           // Remove null values
           delete _data[field];
         }
@@ -79,6 +79,7 @@ define([
       case ActionTypes.SHOE_DELETE:
         // Reset data when adding/deleting an item, or cancelling an action
         _resetData();
+
         ShoeStore.trigger(ActionTypes.CHANGE);
         break;
     }

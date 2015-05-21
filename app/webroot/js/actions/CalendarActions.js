@@ -4,25 +4,21 @@
 
 define([
 
-  'dispatcher/AppDispatcher',
   'constants/ActionTypes',
-  'utils/ResponseHandler',
+  'utils/ActionUtils',
   'lib/jquery/jquery.min'
 
 ], function(
 
-  AppDispatcher,
   ActionTypes,
-  ResponseHandler
+  ActionUtils
 
 ) {
 
   var CALENDAR_WORKOUTS_FETCH = '/ajax/workouts/calendar/';
 
   return {
-
-    fetchWorkouts: function(year, month) {
-      // Fetch all the workouts from the DB
+    fetch: function(year, month) {
       $.ajax({
         url: CALENDAR_WORKOUTS_FETCH,
         data: {
@@ -30,31 +26,22 @@ define([
           month: month
         },
         type: 'GET',
-        success: this.onFetchWorkoutsSuccess.bind(this),
-        error: this.onFetchWorkoutsError.bind(this)
+        success: this.onFetchSuccess,
+        error: this.onFetchError
       });
     },
 
-    onFetchWorkoutsSuccess: function(/*string*/ response) {
-      var handler = new ResponseHandler(response);
-      if (handler.getWasSuccessful()) {
-        AppDispatcher.dispatch({
-          eventName: ActionTypes.WORKOUTS_FETCH,
-          workouts: handler.getPayload()
-        });
-      } else {
-        this.onFetchWorkoutsError(response);
-      }
+    onFetchSuccess: function(/*string*/ response) {
+      ActionUtils.onSuccess(
+        response,
+        ActionTypes.WORKOUTS_FETCH,
+        ActionTypes.WORKOUTS_FETCH_ERROR
+      );
     },
 
-    onFetchWorkoutsError: function(/*string|object*/ response) {
-      var handler = new ResponseHandler(response);
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUTS_FETCH_ERROR,
-        alertMessage: response.getMessage()
-      });
+    onFetchError: function(/*string|object*/ response) {
+      ActionUtils.onError(response, ActionTypes.WORKOUTS_FETCH_ERROR);
     }
-
   };
 
 });

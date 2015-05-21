@@ -60,27 +60,27 @@ define([
   AppDispatcher.register(function(payload) {
     switch(payload.eventName) {
       case ActionTypes.WORKOUTS_FETCH:
-        _workouts = payload.workouts;
+        _workouts = payload.data;
         WorkoutsStore.trigger(ActionTypes.CHANGE);
         break;
 
       case ActionTypes.WORKOUT_ADD:
-        _workouts.push(payload.workout);
+        _workouts.push(payload.data);
         WorkoutsStore.trigger(ActionTypes.CHANGE);
         break;
 
       case ActionTypes.WORKOUT_DELETE:
         _workouts = _workouts.filter(function(workout) {
-          return workout.id !== payload.workoutID;
+          return workout.id !== payload.data;
         });
         WorkoutsStore.trigger(ActionTypes.CHANGE);
         break;
 
       case ActionTypes.WORKOUT_EDIT:
       case ActionTypes.WORKOUT_VIEW:
-        var workoutID = payload.workout.id;
+        var workoutID = payload.data.id;
         _workouts = _workouts.map(function(workout) {
-          return workout.id === workoutID ? payload.workout : workout;
+          return workout.id === workoutID ? payload.data : workout;
         });
         _cachedWorkouts.push(workoutID);
         WorkoutsStore.trigger(ActionTypes.CHANGE);

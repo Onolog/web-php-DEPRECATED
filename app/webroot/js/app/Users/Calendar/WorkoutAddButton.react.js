@@ -171,7 +171,7 @@ define([
 
     _onAddWorkoutClick: function(event) {
       this.setState({ isLoading: true });
-      WorkoutActions.addWorkout(this.state.workoutData);
+      WorkoutActions.add(this.state.workoutData);
     },
 
     _onCancel: function() {
@@ -184,7 +184,7 @@ define([
         ))
       ) {
         this._toggleModal();
-        WorkoutActions.cancelAddWorkout();
+        WorkoutActions.cancel();
       }
     },
 

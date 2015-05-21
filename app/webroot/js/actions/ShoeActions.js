@@ -97,7 +97,6 @@ define([
     },
 
     save: function(data) {
-      // Update the workout in the DB
       $.ajax({
         url: ENDPOINT.EDIT + data.id,
         type: 'POST',

@@ -270,14 +270,14 @@ define([
       if (!this._isCached()) {
         // Fetch the full set of data if we don't already have it
         this.setState({ isLoading: true });
-        WorkoutActions.viewWorkout(this.props.workout.id);
+        WorkoutActions.view(this.props.workout.id);
       }
     },
 
     _onDeleteClick: function() {
       if (confirm('Are you sure you want to delete this workout?')) {
         this.setState({ isLoading: true });
-        WorkoutActions.deleteWorkout(this.props.workout.id);
+        WorkoutActions.delete(this.props.workout.id);
       }
     },
 
@@ -291,12 +291,12 @@ define([
 
     _onCancelEdit: function() {
       this._toggleModal();
-      WorkoutActions.cancelEditWorkout(this.props.workout.id);
+      WorkoutActions.cancel();
     },
 
     _onUpdateClick: function() {
       this.setState({ isLoading: true });
-      WorkoutActions.saveWorkout(this.state.workout);
+      WorkoutActions.save(this.state.workout);
     },
 
     _onPermalinkClick: function() {

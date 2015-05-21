@@ -53,6 +53,7 @@ define([
   AppDispatcher.register(function(payload) {
     switch(payload.eventName) {
       case ActionTypes.WORKOUT_INIT:
+        debugger;
         _workout = _copy(payload.workout);
         _initialWorkout = _copy(payload.workout);
         break;

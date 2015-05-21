@@ -79,7 +79,7 @@ define([
 
     componentWillMount: function() {
       // Load all the workouts into the component
-      CalendarActions.fetchWorkouts(
+      CalendarActions.fetch(
         this.props.year,
         this.props.month + 1
       );
@@ -175,7 +175,7 @@ define([
         '/' + year + '/' + pad(month + 1, 2) + '/'
       );
 
-      CalendarActions.fetchWorkouts(
+      CalendarActions.fetch(
         year,
         month + 1
       );

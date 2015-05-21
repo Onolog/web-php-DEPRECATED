@@ -7,8 +7,8 @@ define([
   'dispatcher/AppDispatcher',
   'constants/ActionTypes',
   'constants/Workouts',
+  'utils/ActionUtils',
   'utils/cakePHP',
-  'utils/ResponseHandler',
   'lib/jquery/jquery.min'
 
 ], function(
@@ -16,22 +16,14 @@ define([
   AppDispatcher,
   ActionTypes,
   Workouts,
+  ActionUtils,
   cakePHP,
-  ResponseHandler,
   jquery
 
 ) {
 
   var ENDPOINT = Workouts.ENDPOINT;
   var FORM_NAME = Workouts.FORM_NAME;
-
-  function _onError(response, eventName) {
-    var handler = new ResponseHandler(response);
-    AppDispatcher.dispatch({
-      eventName: eventName,
-      alertMessage: handler.getMessage()
-    });
-  }
 
   return {
 
@@ -42,63 +34,55 @@ define([
       });
     },
 
-    addWorkout: function(workoutData) {
+    add: function(workout) {
       // Add the new workout to the DB
       $.ajax({
-        url: ENDPOINT.WORKOUT_ADD + workoutData.date,
+        url: ENDPOINT.WORKOUT_ADD + workout.date,
         type: 'POST',
-        data: cakePHP.encodeFormData(workoutData, FORM_NAME),
-        success: this.onAddWorkoutSuccess,
-        error: this.onAddWorkoutError
+        data: cakePHP.encodeFormData(workout, FORM_NAME),
+        success: this.onAddSuccess,
+        error: this.onAddError
       });
     },
 
-    onAddWorkoutSuccess: function(/*string*/ response) {
-      var handler = new ResponseHandler(response);
-      if (handler.getWasSuccessful()) {
-        AppDispatcher.dispatch({
-          eventName: ActionTypes.WORKOUT_ADD,
-          workout: handler.getPayload()
-        });
-      } else {
-        _onError(response, ActionTypes.WORKOUT_ADD_ERROR);
-      }
+    onAddSuccess: function(/*string*/ response) {
+      ActionUtils.onSuccess(
+        response,
+        ActionTypes.WORKOUT_ADD,
+        ActionTypes.WORKOUT_ADD_ERROR
+      );
     },
 
-    onAddWorkoutError: function(response) {
-      _onError(response, ActionTypes.WORKOUT_ADD_ERROR);
+    onAddError: function(response) {
+      ActionUtils.onError(response, ActionTypes.WORKOUT_ADD_ERROR);
     },
 
-    cancelAddWorkout: function() {
+    cancel: function() {
       AppDispatcher.dispatch({
         eventName: ActionTypes.WORKOUT_CANCEL
       });
     },
 
-    deleteWorkout: function(workoutID) {
+    delete: function(workoutID) {
       // Delete the workout from the DB
       $.ajax({
         url: ENDPOINT.WORKOUT_DELETE + workoutID,
         type: 'POST',
-        success: this.onDeleteWorkoutSuccess,
-        error: this.onDeleteWorkoutError
+        success: this.onDeleteSuccess,
+        error: this.onDeleteError
       });
     },
 
-    onDeleteWorkoutSuccess: function(/*string*/ response) {
-      var handler = new ResponseHandler(response);
-      if (handler.getWasSuccessful()) {
-        AppDispatcher.dispatch({
-          eventName: ActionTypes.WORKOUT_DELETE,
-          workoutID: handler.getPayload()
-        });
-      } else {
-        _onError(response, ActionTypes.WORKOUT_DELETE_ERROR);
-      }
+    onDeleteSuccess: function(/*string*/ response) {
+      ActionUtils.onSuccess(
+        response,
+        ActionTypes.WORKOUT_DELETE,
+        ActionTypes.WORKOUT_DELETE_ERROR
+      );
     },
 
-    onDeleteWorkoutError: function(response) {
-      _onError(response, ActionTypes.WORKOUT_DELETE_ERROR);
+    onDeleteError: function(response) {
+      ActionUtils.onError(response, ActionTypes.WORKOUT_DELETE_ERROR);
     },
 
     startEditWorkout: function(workoutData) {
@@ -108,16 +92,10 @@ define([
       });
     },
 
-    cancelEditWorkout: function(workoutID) {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUT_CANCEL
-      });
-    },
-
     /**
      * Updates the temporary state of a workout, whie editing or adding.
      */
-    updateWorkout: function(/*string*/ field, /*?any*/ value) {
+    update: function(/*string*/ field, /*?any*/ value) {
       AppDispatcher.dispatch({
         eventName: ActionTypes.WORKOUT_UPDATE,
         field: field,
@@ -128,58 +106,47 @@ define([
     /**
      * Save an edited workout to the DB
      */
-    saveWorkout: function(workoutData) {
-      // Update the workout in the DB
+    save: function(workoutData) {
       $.ajax({
         url: ENDPOINT.WORKOUT_EDIT + workoutData.id,
         type: 'POST',
         data: cakePHP.encodeFormData(workoutData, FORM_NAME),
-        success: this.onSaveWorkoutSuccess,
-        error: this.onSaveWorkoutError
+        success: this.onSaveSuccess,
+        error: this.onSaveError
       });
     },
 
-    onSaveWorkoutSuccess: function(/*string*/ response) {
-      var handler = new ResponseHandler(response);
-      if (handler.getWasSuccessful()) {
-        AppDispatcher.dispatch({
-          eventName: ActionTypes.WORKOUT_EDIT,
-          alertMessage: handler.getMessage(),
-          workout: handler.getPayload()
-        });
-      } else {
-        _onError(response, ActionTypes.WORKOUT_EDIT_ERROR);
-      }
+    onSaveSuccess: function(/*string*/ response) {
+      ActionUtils.onSuccess(
+        response,
+        ActionTypes.WORKOUT_EDIT,
+        ActionTypes.WORKOUT_EDIT_ERROR
+      );
     },
 
-    onSaveWorkoutError: function(/*string|object*/ response) {
-      _onError(response, ActionTypes.WORKOUT_EDIT_ERROR);
+    onSaveError: function(/*string|object*/ response) {
+      ActionUtils.onError(response, ActionTypes.WORKOUT_EDIT_ERROR);
     },
 
-    viewWorkout: function(workoutID) {
-      // Fetch the workout from the DB
+    view: function(workoutID) {
       $.ajax({
         url: ENDPOINT.WORKOUT_VIEW + workoutID,
         type: 'GET',
-        success: this.onViewWorkoutSuccess,
-        error: this.onViewWorkoutError
+        success: this.onViewSuccess,
+        error: this.onViewError
       });
     },
 
-    onViewWorkoutSuccess: function(/*string*/ response) {
-      var handler = new ResponseHandler(response);
-      if (handler.getWasSuccessful()) {
-        AppDispatcher.dispatch({
-          eventName: ActionTypes.WORKOUT_VIEW,
-          workout: handler.getPayload()
-        });
-      } else {
-        _onError(response, ActionTypes.WORKOUT_VIEW_ERROR);
-      }
+    onViewSuccess: function(/*string*/ response) {
+      ActionUtils.onSuccess(
+        response,
+        ActionTypes.WORKOUT_VIEW,
+        ActionTypes.WORKOUT_VIEW_ERROR
+      );
     },
 
-    onViewWorkoutError: function(/*string|object*/ response) {
-      _onError(response, ActionTypes.WORKOUT_VIEW_ERROR);
+    onViewError: function(/*string|object*/ response) {
+      ActionUtils.onError(response, ActionTypes.WORKOUT_VIEW_ERROR);
     }
   };
 

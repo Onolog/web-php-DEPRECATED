@@ -178,7 +178,7 @@ define([
       var field = cakePHP.decodeFormFieldName(event.target.name);
       var value = event.target.value;
 
-      WorkoutActions.updateWorkout(field, value);
+      WorkoutActions.update(field, value);
 
       this.setState({ pace: this._getPace() });
     },
