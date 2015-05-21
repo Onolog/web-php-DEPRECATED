@@ -10,13 +10,14 @@ define([
 ], function(React, cx) {
 
   return React.createClass({
+    displayName: 'FormGroup',
 
     propTypes: {
-      label: React.PropTypes.string.isRequired,
+      label: React.PropTypes.string,
       type: React.PropTypes.string,
       hideLabel: React.PropTypes.bool
     },
-  
+
     render: function() {
       return (
         <div className="form-group">

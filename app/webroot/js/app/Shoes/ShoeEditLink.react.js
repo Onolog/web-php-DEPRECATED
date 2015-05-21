@@ -48,32 +48,43 @@ define([
     mixins: [LayerMixin, StoreMixin],
 
     propTypes: {
-      shoe: React.PropTypes.object
+      shoeID: React.PropTypes.number
     },
 
     getInitialState: function() {
       return {
         isLoading: false,
-        shoe: this.props.shoe,
+        shoe: AllShoesStore.getShoeByID(this.props.shoeID),
         shown: false
       };
     },
 
     componentWillMount: function() {
       this.stores = [
+        this.setStoreInfo(AllShoesStore, this._allShoesChanged),
         this.setStoreInfo(ShoeStore, this._shoeChanged)
       ];
     },
 
+    _allShoesChanged: function() {
+      this.setState({
+        shoe: AllShoesStore.getShoeByID(this.props.shoeID)
+      });
+    },
+
     _shoeChanged: function() {
       var shoe = ShoeStore.getData();
-      if (shoe && shoe.id === this.props.shoe.id) {
+      if (shoe && shoe.id === this.props.shoeID) {
         this.setState({
           isLoading: false,
           shoe: shoe
         });
-      } else if (shoe && !shoe.id && this.state.shown) {
-        this._toggleModal();
+      } else if (shoe && !shoe.id) {
+        // There was either a cancel or successful edit action
+        this.setState({
+          isLoading: false,
+          shown: false
+        });
       }
     },
 
@@ -123,7 +134,6 @@ define([
 
       this.setState({
         isLoading: false,
-        shoe: this.props.shoe,
         shown: !this.state.shown
       });
     },

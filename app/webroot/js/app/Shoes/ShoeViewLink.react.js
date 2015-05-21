@@ -46,7 +46,6 @@ define([
     mixins: [LayerMixin, StoreMixin],
 
     propTypes: {
-      shoe: React.PropTypes.object,
       shoeID: React.PropTypes.number.isRequired,
       shoeName: React.PropTypes.string.isRequired
     },
@@ -61,8 +60,15 @@ define([
 
     componentWillMount: function() {
       this.stores = [
+        this.setStoreInfo(AllShoesStore, this._allShoesChanged),
         this.setStoreInfo(ShoeStore, this._shoeChanged)
       ];
+    },
+
+    _allShoesChanged: function() {
+      this.setState({
+        shoe: AllShoesStore.getShoeByID(this.props.shoeID)
+      });
     },
 
     _shoeChanged: function() {
@@ -76,6 +82,7 @@ define([
     },
 
     render: function() {
+      var shoe = AllShoesStore.getShoeByID();
       return (
         <Link href="javascript:;" onClick={this._onViewClick}>
           {this.props.shoeName}

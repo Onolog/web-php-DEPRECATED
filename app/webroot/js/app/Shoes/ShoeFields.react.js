@@ -31,6 +31,7 @@ define([
 ) {
 
   var FORM_NAME = SHOES.FORM_NAME;
+  var FIELD_INACTIVE = 'inactive';
 
   return React.createClass({
     displayName: 'ShoeFields',
@@ -88,7 +89,7 @@ define([
               <label>
                 <input
                   defaultChecked={!!shoe.inactive}
-                  name={cakePHP.encodeFormFieldName('inactive', FORM_NAME)}
+                  name={cakePHP.encodeFormFieldName(FIELD_INACTIVE, FORM_NAME)}
                   onChange={this._onUpdate}
                   type="checkbox"
                 />
@@ -100,11 +101,20 @@ define([
       }
     },
 
+    _onCheckboxUpdate: function() {
+
+      this._onUpdate();
+    },
+
     _onUpdate: function(event) {
-      ShoeActions.update(
-        cakePHP.decodeFormFieldName(event.target.name),
-        event.target.value
-      );
+      var field = cakePHP.decodeFormFieldName(event.target.name);
+      var value = event.target.value;
+
+      if (field === FIELD_INACTIVE) {
+        value = +event.target.checked;
+      }
+
+      ShoeActions.update(field, value);
     }
 
   });

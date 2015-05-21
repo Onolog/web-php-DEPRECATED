@@ -98,12 +98,12 @@ define([
         return (
           <tr
             className={cx({
-              inactive: !!+shoe.inactive
+              inactive: !!shoe.inactive
             })}
             key={idx}>
             <td>
               <ShoeViewLink
-                shoeID={+shoe.id}
+                shoeID={shoe.id}
                 shoeName={shoe.name}
               />
             </td>
@@ -112,7 +112,7 @@ define([
             </td>
             <td className="mileage">{shoe.mileage + ' mi'}</td>
             <td className="actions">
-              <ShoeEditLink shoe={shoe} />
+              <ShoeEditLink shoeID={shoe.id} />
               <CloseButton
                 onClick={this._onDeleteClick.bind(this, shoe.id)}
                 tooltip={{title: 'Delete'}}
