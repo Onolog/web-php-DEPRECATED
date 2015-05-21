@@ -92,9 +92,9 @@ define([
 
     _onChange: function() {
       var duration = moment.duration({
-        hours:   this.refs.hh.getDOMNode().value,
-        minutes: this.refs.mm.getDOMNode().value,
-        seconds: this.refs.ss.getDOMNode().value
+        hours:   this.refs.hh.getValue(),
+        minutes: this.refs.mm.getValue(),
+        seconds: this.refs.ss.getValue()
       }).asSeconds();
 
       // Update state to set the hidden input.

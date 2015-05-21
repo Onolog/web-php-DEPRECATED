@@ -27,6 +27,10 @@ define([
           type="text"
         />
       );
+    },
+
+    getValue: function() {
+      return this.getDOMNode().value;
     }
   });
 
