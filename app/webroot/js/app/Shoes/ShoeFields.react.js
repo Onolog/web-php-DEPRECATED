@@ -9,6 +9,7 @@ define([
   'lib/react/react',
   'lib/react/jsx!app/Shoes/BrandSelector.react',
   'lib/react/jsx!components/Forms/FormGroup.react',
+  'lib/react/jsx!components/Forms/TextInput.react',
 
   'actions/ShoeActions',
   'constants/Shoes',
@@ -20,6 +21,7 @@ define([
   React,
   BrandSelector,
   FormGroup,
+  TextInput,
 
   ShoeActions,
   SHOES,
@@ -61,13 +63,11 @@ define([
             />
           </FormGroup>
           <FormGroup label="Model">
-            <input
-              className="form-control"
+            <TextInput
               defaultValue={shoe && shoe.model}
               name={cakePHP.encodeFormFieldName('model', FORM_NAME)}
               onChange={this._onUpdate}
               ref="distance"
-              type="text"
             />
           </FormGroup>
           {this._renderInactiveCheckbox()}

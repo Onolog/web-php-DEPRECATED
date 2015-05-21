@@ -8,6 +8,8 @@ define([
 
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Forms/FormGroup.react',
+  'lib/react/jsx!components/Forms/HiddenInput.react',
+  'lib/react/jsx!components/Forms/TextInput.react',
   'lib/react/jsx!components/Panel/Panel.react',
   'lib/react/jsx!components/Select/Select.react',
 
@@ -18,6 +20,8 @@ define([
   React,
   Button,
   FormGroup,
+  HiddenInput,
+  TextInput,
   Panel,
   Select,
   cakePHP
@@ -42,38 +46,31 @@ define([
         <Panel className="form-horizontal">
           <form action={'/users/settings/'} method="post">
             <FormGroup label="First Name">
-              <input
-                className="form-control"
+              <TextInput
                 defaultValue={user.first_name}
                 name={cakePHP.encodeFormFieldName('first_name', FORM_NAME)}
                 placeholder="Enter your first name"
-                type="text"
               />
             </FormGroup>
             <FormGroup label="Last Name">
-              <input
-                className="form-control"
+              <TextInput
                 defaultValue={user.last_name}
                 name={cakePHP.encodeFormFieldName('last_name', FORM_NAME)}
                 placeholder="Enter your last name"
-                type="text"
               />
             </FormGroup>
             <FormGroup label="Email Address">
-              <input
-                className="form-control"
+              <TextInput
                 defaultValue={user.email}
                 name={cakePHP.encodeFormFieldName('email', FORM_NAME)}
                 placeholder="Enter your email address"
-                type="text"
               />
             </FormGroup>
             <FormGroup label="">
               <Button use="primary" label="Save Changes" type="submit" />
             </FormGroup>
-            <input
+            <HiddenInput
               name={cakePHP.encodeFormFieldName('id', FORM_NAME)}
-              type="hidden"
               value={user.id}
             />
           </form>

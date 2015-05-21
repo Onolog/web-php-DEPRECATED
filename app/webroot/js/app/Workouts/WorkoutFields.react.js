@@ -8,6 +8,9 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!components/Forms/FormGroup.react',
+  'lib/react/jsx!components/Forms/HiddenInput.react',
+  'lib/react/jsx!components/Forms/Textarea.react',
+  'lib/react/jsx!components/Forms/TextInput.react',
   'lib/react/jsx!components/Forms/TimeInput.react',
   'lib/react/jsx!components/Select/Select.react',
   'lib/react/jsx!components/Tokenizer/FriendTokenizer.react',
@@ -23,6 +26,9 @@ define([
 
   React,
   FormGroup,
+  HiddenInput,
+  Textarea,
+  TextInput,
   TimeInput,
   Select,
   FriendTokenizer,
@@ -98,13 +104,12 @@ define([
       return (
         <div className="form-horizontal workoutForm">
           <FormGroup label="Distance">
-            <input
-              className="form-control distance"
+            <TextInput
+              className="distance"
+              defaultValue={workout && workout.distance}
               name={cakePHP.encodeFormFieldName('distance', FORM_NAME)}
               onChange={this._onUpdate}
               ref="distance"
-              type="text"
-              defaultValue={workout && workout.distance}
             />
             <span className="colon">miles</span>
           </FormGroup>
@@ -123,13 +128,12 @@ define([
         	 </FormGroup>
 
           <FormGroup label="Avg. Heart Rate">
-            <input
-              className="form-control distance"
+            <TextInput
+              className="distance"
               defaultValue={workout && workout.avg_hr}
               maxLength="3"
               name={cakePHP.encodeFormFieldName('avg_hr', FORM_NAME)}
               onChange={this._onUpdate}
-              type="text"
             />
             <span className="colon">bpm</span>
           </FormGroup>
@@ -155,17 +159,16 @@ define([
           </FormGroup>
 
           <FormGroup label="Notes">
-            <textarea
+            <Textarea
+              className="notes"
+              defaultValue={workout && workout.notes}
               name={cakePHP.encodeFormFieldName('notes', FORM_NAME)}
-              className="notes form-control"
+              onChange={this._onUpdate}
               placeholder="Notes"
               rows="6"
-              onChange={this._onUpdate}
-              defaultValue={workout && workout.notes}
             />
           </FormGroup>
-          <input
-            type="hidden"
+          <HiddenInput
             name={cakePHP.encodeFormFieldName('date', FORM_NAME)}
             value={date}
           />

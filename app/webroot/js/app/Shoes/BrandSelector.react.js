@@ -7,6 +7,7 @@
 define([
 
   'lib/react/react',
+  'lib/react/jsx!components/Forms/TextInput.react',
   'lib/react/jsx!components/Select/Select.react',
 
   'actions/BrandActions',
@@ -16,6 +17,7 @@ define([
 ], function(
 
   React,
+  TextInput,
   Select,
 
   BrandActions,
@@ -59,14 +61,7 @@ define([
       if (!options.length) {
         // Hacky placeholder while we wait for the brands to load.
         // TODO: figure out a better solution?
-        return (
-          <input
-            className="form-control"
-            disabled={true}
-            type="text"
-            value="Select a shoe:"
-          />
-        );
+        return <TextInput disabled={true} value="Select a shoe:" />;
       }
 
       return (

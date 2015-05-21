@@ -8,11 +8,21 @@
 define([
 
   'lib/react/react',
+  'lib/react/jsx!components/Forms/HiddenInput.react',
+  'lib/react/jsx!components/Forms/TextInput.react',
   'utils/cakePHP',
   'lib/Moment/Moment',
   'lib/jquery/jquery.min'
 
-], function(React, cakePHP, moment) {
+], function(
+
+  React,
+  HiddenInput,
+  TextInput,
+  cakePHP,
+  moment
+
+) {
 
   return React.createClass({
     displayName: 'TimeInput',
@@ -46,10 +56,8 @@ define([
 
       return (
         <span>
-          <input
-            type="text"
+          <TextInput
             name="hh"
-            className="hh form-control"
             maxLength="2"
             placeholder="hh"
             ref="hh"
@@ -57,10 +65,8 @@ define([
             onChange={this._onChange}
           />
       		<span className="colon">:</span>
-          <input
-            type="text"
+          <TextInput
             name="mm"
-            className="mm form-control"
             maxLength="2"
             placeholder="mm"
             ref="mm"
@@ -68,20 +74,17 @@ define([
             onChange={this._onChange}
           />
       		<span className="colon">:</span>
-          <input
-            type="text"
-            name="ss"
-            className="ss form-control"
+          <TextInput
+            defaultValue={duration && duration.seconds()}
             maxLength="2"
+            name="ss"
             placeholder="ss"
             ref="ss"
-            defaultValue={duration && duration.seconds()}
             onChange={this._onChange}
           />
-          <input
-            value={this.state.duration}
+          <HiddenInput
             name={cakePHP.encodeFormFieldName('time', formName)}
-            type="hidden"
+            value={this.state.duration}
           />
         </span>
       );
