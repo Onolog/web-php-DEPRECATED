@@ -26,8 +26,9 @@ define([
       var handler = new ResponseHandler(response);
       if (handler.getWasSuccessful()) {
         AppDispatcher.dispatch({
+          data: handler.getPayload(),
           eventName: onSuccessEvent,
-          data: handler.getPayload()
+          alertMessage: handler.getMessage()
         });
       } else {
         ActionUtils.onError(response, onErrorEvent);

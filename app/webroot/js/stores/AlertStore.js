@@ -34,7 +34,7 @@ define([
   MicroEvent.mixin(AlertStore);
 
   AppDispatcher.register(function(payload) {
-    _alertMessage = payload.data;
+    _alertMessage = payload.alertMessage;
 
     switch(payload.eventName) {
       case ActionTypes.WORKOUT_ADD:
