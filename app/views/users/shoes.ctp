@@ -16,8 +16,7 @@ $this->Html->scriptStart(array('inline' => false));
 echo "
   require([
     'utils/reactRender',
-    'lib/react/jsx!app/Shoes/ShoesPage.react',
-    'lib/bootstrap.min'
+    'lib/react/jsx!app/Shoes/ShoesPage.react'
   ], function(reactRender, ShoesPage) {
     reactRender(ShoesPage, {}, 'reactRoot');
   });

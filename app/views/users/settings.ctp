@@ -23,8 +23,7 @@ $this->Html->scriptStart(array('inline' => false));
 echo "
   require([
     'utils/reactRender',
-    'lib/react/jsx!app/Users/Settings/Settings.react',
-    'lib/bootstrap.min'
+    'lib/react/jsx!app/Users/Settings/Settings.react'
   ], function(reactRender, Settings) {
     reactRender(Settings, {
       user: $json_user
