@@ -1,6 +1,7 @@
-// From http://jsfiddle.net/LBAr8/
-
-/* Create a new "layer" on the page, like a modal or overlay.
+/**
+ * LayerMixin.react.js
+ *
+ * Create a new "layer" on the page, like a modal or overlay.
  *
  * var LayeredComponent = React.createClass({
  *    mixins: [LayeredComponentMixin],
@@ -12,10 +13,11 @@
  *      // render a separate layer (the modal or overlay)
  *    }
  * });
+ *
+ * From http://jsfiddle.net/LBAr8/
  */
-
 define(['lib/react/react'], function(React) {
-  
+
   return {
 
     componentDidMount: function() {
@@ -36,13 +38,15 @@ define(['lib/react/react'], function(React) {
       document.body.removeChild(this._layer);
     },
 
+    /**
+     * By calling this method in componentDidMount() and componentDidUpdate(),
+     * you're effectively creating a "wormhole" that funnels React's
+     * hierarchical updates through to a DOM node on an entirely different
+     * part of the page.
+     */
     _renderLayer: function() {
-      // By calling this method in componentDidMount() and
-      // componentDidUpdate(), you're effectively creating a "wormhole" that
-      // funnels React's hierarchical updates through to a DOM node on an
-      // entirely different part of the page.
-
       var layerElement = this.renderLayer();
+
       // Renders can return null, but React.render() doesn't like being asked
       // to render null. If we get null back from renderLayer(), just render
       // a noscript element, like React does when an element's render returns
@@ -53,15 +57,11 @@ define(['lib/react/react'], function(React) {
         React.render(layerElement, this._layer);
       }
 
-      if (this.layerDidMount) {
-        this.layerDidMount(this._layer);
-      }
+      this.layerDidMount && this.layerDidMount(this._layer);
     },
 
     _unrenderLayer: function() {
-      if (this.layerWillUnmount) {
-        this.layerWillUnmount(this._layer);
-      }
+      this.layerWillUnmount && this.layerWillUnmount(this._layer);
       React.unmountComponentAtNode(this._layer);
     }
   };

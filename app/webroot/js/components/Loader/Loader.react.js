@@ -48,10 +48,12 @@ define([
       });
 
       return (
-        <div className={joinClasses(
-          this.props.className,
-          classes
-        )} />
+        <div
+          className={joinClasses(
+            this.props.className,
+            classes
+          )}
+        />
       );
     }
   });
