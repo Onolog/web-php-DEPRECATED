@@ -8,7 +8,7 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!components/Button/Button.react',
-  'lib/react/jsx!components/Panel.react',
+  'lib/react/jsx!components/Panel/Panel.react',
 
   'lib/react/jsx!app/Daniels/PaceTable.react',
   'lib/react/jsx!app/Daniels/DistanceTable.react',
