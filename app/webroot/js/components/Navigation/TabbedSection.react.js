@@ -1,5 +1,5 @@
 /**
- * TabbedPane.react
+ * TabbedSection.react
  * @jsx React.DOM
  *
  * Displays a pane with tabs. Clicking on the tabs changes the content
@@ -8,14 +8,14 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!components/Page/PageNav.react',
+  'lib/react/jsx!components/Navigation/Tabs.react',
   'utils/cx',
   'utils/joinClasses'
 
 ], function(
 
   React,
-  PageNav,
+  Tabs,
   cx,
   joinClasses
 
@@ -29,7 +29,7 @@ define([
   }
 
   return React.createClass({
-    displayName: 'TabbedPane',
+    displayName: 'TabbedSection',
 
     getInitialState: function() {
       return {
@@ -71,7 +71,7 @@ define([
       // displaying the tabs.
       if (items.length > 1) {
         return (
-          <PageNav
+          <Tabs
             {...this.props}
             className=""
             items={items}
