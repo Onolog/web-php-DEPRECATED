@@ -1,13 +1,12 @@
-if (Garmin == undefined) var Garmin = {};
 /**
  * @fileoverview BrowserDetect from http://www.quirksmode.org/js/detect.html. Not API.
  */
+
 /**
  * @class BrowserDetect
  * A library for detecting the user's browser and OS
  * Found at http://www.quirksmode.org/js/detect.html
  */
-
 define(function() {
 
   var BrowserDetect = {
@@ -21,16 +20,17 @@ define(function() {
   	},
 
   	searchString: function (data) {
-  		for (var i=0;i<data.length;i++)	{
+  		for (var i=0; i < data.length; i++)	{
   			var dataString = data[i].string;
   			var dataProp = data[i].prop;
   			this.versionSearchString = data[i].versionSearch || data[i].identity;
   			if (dataString) {
-  				if (dataString.indexOf(data[i].subString) != -1)
+  				if (dataString.indexOf(data[i].subString) != -1) {
   					return data[i].identity;
-  			}
-  			else if (dataProp)
-  				return data[i].identity;
+          }
+  			} else if (dataProp) {
+          return data[i].identity;
+        }
   		}
   	},
 

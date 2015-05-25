@@ -1,4 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
 /**
  * Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
@@ -19,28 +18,35 @@ if (Garmin == undefined) var Garmin = {};
  */
 
 /**
- * @class Garmin.DateTimeFormat
+ * @class DateTimeFormat
  * @constructor 
  */
-define(['prototype'], function() {
+define(function() {
 
-  Garmin.DateTimeFormat = function(){}; //just here for jsdoc
-  Garmin.DateTimeFormat = Class.create();
-  Garmin.DateTimeFormat.prototype = {
-  
-  	initialize: function() {
-  		this.hoursInADay = 24;
-	    this.minutesInAnHour = 60;
-	    this.secondsInAMinute = 60;
-	    this.millisecondsInASecond = 1000;
-	    this.millisecondsInADay = this.hoursInADay * this.minutesInAnHour * this.secondsInAMinute * this.millisecondsInASecond;
-	    this.millisecondsInAnHour = this.minutesInAnHour * this.secondsInAMinute * this.millisecondsInASecond;
-	    this.millisecondsInAMinute = this.secondsInAMinute * this.millisecondsInASecond;
-  
-  		this.xsdString = "";
-  		this.date = new Date();
-  	},
-  
+  /**
+   * Internationalization constants for date/time formatting.
+   */
+  var FORMAT = {
+    date: "#{month}/#{day}/#{year}",
+    time: "#{hour}:#{minute}:#{second}",
+    timestamp: "#{month}/#{day}/#{year} #{hour}:#{minute}:#{second}",
+    timestamp12hour: "#{month}/#{day}/#{year} #{hour}:#{minute}:#{second} #{meridian}"
+  }
+
+  var DateTimeFormat = function() {
+    this.hoursInADay = 24;
+    this.minutesInAnHour = 60;
+    this.secondsInAMinute = 60;
+    this.millisecondsInASecond = 1000;
+    this.millisecondsInADay = this.hoursInADay * this.minutesInAnHour * this.secondsInAMinute * this.millisecondsInASecond;
+    this.millisecondsInAnHour = this.minutesInAnHour * this.secondsInAMinute * this.millisecondsInASecond;
+    this.millisecondsInAMinute = this.secondsInAMinute * this.millisecondsInASecond;
+
+    this.xsdString = "";
+    this.date = new Date();
+  };
+
+  DateTimeFormat.prototype = {
   	/**
      * Get the date object associated with this object
      * 
@@ -218,7 +224,7 @@ define(['prototype'], function() {
   	 * @return formatted timestamp
        */
   	getTimeString: function() {
-  		return this.format(Garmin.DateTimeFormat.FORMAT.timestamp12hour, true, true);
+  		return this.format(FORMAT.timestamp12hour, true, true);
   	},
   
   	/**
@@ -244,7 +250,7 @@ define(['prototype'], function() {
   	 * @return formatted date
   	 */
   	formatDate: function(leftPad) {
-  		return this.format(Garmin.DateTimeFormat.FORMAT.date, leftPad);
+  		return this.format(FORMAT.date, leftPad);
   	},
   	
   	/** Format time using Garmin.DateTimeFormat.FORMAT.time template. 
@@ -253,7 +259,7 @@ define(['prototype'], function() {
   	 * @return formatted time
   	 */
   	formatTime: function(leftPad) {
-  		return this.format(Garmin.DateTimeFormat.FORMAT.time, leftPad);
+  		return this.format(FORMAT.time, leftPad);
   	},
   	
   	/** Format timestamp using Garmin.DateTimeFormat.FORMAT.timestamp template. 
@@ -262,7 +268,7 @@ define(['prototype'], function() {
   	 * @return formatted timestamp
   	 */
   	formatTimestamp: function(leftPad) {
-  		return this.format(Garmin.DateTimeFormat.FORMAT.timestamp, leftPad);
+  		return this.format(FORMAT.timestamp, leftPad);
   	},
   	
   	/** Applies template to date fields.  
@@ -302,16 +308,9 @@ define(['prototype'], function() {
   		return (activate && integer < 10) ? "0" + integer : "" + integer;
   	}
   }
+
+  DateTimeFormat.FORMAT = FORMAT;
   
-  /** Internationalization constants for date/time formatting.
-   */
-  Garmin.DateTimeFormat.FORMAT = {
-  	date: "#{month}/#{day}/#{year}",
-  	time: "#{hour}:#{minute}:#{second}",
-  	timestamp: "#{month}/#{day}/#{year} #{hour}:#{minute}:#{second}",
-  	timestamp12hour: "#{month}/#{day}/#{year} #{hour}:#{minute}:#{second} #{meridian}"
-  };
-  
-  return Garmin.DateTimeFormat;
+  return DateTimeFormat;
 
 });

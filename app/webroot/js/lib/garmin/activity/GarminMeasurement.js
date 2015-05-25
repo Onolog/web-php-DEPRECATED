@@ -1,4 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
 /**
  * Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
@@ -25,17 +24,14 @@ if (Garmin == undefined) var Garmin = {};
  * @param value - value of the measurement
  * @param context - the context of the measurement (feet, seconds, etc...)
  */
-define(['prototype'], function() {
+define(function() {
 
-  Garmin.Measurement = function(value, context){};
-  Garmin.Measurement = Class.create();
-  Garmin.Measurement.prototype = {
-  
-  	initialize: function(value, context) {
-  		this.value = value;
-  		this.context = context;
-  	},
-  	
+  var GarminMeasurement = function(value, context) {
+    this.value = value;
+    this.context = context;
+  };
+
+  GarminMeasurement.prototype = {
   	getContext: function() {
   		return this.context;
   	},
@@ -53,18 +49,18 @@ define(['prototype'], function() {
   	},
   	
   	printMe: function(tabs) {
-  		var output = "";
-  		output += tabs + "  [Measurement]\n";
-  		output += tabs + "    value: " + this.value + '\n';
+  		var output = '';
+  		output += tabs + ' [Measurement]\n';
+  		output += tabs + ' value: ' + this.value + '\n';
   		//output += tabs + "    context: " + this.context + '\n';
   		return output;
   	},
   	
   	toString: function() {
-  		return this.value + " " + this.context;
+  		return this.value + ' ' + this.context;
   	}
   };
   
-  return Garmin.Measurement;
+  return GarminMeasurement;
 
 });

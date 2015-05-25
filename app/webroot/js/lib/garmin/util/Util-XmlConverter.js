@@ -1,4 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
 /**
  * Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
@@ -24,9 +23,8 @@ if (Garmin == undefined) var Garmin = {};
  */
 define(function() {
 
-  Garmin.XmlConverter = function() {}; // just here for jsdoc
-  Garmin.XmlConverter = {
-  
+  var GarminXmlConverter = function() {}; // just here for jsdoc
+  GarminXmlConverter = {
     /**
      * Returns an xml document based on the string passed in
      * @param {String} fromString is the xml string to convert
@@ -34,17 +32,15 @@ define(function() {
      * @member Garmin.XmlConverter
      */
     toDocument: function(fromString) {
-      return Try.these(
-        function() {
-    	    var theDocument = new ActiveXObject("Microsoft.XMLDOM");
-    	    theDocument.async = "false";
-    	    theDocument.loadXML(fromString);
-    	    return theDocument;
-        },
-        function() {
-          return new DOMParser().parseFromString(fromString, "text/xml");
-        }
-      );
+      // Internet Explorer
+      if (window.ActiveXObject) {
+        var doc = new ActiveXObject('Microsoft.XMLDOM');
+        doc.async = "false";
+        doc.loadXML(fromString);
+        return doc;
+      }
+
+	    return new DOMParser().parseFromString(fromString, "text/xml");
     },
       
     /**
@@ -63,6 +59,6 @@ define(function() {
     }
   };
 
-  return Garmin.XmlConverter;
+  return GarminXmlConverter;
 
 });

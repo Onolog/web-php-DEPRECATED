@@ -1,4 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
 /**
  * Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
@@ -14,22 +13,23 @@ if (Garmin == undefined) var Garmin = {};
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @fileoverview Garmin.Activity A data structure representing an activity
+ * @fileoverview GarminActivity A data structure representing an activity
  *
  * @version 1.9
  */
 
-/**A data structure for storing data commonly found in various
+/**
+ * A data structure for storing data commonly found in various
  * formats supported by various gps devices.  Some examples are
  * gpx track, gpx route, gpx wayoint, and tcx activity.
- * @class Garmin.Activity
+ *
+ * @class GarminActivity
  * @constructor 
  */
 define([
 
   'lib/garmin/activity/GarminSample',
-  'lib/garmin/activity/GarminSeries',
-  'prototype'
+  'lib/garmin/activity/GarminSeries'
 
 ], function(
 
@@ -67,17 +67,14 @@ define([
   	tracks:				"tracks"
   };
 
-  Garmin.Activity = function(){};
-  Garmin.Activity = Class.create();
-  Garmin.Activity.prototype = {
-  	
-  	initialize: function() {
-  		this.attributes = new Hash();
-  		this.laps = [];
-  		this.summary = new Garmin.Sample();
-  		this.series = [];
-  	},
-  	
+  var GarminActivity = function() {
+    this.attributes = {};
+    this.laps = [];
+    this.summary = new GarminSample();
+    this.series = [];
+  };
+
+  GarminActivity.prototype = {
   	getAttributes: function() {
   		return this.attributes;
   	},
@@ -104,7 +101,7 @@ define([
   	
   	getHistorySeries: function() {
   		for (var i = 0; i < this.series.length; i++) {
-  			if (this.series[i].getSeriesType() == Garmin.Series.TYPES.history) {
+  			if (this.series[i].getSeriesType() == GarminSeries.TYPES.history) {
   				return this.series[i];
   			}
   		}
@@ -222,7 +219,7 @@ define([
   		output += tabs + "\n\n[Activity]\n";
   		
   		output += tabs + "  attributes:\n";
-  		var attKeys = this.attributes.keys();
+  		var attKeys = Object.keys(this.attributes);
   		for (var i = 0; i < attKeys.length; i++) {
   			output += tabs + "    " + attKeys[i] + ": " + this.attributes[attKeys[i]] + "\n"; 
   		}
@@ -239,14 +236,14 @@ define([
   	},
   	
   	toString: function() {
-  		return "[Garmin.Activity]"
+  		return "[GarminActivity]"
   	}
   };
   
-  Garmin.Activity.ATTRIBUTE_KEYS = ATTRIBUTE_KEYS;
-  Garmin.Activity.SECTION_KEYS = SECTION_KEYS;
-  Garmin.Activity.SUMMARY_KEYS = SUMMARY_KEYS;
+  GarminActivity.ATTRIBUTE_KEYS = ATTRIBUTE_KEYS;
+  GarminActivity.SECTION_KEYS = SECTION_KEYS;
+  GarminActivity.SUMMARY_KEYS = SUMMARY_KEYS;
 
-  return Garmin.Activity;
+  return GarminActivity;
 
 });

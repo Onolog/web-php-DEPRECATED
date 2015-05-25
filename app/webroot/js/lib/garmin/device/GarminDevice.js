@@ -1,4 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
 /** Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
  * Licensed under the Apache License, Version 2.0 (the 'License')
@@ -13,44 +12,41 @@ if (Garmin == undefined) var Garmin = {};
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @fileoverview Garmin.Device A place-holder for Garmin device information. <br/>
+ * @fileoverview GarminDevice A place-holder for Garmin device information. <br/>
  * Source: 
  * <a href="http://developer.garmin.com/web/communicator-api/garmin/device/GarminDevice.js">Hosted Distribution</a> &nbsp;
  * <a href="https://svn.garmindeveloper.com/web/trunk/communicator/communicator-api/src/main/webapp/garmin/device/GarminDevice.js">Source Control</a><br/>
  * @version 1.9
  */
 /** A place-holder for Garmin device information.
- * @class Garmin.Device
+ * @class GarminDevice
  *
  * @constructor 
  * @param {String} displayName for the device
  * @param {Number} number of the model
  */
-define(['prototype'], function() {
+define([], function() {
 
-  Garmin.Device = function(displayName, number){}; //just here for jsdoc
-  Garmin.Device = Class.create();
-  Garmin.Device.prototype = {
-  
-  	initialize: function(displayName, number) {
-      this.displayName = displayName;
-      this.number = number;
-      this.parentNumber = -1;
-      this.parent = null;
-      this.children = new Array();
-      
-      this.partNumber = null;
-      this.softwareVersion = null;
-      this.description = null;
-      this.id = null;
-      this.fileBased = false;
-      this.dataTypes = new Hash({});
-  	},
-  	
+  var GarminDevice = function(displayName, number) {
+    this.displayName = displayName;
+    this.number = number;
+    this.parentNumber = -1;
+    this.parent = null;
+    this.children = [];
+    
+    this.partNumber = null;
+    this.softwareVersion = null;
+    this.description = null;
+    this.id = null;
+    this.fileBased = false;
+    this.dataTypes = {};
+  };
+
+  GarminDevice.prototype = {
   	/** The display name of this device.
   	 * @type String
   	 * @return display name
-  	 * @member Garmin.Device
+  	 * @member GarminDevice
   	 */
   	getDisplayName: function() {
   		return this.displayName;
@@ -79,21 +75,21 @@ define(['prototype'], function() {
   	},
   
   	/** The parent device object, null if this device has no parent.
-  	 * @returns {Garmin.Device} parent device
+  	 * @returns {GarminDevice} parent device
   	 */
   	getParent: function() {
   		return this.parentDevice;
   	},
   
   	/** Set parent device
-  	 * @param {Garmin.Device} parent device object
+  	 * @param {GarminDevice} parent device object
   	 */
   	setParent: function(aDevice) {
   		this.parentDevice = aDevice;
   	},
   
   	/** Add a child device
-  	 * @param {Garmin.Device} child object
+  	 * @param {GarminDevice} child object
   	 */
   	addChild: function(aDevice) {
   		this.children.push(aDevice);
@@ -101,7 +97,7 @@ define(['prototype'], function() {
       
   	/**
   	 * The array of child devices
-  	 * @returns {Array} of Garmin.Device objects
+  	 * @returns {Array} of GarminDevice objects
   	 */
     getChildren: function() {
       return this.children;
@@ -123,7 +119,7 @@ define(['prototype'], function() {
   	},
   
   	/** Software version installed on device
-  	 * @param {String} Garmin.Device
+  	 * @param {String} GarminDevice
   	 */
   	setSoftwareVersion: function(softwareVersion) {
   		this.softwareVersion = softwareVersion;
@@ -173,13 +169,13 @@ define(['prototype'], function() {
   	 * @param dataType A DeviceDataType object containing information about the data type being added
   	 */
   	addDeviceDataType: function(dataType) {
-  		var newDataType = new Hash();
+  		var newDataType = {};
   		newDataType.set(dataType.getTypeName(), dataType);
   		this.dataTypes.update(newDataType);	
   	},
   
   	/** Returns a specific DeviceDataType object
-  	 * @type Garmin.DeviceDataType
+  	 * @type GarminDeviceDataType
   	 * @return The DeviceDataType object containing the specified extension
   	 * @param extension The file extension of the data type you are trying to get
   	 */	
@@ -234,7 +230,7 @@ define(['prototype'], function() {
   	/**
   	 * Check if device is a File-based device.<br\>
   	 * Will return false for all devices on plug-in versions prior to 2.8.1.0 <br\>
-  	 * @see Garmin.DevicePlugin#isDeviceFileBased
+  	 * @see GarminDevicePlugin#isDeviceFileBased
        * @returns {Boolean} true if device is file based
        */
   	isFileBased: function() {
@@ -247,6 +243,6 @@ define(['prototype'], function() {
   	
   };
 
-  return Garmin.Device;
+  return GarminDevice;
 
 });

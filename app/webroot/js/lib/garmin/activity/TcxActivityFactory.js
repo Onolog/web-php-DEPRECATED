@@ -1,4 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
 /**
  * Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
@@ -44,6 +43,8 @@ define([
 
 ) {
 
+  var ATTRIBUTE_KEYS = GarminActivity.ATTRIBUTE_KEYS;
+  var MEASUREMENT_KEYS = GarminSample.MEASUREMENT_KEYS;
   var SCHEMA_TAGS = {
   	activities:					 "Activities",
   	activity:					   "Activity",
@@ -85,31 +86,31 @@ define([
   	trackPointHeartRateValue:	"Value",
   	trackPointSensorState: "SensorState",
   	trackPointTime:				"Time",
-  	version:					"Version",
-  	versionBuildMajor:			"BuildMajor",
-  	versionBuildMinor:			"BuildMinor",	
-  	versionMajor:				"VersionMajor",
-  	versionMinor:				"VersionMinor"
+  	version:					    "Version",
+  	versionBuildMajor:		"BuildMajor",
+  	versionBuildMinor:		"BuildMinor",	
+  	versionMajor:				  "VersionMajor",
+  	versionMinor:				  "VersionMinor"
   };
+  var SUMMARY_KEYS = GarminActivity.SUMMARY_KEYS;
 
-  Garmin.TcxActivityFactory = function() {};
-  Garmin.TcxActivityFactory = {
+  var TcxActivityFactory = {
   	
   	parseString: function(tcxString) {
-  		var tcxDocument = Garmin.XmlConverter.toDocument(tcxString);		
-  		return Garmin.TcxActivityFactory.parseDocument(tcxDocument);		
+  		var tcxDocument = XmlConverter.toDocument(tcxString);		
+  		return this.parseDocument(tcxDocument);		
   	},
   	
   	/* Creates and returns an array of activities from the document. */
   	parseDocument: function(tcxDocument) {
-  		// Not TCX parseable
   		if (
-  		  tcxDocument.getElementsByTagName(SCHEMA_TAGS.activities).length == 0 &&
-  			tcxDocument.getElementsByTagName(SCHEMA_TAGS.courses).length == 0
+  		  !tcxDocument.getElementsByTagName(SCHEMA_TAGS.activities).length &&
+  			!tcxDocument.getElementsByTagName(SCHEMA_TAGS.courses).length
   		) {
+        // Not TCX parseable
   			throw new Error("ERROR: Unable to parse TCX document.");
   		}
-  		
+
   		var parsedDocument;
   		var activities = tcxDocument.getElementsByTagName(SCHEMA_TAGS.activity);
   		var tracks = tcxDocument.getElementsByTagName(SCHEMA_TAGS.track);
@@ -120,19 +121,19 @@ define([
   		if (activities.length >= 0) {
   			if (tracks.length >= 0) { 
   				// Complete activity
-  				parsedDocument = Garmin.TcxActivityFactory._parseTcxActivities(tcxDocument);
+  				parsedDocument = this._parseTcxActivities(tcxDocument);
   			} else {
   				// Directory listing
-  				parsedDocument = Garmin.TcxActivityFactory._parseTcxHistoryDirectory(tcxDocument);
+  				parsedDocument = this._parseTcxHistoryDirectory(tcxDocument);
   			}
       // Courses
   		} else if (courses.length >= 0) {
   			if (laps.length >= 0) {
   				// Complete course
-  				parsedDocument = Garmin.TcxActivityFactory._parseTcxCourses(tcxDocument);
+  				parsedDocument = this._parseTcxCourses(tcxDocument);
   			} else {
   				// Directory listing
-  				parsedDocument = Garmin.TcxActivityFactory._parseTcxCourseDirectory(tcxDocument);
+  				parsedDocument = this._parseTcxCourseDirectory(tcxDocument);
   			}
   		}
 
@@ -150,16 +151,16 @@ define([
   		if (activities != null && activities.length > 0) {			
   			// activity tags
   			for (var i = 0; i < activities.length; i++) {
-  				tcxString += "\n    " + Garmin.TcxActivityFactory._produceActivityString(activities[i]);
+  				tcxString += "\n    " + this._produceActivityString(activities[i]);
   			}
   			tcxString += '\n  </Activities>';
   			
   			// author tag
-  			var activityDom = activities[0].getAttribute(Garmin.Activity.ATTRIBUTE_KEYS.dom);
+  			var activityDom = activities[0].getAttribute(ATTRIBUTE_KEYS.dom);
   			if (activityDom != null) {
   				var authorDom = activityDom.ownerDocument.getElementsByTagName(SCHEMA_TAGS.author);
   				if (authorDom.length > 0) {
-  					tcxString += "\n  " + Garmin.XmlConverter.toString(authorDom[0]);
+  					tcxString += "\n  " + XmlConverter.toString(authorDom[0]);
   				}
   			}
   		}
@@ -170,10 +171,11 @@ define([
   		return tcxString;
   	},
   	
-  	/** Fully load the sample, assume sample was previously lazy-loaded
+  	/**
+     * Fully load the sample, assume sample was previously lazy-loaded.
   	 */	
   	finishLoadingSample: function(domNode, sample) {
-  		Garmin.TcxActivityFactory._parseTcxTrackPoint(domNode, sample);
+  		this._parseTcxTrackPoint(domNode, sample);
   		sample.isLazyLoaded = false;
   	},	
   	
@@ -185,9 +187,9 @@ define([
   			// this is the lazy way, this will not work if 
   			// converting between file types or activity data
   			// has been modified.
-  			var activityDom = activity.getAttribute(Garmin.Activity.ATTRIBUTE_KEYS.dom);			
+  			var activityDom = activity.getAttribute(ATTRIBUTE_KEYS.dom);			
   			if (activityDom != null) {
-  				activityString = Garmin.XmlConverter.toString(activityDom);
+  				activityString = XmlConverter.toString(activityDom);
   			}
   		}
   		
@@ -206,7 +208,7 @@ define([
   			
   			if (activityNodes[i].parentNode.tagName != SCHEMA_TAGS.nextSport ){
   				// create new activity object
-  				var activity = Garmin.TcxActivityFactory._parseTcxActivity(
+  				var activity = this._parseTcxActivity(
   				  activityNodes[i],
   				  SCHEMA_TAGS.activity
   				);
@@ -224,7 +226,7 @@ define([
   				for (var j = 0; j < lapNodes.length; j++) {
   					
   					// Update the duration of this activity
-  					var lapTotalTime = Garmin.TcxActivityFactory._tagValue(
+  					var lapTotalTime = this._tagValue(
               lapNodes[j],
               SCHEMA_TAGS.lapTotalTime
             );
@@ -233,12 +235,12 @@ define([
   				
   				if (lapNodes.length > 0) {
   					// set the start and end time summary data for the activity if possible
-  					activityStartTimeObj = (new Garmin.DateTimeFormat()).parseXsdDateTime(activityStartTimeMS);
-  					activityEndTimeObj	=  new Garmin.DateTimeFormat();
-  					// NOTE: switch to using setDate() once it is implemented in Garmin.DateTimeFormat
+  					activityStartTimeObj = (new DateTimeFormat()).parseXsdDateTime(activityStartTimeMS);
+  					activityEndTimeObj	=  new DateTimeFormat();
+  					// NOTE: switch to using setDate() once it is implemented in DateTimeFormat
   					activityEndTimeObj.date = new Date(activityStartTimeObj.getDate().getTime() + activityDurationMS);
-  					activity.setSummaryValue(Garmin.Activity.SUMMARY_KEYS.startTime, activityStartTimeObj);
-  					activity.setSummaryValue(Garmin.Activity.SUMMARY_KEYS.endTime, activityEndTimeObj);
+  					activity.setSummaryValue(GarminActivity.SUMMARY_KEYS.startTime, activityStartTimeObj);
+  					activity.setSummaryValue(GarminActivity.SUMMARY_KEYS.endTime, activityEndTimeObj);
   				}
   				
   				// Add the populated activity to the list of activities.  This activity may not have laps (if it's a directory listing entry).
@@ -263,7 +265,7 @@ define([
   		// Can there be more than one activity per document?
   		for (var i = 0; i < activityNodes.length; i++) {
   			// create new activity object
-  			var activity = Garmin.TcxActivityFactory._parseTcxActivity(
+  			var activity = this._parseTcxActivity(
           activityNodes[i],
           SCHEMA_TAGS.course
         );
@@ -293,13 +295,13 @@ define([
   		  }
 	
   			// create new activity object
-  			var activity = Garmin.TcxActivityFactory._parseTcxActivity(
+  			var activity = this._parseTcxActivity(
           activityNodes[i],
           SCHEMA_TAGS.activity
         );
   			
   			// create a history series for all the trackpoints in this activity
-  			var historySeries = new Garmin.Series(Garmin.Series.TYPES.history);
+  			var historySeries = new GarminSeries(GarminSeries.TYPES.history);
   			
   			// grab all the lap nodes in the dom			
   			var lapNodes = activityNodes[i].getElementsByTagName(SCHEMA_TAGS.lap);
@@ -317,7 +319,7 @@ define([
 				var elevationGain = 0;
 
   			// loop through all laps in this activity
-  			for (var j=0; j<lapNodes.length; j++) {
+  			for (var j=0; j < lapNodes.length; j++) {
 
           var lap = this._parseTcxLap(lapNodes[j], j);
 
@@ -346,11 +348,11 @@ define([
 
     			// Loop through all the tracks in this lap
     			var trackPointNodes = this._getTrackPointNodes(lapNodes[j]);
-    			for (var ll=0; ll<trackPointNodes.length; ll++) {
-    				var trackPoint = new Garmin.Sample();
+    			for (var ll=0; ll < trackPointNodes.length; ll++) {
+    				var trackPoint = new GarminSample();
     				trackPoint.setLazyLoading(
               true,
-              Garmin.TcxActivityFactory,
+              this,
               trackPointNodes[ll]
             );
 
@@ -381,13 +383,11 @@ define([
   			}
   			
   			if (lapNodes.length) {
-          var SUMMARY_KEYS = Garmin.Activity.SUMMARY_KEYS;
-
   				// set the start and end time summary data for the activity if possible
   				activityStartTimeObj =
-  				  (new Garmin.DateTimeFormat()).parseXsdDateTime(activityStartTimeMS);
-  				activityEndTimeObj	=  new Garmin.DateTimeFormat();
-  				// NOTE: switch to using setDate() once it is implemented in Garmin.DateTimeFormat
+  				  (new DateTimeFormat()).parseXsdDateTime(activityStartTimeMS);
+  				activityEndTimeObj	=  new DateTimeFormat();
+  				// NOTE: switch to using setDate() once it is implemented in GarminDateTimeFormat
   				activityEndTimeObj.date =
   				  new Date(activityStartTimeObj.getDate().getTime() + activityDurationMS);
   				avgHeartRate = avgHeartRate / lapNodes.length;
@@ -420,19 +420,22 @@ define([
   		var activityNodes;
   
   		// Grab the course nodes, depending on document		
-  		activityNodes = tcxDocument.getElementsByTagName(Garmin.TcxActivityFactory.SCHEMA_TAGS.course);
+  		activityNodes = tcxDocument.getElementsByTagName(SCHEMA_TAGS.course);
   		
   		// loop through all activities in the document
   		for (var i = 0; i < activityNodes.length; i++) {
   			
   			// create new activity object
-  			var activity = Garmin.TcxActivityFactory._parseTcxActivity(activityNodes[i], Garmin.TcxActivityFactory.SCHEMA_TAGS.course);
+  			var activity = this._parseTcxActivity(
+          activityNodes[i],
+          SCHEMA_TAGS.course
+        );
   			
   			// create a history series for all the trackpoints in this activity
-  			var historySeries = new Garmin.Series(Garmin.Series.TYPES.course);
+  			var historySeries = new GarminSeries(GarminSeries.TYPES.course);
   			
   			// grab all the lap nodes in the dom			
-  			var lapNodes = activityNodes[i].getElementsByTagName(Garmin.TcxActivityFactory.SCHEMA_TAGS.lap);
+  			var lapNodes = activityNodes[i].getElementsByTagName(SCHEMA_TAGS.lap);
   			
   			// grab start time from the first lap and set duration to 0
   			if (lapNodes.length > 0) {
@@ -443,7 +446,10 @@ define([
   			for (var j = 0; j < lapNodes.length; j++) {
   				
   				// update the duration of this activity
-  				var lapTotalTime = Garmin.TcxActivityFactory._tagValue(lapNodes[j], Garmin.TcxActivityFactory.SCHEMA_TAGS.lapTotalTime);
+  				var lapTotalTime = this._tagValue(
+            lapNodes[j],
+            SCHEMA_TAGS.lapTotalTime
+          );
   				activityDurationMS += parseFloat(lapTotalTime + "e+3");
   				
   				/* not implemented until sections are in place
@@ -459,7 +465,7 @@ define([
   			}
   			
   			// loop through all the tracks in this lap
-  			var trackNodes = activityNodes[i].getElementsByTagName(Garmin.TcxActivityFactory.SCHEMA_TAGS.track);			
+  			var trackNodes = activityNodes[i].getElementsByTagName(SCHEMA_TAGS.track);			
   			for (var k = 0; k < trackNodes.length; k++) {
   				
   				/* not implemented until sections are in place
@@ -467,13 +473,17 @@ define([
   				*/					
   				
   				// loop through all the trackpoints in this track
-  				var trackPointNodes = trackNodes[k].getElementsByTagName(Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPoint);
+  				var trackPointNodes = trackNodes[k].getElementsByTagName(SCHEMA_TAGS.trackPoint);
   				for (var l = 0; l < trackPointNodes.length; l++) {
-  					//historySeries.addSample(Garmin.TcxActivityFactory._parseTcxTrackPoint(trackPointNodes[l]));
-  					var trackPoint = new Garmin.Sample();
-  					trackPoint.setLazyLoading(true, Garmin.TcxActivityFactory, trackPointNodes[l]);
+  					//historySeries.addSample(this._parseTcxTrackPoint(trackPointNodes[l]));
+  					var trackPoint = new GarminSample();
+  					trackPoint.setLazyLoading(
+              true,
+              this,
+              trackPointNodes[l]
+            );
   					historySeries.addSample(trackPoint);
-  					//historySeries.addSample(new Garmin.Sample());
+  					//historySeries.addSample(new GarminSample());
   				}					
   			}
   			
@@ -491,55 +501,48 @@ define([
   	
   	_parseTcxActivity: function(activityNode, activityType) {
   		// create new activity object
-  		var activity = new Garmin.Activity();
+  		var activity = new GarminActivity();
   		
   		// set lazy loaded
-  		activity.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.isLazyLoaded, true);
+  		activity.setAttribute(ATTRIBUTE_KEYS.isLazyLoaded, true);
   		
   		// set factory
-  		activity.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.factory, Garmin.TcxActivityFactory);
+  		activity.setAttribute(ATTRIBUTE_KEYS.factory, this);
   		
   		// set dom
-  		activity.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.dom, activityNode);
+  		activity.setAttribute(ATTRIBUTE_KEYS.dom, activityNode);
   		
   		// set id
-  		var id;
-  		if (activityType == Garmin.TcxActivityFactory.SCHEMA_TAGS.activity) {
-  			id = Garmin.TcxActivityFactory._tagValue(
-          activityNode,
-          Garmin.TcxActivityFactory.SCHEMA_TAGS.activityId
-        );
-  		} else {
-  			id = Garmin.TcxActivityFactory._tagValue(
-          activityNode,
-          Garmin.TcxActivityFactory.SCHEMA_TAGS.courseName
-        );
-  		}
-  		activity.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.activityName, id)		
+  		var tagName = activityType == SCHEMA_TAGS.activity ?
+  			SCHEMA_TAGS.activityId : SCHEMA_TAGS.courseName;
+
+      var id = this._tagValue(activityNode, tagName);
+
+  		activity.setAttribute(ATTRIBUTE_KEYS.activityName, id)		
   		
   		// set sport
-  		var sport = activityNode.getAttribute(Garmin.TcxActivityFactory.SCHEMA_TAGS.activitySport);
-  		activity.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.activitySport, sport);	
+  		var sport = activityNode.getAttribute(SCHEMA_TAGS.activitySport);
+  		activity.setAttribute(ATTRIBUTE_KEYS.activitySport, sport);	
   		
   		// set creator information, optional in schema
-  		var creator = activityNode.getElementsByTagName(Garmin.TcxActivityFactory.SCHEMA_TAGS.creator);
+  		var creator = activityNode.getElementsByTagName(SCHEMA_TAGS.creator);
   		if (creator != null && creator.length > 0) {
   			// set creator name
-  			var creatorName = Garmin.TcxActivityFactory._tagValue(creator[0], Garmin.TcxActivityFactory.SCHEMA_TAGS.creatorName);
-  			activity.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.creatorName, creatorName);
+  			var creatorName = this._tagValue(creator[0], SCHEMA_TAGS.creatorName);
+  			activity.setAttribute(ATTRIBUTE_KEYS.creatorName, creatorName);
   			
   			// set creator unit id
-  			var unitId = Garmin.TcxActivityFactory._tagValue(creator[0], Garmin.TcxActivityFactory.SCHEMA_TAGS.creatorUnitID);
-  			activity.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.creatorUnitId, unitId);
+  			var unitId = this._tagValue(creator[0], SCHEMA_TAGS.creatorUnitID);
+  			activity.setAttribute(ATTRIBUTE_KEYS.creatorUnitId, unitId);
   							
   			// set creator product id
-  			var prodId = Garmin.TcxActivityFactory._tagValue(creator[0], Garmin.TcxActivityFactory.SCHEMA_TAGS.creatorProductID);
-  			activity.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.creatorProdId, prodId);
+  			var prodId = this._tagValue(creator[0], SCHEMA_TAGS.creatorProductID);
+  			activity.setAttribute(ATTRIBUTE_KEYS.creatorProdId, prodId);
   							
   			// set creator version
-  			var version = Garmin.TcxActivityFactory._parseTcxVersion(creator[0]);
+  			var version = this._parseTcxVersion(creator[0]);
   			if (version != null) {
-  				activity.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.creatorVersion, version);
+  				activity.setAttribute(ATTRIBUTE_KEYS.creatorVersion, version);
   			}
   		}
   		
@@ -562,8 +565,8 @@ define([
       lapValues[SCHEMA_TAGS.lap] = index + 1;
 
       tags.forEach(function(tag) {
-        lapValues[tag] = Garmin.TcxActivityFactory._tagValue(lapNode, tag);
-      });
+        lapValues[tag] = this._tagValue(lapNode, tag);
+      }.bind(this));
 
       return lapValues;
   	},
@@ -577,7 +580,7 @@ define([
   	_parseTcxTrackPoint: function(trackPointNode, trackPointSample) {
   		// create a sample for this trackpoint if needed
   		if (trackPointSample == null) {
-  			trackPointSample = new Garmin.Sample();
+  			trackPointSample = new GarminSample();
   		}
   		/*
   		var trackPointValueNodes = trackPointNode.childNodes;
@@ -586,33 +589,36 @@ define([
   				var nodeValue = trackPointValueNodes[i].childNodes[0].nodeValue;
   				if (nodeValue != null) {
   					switch(trackPointValueNodes[i].nodeName) {
-  						case Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointTime:
-  							trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.time, (new Garmin.DateTimeFormat()).parseXsdDateTime(nodeValue));						
+  						case SCHEMA_TAGS.trackPointTime:
+  							trackPointSample.setMeasurement(
+                  MEASUREMENT_KEYS.time,
+                  (new DateTimeFormat()).parseXsdDateTime(nodeValue)
+                );
   							break;						
-  						case Garmin.TcxActivityFactory.SCHEMA_TAGS.position:
-  							//var latitude = Garmin.TcxActivityFactory._tagValue(trackPointValueNodes[i], Garmin.TcxActivityFactory.SCHEMA_TAGS.positionLatitude);		
-  							//var longitude = Garmin.TcxActivityFactory._tagValue(trackPointValueNodes[i], Garmin.TcxActivityFactory.SCHEMA_TAGS.positionLongitude);
+  						case SCHEMA_TAGS.position:
+  							//var latitude = this._tagValue(trackPointValueNodes[i], SCHEMA_TAGS.positionLatitude);		
+  							//var longitude = this._tagValue(trackPointValueNodes[i], SCHEMA_TAGS.positionLongitude);
   							var latitude = trackPointValueNodes[i].childNodes[1].childNodes[0].nodeValue;
   							var longitude = trackPointValueNodes[i].childNodes[3].childNodes[0].nodeValue;
-  							trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.latitude, latitude);
-  							trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.longitude, longitude);						
+  							trackPointSample.setMeasurement(MEASUREMENT_KEYS.latitude, latitude);
+  							trackPointSample.setMeasurement(MEASUREMENT_KEYS.longitude, longitude);						
   							break;						
-  						case Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointElevation:
-  							trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.elevation, nodeValue);
+  						case SCHEMA_TAGS.trackPointElevation:
+  							trackPointSample.setMeasurement(MEASUREMENT_KEYS.elevation, nodeValue);
   							break;
-  						case Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointDistance:
-  							trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.distance, nodeValue);
+  						case SCHEMA_TAGS.trackPointDistance:
+  							trackPointSample.setMeasurement(MEASUREMENT_KEYS.distance, nodeValue);
   							break;
-  						case Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointHeartRate:
-  							//var heartRate = Garmin.TcxActivityFactory._tagValue(trackPointValueNodes[i], Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointHeartRateValue);
+  						case SCHEMA_TAGS.trackPointHeartRate:
+  							//var heartRate = this._tagValue(trackPointValueNodes[i], SCHEMA_TAGS.trackPointHeartRateValue);
   							var heartRate = trackPointValueNodes[i].childNodes[1].childNodes[0].nodeValue;
-  							trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.heartRate, heartRate);
+  							trackPointSample.setMeasurement(MEASUREMENT_KEYS.heartRate, heartRate);
   							break;
-  						case Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointCadence:
-  							trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.cadence, nodeValue);
+  						case SCHEMA_TAGS.trackPointCadence:
+  							trackPointSample.setMeasurement(MEASUREMENT_KEYS.cadence, nodeValue);
   							break;
-  						case Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointSensorState:
-  							trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.sensorState, nodeValue);
+  						case SCHEMA_TAGS.trackPointSensorState:
+  							trackPointSample.setMeasurement(MEASUREMENT_KEYS.sensorState, nodeValue);
   							break;																																				
   						default:
   					}
@@ -622,47 +628,50 @@ define([
   		*/
   		
   		// set time
-  		var time = Garmin.TcxActivityFactory._tagValue(trackPointNode, Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointTime);
-  		trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.time, (new Garmin.DateTimeFormat()).parseXsdDateTime(time));	
+  		var time = this._tagValue(trackPointNode, SCHEMA_TAGS.trackPointTime);
+  		trackPointSample.setMeasurement(
+        MEASUREMENT_KEYS.time,
+        (new DateTimeFormat()).parseXsdDateTime(time)
+      );
   
   		// set latitude and longitude, optional in schema (signal loss, create signal section);					
-  		var position = trackPointNode.getElementsByTagName(Garmin.TcxActivityFactory.SCHEMA_TAGS.position);
+  		var position = trackPointNode.getElementsByTagName(SCHEMA_TAGS.position);
   		if (position.length > 0) {
-  			var latitude = Garmin.TcxActivityFactory._tagValue(position[0], Garmin.TcxActivityFactory.SCHEMA_TAGS.positionLatitude);		
-  			var longitude = Garmin.TcxActivityFactory._tagValue(position[0], Garmin.TcxActivityFactory.SCHEMA_TAGS.positionLongitude);
-  			trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.latitude, latitude);
-  			trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.longitude, longitude);						
+  			var latitude = this._tagValue(position[0], SCHEMA_TAGS.positionLatitude);		
+  			var longitude = this._tagValue(position[0], SCHEMA_TAGS.positionLongitude);
+  			trackPointSample.setMeasurement(MEASUREMENT_KEYS.latitude, latitude);
+  			trackPointSample.setMeasurement(MEASUREMENT_KEYS.longitude, longitude);						
   		}
   					
   		// set elevation, optional in schema
-  		var elevation = Garmin.TcxActivityFactory._tagValue(trackPointNode, Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointElevation);
+  		var elevation = this._tagValue(trackPointNode, SCHEMA_TAGS.trackPointElevation);
   		if (elevation != null) {
-  			trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.elevation, elevation);
+  			trackPointSample.setMeasurement(MEASUREMENT_KEYS.elevation, elevation);
   		}
   		
   		// set distance, optional in schema
-  		var distance = Garmin.TcxActivityFactory._tagValue(trackPointNode, Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointDistance);
+  		var distance = this._tagValue(trackPointNode, SCHEMA_TAGS.trackPointDistance);
   		if (distance != null) {
-  			trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.distance, distance);
+  			trackPointSample.setMeasurement(MEASUREMENT_KEYS.distance, distance);
   		}
   
   		// set heart rate, optional in schema
-  		var heartRateNode = trackPointNode.getElementsByTagName(Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointHeartRate);
+  		var heartRateNode = trackPointNode.getElementsByTagName(SCHEMA_TAGS.trackPointHeartRate);
   		if (heartRateNode.length > 0) {
-  			var heartRate = Garmin.TcxActivityFactory._tagValue(heartRateNode[0], Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointHeartRateValue);
-  			trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.heartRate, heartRate);
+  			var heartRate = this._tagValue(heartRateNode[0], SCHEMA_TAGS.trackPointHeartRateValue);
+  			trackPointSample.setMeasurement(MEASUREMENT_KEYS.heartRate, heartRate);
   		}
   
   		// set cadence, optional in schema
-  		var cadence = Garmin.TcxActivityFactory._tagValue(trackPointNode, Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointCadence);
+  		var cadence = this._tagValue(trackPointNode, SCHEMA_TAGS.trackPointCadence);
   		if (cadence != null) {
-  			trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.cadence, cadence);
+  			trackPointSample.setMeasurement(MEASUREMENT_KEYS.cadence, cadence);
   		}
   
   		// set sensor state, optional in schema
-  		var sensorState = Garmin.TcxActivityFactory._tagValue(trackPointNode, Garmin.TcxActivityFactory.SCHEMA_TAGS.trackPointSensorState);
+  		var sensorState = this._tagValue(trackPointNode, SCHEMA_TAGS.trackPointSensorState);
   		if (sensorState != null) {
-  			trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.sensorState, sensorState);
+  			trackPointSample.setMeasurement(MEASUREMENT_KEYS.sensorState, sensorState);
   		}
 
   		return trackPointSample;
@@ -670,17 +679,17 @@ define([
 
   	_parseTcxVersion: function(parentNode) {
   		// find the version node
-  		var versionNodes = parentNode.getElementsByTagName(Garmin.TcxActivityFactory.SCHEMA_TAGS.version);
+  		var versionNodes = parentNode.getElementsByTagName(SCHEMA_TAGS.version);
 
   		// if there is a version node
   		if (versionNodes.length > 0) {					
   			// get version major and minor
-  			var vMajor = Garmin.TcxActivityFactory._tagValue(versionNodes[0], Garmin.TcxActivityFactory.SCHEMA_TAGS.versionMajor);
-  			var vMinor = Garmin.TcxActivityFactory._tagValue(versionNodes[0], Garmin.TcxActivityFactory.SCHEMA_TAGS.versionMinor);
+  			var vMajor = this._tagValue(versionNodes[0], SCHEMA_TAGS.versionMajor);
+  			var vMinor = this._tagValue(versionNodes[0], SCHEMA_TAGS.versionMinor);
 
   			// get buid major and minor, optional in schema
-  			var bMajor = Garmin.TcxActivityFactory._tagValue(versionNodes[0], Garmin.TcxActivityFactory.SCHEMA_TAGS.versionBuildMajor);
-  			var bMinor = Garmin.TcxActivityFactory._tagValue(versionNodes[0], Garmin.TcxActivityFactory.SCHEMA_TAGS.versionBuildMinor);
+  			var bMajor = this._tagValue(versionNodes[0], SCHEMA_TAGS.versionBuildMajor);
+  			var bMinor = this._tagValue(versionNodes[0], SCHEMA_TAGS.versionBuildMinor);
 
   			// return version
   			if ((bMajor != null) && (bMinor != null)) {
@@ -710,12 +719,12 @@ define([
     }
   };
 
-  Garmin.TcxActivityFactory.DETAIL = {
+  TcxActivityFactory.DETAIL = {
   	creator: 'Garmin Communicator Plugin API - http://www.garmin.com/'
   };
   
-  Garmin.TcxActivityFactory.SCHEMA_TAGS = SCHEMA_TAGS;
+  TcxActivityFactory.SCHEMA_TAGS = SCHEMA_TAGS;
 
-  return Garmin.TcxActivityFactory;
+  return TcxActivityFactory;
 
 });

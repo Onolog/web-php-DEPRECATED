@@ -1,4 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
 /**
  * Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
@@ -14,7 +13,7 @@ if (Garmin == undefined) var Garmin = {};
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @fileoverview Garmin.GpxActivityFactory - A factory for producing gpx activity and data.
+ * @fileoverview GpxActivityFactory - A factory for producing gpx activity and data.
  * @version 1.9
  */
 
@@ -22,12 +21,12 @@ if (Garmin == undefined) var Garmin = {};
  * A factory that can produce an array activity given gpx xml and produce gps xml given an
  * array of activity.
  * many other types of data.
- * @class Garmin.GpxActivityFactory
+ *
+ * @class GpxActivityFactory
  * @constructor 
  */
 define([
 
-  // Dependencies
   'lib/garmin/activity/GarminActivity',
   'lib/garmin/activity/GarminSample',
   'lib/garmin/activity/GarminSeries',
@@ -40,40 +39,94 @@ define([
     GarminSample,
     GarminSeries,
     DateTimeFormat,
-    XmlConverter) {
+    XmlConverter
 
-  Garmin.GpxActivityFactory = function(){};
-  Garmin.GpxActivityFactory = {
+) {
+
+  var ATTRIBUTE_KEYS = GarminActivity.ATTRIBUTE_KEYS;
+  var MEASUREMENT_KEYS = GarminSample.MEASUREMENT_KEYS;
+  var SUMMARY_KEYS = GarminActivity.SUMMARY_KEYS;
+  var TYPES = GarminSeries.TYPES;
+
+  var DETAIL = {
+    creator: 'Garmin Communicator Plug-In API'
+  };
+
+  var GPX_TYPE = {
+    routes:    "routes",
+    waypoints: "waypoints",
+    tracks:    "tracks",
+    all:       "all"
+  };
+
+  /**
+   * Constants defining tags used by the gpx schema. This is used
+   * by the factory when converting between the xml and datastructure.
+   */
+  var SCHEMA_TAGS = {
+    creator:          "creator",
+    gpx:            "gpx",
+    metadata:         "metadata",
+    route:            "rte",
+    routeName:          "name",
+    routePoint:         "rtept",
+    track:            "trk",
+    trackName:          "name",
+    trackPoint:         "trkpt",
+    trackSegment:       "trkseg",
+    waypoint:         "wpt",
+    waypointComment:      "cmt",
+    waypointDGPSAge:      "ageofdgpsdata",
+    waypointDGPSID:       "dgpsid",
+    waypointDescription:    "desc",
+    waypointGeoIdHeight:    "geoidheight",
+    waypointHDOP:       "hdop",
+    waypointMagVar:       "magvar",
+    waypointName:       "name",
+    waypointLatitude:     "lat",
+    waypointLink:       "link",
+    waypointLongitude:      "lon",
+    waypointElevation:      "ele",
+    waypointPDOP:       "pdop",
+    waypointSatellites:     "sat",
+    waypointSource:       "src",
+    waypointSymbol:       "sym",
+    waypointTime:       "time",
+    waypointType:       "type",
+    waypointVDOP:       "vdop"
+  }
+
+  var GpxActivityFactory = {
 
   	parseString: function(gpxString) {
-  		var gpxDocument = Garmin.XmlConverter.toDocument(gpxString);		
-  		return Garmin.GpxActivityFactory.parseDocument(gpxDocument);	
+  		var gpxDocument = XmlConverter.toDocument(gpxString);		
+  		return this.parseDocument(gpxDocument);	
   	},
   	
   	parseDocument: function(gpxDocument) {
-      return this.parseDocumentByType(gpxDocument, Garmin.GpxActivityFactory.GPX_TYPE.all);
+      return this.parseDocumentByType(gpxDocument, GPX_TYPE.all);
   	},
   	
   	parseDocumentByType: function(gpxDocument, type) {
-  		var activities = new Array();
-      var routes = new Array();
-      var tracks = new Array();
-      var waypoints = new Array();        
-      
+  		var activities = [];
+      var routes = [];
+      var tracks = [];
+      var waypoints = [];
+
       switch(type) {
-        case Garmin.GpxActivityFactory.GPX_TYPE.routes:
-          activities = Garmin.GpxActivityFactory._parseGpxRoutes(gpxDocument);
+        case GPX_TYPE.routes:
+          activities = this._parseGpxRoutes(gpxDocument);
           break;
-        case Garmin.GpxActivityFactory.GPX_TYPE.waypoints:
-          activities = Garmin.GpxActivityFactory._parseGpxWaypoints(gpxDocument);
+        case GPX_TYPE.waypoints:
+          activities = this._parseGpxWaypoints(gpxDocument);
           break;
-        case Garmin.GpxActivityFactory.GPX_TYPE.tracks:
-          activities = Garmin.GpxActivityFactory._parseGpxTracks(gpxDocument);
+        case GPX_TYPE.tracks:
+          activities = this._parseGpxTracks(gpxDocument);
           break;
-        case Garmin.GpxActivityFactory.GPX_TYPE.all:
-          routes = Garmin.GpxActivityFactory._parseGpxRoutes(gpxDocument);
-          tracks = Garmin.GpxActivityFactory._parseGpxTracks(gpxDocument);
-          waypoints = Garmin.GpxActivityFactory._parseGpxWaypoints(gpxDocument);
+        case GPX_TYPE.all:
+          routes = this._parseGpxRoutes(gpxDocument);
+          tracks = this._parseGpxTracks(gpxDocument);
+          waypoints = this._parseGpxWaypoints(gpxDocument);
           activities = waypoints.concat(routes).concat(tracks);
           break;    
       }
@@ -82,10 +135,10 @@ define([
   	},
   	
   	produceString: function(activities) {
-  		var gpxString = "";
+  		var gpxString = '';
   		
   		// default creator information incase we can't find the creator info in the dom
-  		var creator = Garmin.GpxActivityFactory.DETAIL.creator;
+  		var creator = DETAIL.creator;
   		
   		// default metadata information incase we can't find the metadata node in the dom
   		var metadata = "\n  <metadata>";
@@ -96,18 +149,18 @@ define([
   		
   		// try to find creator and metadata info in the dom
   		if (activities != null && activities.length > 0) {
-  			var activityDom = activities[0].getAttribute(Garmin.Activity.ATTRIBUTE_KEYS.dom);
-  			var gpxNode = activityDom.ownerDocument.getElementsByTagName(Garmin.GpxActivityFactory.SCHEMA_TAGS.gpx);
+  			var activityDom = activities[0].getAttribute(ATTRIBUTE_KEYS.dom);
+  			var gpxNode = activityDom.ownerDocument.getElementsByTagName(SCHEMA_TAGS.gpx);
   			if (gpxNode.length > 0) {
   				// grab creator information from the dom if possible
-  				var creatorStr = gpxNode[0].getAttribute(Garmin.GpxActivityFactory.SCHEMA_TAGS.creator);
+  				var creatorStr = gpxNode[0].getAttribute(SCHEMA_TAGS.creator);
   				if (creatorStr != null && creatorStr != "") {
   					creator = creatorStr;
   				}
   				// grab metadata info
-  				var metadataNode = gpxNode[0].getElementsByTagName(Garmin.GpxActivityFactory.SCHEMA_TAGS.metadata);
+  				var metadataNode = gpxNode[0].getElementsByTagName(SCHEMA_TAGS.metadata);
   				if (metadataNode.length > 0) {
-  					metadata = Garmin.XmlConverter.toString(metadataNode[0]);
+  					metadata = XmlConverter.toString(metadataNode[0]);
   				}
   			}
   		}
@@ -122,7 +175,7 @@ define([
   		if (activities != null) {
   			// waypoint and track tags
   			for(var i = 0; i < activities.length; i++) {		
-  				gpxString += "\n  " + Garmin.GpxActivityFactory._produceActivityString(activities[i]);
+  				gpxString += "\n  " + this._produceActivityString(activities[i]);
   			}
   		}
   		
@@ -135,11 +188,11 @@ define([
   	/** Fully load the sample, assume sample was previously lazy-loaded
   	 */	
   	finishLoadingSample: function(domNode, sample) {
-  		if (domNode.nodeName == Garmin.GpxActivityFactory.SCHEMA_TAGS.routePoint) {
-  			Garmin.GpxActivityFactory._parseGpxRoutePoint(domNode, sample);
+  		if (domNode.nodeName == SCHEMA_TAGS.routePoint) {
+  			this._parseGpxRoutePoint(domNode, sample);
   			sample.isLazyLoaded = false;
-  		} else if (domNode.nodeName == Garmin.GpxActivityFactory.SCHEMA_TAGS.trackPoint) {
-  			Garmin.GpxActivityFactory._parseGpxTrackPoint(domNode, sample);
+  		} else if (domNode.nodeName == SCHEMA_TAGS.trackPoint) {
+  			this._parseGpxTrackPoint(domNode, sample);
   			sample.isLazyLoaded = false;
   		}
   	},		
@@ -150,23 +203,23 @@ define([
   			var series = activity.getSeries();
   			for (var i = 0; i < series.length; i++) {
   				var currentSeries = series[i];
-  				if (currentSeries.getSeriesType() == Garmin.Series.TYPES.history) {
+  				if (currentSeries.getSeriesType() == TYPES.history) {
   					// converting the dom back into string
   					// this is the lazy way, this will not work if 
   					// converting between file types or activity data
   					// has been modified.
-  					var activityDom = activity.getAttribute(Garmin.Activity.ATTRIBUTE_KEYS.dom);			
+  					var activityDom = activity.getAttribute(ATTRIBUTE_KEYS.dom);			
   					if (activityDom != null) {
-  						activityString = Garmin.XmlConverter.toString(activityDom);
+  						activityString = XmlConverter.toString(activityDom);
   					}
-  				} else if (currentSeries.getSeriesType() == Garmin.Series.TYPES.waypoint) {
+  				} else if (currentSeries.getSeriesType() == TYPES.waypoint) {
   					// converting the dom back into string
   					// this is the lazy way, this will not work if 
   					// converting between file types or activity data
   					// has been modified.
-  					var activityDom = activity.getAttribute(Garmin.Activity.ATTRIBUTE_KEYS.dom);			
+  					var activityDom = activity.getAttribute(ATTRIBUTE_KEYS.dom);			
   					if (activityDom != null) {
-  						activityString = Garmin.XmlConverter.toString(activityDom);
+  						activityString = XmlConverter.toString(activityDom);
   					}						
   				}
   			}
@@ -176,27 +229,29 @@ define([
   	
   	_parseGpxRoutes: function(gpxDocument) {
   		var routes = new Array();
-      	var routeNodes = gpxDocument.getElementsByTagName(Garmin.GpxActivityFactory.SCHEMA_TAGS.route);
+      	var routeNodes = gpxDocument.getElementsByTagName(SCHEMA_TAGS.route);
   
   		for( var i=0; i < routeNodes.length; i++ ) {
-  			var route = new Garmin.Activity();
+  			var route = new GarminActivity();
   			
-  			var routeName = Garmin.GpxActivityFactory._tagValue(routeNodes[i], Garmin.GpxActivityFactory.SCHEMA_TAGS.routeName);
+  			var routeName = this._tagValue(routeNodes[i], SCHEMA_TAGS.routeName);
   			if (routeName == null) {
   				routeName = "";
   			}
   			
-  			route.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.dom, routeNodes[i]);
-  			route.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.activityName, routeName);
+  			route.setAttribute(ATTRIBUTE_KEYS.dom, routeNodes[i]);
+  			route.setAttribute(ATTRIBUTE_KEYS.activityName, routeName);
   
-  			var series = new Garmin.Series(Garmin.Series.TYPES.route);
+  			var series = new GarminSeries(TYPES.route);
   			route.addSeries(series);
   
-  			var routePoints = routeNodes[i].getElementsByTagName(Garmin.GpxActivityFactory.SCHEMA_TAGS.routePoint);					
+  			var routePoints = routeNodes[i].getElementsByTagName(
+          SCHEMA_TAGS.routePoint
+        );
   			if (routePoints.length > 0) {					
   				for( var j=0; j < routePoints.length; j++ ) {
-  					var routePoint = new Garmin.Sample();
-  					routePoint.setLazyLoading(true, Garmin.GpxActivityFactory, routePoints[j]);
+  					var routePoint = new GarminSample();
+  					routePoint.setLazyLoading(true, this, routePoints[j]);
   					series.addSample(routePoint);
   				}
   			}
@@ -211,15 +266,15 @@ define([
   	
   	_parseGpxRoutePoint: function(routePointNode, routePointSample) {
   		if (routePointSample == null) {
-  			routePointSample = new Garmin.Sample();
+  			routePointSample = new GarminSample();
   		}
   
-  		routePointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.latitude, routePointNode.getAttribute(Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointLatitude));
-  		routePointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.longitude, routePointNode.getAttribute(Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointLongitude));
+  		routePointSample.setMeasurement(MEASUREMENT_KEYS.latitude, routePointNode.getAttribute(SCHEMA_TAGS.waypointLatitude));
+  		routePointSample.setMeasurement(MEASUREMENT_KEYS.longitude, routePointNode.getAttribute(SCHEMA_TAGS.waypointLongitude));
   		
-  		var elevation =  Garmin.GpxActivityFactory._tagValue(routePointNode,Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointElevation);
+  		var elevation =  this._tagValue(routePointNode, SCHEMA_TAGS.waypointElevation);
   		if (elevation != null) {
-  			routePointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.elevation, elevation);
+  			routePointSample.setMeasurement(MEASUREMENT_KEYS.elevation, elevation);
   		}		
   		
   		return routePointSample;		
@@ -228,43 +283,52 @@ define([
   	_parseGpxTracks: function(gpxDocument) {
   		var tracks = new Array();
   		
-      	var trackNodes = gpxDocument.getElementsByTagName(Garmin.GpxActivityFactory.SCHEMA_TAGS.track);
+      	var trackNodes = gpxDocument.getElementsByTagName(SCHEMA_TAGS.track);
   		for( var i=0; i < trackNodes.length; i++ ) {
-  			var track = new Garmin.Activity();
+  			var track = new GarminActivity();
   			
-  			var trackName = Garmin.GpxActivityFactory._tagValue(trackNodes[i], Garmin.GpxActivityFactory.SCHEMA_TAGS.trackName);
+  			var trackName = this._tagValue(trackNodes[i], SCHEMA_TAGS.trackName);
   			if (trackName == null) {
   				trackName = "";
   			}
   			
-  			track.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.dom, trackNodes[i]);
-  			track.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.activityName, trackName);
+  			track.setAttribute(ATTRIBUTE_KEYS.dom, trackNodes[i]);
+  			track.setAttribute(ATTRIBUTE_KEYS.activityName, trackName);
   
-  			var series = new Garmin.Series(Garmin.Series.TYPES.history);
+  			var series = new GarminSeries(TYPES.history);
   			track.addSeries(series);
   
-  			var trackSegments = trackNodes[i].getElementsByTagName(Garmin.GpxActivityFactory.SCHEMA_TAGS.trackSegment);	
+  			var trackSegments = trackNodes[i].getElementsByTagName(SCHEMA_TAGS.trackSegment);	
   			for( var j=0; j < trackSegments.length; j++ ) {
   				
   				// grab all the trackpoints
-  				var trackPoints = trackSegments[j].getElementsByTagName(Garmin.GpxActivityFactory.SCHEMA_TAGS.trackPoint);											
+  				var trackPoints = trackSegments[j].getElementsByTagName(SCHEMA_TAGS.trackPoint);											
   				if (trackPoints.length > 0) {
   					
   					// set the start and end time summary values		
-  					var startTime = Garmin.GpxActivityFactory._tagValue(trackPoints[0], Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointTime);
-  					var endTime = Garmin.GpxActivityFactory._tagValue(trackPoints[trackPoints.length - 1], Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointTime);					
+  					var startTime = this._tagValue(trackPoints[0], SCHEMA_TAGS.waypointTime);
+  					var endTime = this._tagValue(
+              trackPoints[trackPoints.length - 1],
+              SCHEMA_TAGS.waypointTime
+            );
   					if (startTime != null && endTime != null) {
-  						track.setSummaryValue(Garmin.Activity.SUMMARY_KEYS.startTime, (new Garmin.DateTimeFormat()).parseXsdDateTime(startTime));
-  						track.setSummaryValue(Garmin.Activity.SUMMARY_KEYS.endTime, (new Garmin.DateTimeFormat()).parseXsdDateTime(endTime));
+  						track.setSummaryValue(
+                SUMMARY_KEYS.startTime,
+                (new DateTimeFormat()).parseXsdDateTime(startTime)
+              );
+  						track.setSummaryValue(
+                SUMMARY_KEYS.endTime,
+                (new DateTimeFormat()).parseXsdDateTime(endTime)
+              );
   					} else {
   						// can't find timestamps, must be a route reported as a track (GPSMap does this)
-  						series.setSeriesType(Garmin.Series.TYPES.route);
+  						series.setSeriesType(TYPES.route);
   					}
   				
   					// loop through all the trackpoints in this segment				
   					for( var k=0; k < trackPoints.length; k++ ) {
-  						var trackPoint = new Garmin.Sample();
-  						trackPoint.setLazyLoading(true, Garmin.GpxActivityFactory, trackPoints[k]);
+  						var trackPoint = new GarminSample();
+  						trackPoint.setLazyLoading(true, this, trackPoints[k]);
   						series.addSample(trackPoint);						
   					}
   					
@@ -279,20 +343,23 @@ define([
   	
   	_parseGpxTrackPoint: function(trackPointNode, trackPointSample) {
   		if (trackPointSample == null) {
-  			trackPointSample = new Garmin.Sample();	
+  			trackPointSample = new GarminSample();	
   		}
   		
-  		trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.latitude, trackPointNode.getAttribute(Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointLatitude));
-  		trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.longitude, trackPointNode.getAttribute(Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointLongitude));
+  		trackPointSample.setMeasurement(MEASUREMENT_KEYS.latitude, trackPointNode.getAttribute(SCHEMA_TAGS.waypointLatitude));
+  		trackPointSample.setMeasurement(MEASUREMENT_KEYS.longitude, trackPointNode.getAttribute(SCHEMA_TAGS.waypointLongitude));
   		
-  		var elevation =  Garmin.GpxActivityFactory._tagValue(trackPointNode,Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointElevation);
+  		var elevation =  this._tagValue(trackPointNode,SCHEMA_TAGS.waypointElevation);
   		if (elevation != null) {
-  			trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.elevation, elevation);
+  			trackPointSample.setMeasurement(MEASUREMENT_KEYS.elevation, elevation);
   		}
   
-  		var time = Garmin.GpxActivityFactory._tagValue(trackPointNode, Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointTime);
+  		var time = this._tagValue(trackPointNode, SCHEMA_TAGS.waypointTime);
   		if (time != null) {
-  			trackPointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.time, (new Garmin.DateTimeFormat()).parseXsdDateTime(time));
+  			trackPointSample.setMeasurement(
+          MEASUREMENT_KEYS.time,
+          (new DateTimeFormat()).parseXsdDateTime(time)
+        );
   		}			
   		
   		return trackPointSample;
@@ -300,33 +367,39 @@ define([
   	
   	_parseGpxWaypoints: function(gpxDocument) {
   		var waypoints = new Array();
-      	var waypointNodes = gpxDocument.getElementsByTagName(Garmin.GpxActivityFactory.SCHEMA_TAGS.waypoint);
+      	var waypointNodes = gpxDocument.getElementsByTagName(SCHEMA_TAGS.waypoint);
       	
   		for( var i=0; i < waypointNodes.length; i++ ) {
-  			waypoints.push(Garmin.GpxActivityFactory._parseGpxWaypoint(waypointNodes[i]));
+  			waypoints.push(this._parseGpxWaypoint(waypointNodes[i]));
   		}
       	
       	return waypoints;
   	},
   	
   	_parseGpxWaypoint: function(waypointNode) {
-  		var waypoint = new Garmin.Activity();
-  		var waypointSeries = new Garmin.Series(Garmin.Series.TYPES.waypoint);
-  		var waypointSample = new Garmin.Sample();
+  		var waypoint = new GarminActivity();
+  		var waypointSeries = new GarminSeries(TYPES.waypoint);
+  		var waypointSample = new GarminSample();
   		
-  		waypoint.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.dom, waypointNode);			
+  		waypoint.setAttribute(ATTRIBUTE_KEYS.dom, waypointNode);			
   
-  		waypointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.latitude, waypointNode.getAttribute(Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointLatitude)); 
-  		waypointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.longitude, waypointNode.getAttribute(Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointLongitude));
+  		waypointSample.setMeasurement(
+        MEASUREMENT_KEYS.latitude,
+        waypointNode.getAttribute(SCHEMA_TAGS.waypointLatitude)
+      );
+  		waypointSample.setMeasurement(
+        MEASUREMENT_KEYS.longitude,
+        waypointNode.getAttribute(SCHEMA_TAGS.waypointLongitude)
+      );
   				
-  		var elevation =  Garmin.GpxActivityFactory._tagValue(waypointNode,Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointElevation);
+  		var elevation =  this._tagValue(waypointNode, SCHEMA_TAGS.waypointElevation);
   		if (elevation != null) {
-  			waypointSample.setMeasurement(Garmin.Sample.MEASUREMENT_KEYS.elevation, elevation);
+  			waypointSample.setMeasurement(MEASUREMENT_KEYS.elevation, elevation);
   		}
   		
-  		var wptName =  Garmin.GpxActivityFactory._tagValue(waypointNode,Garmin.GpxActivityFactory.SCHEMA_TAGS.waypointName);
+  		var wptName =  this._tagValue(waypointNode,SCHEMA_TAGS.waypointName);
   		if (wptName != null) {
-  			waypoint.setAttribute(Garmin.Activity.ATTRIBUTE_KEYS.activityName, wptName);
+  			waypoint.setAttribute(ATTRIBUTE_KEYS.activityName, wptName);
   		}
   		
   		waypointSeries.addSample(waypointSample);
@@ -340,62 +413,14 @@ define([
   	},	
   	
       toString: function() {
-          return "[GpxActivityFactory]";
+        return "[GpxActivityFactory]";
       }	
   };
 
-  /** Constants defining GPX type
-   */
-  Garmin.GpxActivityFactory.GPX_TYPE = {
-  	routes:    "routes",
-  	waypoints: "waypoints",
-  	tracks:    "tracks",
-  	all:       "all"
-  }
-  
-  /** Constants defining details about the factory
-   */
-  Garmin.GpxActivityFactory.DETAIL = {
-  	creator:			"Garmin Communicator Plug-In API"
-  };
+  GpxActivityFactory.DETAIL = DETAIL;
+  GpxActivityFactory.GPX_TYPE = GPX_TYPE;
+  GpxActivityFactory.SCHEMA_TAGS = SCHEMA_TAGS;
 
-  /**
-   * Constants defining tags used by the gpx schema. This is used
-   * by the factory when converting between the xml and datastructure.
-   */
-  Garmin.GpxActivityFactory.SCHEMA_TAGS = {
-  	creator:					"creator",
-  	gpx:						"gpx",
-  	metadata:					"metadata",
-  	route:						"rte",
-  	routeName:					"name",
-  	routePoint:					"rtept",
-  	track:						"trk",
-  	trackName:					"name",
-  	trackPoint:					"trkpt",
-  	trackSegment:				"trkseg",
-  	waypoint:					"wpt",
-  	waypointComment:			"cmt",
-  	waypointDGPSAge:			"ageofdgpsdata",
-  	waypointDGPSID:				"dgpsid",
-  	waypointDescription:		"desc",
-  	waypointGeoIdHeight:		"geoidheight",
-  	waypointHDOP:				"hdop",
-  	waypointMagVar:				"magvar",
-  	waypointName:				"name",
-  	waypointLatitude:			"lat",
-  	waypointLink:				"link",
-  	waypointLongitude:			"lon",
-  	waypointElevation:			"ele",
-  	waypointPDOP:				"pdop",
-  	waypointSatellites:			"sat",
-  	waypointSource:				"src",
-  	waypointSymbol:				"sym",
-  	waypointTime:				"time",
-  	waypointType:				"type",
-  	waypointVDOP:				"vdop"
-  };
-
-  return Garmin.GpxActivityFactory;
+  return GpxActivityFactory;
 
 });

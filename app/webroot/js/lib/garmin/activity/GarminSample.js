@@ -1,4 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
 /**
  * Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
@@ -14,20 +13,20 @@ if (Garmin == undefined) var Garmin = {};
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @fileoverview Garmin.Sample - A datastructure designed to contain a number of measurements
+ * @fileoverview GarminSample - A datastructure designed to contain a number of measurements
  * 									recorded at a single point.
  * @version 1.9
  */
 
 /**
  * A collection of measurements recorded at a single point.
- * @class Garmin.Sample
+ *
+ * @class GarminSample
  * @constructor 
  */
 define([
 
-  'lib/garmin/activity/GarminMeasurement',
-  'prototype'
+  'lib/garmin/activity/GarminMeasurement'
 
 ], function(GarminMeasurement) {
 
@@ -42,19 +41,17 @@ define([
   	time:				 "time"
   };
 
-  Garmin.Sample = function(){};
-  Garmin.Sample = Class.create();
-  Garmin.Sample.prototype = {
-  
-  	initialize: function() {
-  		// lazy loading related values
-  		this.isLazyLoaded = false;
-  		this.factory = null;
-  		this.dom = null;
-  		
-  		// measurements of this sample
-  		this.measurements = new Hash();
-  	},
+  var GarminSample = function() {
+    // Lazy loading related values
+    this.isLazyLoaded = false;
+    this.factory = null;
+    this.dom = null;
+
+    // Measurements of this sample
+    this.measurements = {};
+  };
+
+  GarminSample.prototype = {
   
   	setLazyLoading: function(isLazyLoaded, factory, dom) {
   		this.isLazyLoaded = isLazyLoaded;
@@ -99,10 +96,13 @@ define([
   	},
   	
   	setMeasurement: function(mKey, mValue, mContext) {
-  		// if the key does not exist or is not of type Garmin.Measurement, create a new measurement object
+  		// if the key does not exist or is not of type GarminMeasurement, create a new measurement object
   		// else overwrite existing value and context
-  		if (!this.measurements[mKey] || !(this.measurements[mKey] instanceof Garmin.Measurement)) {
-  			this.measurements[mKey]= new Garmin.Measurement(mValue, mContext);
+  		if (
+        !this.measurements[mKey] ||
+        !(this.measurements[mKey] instanceof GarminMeasurement)
+      ) {
+  			this.measurements[mKey]= new GarminMeasurement(mValue, mContext);
   		} else {
   			this.measurements[mKey].setValue(mValue);
   			this.measurements[mKey].setContext(mContext);
@@ -135,7 +135,7 @@ define([
   		var output = ""
   		output += tabs + "  [Sample]\n";	
   		
-  		var measKeys = this.measurements.keys();
+  		var measKeys = Object.keys(this.measurements);
   		for (var i = 0; i < measKeys.length; i++) {
   			output += tabs + "    " + measKeys[i] + ":\n";	
   			output += this.measurements[measKeys[i]].printMe(tabs + "    "); 
@@ -145,12 +145,12 @@ define([
   	},
   	
   	toString: function() {
-  		return "[Garmin.Sample]"
+  		return "[GarminSample]"
   	}
   };
   
-  Garmin.Sample.MEASUREMENT_KEYS = MEASUREMENT_KEYS;
+  GarminSample.MEASUREMENT_KEYS = MEASUREMENT_KEYS;
 
-  return Garmin.Sample;
+  return GarminSample;
 
 });

@@ -1,4 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
 /** Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
  * Licensed under the Apache License, Version 2.0 (the 'License')
@@ -13,65 +12,70 @@ if (Garmin == undefined) var Garmin = {};
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @fileoverview Garmin.MapController Overlays tracks and waypoint data on Google maps.
+ * @fileoverview GoogleMapController Overlays tracks and waypoint data on Google maps.
  * @version 1.9
  */
+
 /**
- * Accepts Garmin.Series objects and draws them on a Google Map.
+ * Accepts GarminSeries objects and draws them on a Google Map.
  * 
- * @class Garmin.MapController
+ * @class GoogleMapController
  * @constructor 
  * @param (String) mapString id of element to place map in
  */
 define([
 
+  'lib/garmin/activity/GarminSample',
   'lib/garmin/device/GarminMapIcons',
   'gmaps',
-  'prototype',
   'lib/Facebook/fb'
 
-], function(GarminMapIcons) {
+], function(
 
-  Garmin.MapController = function(mapString) {};
-  Garmin.MapController = Class.create();
-  Garmin.MapController.prototype = {
-  
-    initialize: function(mapString) {
-      this.mapElement = document.getElementById(mapString);
-      this.usePositionMarker = true;
+  GarminSample,
+  GarminMapIcons
 
-      this.markers = [];
-      this.tracks = [];
-      this.markerIndex = 0;
+) {
+
+  // Default values: Los Altos, CA
+  var LATITUDE = 37.3682;
+  var LONGITUDE = -122.098;
+  var MEASUREMENT_KEYS = GarminSample.MEASUREMENT_KEYS;
+
+  GoogleMapController = function(map) {
+    this.mapElement = map;
+    this.usePositionMarker = true;
+
+    this.markers = [];
+    this.tracks = [];
+    this.markerIndex = 0;
+    this.map = this.getMap();
+
+    window.onUnload = "GUnload()";
+  };
+
+  GoogleMapController.prototype = {
+    getMap: function() {
+      var mapOptions = {
+        zoom: 12,
+        center: new google.maps.LatLng(LATITUDE, LONGITUDE),
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+      };
 
       FB.getLoginStatus(function(response) {
-
-        if (response.status !== 'connected') {
-          // TODO: Handle this case?
-          return;
-        }
-
-        // Get user's location
-        FB.api('/me', { fields: 'location' }, function(response) {
-          // Get location lat lng
-          FB.api(response.location.id, { fields: 'location' }, function(response) {
-
-            var mapOptions = {
-              zoom: 12,
-              center: new google.maps.LatLng(
+        if (response.status === 'connected') {
+          FB.api('/me', { fields: 'location' }, function(response) {
+            FB.api(response.location.id, { fields: 'location' }, function(response) {
+              mapOptions.center = new google.maps.LatLng(
                 response.location.latitude,
                 response.location.longitude
-              ),
-              mapTypeId: google.maps.MapTypeId.TERRAIN
-            };
-
-            this.map = new google.maps.Map(this.mapElement, mapOptions);
-
-          }.bind(this));
-        }.bind(this));
+              );
+            }.bind(this));
+          });
+        }
       }.bind(this));
 
-      window.onUnload = "GUnload()";
+      return new google.maps.Map(this.mapElement, mapOptions);
     },
 
     /**
@@ -87,7 +91,7 @@ define([
 
     /**
      * Draw track on map.
-     * @param (Garmin.Track) The track to draw
+     * @param (GarminTrack) The track to draw
      * @param (String) Color in RGB Hex format, default: "#ff0000"
      */    
     drawTrack: function(series, color) {
@@ -139,8 +143,12 @@ define([
   	createNearestValidLocationPoint: function(series, index, incDirection) {
     	var sample = series.findNearestValidLocationSample(index, -1);
     	if (sample != null) {
-    		var sampleLat = sample.getMeasurement(Garmin.Sample.MEASUREMENT_KEYS.latitude).getValue();
-    		var sampleLon = sample.getMeasurement(Garmin.Sample.MEASUREMENT_KEYS.longitude).getValue();
+    		var sampleLat = sample.getMeasurement(
+          MEASUREMENT_KEYS.latitude
+        ).getValue();
+    		var sampleLon = sample.getMeasurement(
+          MEASUREMENT_KEYS.longitude
+        ).getValue();
     		return new google.maps.LatLng(sampleLat, sampleLon);    		
     	} else {
   		  throw new Error("No valid location point in series.");
@@ -149,7 +157,7 @@ define([
   
     /**
      * Draw waypoint on map.
-     * @param (Garmin.Series) series containing a waypoint to add to the map
+     * @param (GarminSeries) series containing a waypoint to add to the map
      */
     drawWaypoint: function(series) {
     	var sample = series.getSample(0);
@@ -163,8 +171,8 @@ define([
      */
     findAZoomLevel: function(points) {
       var bounds = new google.maps.LatLngBounds(points[0], points[0]);      
-      for(var i=1; i<points.length-1; i+=3) {
-        bounds.extend(points[i]);
+      for (var ii=1; ii < points.length-1; ii+=3) {
+        bounds.extend(points[ii]);
       }
       return bounds;
     },
@@ -196,7 +204,11 @@ define([
      * @param {Number} longitude of marker
      */
     addMarker: function(latitude, longitude) {
-    	this.addMarkerWithIcon(latitude, longitude, Garmin.MapIcons.getRedIcon());
+    	this.addMarkerWithIcon(
+        latitude,
+        longitude,
+        GarminMapIcons.getRedIcon()
+      );
     },
   
     /**
@@ -219,21 +231,21 @@ define([
   
     /**
      * Add start and finish markers to a track
-     * @param (Garmin.Series) The series to add markers to
+     * @param (GarminSeries) The series to add markers to
      */
     addStartFinishMarkers: function(series) {
     	var firstSample = series.getFirstValidLocationSample();
       this.addMarkerWithIcon(
         firstSample.getLatitude(),
         firstSample.getLongitude(),
-        Garmin.MapIcons.getGreenIcon()
+        GarminMapIcons.getGreenIcon()
       );
 
     	var lastSample = series.getLastValidLocationSample();
       this.addMarkerWithIcon(
         lastSample.getLatitude(),
         lastSample.getLongitude(),
-        Garmin.MapIcons.getRedIcon()
+        GarminMapIcons.getRedIcon()
       );
     },
   
@@ -250,7 +262,7 @@ define([
      */
     clearOverlays: function() {
       // Clear any markers
-      for (var ii=0; ii<this.markers.length; ii++) {
+      for (var ii=0; ii < this.markers.length; ii++) {
         this.markers[ii].setMap(null);
       }
       this.markers.length = 0;
@@ -260,6 +272,6 @@ define([
     }
   };
 
-  return Garmin.MapController;
+  return GoogleMapController;
   
 });

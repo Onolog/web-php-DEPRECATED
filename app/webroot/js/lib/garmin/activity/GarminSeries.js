@@ -1,4 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
 /**
  * Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
@@ -14,29 +13,29 @@ if (Garmin == undefined) var Garmin = {};
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @fileoverview Garmin.Series - A datastructure designed to contain a series of Garmin.Sample.
+ * @fileoverview GarminSeries - A datastructure designed to contain a series of
+ * GarminSample.
+ *
  * @version 1.9
  */
 
 /**
  * Contains a series of samples.  Could represent tracks, routes, waypoints, and
  * many other types of data.
+ *
  * @class Garmin.Series
  * @constructor 
- * @param (String) type - the type of data this series contain.  Should be determined by what
+ * @param (String) type - the type of data this series contain. Should be determined by what
  * 							information is recorded by the samples this series contain.
  */
-define(['prototype'], function() {
+define(function() {
 
-  Garmin.Series = function(type){};
-  Garmin.Series = Class.create();
-  Garmin.Series.prototype = {
-  
-  	initialize: function(seriesType) {
-  		this.seriesType = seriesType;
-  		this.samples = [];
-  	},
-  
+  var GarminSeries = function(seriesType) {
+    this.seriesType = seriesType;
+    this.samples = [];
+  };
+
+  GarminSeries.prototype = {
   	getSeriesType: function() {
   		return this.seriesType;
   	},
@@ -48,7 +47,7 @@ define(['prototype'], function() {
   	getSamples: function() {
   		return this.samples;		
   	},
-  	
+
   	getSample: function(index) {
   		var targetSample = null;
   		if (index >= 0 && index < this.samples.length) {
@@ -81,7 +80,7 @@ define(['prototype'], function() {
      * @param incDirection is an int in the direction we'd like to look positive 
      * 	nums are forward, negative nums are backwards
      * 
-     * @type Garmin.Sample 
+     * @type GarminSample 
      * @return The nearest point (possibly the index) that has a valid latitude and longitude
      */ 
     findNearestValidLocationSample: function(index, incDirection) {
@@ -124,13 +123,13 @@ define(['prototype'], function() {
   	}
   };
   
-  Garmin.Series.TYPES = {
-  	history:		"history",
-  	route:			"route",
-  	waypoint:		"waypoint",
-  	course:			"course"
+  GarminSeries.TYPES = {
+    history:    'history',
+    route:      'route',
+    waypoint:   'waypoint',
+    course:     'course'
   };
 
-  return Garmin.Series;
+  return GarminSeries;
 
 });

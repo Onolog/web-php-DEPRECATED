@@ -1,4 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
 /**
  * Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
@@ -31,15 +30,15 @@ if (Garmin == undefined) var Garmin = {};
  * @requires Garmin.File
  * @constructor 
  */
-define(['prototype'], function() {
+define([], function() {
 
-  Garmin.ActivityDirectory = function(){}; //just here for jsdoc
-  Garmin.ActivityDirectory = Class.create({
-    initialize: function() {
-      this.entries = new Array();
-    },
-    
-    /** Add an entry to the directory by activity ID.
+  var GarminActivityDirectory = function() {
+    this.entries = [];
+  };
+
+  GarminActivityDirectory.prototype = {
+    /**
+     * Add an entry to the directory by activity ID.
      */
     addEntry: function(activityId, name, duration, displayElementId) {
       var entry = new Garmin.ActivityDirectory.Entry(activityId, name, duration, null, displayElementId);
@@ -137,10 +136,12 @@ define(['prototype'], function() {
     size: function() {
       return this.entries ? this.entries.length : 0; 
     }
-  });
+  };
   
-  /** An activity entry in the directory.
-   *  Only the activity ID is required. The rest are optional.
+  /**
+   * An activity entry in the directory. Only the activity ID is required.
+   * The rest are optional.
+   *
    * @class Garmin.ActivityDirectory.Entry
    * @constructor 
    * @param {String} activityId
@@ -149,17 +150,21 @@ define(['prototype'], function() {
    * @param {Boolean} [successfulUpload]
    * @param {String} [displayElementId]
    */
-  Garmin.ActivityDirectory.Entry = Class.create({
-    initialize: function(activityId, name, duration, successfulUpload, displayElementId) {
-      this.id = activityId;
-      this.name = name;
-      this.duration = duration;
-      this.successfulUpload = successfulUpload;
-      this.displayElementId = displayElementId;
-      this.path = null;
-      this.isNew = true;
-    }
-  });
+  GarminActivityDirectory.Entry = function(
+    activityId,
+    name,
+    duration,
+    successfulUpload,
+    displayElementId
+  ) {
+    this.id = activityId;
+    this.name = name;
+    this.duration = duration;
+    this.successfulUpload = successfulUpload;
+    this.displayElementId = displayElementId;
+    this.path = null;
+    this.isNew = true;
+  };
   
   /** A file entry in the directory.
    * @class Garmin.ActivityDirectory.FileEntry
@@ -167,17 +172,15 @@ define(['prototype'], function() {
    * @param {Garmin.File} aFile 
    * @augments Garmin.ActivityDirectory.Entry
    */
-  Garmin.ActivityDirectory.FileEntry = Class.create(Garmin.ActivityDirectory.Entry, {
-    initialize: function($super, aFile) {
-      if (aFile) {
-        //use the file path as a unique id and also name.
-        var thePath = aFile.getAttribute(Garmin.File.ATTRIBUTE_KEYS.path);
-        $super(thePath, thePath);
-        this.path = thePath;
-      }
+  GarminActivityDirectory.FileEntry = function($super, aFile) {
+    if (aFile) {
+      //use the file path as a unique id and also name.
+      var thePath = aFile.getAttribute(GarminFile.ATTRIBUTE_KEYS.path);
+      $super(thePath, thePath);
+      this.path = thePath;
     }
-  });
+  };
 
-  return Garmin.ActivityDirectory;
+  return GarminActivityDirectory;
 
 });

@@ -1,4 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
 /**
  * Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
@@ -38,16 +37,13 @@ if (Garmin == undefined) var Garmin = {};
  * toBeAlerted.alerting({message: 'howdy', controller: broadcaster})
  * @constructor 
  */
-define(['prototype'], function() {
+define([], function() {
 
-  Garmin.Broadcaster = function() {}; // just here for jsdoc
-  Garmin.Broadcaster = Class.create();
-  Garmin.Broadcaster.prototype = {
-  
-  	initialize: function() {
-      this.responders = new Array();
-  	},
-  
+  var GarminBroadcaster = function() {
+    this.responders = [];
+  };
+
+  GarminBroadcaster.prototype = {
   	/**
      * Register an object to listen for events
      * 
@@ -55,8 +51,9 @@ define(['prototype'], function() {
      * @member Garmin.Broadcaster
      */
   	register: function(responderToAdd) {
-  	  if (!this.responders.include(responderToAdd))
-  	    this.responders.push(responderToAdd);
+  	  if (!this.responders.include(responderToAdd)) {
+        this.responders.push(responderToAdd);
+      }
   	},
   
   	/**
@@ -87,6 +84,5 @@ define(['prototype'], function() {
   	}
   };
 
-  return Garmin.Broadcaster;
-
+  return GarminBroadcaster;
 });
