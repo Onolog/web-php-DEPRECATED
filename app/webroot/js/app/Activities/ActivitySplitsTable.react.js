@@ -1,5 +1,5 @@
 /**
- * GarminSplitsTable.react
+ * ActivitySplitsTable.react
  * @jsx React.DOM
  *
  * Displays data for each split/lap in a table view
@@ -22,13 +22,13 @@ define([
 
 ) {
 
-  var SCHEMA_TAGS = Garmin.TcxActivityFactory.SCHEMA_TAGS;
+  var SCHEMA_TAGS = TcxActivityFactory.SCHEMA_TAGS;
 
   return React.createClass({
-    displayName: 'GarminSplitsTable',
+    displayName: 'ActivitySplitsTable',
 
     propTypes: {
-      activity: React.PropTypes.object
+      laps: React.PropTypes.array
     },
 
     render: function() {
@@ -55,19 +55,19 @@ define([
     },
 
     _renderBodyRows: function() {
-      var activity = this.props.activity;
-      var laps;
+      var laps = this.props.laps;
+      var contents;
       var columns = this._getColumns();
 
-      if (!activity) {
-        laps =
+      if (!laps || !laps.length) {
+        contents =
           <tr>
             <td colSpan={columns.length}>
               No splits data available
             </td>
           </tr>;
       } else {
-        laps = activity.getLaps().map(function(lap, idx) {
+        contents = laps.map(function(lap, idx) {
           var cells = columns.map(function(column, idx) {
             var value = lap[column.tag];
             return (
@@ -83,7 +83,7 @@ define([
         });
       }
 
-      return <tbody>{laps}</tbody>;
+      return <tbody>{contents}</tbody>;
     },
 
     _getColumns: function() /*array*/ {

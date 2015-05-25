@@ -1,0 +1,156 @@
+/**
+ * Activity.css
+ */
+
+.activityContainer {
+  position: relative;
+}
+
+.activityMapContainer {
+  border-bottom: 1px solid #ddd;
+  height: 250px;
+}
+
+.activityMap {
+  height: 100%;
+  width: 100%;
+}
+
+.noMap .activityInfo {
+  float: none;
+  width: auto;
+}
+
+
+/* Horizontal orientation */
+.horizontal .activityMapContainer {
+  border-right: 1px solid #ddd;
+  bottom: 0;
+  height: auto;
+  position: absolute;
+  top: 0;
+  width: 50%;
+}
+
+.horizontal .activityInfo {
+  float: right;
+  width: 50%;
+}
+
+
+.activityHeader {
+  background-color: #f5f5f5;
+}
+
+.activityAthleteName {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.activityDate {
+  color: #bbb;
+  font-size: 12px;
+  line-height: 1em;
+  margin-bottom: 9px;
+}
+
+.activityType {
+  color: #aaa;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+
+/* Activity Tabbed Panes */
+.activityPanes {
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+}
+
+.activityPanes .nav-tabs > li > a,
+.activityPanes .nav-tabs > li > a:hover,
+.activityPanes .nav-tabs > li > a:focus {
+  border-width: 0;
+  border-radius: 0;
+  margin-right: 0;
+}
+
+.activityPanes .nav-tabs > li > a:hover {
+  background-color: #e7f4ff;
+}
+
+.activityPanes .nav-tabs > li.active > a,
+.activityPanes .nav-tabs > li.active > a:hover,
+.activityPanes .nav-tabs > li.active > a:focus {
+  border-width: 0 1px 1px;
+  border-color: #ddd #ddd #fff;
+}
+.activityPanes .nav-tabs > li.active > a:hover {
+  background-color: transparent;
+}
+.activityPanes .nav-tabs > li.active:first-child > a,
+.activityPanes .nav-tabs > li.active:first-child > a:hover,
+.activityPanes .nav-tabs > li.active:first-child > a:focus {
+  border-left: 0;
+}
+
+.activityNavPane {
+  background-color: #fff;
+}
+
+.activityNotes {
+  white-space: pre-wrap;
+}
+
+
+/* Activity Device */
+.activityDeviceImage {
+  height: 50px;
+}
+
+.activityDeviceName {
+  margin-bottom: 5px;
+}
+
+.activityDeviceVersion {
+  color: #bbb;
+  font-size: 12px;
+}
+
+
+/* Activity Section */
+.activitySection {
+  padding: 15px;
+}
+
+.activitySectionBorder {
+  border-top: 1px solid #f5f5f5;
+}
+
+/* Should match labeledStatLabel from Topline.css */
+.activitySectionTitle {
+  color: #aaa;
+  font-size: 10px;
+  font-weight: normal;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+
+@media (min-width: 992px) {
+  /*
+  .activityMapContainer {
+    border-right: 1px solid #ddd;
+    bottom: 0;
+    height: auto;
+    position: absolute;
+    top: 0;
+    width: 50%;
+  }
+
+  .activityInfo {
+    float: right;
+    width: 50%;
+  }
+  */
+}

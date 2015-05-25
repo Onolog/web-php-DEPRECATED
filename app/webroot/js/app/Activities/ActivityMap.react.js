@@ -1,5 +1,5 @@
 /**
- * GarminMap.react
+ * ActivityMap.react
  * @jsx React.DOM
  *
  * Maps waypoints for a single activity on a Google map
@@ -19,10 +19,10 @@ define([
 ) {
 
   return React.createClass({
-    displayName: 'GarminMap',
+    displayName: 'ActivityMap',
 
     componentDidMount: function() {
-      this.mc = new Garmin.MapController('map');
+      this.mc = new GoogleMapController(this.getDOMNode());
       this._initTracks();
     },
 
@@ -32,23 +32,16 @@ define([
     },
 
     propTypes: {
-      activity: React.PropTypes.object
+      series: React.PropTypes.array
     },
 
     render: function() {
-      return <div id="map"></div>;
+      return <div className={this.props.className} />;
     },
 
     _initTracks: function() {
   		var numOfTracks = 0;
-  		var activity = this.props.activity;
-
-      // Bail if we don't have a selected activity
-  		if (!activity) {
-  		  return;
-  		}
-
-  		var series = activity.getSeries();
+  		var series = this.props.series;
 
 		  // Loop through each series in the activity
 		  // TODO: Are there multiple series per activity?
@@ -57,19 +50,19 @@ define([
 			for (var ii = 0; ii < series.length; ii++) {
 				var curSeries = series[ii];
 				switch(curSeries.getSeriesType()) {
-					case Garmin.Series.TYPES.history:
+					case GarminSeries.TYPES.history:
 						// Activity contains a series of type history, list the track
 						numOfTracks++;
 						break;
-					case Garmin.Series.TYPES.route:
+					case GarminSeries.TYPES.route:
 						// Activity contains a series of type route, list the route
 						numOfRoutes++;
 						break;
-					case Garmin.Series.TYPES.waypoint:
+					case GarminSeries.TYPES.waypoint:
 						// Activity contains a series of type waypoint, list the waypoint
 						numOfWaypoints++;
 						break;
-					case Garmin.Series.TYPES.course:
+					case GarminSeries.TYPES.course:
 						// Activity contains a series of type course, list the coursetrack
 						numOfTracks++;
 						break;
