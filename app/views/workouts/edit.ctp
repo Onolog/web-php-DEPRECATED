@@ -8,7 +8,9 @@ $this->Include->css(array(
   'app/Workout',
   'token-input-facebook'
 ));
-$this->set('page_classes', array('workoutEdit'));
+$this->set('page_classes', array(
+  'narrow-page'
+));
 
 $date = $this->data['Workout']['date'];
 $page_header =

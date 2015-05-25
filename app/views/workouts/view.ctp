@@ -7,6 +7,7 @@
 
 $this->Include->css(array(
   'app/Workout',
+  'components/Facepile',
   'components/Topline'
 ));
 $this->set('page_classes', array(
@@ -29,71 +30,9 @@ $this->Meta->og('onolog:distance', $distance);
 $this->Meta->og('onolog:time', $time);
 $this->Meta->og('fb:app_id', FB_APP_ID);
 
-$page_header = '<h2>' . $date . '</h2>';
-
-if ($is_owner) {
-  $page_header .=
-    '<div class="btn-group auxContent">' .
-      /*
-      $this->Html->link(
-  	    '<span class="glyphicon glyphicon-pencil"></span>',
-        array('action' => 'edit', $workout['Workout']['id']),
-  	    array(
-  	     'class' => 'btn btn-default',
-  	     'rel' => 'tooltip',
-  	     'title' => __('Edit Workout', 1),
-  	     'escape' => false,
-        )
-      ) .
-      */
-      $this->Html->link(
-  	    '<span class="glyphicon glyphicon-trash"></span>',
-  	    array(
-          'action' => 'delete',
-          $workout['Workout']['id']
-        ),
-  	    array(
-  	     'class' => 'btn btn-default',
-  	     'rel' => 'tooltip',
-  	     'title' => __('Delete Workout', 1),
-  	     'escape' => false,
-        ),
-        'Are you sure you want to delete this workout?'
-      ) .
-      /*
-      $this->Html->link(
-  	    '<span class="glyphicon glyphicon-plus"></span>',
-  	    array('action' => 'add'),
-  	    array(
-  	     'class' => 'btn btn-default',
-  	     'rel' => 'tooltip',
-  	     'title' => __('New Workout', 1),
-  	     'escape' => false,
-        )
-      ) .
-      */
-      $this->Html->link(
-  	    '<span class="glyphicon glyphicon-th"></span>',
-  	    array('controller' => 'users', 'action' => 'index'),
-  	    array(
-  	     'class' => 'btn btn-default',
-  	     'rel' => 'tooltip',
-  	     'title' => __('All Workouts', 1),
-  	     'escape' => false,
-        )
-      ) .
-    '</div>';
-}
-
-$this->set('page_header', $page_header);
-
-echo
-  '<section class="panel panel-default">' .
-    $this->element('loader', array(
-      'class' => 'panel-body',
-      'id' => 'reactRoot',
-    )) .
-  '</section>';
+echo $this->element('loader', array(
+  'id' => 'reactRoot',
+));
 
 // Set JS for the page
 $json_workout = json_encode($workout['Workout']);
@@ -101,12 +40,12 @@ $this->Html->scriptStart(array('inline' => false));
 echo "
   require([
     'utils/reactRender',
-    'lib/react/jsx!app/Workouts/WorkoutView.react',
-    'lib/bootstrap.min'
-  ], function(reactRender, WorkoutView) {
-    reactRender(WorkoutView, { workout: $json_workout }, 'reactRoot');
-
-    $('.btn').tooltip({ container: 'body' });
+    'lib/react/jsx!app/Workouts/WorkoutViewPage.react'
+  ], function(reactRender, WorkoutViewPage) {
+    reactRender(WorkoutViewPage, {
+      canEdit: $is_owner,
+      workout: $json_workout
+    }, 'reactRoot');
   });
 ";
 $this->Html->scriptEnd();

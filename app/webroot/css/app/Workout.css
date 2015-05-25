@@ -32,14 +32,6 @@
   margin: 0 5px;
 }
 
-
-/* Workout View */
-.workoutAdd #main.container,
-.workoutEdit #main.container,
-.workoutView #main.container {
-  max-width: 600px;
-}
-
 .workoutView .leftCol {
   float: left;
   width: 65px;
@@ -47,19 +39,6 @@
 
 .workoutView .rightCol {
   margin-left: 65px;
-}
-
-.workoutView .workoutSection {
-  margin-bottom: 20px;
-}
-
-/* Should match labeledStatLabel from Topline.css */
-.workoutView .workoutSectionTitle {
-  color: #aaa;
-  font-size: 10px;
-  font-weight: normal;
-  margin-bottom: 3px;
-  text-transform: uppercase;
 }
 
 .workoutView .profilePhotoLink {
@@ -73,4 +52,30 @@
 .workoutView .workoutViewNotes {
   font-size: 15px;
   white-space: pre-wrap;
+}
+
+
+/**
+ * Workout Section
+ */
+.workoutSection {
+  margin-bottom: 15px;
+}
+
+.workoutSection:last-child {
+  margin-bottom: 0;
+}
+
+.workoutSectionBorder {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 15px
+}
+
+/* Should match labeledStatLabel from Topline.css */
+.workoutSectionTitle {
+  color: #aaa;
+  font-size: 10px;
+  font-weight: normal;
+  margin-bottom: 3px;
+  text-transform: uppercase;
 }

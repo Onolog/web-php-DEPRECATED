@@ -8,7 +8,9 @@ $this->Include->css(array(
   'app/Workout',
   'token-input-facebook'
 ));
-$this->set('page_classes', array('workoutAdd'));
+$this->set('page_classes', array(
+  'narrow-page'
+));
 
 $selectedShoe = 0;
 if (!empty($shoes)) {

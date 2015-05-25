@@ -10,6 +10,7 @@ define([
   'lib/react/jsx!app/Workouts/WorkoutStats.react',
   'lib/react/jsx!app/Workouts/WorkoutViewSection.react',
   'lib/react/jsx!components/Facebook/FBLikeButton.react',
+  'lib/react/jsx!components/Facepile/Facepile.react',
   'lib/react/jsx!components/Image/FBImage.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Panel/Panel.react',
@@ -21,6 +22,7 @@ define([
   WorkoutStats,
   WorkoutViewSection,
   FBLikeButton,
+  Facepile,
   FBImage,
   Link,
   Panel,
@@ -93,30 +95,13 @@ define([
         friends = friends.split(',');
       }
 
-      if (!friends || !friends.length) {
-        return null;
-      }
-
-      var markup = friends.map(function(friend, idx) {
+      if (friends && friends.length) {
         return (
-          <Link
-            className="profilePhotoLink innerBorder"
-            href={'/users/profile/' + friend.id}
-            key={idx}
-            tooltip={{
-              title: friend.name,
-              container: 'body'
-            }}>
-            <FBImage fbid={friend.id} />
-          </Link>
+          <WorkoutViewSection title="Friends">
+            <Facepile friends={friends} />
+          </WorkoutViewSection>
         );
-      });
-
-      return (
-        <WorkoutViewSection title="Friends">
-          {markup}
-        </WorkoutViewSection>
-      );
+      }
     }
 
   });
