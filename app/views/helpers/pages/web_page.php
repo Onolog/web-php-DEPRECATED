@@ -144,7 +144,6 @@ class WebPageHelper extends PageHelper {
 
     return
       '<div id="sideCol">' .
-        // $this->element('user_info') .
         $this->getSideCol() .
       '</div>';
   }
