@@ -1,9 +1,27 @@
 /**
- * 
+ * Shoe.css
  */
 
 .shoeList {
   table-layout: fixed;
+}
+
+/* Table */
+.actions,
+.mileage,
+.time,
+.activity,
+.activities {
+  text-align: right;
+}
+
+.table .inactive,
+.table .inactive a {
+  color: #aaa;
+}
+.table tr.inactive:hover td,
+.table tr.inactive:hover a {
+  color: #7ea3c2;
 }
 
 .modal-body .shoeView {

@@ -14,6 +14,7 @@ define([
   'lib/react/jsx!components/EmptyState.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Panel/Panel.react',
+  'lib/react/jsx!components/Table/Table.react',
 
   'utils/DateTimeUtils',
   'utils/formatDistance'
@@ -27,6 +28,7 @@ define([
   EmptyState,
   Link,
   Panel,
+  Table,
 
   DateTimeUtils,
   formatDistance
@@ -82,10 +84,21 @@ define([
         return <EmptyState message="No activities to display." />;
       }
 
+      var header =
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th className="mileage">Distance</th>
+            <th className="time">Duration</th>
+          </tr>
+        </thead>;
+
       return (
-        <table className="item_list shoeList">
-          {activities.map(this._renderRows.bind(this))}
-        </table>
+        <Table hover={true}>
+          <tbody>
+            {activities.map(this._renderRows)}
+          </tbody>
+        </Table>
       );
     },
 

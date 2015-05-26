@@ -15,6 +15,7 @@ define([
   'lib/react/jsx!components/EmptyState.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Panel/Panel.react',
+  'lib/react/jsx!components/Table/Table.react',
 
   'actions/ShoeActions',
   'utils/cx'
@@ -30,6 +31,7 @@ define([
   EmptyState,
   Link,
   Panel,
+  Table,
 
   ShoeActions,
   cx
@@ -94,38 +96,40 @@ define([
     },
 
     _renderShoeTable: function(/*array*/ shoes) {
-      var rows = shoes.map(function(shoe, idx) {
-        return (
-          <tr
-            className={cx({
-              inactive: !!shoe.inactive
-            })}
-            key={idx}>
-            <td>
-              <ShoeViewLink
-                shoeID={shoe.id}
-                shoeName={shoe.name}
-              />
-            </td>
-            <td className="activities">
-              {shoe.activity_count + ' runs'}
-            </td>
-            <td className="mileage">{shoe.mileage + ' mi'}</td>
-            <td className="actions">
-              <ShoeEditLink shoeID={shoe.id} />
-              <CloseButton
-                onClick={this._onDeleteClick.bind(this, shoe.id)}
-                tooltip={{title: 'Delete'}}
-              />
-            </td>
-          </tr>
-        );
-      }.bind(this));
-
       return (
-        <table className="item_list">
-          <tbody>{rows}</tbody>
-        </table>
+        <Table hover={true}>
+          <tbody>
+            {shoes.map(this._renderTableRows)}
+          </tbody>
+        </Table>
+      );
+    },
+
+    _renderTableRows: function(shoe, idx) {
+      return (
+        <tr
+          className={cx({
+            inactive: !!shoe.inactive
+          })}
+          key={idx}>
+          <td>
+            <ShoeViewLink
+              shoeID={shoe.id}
+              shoeName={shoe.name}
+            />
+          </td>
+          <td className="activities">
+            {shoe.activity_count + ' runs'}
+          </td>
+          <td className="mileage">{shoe.mileage + ' mi'}</td>
+          <td className="actions">
+            <ShoeEditLink shoeID={shoe.id} />
+            <CloseButton
+              onClick={this._onDeleteClick.bind(this, shoe.id)}
+              tooltip={{title: 'Delete'}}
+            />
+          </td>
+        </tr>
       );
     },
 

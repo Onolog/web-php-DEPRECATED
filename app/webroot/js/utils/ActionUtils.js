@@ -31,7 +31,7 @@ define([
           alertMessage: handler.getMessage()
         });
       } else {
-        ActionUtils.onError(response, onErrorEvent);
+        this.onError(response, onErrorEvent);
       }
     }
   };
