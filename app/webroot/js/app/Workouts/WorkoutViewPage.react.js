@@ -8,7 +8,7 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!app/Chrome/PageHeader.react',
+  'lib/react/jsx!app/Activities/Activity.react',
   'lib/react/jsx!app/Workouts/WorkoutView.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
@@ -18,7 +18,7 @@ define([
 ], function(
 
   React,
-  PageHeader,
+  Activity,
   WorkoutView,
   Button,
   ButtonGroup,
@@ -32,22 +32,18 @@ define([
 
     propTypes: {
       /**
-       * Whether or not the current viewer can edit or delete the workout.
+       * ID of the person viewing the page
        */
-      canEdit: React.PropTypes.bool.isRequired,
+      viewer: React.PropTypes.number.isRequired,
       workout: React.PropTypes.object.isRequired
     },
 
     render: function() {
       var workout = this.props.workout;
       return (
-        <div>
-          <Panel
-            title={DateTimeUtils.formatDate(workout.date * 1000)}
-            footer={this._renderButtonGroup()}>
-            <WorkoutView workout={workout} />
-          </Panel>
-        </div>
+        <Panel footer={this._renderButtonGroup()} noPadding={true}>
+          <Activity activity={workout} />
+        </Panel>
       );
     },
 
@@ -73,7 +69,7 @@ define([
           }}
         />;
 
-      if (this.props.canEdit) {
+      if (this.props.viewer === workout.user_id) {
         return (
           <ButtonGroup>
             <Button

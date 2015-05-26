@@ -66,6 +66,14 @@ define([
         )
       }];
 
+      if (workout.elevation) {
+        stats.push({
+          annotation: 'feet',
+          label: 'Elevation Gain',
+          value: workout.elevation
+        });
+      }
+
       if (workout.avg_hr) {
         stats.push({
           annotation: 'bpm',
@@ -86,14 +94,6 @@ define([
         stats.push({
           label: 'Calories',
           value: workout.calories
-        });
-      }
-
-      if (workout.elevation) {
-        stats.push({
-          annotation: 'feet',
-          label: 'Elevation Gain',
-          value: workout.elevation
         });
       }
 

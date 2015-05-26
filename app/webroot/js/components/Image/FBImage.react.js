@@ -16,35 +16,32 @@ define([
     displayName: 'FBImage',
 
     propTypes: {
-      fbid: React.PropTypes.oneOfType([
-        React.PropTypes.number,
-        React.PropTypes.string
-      ]).isRequired,
+      fbid: React.PropTypes.number.isRequired,
       height: React.PropTypes.number,
       width: React.PropTypes.number
     },
 
     getDefaultProps: function() {
       return {
-        height: 100,
-        width: 100
+        height: 50,
+        width: 50
       };
     },
 
     render: function() {
       var src =
         'https://graph.facebook.com/' + this.props.fbid + '/picture?' +
-          $.param({
-            height: this.props.height,
-            width: this.props.width
+          // Double the height and width for retina displays
+          jQuery.param({
+            height: this.props.height * 2,
+            width: this.props.width * 2
           });
 
-      // Image height & width are half the actual resolution for retina displays
       return (
         <Image
           className={this.props.className}
-          height={Math.floor(this.props.height / 2)}
-          width={Math.floor(this.props.width / 2)}
+          height={Math.floor(this.props.height)}
+          width={Math.floor(this.props.width)}
           src={src}
         />
       );

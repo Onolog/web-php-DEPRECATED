@@ -124,6 +124,27 @@ section + section,
   padding: 5px 10px;
 }
 
+/* Media */
+.media-body,
+.media-left,
+.media-right {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.media-middle {
+  vertical-align: middle;
+}
+
+.media-bottom {
+  vertical-align: bottom;
+}
+
+.media-left,
+.media > .pull-left {
+  padding-right: 10px;
+}
+
 
 @media (min-width: 768px) {
   .modal-sm {

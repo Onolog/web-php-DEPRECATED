@@ -42,20 +42,25 @@ define([
       var items = [];
       var active = false;
 
-      React.Children.forEach(this.props.children, function(child) {
-        var id = getID(child.props.label);
-        active = id === this.state.active;
-        children.push(React.addons.cloneWithProps(child, {
-          className: cx({
-            hidden: !active
-          })
-        }));
+      React.Children.forEach(this.props.children, function(child, idx) {
+        // A child can be null or undefined depending on how the component is
+        // rendered, so check for that here.
+        if (child) {
+          var id = getID(child.props.label);
+          active = id === this.state.active;
+          children.push(React.addons.cloneWithProps(child, {
+            className: cx({
+              hidden: !active
+            }),
+            key: idx
+          }));
 
-        items.push({
-          id: id,
-          label: child.props.label,
-          active: active
-        })
+          items.push({
+            id: id,
+            label: child.props.label,
+            active: active
+          });
+        }
       }.bind(this));
 
       return (

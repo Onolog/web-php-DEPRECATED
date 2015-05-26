@@ -62,14 +62,12 @@ class WorkoutsController extends AppController {
     }
 
     // Friend info
-    // TODO: This throws a lot of errors when a logged out
-    // user is viewing the page
     $workout['Workout']['friends'] =
       $this->getWorkoutFriends($workout['Workout']['friends']);
 
-    // Does the workout belong to the person viewing it?
-		$is_owner = $workout['User']['id'] == $this->Auth->User('id');
-    $this->set(compact('workout', 'is_owner'));
+		$viewer = $this->Auth->User('id');
+
+    $this->set(compact('workout', 'viewer'));
 	}
 
   /**
@@ -387,7 +385,7 @@ class WorkoutsController extends AppController {
    * @returns arr
    */
   public function getWorkoutFriends(/*string*/ $friends) {
-    if (!isset($friends)) {
+    if (!isset($friends) || !$friends) {
       return array();
     }
     $friends = explode(',', $friends);

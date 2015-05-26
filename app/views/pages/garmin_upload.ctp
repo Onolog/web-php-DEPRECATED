@@ -1,20 +1,21 @@
 <?php
 $this->Include->css(array(
-  'app/GarminController',
-  'app/Workout',
+  'app/Activity',
+  'components/Facepile',
   'components/Topline'
 ));
+$this->set('page_classes', array(
+  'narrow-page',
+));
+
 $this->set(
   'page_header',
   '<h2>' . __('Garmin File Uploader', 1) . '</h2>'
 );
 
-echo
-  '<section class="panel panel-default">' .
-    '<div id="reactRoot" class="panel-body">' .
-      '<div class="loader loader-lg"></div>' .
-    '</div>' .
-  '</section>';
+echo $this->element('loader', array(
+  'id' => 'reactRoot'
+));
 
 $this->Html->scriptStart(array('inline' => false));
 echo "

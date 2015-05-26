@@ -84,6 +84,22 @@ class Workout extends AppModel {
     foreach($results as $key => $result) {
       $workout = $result['Workout'];
 
+      // Add athlete info to the workout
+      if (isset($result['User'])) {
+        $results[$key]['Workout']['athlete'] = array(
+          'id' => idx($result['User'], 'id', 0),
+          'name' => idx($result['User'], 'name', ''),
+        );
+      }
+
+      // Add shoe info to the workout
+      if (isset($result['Shoe'])) {
+        $results[$key]['Workout']['shoes'] = array(
+          'id' => idx($result['Shoe'], 'id', 0),
+          'name' => idx($result['Shoe'], 'name', ''),
+        );
+      }
+
       // Decode any escaped characters
       $results[$key]['Workout']['notes'] = html_entity_decode(
         idx($workout, 'notes', ''),
@@ -148,6 +164,7 @@ class Workout extends AppModel {
         $data[$date][] = $workout['Workout'];
       }
     }
+    ksort($data);
     return $data;
   }
 

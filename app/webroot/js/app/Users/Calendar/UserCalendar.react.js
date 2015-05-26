@@ -46,6 +46,7 @@ define([
        * Array of the user's shoes for display in the workout fields view
        */
       shoes: React.PropTypes.array,
+      workouts: React.PropTypes.array,
       /**
        * UTC Full Year, ie: 2014
        */
@@ -75,12 +76,12 @@ define([
       var workouts = this.props.workouts || [];
 
       workouts = workouts.filter(function(workout) {
-        return +workout.date === (dateObject.getTime() / 1000);
+        return workout.date === (dateObject.getTime() / 1000);
       });
 
       if (workouts.length) {
         workouts.forEach(function(workout) {
-          this._weeklyMileage += +workout.distance;
+          this._weeklyMileage += workout.distance;
         }.bind(this));
       }
 

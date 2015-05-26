@@ -5,44 +5,24 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!app/Garmin/GarminDeviceInfo.react',
-  'lib/react/jsx!app/Garmin/GarminMap.react',
-  'lib/react/jsx!app/Garmin/GarminSplitsTable.react',
-  'lib/react/jsx!app/Workouts/WorkoutStats.react',
-  'lib/react/jsx!components/Data/DataGroup.react',
-  'lib/react/jsx!components/Data/DataRow.react',
+  'lib/react/jsx!app/Activities/Activity.react',
+  'lib/react/jsx!components/EmptyState.react',
   'lib/react/jsx!components/Forms/FileInput.react',
-
-  'lib/garmin/activity/GpxActivityFactory',
+  'lib/react/jsx!components/Panel/Panel.react',
   'lib/garmin/activity/TcxActivityFactory',
-  'constants/Garmin',
-
-  'utils/DateTimeUtils',
-  'utils/distanceUtils',
-
-  'lib/jquery/jquery.min'
+  'utils/distanceUtils'
 
 ], function(
 
   React,
-  GarminDeviceInfo,
-  GarminMap,
-  GarminSplitsTable,
-  WorkoutStats,
-  DataGroup,
-  DataRow,
+  Activity,
+  EmptyState,
   FileInput,
-
-  // Garmin
-  GpxActivityFactory,
+  Panel,
   TcxActivityFactory,
-  GARMIN,
-  DateTimeUtils,
   distanceUtils
 
 ) {
-
-  var PLACEHOLDER = '--';
 
   return React.createClass({
     displayName: 'GarminFileUploadController',
@@ -55,109 +35,79 @@ define([
 
     render: function() {
       var activity = this.state.activity;
+      var contents;
+
+      if (activity) {
+        contents = <Activity activity={this._normalizeActivity(activity)} />;
+      } else {
+        contents =
+          <EmptyState
+            message="No activity to display. Please upload a file."
+          />;
+      }
+
       return (
         <div>
-          <DataGroup display="horizontal">
-            <DataRow label="Choose a .tcx file">
-              <FileInput onChange={this._onChange} />
-            </DataRow>
-          </DataGroup>
-          <hr />
-          {this._renderWorkoutStats(activity)}
-          <DataGroup display="horizontal">
-            <DataRow label="Splits">
-              <GarminSplitsTable activity={activity} />
-              <GarminMap activity={activity} />
-            </DataRow>
-          </DataGroup>
-          <hr />
-          <GarminDeviceInfo activity={activity} />
-          <hr />
-          <DataGroup display="horizontal">
-            <DataRow label="Activity Type">
-              {(activity && activity.getActivityType()) || PLACEHOLDER}
-            </DataRow>
-            <DataRow label="Date">
-              {this._renderDate(activity) || PLACEHOLDER}
-            </DataRow>
-          </DataGroup>
+          <Panel title="Choose a .tcx file">
+            <FileInput onChange={this._onChange} />
+          </Panel>
+          <Panel noPadding={!!activity}>
+            {contents}
+          </Panel>
         </div>
       );
     },
 
-    _renderWorkoutStats: function(activity) {
-      if (activity) {
-        return (
-          <DataGroup display="horizontal">
-            <DataRow label="">
-              <WorkoutStats
-                workout={this._getWorkoutFromGarminActivity(activity)}
-              />
-            </DataRow>
-          </DataGroup>
-        );
-      }
-    },
-
     /**
-     * Converts a Garmin activity to a standard workout object that can be
-     * displayed or saved.
+     * Convert a Garmin activity to the standardized format.
      */
-    _getWorkoutFromGarminActivity: function(activity) {
+    _normalizeActivity: function(activity) {;
+      var friends = [{
+        id: 4280,
+        name: 'Paul McDonald'
+      }, {
+        id: 700963,
+        name: 'Makinde Adeagbo'
+      }, {
+        id: 509191417,
+        name: 'Jessica Shambora'
+      }];
+
+      var notes =
+        'Long run in Wunderlich Park with Sonderby, Turner, and Laney. ' +
+        'Felt pretty good, probably pushed a bit too hard. HR was over ' +
+        '153 most of the time. Felt a little beat up by the end, but ' +
+        'overall pretty good recovery long run after Way Too Cool.' +
+        '\n\n' +
+        'http://connect.garmin.com/modern/activity/719673604';
+
       return {
+        activity_type: activity.getActivityType(), // TODO: convert to IDs?
+        athlete: {
+          id: 517820043,
+          name: 'Eric Giovanola'
+        },
+        calories: activity.getCalories(),
+        date: activity.getStartTime().getDate().getTime() / 1000,
+        device: {
+          name: activity.getDeviceName(),
+          version: activity.getSoftwareVersionString()
+        },
         distance: distanceUtils.metersToMiles(activity.getTotalDistance()),
+        elevation: distanceUtils.metersToFeet(activity.getElevationGain()),
+        friends: friends,
+        id: 0,
+        notes: notes,
+        series: activity.getSeries(),
+        shoes: {
+          id: 41,
+          name: 'ASICS DS Trainer 19.2'
+        },
+        laps: activity.getLaps(),
         time: activity.getTotalTime(),
         avg_hr: activity.getAvgHeartRate(),
-        max_hr: activity.getMaxHeartRate(),
-        calories: activity.getCalories(),
-        elevation: distanceUtils.metersToFeet(activity.getElevationGain())
+        max_hr: activity.getMaxHeartRate()
       };
-    },
-
-    _renderDate: function(activity) {
-      if (activity) {
-        var startDateTime = activity.getStartTime().getDate();
-        return startDateTime.toUTCString();
-      }
-    },
-
-    _renderDistance: function(activity) {
-      if (activity) {
-        var distanceInMiles = distanceUtils.metersToMiles(
-          activity.getTotalDistance()
-        );
-        return distanceInMiles + ' miles';
-      }
-    },
-
-    _renderTotalTime: function(/*object*/ activity) /*string*/ {
-      if (activity) {
-        return DateTimeUtils.secondsToTime(activity.getTotalTime());
-      }
-    },
-
-    _renderAvgHeartRate: function(activity) {
-      if (activity) {
-        return this._renderHR(activity.getAvgHeartRate());
-      }
-    },
-
-    _renderMaxHeartRate: function(activity) {
-      if (activity) {
-        return this._renderHR(activity.getMaxHeartRate());
-      }
-    },
-
-    _renderHR: function(heartRate) {
-      return Math.round(heartRate) + ' bpm';
-    },
-
-    _renderElevationGain: function(activity) {
-      if (activity) {
-        return (
-          distanceUtils.metersToFeet(activity.getElevationGain()) + ' feet'
-        );
-      }
     },
 
     _onChange: function(evt) {
@@ -171,10 +121,10 @@ define([
     _onLoadEnd: function(evt) {
       if (evt.target.readyState === FileReader.DONE) {
         var file = evt.target.result;
-        var activities = Garmin.TcxActivityFactory.parseString(file);
+        var activities = TcxActivityFactory.parseString(file);
 
         // We currently only upload one file at a time
-        this.setState({ activity: activities[0] });
+        this.setState({activity: activities[0]});
       }
     }
 

@@ -19,7 +19,7 @@ define([
     propTypes: {
       actions: React.PropTypes.any,
       footer: React.PropTypes.any,
-      fullBleed: React.PropTypes.bool,
+      noPadding: React.PropTypes.bool,
       title: React.PropTypes.oneOfType([
         React.PropTypes.number,
         React.PropTypes.string
@@ -35,7 +35,7 @@ define([
         )}>
           {this._renderHeader()}
           <div className={cx({
-            'panel-body': !this.props.fullBleed
+            'panel-body': !this.props.noPadding
           })}>
             {this.props.children}
           </div>

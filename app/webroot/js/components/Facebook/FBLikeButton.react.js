@@ -13,7 +13,6 @@ define([
 
   'lib/react/react',
   'lib/jquery/jquery.min',
-
   'constants/Facebook',
   'constants/Onolog'
 
@@ -75,7 +74,8 @@ define([
         action: 'like',
         layout: 'standard',
         showFaces: true,
-        useShare: true
+        useShare: true,
+        width: 165
       };
     },
 

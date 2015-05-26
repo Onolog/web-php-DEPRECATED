@@ -6,13 +6,13 @@
  */
 
 $this->Include->css(array(
+  'app/Activity',
   'app/Workout',
   'components/Facepile',
   'components/Topline'
 ));
 $this->set('page_classes', array(
   'narrow-page',
-  'workoutView'
 ));
 
 $page_url = 'http://www.onolog.com/workouts/view/'.$workout['Workout']['id'];
@@ -35,7 +35,7 @@ echo $this->element('loader', array(
 ));
 
 // Set JS for the page
-$json_workout = json_encode($workout['Workout']);
+$json_workout = json_encode($workout['Workout'], JSON_NUMERIC_CHECK);
 $this->Html->scriptStart(array('inline' => false));
 echo "
   require([
@@ -43,7 +43,7 @@ echo "
     'lib/react/jsx!app/Workouts/WorkoutViewPage.react'
   ], function(reactRender, WorkoutViewPage) {
     reactRender(WorkoutViewPage, {
-      canEdit: $is_owner,
+      viewer: $viewer || 0,
       workout: $json_workout
     }, 'reactRoot');
   });
