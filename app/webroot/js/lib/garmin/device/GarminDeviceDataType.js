@@ -1,29 +1,25 @@
-if (Garmin == undefined) var Garmin = {};
 /**
  * A place-holder for Garmin Device Data Type information
- * @class Garmin.DeviceDataType
+ * @class GarminDeviceDataType
  *
  * @constructor 
  * @param {String} typeName for the data type
  * @param {String} extension file extension for the data type
  */
-define(['prototype'], function() {
+define(function() {
 
-  Garmin.DeviceDataType = function(typeName, fileExtension){}; //just here for jsdoc
-  Garmin.DeviceDataType = Class.create();
-  Garmin.DeviceDataType.prototype = {
-  	
-  	initialize: function(typeName, fileExtension) {
-  		this.typeName = typeName;
-  		this.fileExtension = fileExtension;
-  		this.readAccess = false;
-  		this.writeAccess = false;
-  		this.filePath = null;
-  		this.readFilePath = null;
-  		this.writeFilePath = null;
-  		this.identifier = null;
-  	},
-  	
+  var GarminDeviceDataType = function(typeName, fileExtension) {
+    this.typeName = typeName;
+    this.fileExtension = fileExtension;
+    this.readAccess = false;
+    this.writeAccess = false;
+    this.filePath = null;
+    this.readFilePath = null;
+    this.writeFilePath = null;
+    this.identifier = null;
+  };
+
+  GarminDeviceDataType.prototype = {
   	/**
   	 * @type String
   	 * @return The type name of this data type
@@ -80,19 +76,19 @@ define(['prototype'], function() {
   	},
   	
   	/**
-       * @param writeFilePath - the readFilePath for this datatype
-       */
-      getWriteFilePath: function() {
-         return this.writeFilePath;    
-      },
-      
-      /**
-       * @type String
-       * @return The write file path for this data type
-       */
-      setWriteFilePath: function(writeFilePath) {
-          this.writeFilePath = writeFilePath;
-      },
+     * @param writeFilePath - the readFilePath for this datatype
+     */
+    getWriteFilePath: function() {
+       return this.writeFilePath;    
+    },
+    
+    /**
+     * @type String
+     * @return The write file path for this data type
+     */
+    setWriteFilePath: function(writeFilePath) {
+      this.writeFilePath = writeFilePath;
+    },
   	
   	/**
   	 * @type String
@@ -140,7 +136,5 @@ define(['prototype'], function() {
   	}	
   };
 
-  return Garmin.DeviceDataType;
-
-
+  return GarminDeviceDataType;
 });

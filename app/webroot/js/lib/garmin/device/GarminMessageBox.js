@@ -1,21 +1,23 @@
-define(['prototype'], function() {
+/**
+ * Encapsulates the data to display a message box to the user when the plug-in
+ * is waiting for feedback.
+ *
+ * @class Garmin.MessageBox
+ * @constructor 
+ */
+define(function() {
 
-  /**
-   * Encapsulates the data to display a message box to the user when the plug-in is waiting for feedback
-   * @class Garmin.MessageBox
-   * @constructor 
-   */
-  Garmin.MessageBox = Class.create();
-  Garmin.MessageBox.prototype = {
-  	initialize: function(type, text) {
-  		this.type = type;
-  		this.text = text;
-  		this.buttons = new Array();
-  	},
-  
-      /** Get the type of the message box
-       * @type String
-       */	 
+  var GarminMessageBox = function(type, text) {
+    this.type = type;
+    this.text = text;
+    this.buttons = new Array();
+  };
+
+  GarminMessageBox.prototype = {
+    /**
+     * Get the type of the message box
+     * @type String
+     */
   	getType: function() {
   		return this.type;
   	},
@@ -57,6 +59,5 @@ define(['prototype'], function() {
   	}
   };
 
-  return Garmin.MessageBox;
-
+  return GarminMessageBox;
 });

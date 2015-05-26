@@ -1,5 +1,3 @@
-if (Garmin == undefined) var Garmin = {};
-
 /** Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
  * Licensed under the Apache License, Version 2.0 (the 'License')
@@ -17,6 +15,7 @@ if (Garmin == undefined) var Garmin = {};
  * @fileoverview Garmin.DeviceControl A high-level JavaScript API which supports listener and callback functionality.
  * @version 1.9
  */
+
 /** A controller object that can retrieve and send data to a Garmin 
  * device.<br><br>
  * @class
@@ -103,8 +102,7 @@ define([
   'lib/garmin/util/Util-BrowserDetect',
   'lib/garmin/util/Util-PluginDetect',
   'lib/garmin/util/Util-Broadcaster',
-  'lib/garmin/util/Util-XmlConverter',
-  'prototype'
+  'lib/garmin/util/Util-XmlConverter'
 
 ], function(
 
@@ -119,375 +117,463 @@ define([
 
 ) {
 
-  Garmin.DeviceControl = function() {}; //just here for jsdoc
-  Garmin.DeviceControl = Class.create();
-  Garmin.DeviceControl.prototype = {
+  /**
+   * Constants defining possible file types associated with read and write methods.  File types can
+   * be accessed in a static way, like so:<br/>
+   * <br/>
+   * Garmin.DeviceControl.FILE_TYPES.gpx<br/>
+   * <br/>
+   * NOTE: 'gpi' is being deprecated--please use 'binary' instead for gpi and other binary data. 
+   */
+  var FILE_TYPES = {
+    gpx:               "GPSData",
+    tcx:               "FitnessHistory",
+    gpi:               "gpi", //deprecated, use binary instead
+    crs:               "FitnessCourses",
+    wkt:               "FitnessWorkouts",
+    goals:             "FitnessActivityGoals",
+    tcxProfile:        "FitnessUserProfile",
+    binary:            "BinaryData", // Not in Device XML, so writing this type is "supported" for all devices. For FIT data, use fitFile.
+    voices:            "Voices",
+    nlf:               "FitnessNewLeaf",
+    fit:               "FITBinary",
+    fitSettings:       "FIT_TYPE_2",
+    fitSport:          "FIT_TYPE_3",
+    fitActivity:       "FIT_TYPE_4",
+    fitWorkout:        "FIT_TYPE_5",
+    fitCourse:         "FIT_TYPE_6",
+    fitHealthData:     "FIT_TYPE_9",
+
+    // The following types are internal types used by the API only and cannot be found in the Device XML.
+    // NOTE: When adding or removing types to this internal list, modify checkDeviceReadSupport() accordingly.
+    readableDir:       "ReadableFilesDirectory",
+    tcxDir:            "FitnessHistoryDirectory",
+    crsDir:            "FitnessCoursesDirectory",
+    gpxDir:            "GPSDataDirectory",
+    tcxDetail:         "FitnessHistoryDetail",
+    crsDetail:         "FitnessCoursesDetail",
+    gpxDetail:         "GPSDataDetail",
+    deviceXml:         "DeviceXml",
+    fitDir:            "FitDirectory",
+    fitFile:           "FitFile",
+    firmware:          "Firmware"
+  };
 
   /**
-   * Instantiates a Garmin.DeviceControl object, but does not unlock/activate plugin.
+   * Constants defining possible states when you poll the finishActions
    */
-	initialize: function() {
-		
-		this.pluginUnlocked = false;
-		this.dirInterval = null;
-		// keep state when doing multi-type file listings
-		this.fileListingOptions = null;
-		this.fileListingIndex = 0;
+  var FINISH_STATES = {
+    idle: 0,
+    working: 1,
+    messageWaiting: 2,
+    finished: 3 
+  };
 
-		try {
-			if (typeof(Garmin.DevicePlugin) == 'undefined') throw '';
-		} catch(e) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.deviceControlMissing);
-		};
+  /**
+   * Constants defining possible errors messages for various errors on the page
+   */
+  var MESSAGES = {
+    deviceControlMissing: "GarminDeviceControl depends on the GarminDevicePlugin framework.",
+    missingPluginTag: "Plug-In HTML tag not found.",
+    browserNotSupported: "Your browser is not supported by the Garmin Communicator Plug-In.",
+    pluginNotInstalled: "Garmin Communicator Plugin NOT detected.",
+    outOfDatePlugin1: "Your version of the Garmin Communicator Plug-In is out of date.<br/>Required: ",
+    outOfDatePlugin2: "Current: ",
+    updatePlugin1: "Your version of the Garmin Communicator Plug-In is not the latest version. Latest version: ",
+    updatePlugin2: ", current: ",
+    pluginNotUnlocked: "Garmin Plugin has not been unlocked",
+    noDevicesConnected: "No device connected, can't communicate with device.",
+    invalidFileType: "Cannot process the device file type: ",
+    incompleteRead: "Incomplete read, cannot get compressed format.",
+    unsupportedReadDataType: "Your device does not support reading of the type: ",
+    unsupportedWriteDataType: "Your device does not support writing of the type: "
+  };
 
-  	// check that the browser is supported
-   	if (!BrowserSupport.isBrowserSupported()) {
-	    var notSupported = new Error(Garmin.DeviceControl.MESSAGES.browserNotSupported);
-	    notSupported.name = "BrowserNotSupportedException";
-	    throw notSupported;
+  /**
+   * Instantiates a Garmin.DeviceControl object, but does not unlock/activate
+   * the plugin.
+   */
+  var GarminDeviceControl = function() {
+    this.pluginUnlocked = false;
+    this.dirInterval = null;
+
+    // keep state when doing multi-type file listings
+    this.fileListingOptions = null;
+    this.fileListingIndex = 0;
+
+    try {
+      if (typeof(GarminDevicePlugin) == 'undefined') throw '';
+    } catch(e) {
+      throw new Error(MESSAGES.deviceControlMissing);
+    };
+
+    // check that the browser is supported
+    if (!BrowserSupport.isBrowserSupported()) {
+      var notSupported = new Error(MESSAGES.browserNotSupported);
+      notSupported.name = "BrowserNotSupportedException";
+      throw notSupported;
     }
-		
-		// make sure the browser has the plugin installed
-		if (!PluginDetect.detectGarminCommunicatorPlugin()) {
-      var notInstalled = new Error(Garmin.DeviceControl.MESSAGES.pluginNotInstalled);
+    
+    // make sure the browser has the plugin installed
+    if (!PluginDetect.detectGarminCommunicatorPlugin()) {
+      var notInstalled = new Error(MESSAGES.pluginNotInstalled);
       notInstalled.name = "PluginNotInstalledException";
       throw notInstalled;
-		} else {
-		  this.renderPluginObject();
-		}
-
-		// grab the plugin object on the page
-		var pluginElement;
-		if (window.ActiveXObject) { // IE
-			pluginElement = document.getElementById('GarminActiveXControl');
-		} else {
-		  // FireFox, Chrome, etc.
-			pluginElement = document.getElementById('GarminNetscapePlugin');
-		}
-
-		// make sure the plugin object exists on the page
-		if (!pluginElement) {
-			var error = new Error(Garmin.DeviceControl.MESSAGES.missingPluginTag);
-			error.name = "HtmlTagNotFoundException";
-			throw error;			
-		}
-		
-		// instantiate a garmin plugin
-		this.garminPlugin = new Garmin.DevicePlugin(pluginElement);
-		 
-		// validate the garmin plugin
-		this.validatePlugin();
-		
-		// instantiate a broacaster
-		this._broadcaster = new Garmin.Broadcaster();
-
-		this.getDetailedDeviceData = true;
-		this.devices = new Array();
-		this.deviceNumber = null;
-		this.numDevices = 0;
-
-		this.gpsData = null;
-		this.gpsDataType = null; //used by both read and write methods to track data context
-		this.gpsDataString = "";
-		this.gpsDataStringCompressed = "";  // Compresed version of gpsDataString.  gzip compressed and base 64 expanded.
-	},
-
-  renderPluginObject: function() {
-  	// Insert object tag based on browser
-  	var pluginObjectMarkup;
-  	switch(BrowserDetect.browser) {
-      // TODO pull these out into constants later, in BrowserDetect
-      case "Explorer":
-        pluginObjectMarkup =
-          '<object ' +
-            'id="GarminActiveXControl" ' +
-            'style="WIDTH: 0px; HEIGHT: 0px; visible: hidden" ' +
-            'height="0" ' +
-            'width="0" ' +
-            'classid="CLSID:099B5A62-DE20-48C6-BF9E-290A9D1D8CB5">' +
-            '&#160;' +
-          '</object>';
-        break;
-      case "Firefox":
-      case "Mozilla":
-      case "Safari":
-      default:
-      	pluginObjectMarkup =
-          '<object ' +
-            'id="GarminNetscapePlugin" ' +
-            'type="application/vnd-garmin.mygarmin" ' +
-            'width="0" ' +
-            'height="0">' +
-            '&#160;' +
-          '</object>';
-        break;
-  	}
-
-    // Set the contents of the plugin container
-  	Element.update(document.getElementById('pluginObject'), pluginObjectMarkup);
-  },
-
-	/**
-	 * Checks plugin validity: browser support, installation and required version.
-	 * @private
-   * @throws BrowserNotSupportedException
-   * @throws PluginNotInstalledException
-   * @throws OutOfDatePluginException
-   */
-  validatePlugin: function() {
-		if (!this.isPluginInstalled()) {
- 	    var notInstalled = new Error(Garmin.DeviceControl.MESSAGES.pluginNotInstalled);
-	    notInstalled.name = "PluginNotInstalledException";
-	    throw notInstalled;
+    } else {
+      this.renderPluginObject();
     }
 
-		if (this.garminPlugin.isPluginOutOfDate()) {
-	    var outOfDate = new Error(Garmin.DeviceControl.MESSAGES.outOfDatePlugin1+Garmin.DevicePlugin.REQUIRED_VERSION.toString()+Garmin.DeviceControl.MESSAGES.outOfDatePlugin2+this.getPluginVersionString());
-	    outOfDate.name = "OutOfDatePluginException";
-	    outOfDate.version = this.getPluginVersionString();
-	    throw outOfDate;
+    // grab the plugin object on the page
+    var pluginElement;
+    if (window.ActiveXObject) { // IE
+      pluginElement = document.getElementById('GarminActiveXControl');
+    } else {
+      // FireFox, Chrome, etc.
+      pluginElement = document.getElementById('GarminNetscapePlugin');
     }
-  },
+
+    // make sure the plugin object exists on the page
+    if (!pluginElement) {
+      var error = new Error(MESSAGES.missingPluginTag);
+      error.name = "HtmlTagNotFoundException";
+      throw error;      
+    }
+    
+    // instantiate a garmin plugin
+    this.garminPlugin = new GarminDevicePlugin(pluginElement);
+     
+    // validate the garmin plugin
+    this.validatePlugin();
+    
+    // instantiate a broacaster
+    this._broadcaster = new Garmin.Broadcaster();
+
+    this.getDetailedDeviceData = true;
+    this.devices = new Array();
+    this.deviceNumber = null;
+    this.numDevices = 0;
+
+    this.gpsData = null;
+    this.gpsDataType = null; //used by both read and write methods to track data context
+    this.gpsDataString = "";
+    this.gpsDataStringCompressed = "";  // Compresed version of gpsDataString.  gzip compressed and base 64 expanded.
+  };
+
+  GarminDeviceControl.prototype = {
+
+    renderPluginObject: function() {
+    	// Insert object tag based on browser
+    	var pluginObjectMarkup;
+    	switch(BrowserDetect.browser) {
+        // TODO pull these out into constants later, in BrowserDetect
+        case "Explorer":
+          pluginObjectMarkup =
+            '<object ' +
+              'id="GarminActiveXControl" ' +
+              'style="WIDTH: 0px; HEIGHT: 0px; visible: hidden" ' +
+              'height="0" ' +
+              'width="0" ' +
+              'classid="CLSID:099B5A62-DE20-48C6-BF9E-290A9D1D8CB5">' +
+              '&#160;' +
+            '</object>';
+          break;
+        case "Firefox":
+        case "Mozilla":
+        case "Safari":
+        default:
+        	pluginObjectMarkup =
+            '<object ' +
+              'id="GarminNetscapePlugin" ' +
+              'type="application/vnd-garmin.mygarmin" ' +
+              'width="0" ' +
+              'height="0">' +
+              '&#160;' +
+            '</object>';
+          break;
+    	}
+
+      // Set the contents of the plugin container
+    	Element.update(
+        document.getElementById('pluginObject'),
+        pluginObjectMarkup
+      );
+    },
+
+  	/**
+  	 * Checks plugin validity: browser support, installation and required version.
+  	 * @private
+     * @throws BrowserNotSupportedException
+     * @throws PluginNotInstalledException
+     * @throws OutOfDatePluginException
+     */
+    validatePlugin: function() {
+  		if (!this.isPluginInstalled()) {
+   	    var notInstalled = new Error(MESSAGES.pluginNotInstalled);
+  	    notInstalled.name = "PluginNotInstalledException";
+  	    throw notInstalled;
+      }
+
+  		if (this.garminPlugin.isPluginOutOfDate()) {
+  	    var outOfDate = new Error(
+          MESSAGES.outOfDatePlugin1 +
+          GarminDevicePlugin.REQUIRED_VERSION.toString() +
+          MESSAGES.outOfDatePlugin2 +
+          this.getPluginVersionString()
+        );
+  	    outOfDate.name = "OutOfDatePluginException";
+  	    outOfDate.version = this.getPluginVersionString();
+  	    throw outOfDate;
+      }
+    },
   
-  /** Checks plugin for updates.  Throws an exception if the user's plugin version is
-   * older than the one set by the API.
-   * 
-   * Plugin updates are not required so use this function with caution.
-   * @see #setPluginLatestVersion
-   */
-  checkForUpdates: function() {
-  	if (this.garminPlugin.isUpdateAvailable()) {
-  		var notLatest = new Error(Garmin.DeviceControl.MESSAGES.updatePlugin1+Garmin.DevicePlugin.LATEST_VERSION.toString()+Garmin.DeviceControl.MESSAGES.updatePlugin2+this.getPluginVersionString());
+    /**
+     * Checks plugin for updates.  Throws an exception if the user's plugin version is
+     * older than the one set by the API.
+     * 
+     * Plugin updates are not required so use this function with caution.
+     * @see #setPluginLatestVersion
+     */
+    checkForUpdates: function() {
+    	if (this.garminPlugin.isUpdateAvailable()) {
+    		var notLatest = new Error(
+          MESSAGES.updatePlugin1 +
+          GarminDevicePlugin.LATEST_VERSION.toString() +
+          MESSAGES.updatePlugin2 +
+          this.getPluginVersionString()
+        );
   	    notLatest.name = "UpdatePluginException";
   	    notLatest.version = this.getPluginVersionString();
   	    throw notLatest;
-  	}
-  },
-    
-	/////////////////////// Device Handling Methods ///////////////////////	
-
-	/**
-	 * Finds any connected Garmin Devices.  
-   * When it's done finding the devices, onFinishFindDevices is dispatched <br/>
-   * <br/>
-   * this.numDevices = the number of devices found<br/>
-   * this.deviceNumber is the device that we'll use to communicate with<br/>
-   * <br/>
-   * Use this.getDevices() to get an array of the found devices and 
-   * this.setDeviceNumber({Number}) to change the device. <br/>
-   * <br/>
-   * Minimum Plugin version 2.0.0.4
-   * 
-   * @see #getDevices
-   * @see #setDeviceNumber
-   */	
-	findDevices: function() {
-    debugger;
-		if (!this.isUnlocked()) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.pluginNotUnlocked);
-		}
-
-    this.garminPlugin.startFindDevices();
-    this._broadcaster.dispatch('onStartFindDevices', { controller: this });
-    setTimeout(function() {
-      this._finishFindDevices();
-    }.bind(this), 1000);
-	},
-
-	/** Cancels the current find devices interaction. <br/>
-	 * <br/>
-	 * Minimum Plugin version 2.0.0.4
-     */	
-	cancelFindDevices: function() {
-		this.garminPlugin.cancelFindDevices();
-    this._broadcaster.dispatch("onCancelFindDevices", {controller: this});
-	},
-
-	/** Loads device data into devices array.
-	 * 
-	 * Minimum Plugin version 2.0.0.4
-	 * 
-	 * @private
-     */	
-	_finishFindDevices: function() {
-    try {
-      if (this.garminPlugin.finishFindDevices()) {
-        this.devices = Garmin.PluginUtils.parseDeviceXml(this.garminPlugin, this.getDetailedDeviceData);
-        this.numDevices = this.devices.length;
-     		this.deviceNumber = 0;
-        this._broadcaster.dispatch('onFinishFindDevices', {controller: this});
-    	} else {
-    		setTimeout(function() { this._finishFindDevices() }.bind(this), 500);
     	}
-		} catch(e) {
-		  this._reportException(e);
-    }
-	},
+    },
 
-	/**
-	 * Sets the deviceNumber variable which determines which connected device to talk to.
-   * @param {Number} deviceNumber The device number
-   */	
-	setDeviceNumber: function(deviceNumber) {
-		this.deviceNumber = deviceNumber;
-	},
-	
-	/**
-	 * Get the device number of the connected device to communicate with (multiple devices may
-	 * be connected simultaneously, but the plugin only transfers data with one at a time).
-	 * @return the device number (assigned by the plugin) determining which connected device
-	 * to talk to.
-	 */
-	getDeviceNumber: function() {
-    return this.deviceNumber;
-	},
+    ////////////////////// Device Handling Methods ///////////////////////	
 
-	/**
-	 * Get a list of the devices found
-   * @type Array<Garmin.Device>
-   */	
-	getDevices: function() {
-		return this.devices;
-	},
-	
-	/** Returns the DeviceXML of the current device, as a string.
-	 */
-	getCurrentDeviceXml: function() {
-		return this.garminPlugin.getDeviceDescriptionXml(this.deviceNumber);		
-	},
-	
-	/**
-	 * Returns the FIT Directory XML of the current device, as a string.
-	 * @private
-   * @returns {String}
-	 */
-	getCurrentDeviceFitDirectoryXml: function() {
-		try {
-			this.garminPlugin.startReadFitDirectory(this.deviceNumber);
-			this.waitForReadToFinish();
-			this.pause(1000);
-		} catch(aException) {
-		
-		}
-		
-		var xml = this.garminPlugin.getDirectoryXml();
-		if (xml == "") {
-			//this.garminPlugin.resetDirectoryXml();
-		}
+  	/**
+  	 * Finds any connected Garmin Devices.  
+     * When it's done finding the devices, onFinishFindDevices is dispatched <br/>
+     * <br/>
+     * this.numDevices = the number of devices found<br/>
+     * this.deviceNumber is the device that we'll use to communicate with<br/>
+     * <br/>
+     * Use this.getDevices() to get an array of the found devices and 
+     * this.setDeviceNumber({Number}) to change the device. <br/>
+     * <br/>
+     * Minimum Plugin version 2.0.0.4
+     * 
+     * @see #getDevices
+     * @see #setDeviceNumber
+     */	
+  	findDevices: function() {
+  		if (!this.isUnlocked()) {
+  			throw new Error(MESSAGES.pluginNotUnlocked);
+  		}
 
-		return xml;		
-	},
-	
-	/**
-	 * Returns true if FIT health data can be read from the device.
-   * @returns {Boolean}
-	 */
-	doesCurrentDeviceSupportHealth: function(){
-  	var supported = false;
-  	var directoryXml = this.getCurrentDeviceFitDirectoryXml();
-    	
-		if (directoryXml != "") {
-			var files = Garmin.DirectoryFactory.parseString(directoryXml);
-			if (Garmin.DirectoryFactory.getHealthDataFiles(files).length > 0) {
-				supported = true;
-			}
-		}
-		return supported;
-  },
+      this.garminPlugin.startFindDevices();
+      this._broadcaster.dispatch('onStartFindDevices', { controller: this });
+      setTimeout(function() {
+        this._finishFindDevices();
+      }.bind(this), 1000);
+  	},
 
-	/*@private*/
-	pause: function(millis) {
-		var date = new Date();
-		var curDate = null;
+  	/**
+     * Cancels the current find devices interaction. <br/>
+  	 * <br/>
+  	 * Minimum Plugin version 2.0.0.4
+     */	
+  	cancelFindDevices: function() {
+  		this.garminPlugin.cancelFindDevices();
+      this._broadcaster.dispatch("onCancelFindDevices", {controller: this});
+  	},
 
-		do { curDate = new Date(); }
-		while(curDate-date < millis);
-	},
+  	/** Loads device data into devices array.
+  	 * 
+  	 * Minimum Plugin version 2.0.0.4
+  	 * 
+  	 * @private
+       */	
+  	_finishFindDevices: function() {
+      try {
+        if (this.garminPlugin.finishFindDevices()) {
+          this.devices = Garmin.PluginUtils.parseDeviceXml(this.garminPlugin, this.getDetailedDeviceData);
+          this.numDevices = this.devices.length;
+       		this.deviceNumber = 0;
+          this._broadcaster.dispatch('onFinishFindDevices', {controller: this});
+      	} else {
+      		setTimeout(function() { this._finishFindDevices() }.bind(this), 500);
+      	}
+  		} catch(e) {
+  		  this._reportException(e);
+      }
+  	},
+
+  	/**
+  	 * Sets the deviceNumber variable which determines which connected device to talk to.
+     * @param {Number} deviceNumber The device number
+     */	
+  	setDeviceNumber: function(deviceNumber) {
+  		this.deviceNumber = deviceNumber;
+  	},
+  	
+  	/**
+  	 * Get the device number of the connected device to communicate with (multiple devices may
+  	 * be connected simultaneously, but the plugin only transfers data with one at a time).
+  	 * @return the device number (assigned by the plugin) determining which connected device
+  	 * to talk to.
+  	 */
+  	getDeviceNumber: function() {
+      return this.deviceNumber;
+  	},
+
+  	/**
+  	 * Get a list of the devices found
+     * @type Array<Garmin.Device>
+     */	
+  	getDevices: function() {
+  		return this.devices;
+  	},
+  	
+  	/** Returns the DeviceXML of the current device, as a string.
+  	 */
+  	getCurrentDeviceXml: function() {
+  		return this.garminPlugin.getDeviceDescriptionXml(this.deviceNumber);		
+  	},
+  	
+  	/**
+  	 * Returns the FIT Directory XML of the current device, as a string.
+  	 * @private
+     * @returns {String}
+  	 */
+  	getCurrentDeviceFitDirectoryXml: function() {
+  		try {
+  			this.garminPlugin.startReadFitDirectory(this.deviceNumber);
+  			this.waitForReadToFinish();
+  			this.pause(1000);
+  		} catch(aException) {
+  		
+  		}
+  		
+  		var xml = this.garminPlugin.getDirectoryXml();
+  		if (xml == "") {
+  			//this.garminPlugin.resetDirectoryXml();
+  		}
+
+  		return xml;		
+  	},
 	
-	/*@private*/
-	waitForReadToFinish: function() {
-		var complete = false;
-		
-		while (complete == false) {
-			try {
-				var theCompletionState = this.garminPlugin.finishReadFitDirectory();
-				if (theCompletionState == 3) {
-				  // Finished
-					complete = true;
-				} else if (theCompletionState == 2) {
-				  // Message Waiting
-					complete = true;
-				} else {
-				  // void
-				}
-			} catch (aException) {
-				complete = true;
-			}
-		}
-	},
+  	/**
+  	 * Returns true if FIT health data can be read from the device.
+     * @returns {Boolean}
+  	 */
+  	doesCurrentDeviceSupportHealth: function(){
+    	var supported = false;
+    	var directoryXml = this.getCurrentDeviceFitDirectoryXml();
+      	
+  		if (directoryXml != "") {
+  			var files = Garmin.DirectoryFactory.parseString(directoryXml);
+  			if (Garmin.DirectoryFactory.getHealthDataFiles(files).length > 0) {
+  				supported = true;
+  			}
+  		}
+  		return supported;
+    },
+
+  	/*@private*/
+  	pause: function(millis) {
+  		var date = new Date();
+  		var curDate = null;
+
+  		do { curDate = new Date(); }
+  		while(curDate-date < millis);
+  	},
+	
+  	/*@private*/
+  	waitForReadToFinish: function() {
+  		var complete = false;
+  		
+  		while (complete == false) {
+  			try {
+  				var theCompletionState = this.garminPlugin.finishReadFitDirectory();
+  				if (theCompletionState == 3) {
+  				  // Finished
+  					complete = true;
+  				} else if (theCompletionState == 2) {
+  				  // Message Waiting
+  					complete = true;
+  				} else {
+  				  // void
+  				}
+  			} catch (aException) {
+  				complete = true;
+  			}
+  		}
+  	},
 
 	/////////////////////// Read Methods ///////////////////////
 	
-	/** Generic read method, supporting GPX and TCX Fitness types: Courses, Workouts, User Profiles, Activity Goals, 
+	/**
+   * Generic read method, supporting GPX and TCX Fitness types: Courses, Workouts, User Profiles, Activity Goals, 
 	 * TCX activity directory, and various directory reads. <br/>
 	 * <br/>
 	 * Fitness detail reading (one specific activity) is not supported by this read method, refer to 
 	 * readDetailFromDevice for that. <br/><br/>
 	 * As of Communicator v3.0.0.0, if TCX data is requested from a FIT
-     * device, the plugin will attempt a conversion from FIT to TCX.
-     * <strong>Note:</strong> TCX cannot fully represent FIT, therefore this conversion can be lossy.
-     * For guaranteed fidelity when reading FIT files, use getBinaryFile instead.<br/><br/>
-     * <strong>Examples:</strong>
-     *@example
-     * myControl.readDataFromDevice( Garmin.DeviceControl.FILE_TYPES.gpx ); 
-     *
+   * device, the plugin will attempt a conversion from FIT to TCX.
+   * <strong>Note:</strong> TCX cannot fully represent FIT, therefore this conversion can be lossy.
+   * For guaranteed fidelity when reading FIT files, use getBinaryFile instead.<br/><br/>
+   * <strong>Examples:</strong>
+   *@example
+   * myControl.readDataFromDevice( Garmin.DeviceControl.FILE_TYPES.gpx ); 
+   *
 	 * @example
-     * var theListOptions = [{dataTypeName: 'UserDataSync',
-     *                         dataTypeID: 'http://www.topografix.com/GPX/1/1',
-     *                         computeMD5: false}];
+   * var theListOptions = [{dataTypeName: 'UserDataSync',
+   *                         dataTypeID: 'http://www.topografix.com/GPX/1/1',
+   *                         computeMD5: false}];
 	 * myControl.readDataFromDevice( Garmin.DeviceControl.FILE_TYPES.readableDir,
 	 *                               theListOptions );
-     *
+   *
 	 * @param {String} fileType The filetype to read from device.  Possible values for fileType are located in Garmin.DeviceControl.FILE_TYPES -- detail types are not supported. <br/>
-     * @param {Object[]} [fileListingOptions] Array of objects that define file listing options. <br/>
-     * <strong>fileListingOptions properties:</strong> <br/>
-     * {String} dataTypeName: Name from GarminDevice.xml <br/>
-     * {String} dataTypeID: Identifier from GarminDevice.xml<br/>
-     * {Boolean} computeMD5: compute MD5 checksum for each listed file<br/>
-     * @see #readDetailFromDevice, #getBinaryFile, Garmin.DeviceControl#FILE_TYPES
+   * @param {Object[]} [fileListingOptions] Array of objects that define file listing options. <br/>
+   * <strong>fileListingOptions properties:</strong> <br/>
+   * {String} dataTypeName: Name from GarminDevice.xml <br/>
+   * {String} dataTypeID: Identifier from GarminDevice.xml<br/>
+   * {Boolean} computeMD5: compute MD5 checksum for each listed file<br/>
+   * @see #readDetailFromDevice, #getBinaryFile, Garmin.DeviceControl#FILE_TYPES
 	 * @throws InvalidTypeException, UnsupportedTransferTypeException
-     */	
+   */
 	readDataFromDevice: function(fileType, fileListingOptions) {
 		if (!this.isUnlocked()) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.pluginNotUnlocked);
+			throw new Error(MESSAGES.pluginNotUnlocked);
 		}
 
 		if (!this.numDevices) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.noDevicesConnected);
+			throw new Error(MESSAGES.noDevicesConnected);
 		}
 
 		// Make sure filetype passed in is a valid type
 		if (!this._isAMember(fileType, [
-  		  Garmin.DeviceControl.FILE_TYPES.gpx,
-  		  Garmin.DeviceControl.FILE_TYPES.gpxDir,
-        Garmin.DeviceControl.FILE_TYPES.tcx, 
-        Garmin.DeviceControl.FILE_TYPES.crs, 
-  		  Garmin.DeviceControl.FILE_TYPES.tcxDir, 
-  		  Garmin.DeviceControl.FILE_TYPES.crsDir, 
-  		  Garmin.DeviceControl.FILE_TYPES.wkt, 
-  		  Garmin.DeviceControl.FILE_TYPES.tcxProfile,
-  		  Garmin.DeviceControl.FILE_TYPES.goals,
-  		  Garmin.DeviceControl.FILE_TYPES.fitDir,
-  		  Garmin.DeviceControl.FILE_TYPES.fitHealthData, 
-  		  Garmin.DeviceControl.FILE_TYPES.readableDir
+  		  FILE_TYPES.gpx,
+  		  FILE_TYPES.gpxDir,
+        FILE_TYPES.tcx, 
+        FILE_TYPES.crs, 
+  		  FILE_TYPES.tcxDir, 
+  		  FILE_TYPES.crsDir, 
+  		  FILE_TYPES.wkt, 
+  		  FILE_TYPES.tcxProfile,
+  		  FILE_TYPES.goals,
+  		  FILE_TYPES.fitDir,
+  		  FILE_TYPES.fitHealthData, 
+  		  FILE_TYPES.readableDir
 		  ])) {
-			var error = new Error(Garmin.DeviceControl.MESSAGES.invalidFileType + fileType);
+			var error = new Error(MESSAGES.invalidFileType + fileType);
 			error.name = "InvalidTypeException";
 			throw error;
 		}
 
-		if (fileType == Garmin.DeviceControl.FILE_TYPES.readableDir && 
-		    fileListingOptions === undefined ) {
+		if (
+      fileType == FILE_TYPES.readableDir && 
+		  fileListingOptions === undefined
+    ) {
 			var error = new Error("You have specified invalid or conflicting fileListingOptions");
 			error.name = "InvalidParameterException";
 			throw error;
@@ -495,7 +581,7 @@ define([
 
 		// Make sure the device supports this type of data transfer for this type
 		if (!this.checkDeviceReadSupport(fileType)) {
-		  var error = new Error(Garmin.DeviceControl.MESSAGES.unsupportedReadDataType + fileType);
+		  var error = new Error(MESSAGES.unsupportedReadDataType + fileType);
       error.name = "UnsupportedDataTypeException";
 			throw error;
 		}
@@ -510,31 +596,40 @@ define([
       this._broadcaster.dispatch('onStartReadFromDevice', {controller: this});
         	
       switch (this.gpsDataType) {        		
-				case Garmin.DeviceControl.FILE_TYPES.gpxDir:
-    		case Garmin.DeviceControl.FILE_TYPES.gpx:
+				case FILE_TYPES.gpxDir:
+    		case FILE_TYPES.gpx:
     			this.garminPlugin.startReadFromGps(this.deviceNumber);
     			break;
-    		case Garmin.DeviceControl.FILE_TYPES.tcx:
-    		case Garmin.DeviceControl.FILE_TYPES.crs:
-    		case Garmin.DeviceControl.FILE_TYPES.wkt:
-    		case Garmin.DeviceControl.FILE_TYPES.goals:
-    		case Garmin.DeviceControl.FILE_TYPES.tcxProfile:        		
-    			this.garminPlugin.startReadFitnessData( this.deviceNumber, this.gpsDataType );
+    		case FILE_TYPES.tcx:
+    		case FILE_TYPES.crs:
+    		case FILE_TYPES.wkt:
+    		case FILE_TYPES.goals:
+    		case FILE_TYPES.tcxProfile:        		
+    			this.garminPlugin.startReadFitnessData(
+            this.deviceNumber,
+            this.gpsDataType
+          );
     			break;
-    		case Garmin.DeviceControl.FILE_TYPES.tcxDir:
-    			this.garminPlugin.startReadFitnessDirectory(this.deviceNumber, Garmin.DeviceControl.FILE_TYPES.tcx);
+    		case FILE_TYPES.tcxDir:
+    			this.garminPlugin.startReadFitnessDirectory(
+            this.deviceNumber,
+            FILE_TYPES.tcx
+          );
     			break;
-    		case Garmin.DeviceControl.FILE_TYPES.crsDir:
-    			this.garminPlugin.startReadFitnessDirectory(this.deviceNumber, Garmin.DeviceControl.FILE_TYPES.crs);
+    		case FILE_TYPES.crsDir:
+    			this.garminPlugin.startReadFitnessDirectory(
+            this.deviceNumber,
+            FILE_TYPES.crs
+          );
     			break;
-    		case Garmin.DeviceControl.FILE_TYPES.fitDir:
-    		case Garmin.DeviceControl.FILE_TYPES.fitHealthData:
+    		case FILE_TYPES.fitDir:
+    		case FILE_TYPES.fitHealthData:
           this.garminPlugin.startReadFitDirectory(this.deviceNumber);
     			break;
-    		case Garmin.DeviceControl.FILE_TYPES.deviceXml:
+    		case FILE_TYPES.deviceXml:
     			this.gpsDataString = this.getCurrentDeviceXml();
     			break;
-    		case Garmin.DeviceControl.FILE_TYPES.readableDir:
+    		case FILE_TYPES.readableDir:
           this.garminPlugin.startReadableFileListing(
             this.deviceNumber, 
             fileListingOptions[this.fileListingIndex].dataTypeName,
@@ -568,21 +663,21 @@ define([
 	 */
 	readDetailFromDevice: function(fileType, dataId) {
 		if (!this.isUnlocked()) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.pluginNotUnlocked);
+			throw new Error(MESSAGES.pluginNotUnlocked);
 		}
 
 		if (this.numDevices == 0) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.noDevicesConnected);
+			throw new Error(MESSAGES.noDevicesConnected);
 		}
 
-		if (!this._isAMember(fileType, [Garmin.DeviceControl.FILE_TYPES.tcxDetail, Garmin.DeviceControl.FILE_TYPES.crsDetail])) {
-			var error = new Error(Garmin.DeviceControl.MESSAGES.invalidFileType + fileType);
+		if (!this._isAMember(fileType, [FILE_TYPES.tcxDetail, FILE_TYPES.crsDetail])) {
+			var error = new Error(MESSAGES.invalidFileType + fileType);
 			error.name = "InvalidTypeException";
 			throw error;
 		}
 
 		if (!this.checkDeviceReadSupport(fileType)) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.unsupportedReadDataType + fileType);
+			throw new Error(MESSAGES.unsupportedReadDataType + fileType);
 		}
 
 		this.gpsDataType = fileType;
@@ -596,11 +691,19 @@ define([
       });
 
     	switch (this.gpsDataType) {
-    		case Garmin.DeviceControl.FILE_TYPES.tcxDetail:
-    			this.garminPlugin.startReadFitnessDetail(this.deviceNumber, Garmin.DeviceControl.FILE_TYPES.tcx, dataId);
+    		case FILE_TYPES.tcxDetail:
+    			this.garminPlugin.startReadFitnessDetail(
+            this.deviceNumber,
+            FILE_TYPES.tcx,
+            dataId
+          );
     			break;
-    		case Garmin.DeviceControl.FILE_TYPES.crsDetail:
-    			this.garminPlugin.startReadFitnessDetail(this.deviceNumber, Garmin.DeviceControl.FILE_TYPES.crs, dataId);
+    		case FILE_TYPES.crsDetail:
+    			this.garminPlugin.startReadFitnessDetail(
+            this.deviceNumber,
+            FILE_TYPES.crs,
+            dataId
+          );
     			break;
     	}
 		  this._progressRead();
@@ -619,7 +722,7 @@ define([
    * @see #readDataFromDevice
    */
 	readFromDevice: function() {
-		this.readDataFromDevice(Garmin.DeviceControl.FILE_TYPES.gpx);
+		this.readDataFromDevice(FILE_TYPES.gpx);
 	},
 	
 	/** Asynchronously reads a single fitness history record from the connected device as TCX format.
@@ -635,7 +738,7 @@ define([
      * @see #readDetailFromDevice
      */	
 	readHistoryDetailFromFitnessDevice: function(historyId) {
-		this.readDetailFromDevice(Garmin.DeviceControl.FILE_TYPES.tcx, historyId)
+		this.readDetailFromDevice(FILE_TYPES.tcx, historyId)
 	},
 	
 	/** Asynchronously reads a single fitness course from the connected device as TCX format.
@@ -651,7 +754,7 @@ define([
      * @see #readDetailFromDevice
      */			
 	readCourseDetailFromFitnessDevice: function(courseId){
-		this.readDetailFromDevice(Garmin.DeviceControl.FILE_TYPES.crs, courseId)
+		this.readDetailFromDevice(FILE_TYPES.crs, courseId)
 	},
 	
 	/** Asynchronously reads entire fitness history data (TCX) from the connected device.  
@@ -665,7 +768,7 @@ define([
      * @see #readDataFromDevice
      */	
 	readHistoryFromFitnessDevice: function() {	
-		this.readDataFromDevice(Garmin.DeviceControl.FILE_TYPES.tcx);
+		this.readDataFromDevice(FILE_TYPES.tcx);
 	},
 	
 	/** Asynchronously reads entire fitness course data (CRS) from the connected device.  
@@ -679,7 +782,7 @@ define([
      * @see #readDataFromDevice
      */	
 	readCoursesFromFitnessDevice: function() {
-		this.readDataFromDevice(Garmin.DeviceControl.FILE_TYPES.crs);
+		this.readDataFromDevice(FILE_TYPES.crs);
 	},
 	
 	/** Asynchronously reads fitness workout data (WKT) from the connected device.  
@@ -693,7 +796,7 @@ define([
      * @see #readDataFromDevice
      */	
 	readWorkoutsFromFitnessDevice: function() {
-		this.readDataFromDevice(Garmin.DeviceControl.FILE_TYPES.wkt);
+		this.readDataFromDevice(FILE_TYPES.wkt);
 	},
 	
 	/** Asynchronously reads fitness profile data (TCX) from the connected device.
@@ -707,7 +810,7 @@ define([
      * @see #readDataFromDevice
      */	
 	readUserProfileFromFitnessDevice: function() {
-		this.readDataFromDevice(Garmin.DeviceControl.FILE_TYPES.tcxProfile);
+		this.readDataFromDevice(FILE_TYPES.tcxProfile);
 	},
 
 	/** Asynchronously reads fitness goals data (TCX) from the connected device.
@@ -721,7 +824,7 @@ define([
      * @see #readDataFromDevice
      */	
 	readGoalsFromFitnessDevice: function() {
-		this.readDataFromDevice(Garmin.DeviceControl.FILE_TYPES.goals);
+		this.readDataFromDevice(FILE_TYPES.goals);
 	},
 	
 	
@@ -740,11 +843,11 @@ define([
 	getGpsData: function() {
 		
 		if (!this.isUnlocked())
-			throw new Error(Garmin.DeviceControl.MESSAGES.pluginNotUnlocked);
+			throw new Error(MESSAGES.pluginNotUnlocked);
 		if (this.numDevices == 0)
-			throw new Error(Garmin.DeviceControl.MESSAGES.noDevicesConnected);
-		if( this.getReadCompletionState != Garmin.DeviceControl.FINISH_STATES.finished ) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.incompleteRead);
+			throw new Error(MESSAGES.noDevicesConnected);
+		if( this.getReadCompletionState != FINISH_STATES.finished ) {
+			throw new Error(MESSAGES.incompleteRead);
 		}
 		
 		return this.gpsData;
@@ -762,12 +865,16 @@ define([
 	 * @see #readCourseDetailFromFitnessDevice
 	 */
 	getGpsDataString: function() {
-		if (!this.isUnlocked())
-			throw new Error(Garmin.DeviceControl.MESSAGES.pluginNotUnlocked);
-		if (this.numDevices == 0)
-			throw new Error(Garmin.DeviceControl.MESSAGES.noDevicesConnected);
-		if( this.getReadCompletionState != Garmin.DeviceControl.FINISH_STATES.finished ) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.incompleteRead);
+		if (!this.isUnlocked()) {
+      throw new Error(MESSAGES.pluginNotUnlocked);
+    }
+
+		if (!this.numDevices) {
+			throw new Error(MESSAGES.noDevicesConnected);
+    }
+
+		if (this.getReadCompletionState !== FINISH_STATES.finished) {
+			throw new Error(MESSAGES.incompleteRead);
 		}
 		
 		return this.gpsDataString;
@@ -787,11 +894,11 @@ define([
 	getCompressedFitnessData: function() {
 		
 		if (!this.isUnlocked())
-			throw new Error(Garmin.DeviceControl.MESSAGES.pluginNotUnlocked);
+			throw new Error(MESSAGES.pluginNotUnlocked);
 		if (this.numDevices == 0)
-			throw new Error(Garmin.DeviceControl.MESSAGES.noDevicesConnected);
-		if( this.getReadCompletionState != Garmin.DeviceControl.FINISH_STATES.finished ) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.incompleteRead);
+			throw new Error(MESSAGES.noDevicesConnected);
+		if( this.getReadCompletionState != FINISH_STATES.finished ) {
+			throw new Error(MESSAGES.incompleteRead);
 		}
 
 		try{
@@ -815,27 +922,27 @@ define([
 	 */	
 	getReadCompletionState: function() {
 		switch(this.gpsDataType) {
-			case Garmin.DeviceControl.FILE_TYPES.gpxDir:
-			case Garmin.DeviceControl.FILE_TYPES.gpxDetail:
-			case Garmin.DeviceControl.FILE_TYPES.gpx:
+			case FILE_TYPES.gpxDir:
+			case FILE_TYPES.gpxDetail:
+			case FILE_TYPES.gpx:
 				return this.garminPlugin.finishReadFromGps();
-			case Garmin.DeviceControl.FILE_TYPES.tcx:
-			case Garmin.DeviceControl.FILE_TYPES.crs:
-			case Garmin.DeviceControl.FILE_TYPES.wkt:
-			case Garmin.DeviceControl.FILE_TYPES.tcxProfile:
-			case Garmin.DeviceControl.FILE_TYPES.goals:
+			case FILE_TYPES.tcx:
+			case FILE_TYPES.crs:
+			case FILE_TYPES.wkt:
+			case FILE_TYPES.tcxProfile:
+			case FILE_TYPES.goals:
 				return this.garminPlugin.finishReadFitnessData();
-			case Garmin.DeviceControl.FILE_TYPES.tcxDir:
-			case Garmin.DeviceControl.FILE_TYPES.crsDir:
+			case FILE_TYPES.tcxDir:
+			case FILE_TYPES.crsDir:
 				return this.garminPlugin.finishReadFitnessDirectory();
-			case Garmin.DeviceControl.FILE_TYPES.tcxDetail:
-			case Garmin.DeviceControl.FILE_TYPES.crsDetail:
+			case FILE_TYPES.tcxDetail:
+			case FILE_TYPES.crsDetail:
 				return this.garminPlugin.finishReadFitnessDetail();
-			case Garmin.DeviceControl.FILE_TYPES.fitHealthData:
-			case Garmin.DeviceControl.FILE_TYPES.fitDir:
-                return this.garminPlugin.finishReadFitDirectory();
-			case Garmin.DeviceControl.FILE_TYPES.readableDir:
-                return this.garminPlugin.finishReadableFileListing();
+			case FILE_TYPES.fitHealthData:
+			case FILE_TYPES.fitDir:
+        return this.garminPlugin.finishReadFitDirectory();
+			case FILE_TYPES.readableDir:
+        return this.garminPlugin.finishReadableFileListing();
 		}
 	},
 	
@@ -857,30 +964,30 @@ define([
      */	
 	_finishReadFromDevice: function() {
 		var completionState = this.getReadCompletionState();
-        try {
-        	
-			if( completionState == Garmin.DeviceControl.FINISH_STATES.finished ) {
-			    var theSuccess = false;
-	        	switch( this.gpsDataType ) {
-					case Garmin.DeviceControl.FILE_TYPES.gpxDir:
-	        		case Garmin.DeviceControl.FILE_TYPES.gpxDetail:
-	        		case Garmin.DeviceControl.FILE_TYPES.gpx:
-	        			theSuccess = this.garminPlugin.gpsTransferSucceeded();
-	        			if (theSuccess) {
-		        			this.gpsDataString = this.garminPlugin.getGpsXml();
-							this.gpsData = Garmin.XmlConverter.toDocument(this.gpsDataString);
-							this._broadcaster.dispatch("onFinishReadFromDevice", {success: theSuccess, controller: this});	
-	        			}
+    try {    	
+			if (completionState == FINISH_STATES.finished) {
+        var theSuccess = false;
+
+        switch( this.gpsDataType ) {
+					case FILE_TYPES.gpxDir:
+      		case FILE_TYPES.gpxDetail:
+      		case FILE_TYPES.gpx:
+            theSuccess = this.garminPlugin.gpsTransferSucceeded();
+	        	if (theSuccess) {
+  	        	this.gpsDataString = this.garminPlugin.getGpsXml();
+  						this.gpsData = Garmin.XmlConverter.toDocument(this.gpsDataString);
+  						this._broadcaster.dispatch("onFinishReadFromDevice", {success: theSuccess, controller: this});	
+          	}
 						break;
-					case Garmin.DeviceControl.FILE_TYPES.tcx:
-					case Garmin.DeviceControl.FILE_TYPES.crs:
-					case Garmin.DeviceControl.FILE_TYPES.tcxDir:
-					case Garmin.DeviceControl.FILE_TYPES.crsDir:
-					case Garmin.DeviceControl.FILE_TYPES.tcxDetail:
-					case Garmin.DeviceControl.FILE_TYPES.crsDetail:
-					case Garmin.DeviceControl.FILE_TYPES.wkt:
-					case Garmin.DeviceControl.FILE_TYPES.tcxProfile:
-					case Garmin.DeviceControl.FILE_TYPES.goals:
+					case FILE_TYPES.tcx:
+					case FILE_TYPES.crs:
+					case FILE_TYPES.tcxDir:
+					case FILE_TYPES.crsDir:
+					case FILE_TYPES.tcxDetail:
+					case FILE_TYPES.crsDetail:
+					case FILE_TYPES.wkt:
+					case FILE_TYPES.tcxProfile:
+					case FILE_TYPES.goals:
 						theSuccess = this.garminPlugin.fitnessTransferSucceeded();
 						if (theSuccess) {
 							this.gpsDataString = this.garminPlugin.getTcdXml();
@@ -890,32 +997,37 @@ define([
 							this._broadcaster.dispatch("onFinishReadFromDevice", {success: theSuccess, controller: this});										
 						}
 						break;
-					case Garmin.DeviceControl.FILE_TYPES.fitHealthData:
-					case Garmin.DeviceControl.FILE_TYPES.fitDir:
-                        theSuccess = this.garminPlugin.fitnessTransferSucceeded();
+					case FILE_TYPES.fitHealthData:
+					case FILE_TYPES.fitDir:
+            theSuccess = this.garminPlugin.fitnessTransferSucceeded();
 						this.gpsDataString = this.garminPlugin.getDirectoryXml();
 						this.gpsData = Garmin.XmlConverter.toDocument(this.gpsDataString);
 						this._broadcaster.dispatch("onFinishReadFromDevice", {success: theSuccess, controller: this});
-                        break;
-					case Garmin.DeviceControl.FILE_TYPES.readableDir:
+            break;
+					case FILE_TYPES.readableDir:
 						this._appendDirXml(this.garminPlugin.getDirectoryXml());
 						++this.fileListingIndex;
-						if( this.fileListingIndex < this.fileListingOptions.length) {
+						if (this.fileListingIndex < this.fileListingOptions.length) {
 							//start the next file listing operation
-							this.garminPlugin.startReadableFileListing(this.deviceNumber, 
-											   this.fileListingOptions[this.fileListingIndex].dataTypeName,
-											   this.fileListingOptions[this.fileListingIndex].dataTypeID,
-											   this.fileListingOptions[this.fileListingIndex].computeMD5);
+							this.garminPlugin.startReadableFileListing(
+                this.deviceNumber, 
+                this.fileListingOptions[this.fileListingIndex].dataTypeName,
+                this.fileListingOptions[this.fileListingIndex].dataTypeID,
+                this.fileListingOptions[this.fileListingIndex].computeMD5
+              );
 							this._progressRead();
-							break;
 						} else {
-						    //done with file listings
-						    theSuccess = true;
-						    this._broadcaster.dispatch("onFinishReadFromDevice", {success: theSuccess, controller: this});
-                            break;
+  				    //done with file listings
+  				    theSuccess = true;
+  				    this._broadcaster.dispatch(
+                "onFinishReadFromDevice",
+                {success: theSuccess, controller: this}
+              );
 						}
-	        	} //end switch
-			} else if( completionState == Garmin.DeviceControl.FINISH_STATES.messageWaiting ) {
+            break;
+          } // end switch
+
+			} else if (completionState == FINISH_STATES.messageWaiting ) {
 				var msg = this._messageWaiting();
 				this._broadcaster.dispatch("onWaitingReadFromDevice", {message: msg, controller: this});
 			} else {
@@ -931,7 +1043,7 @@ define([
 	 * Minimum plugin version 2.0.0.4
      */	
 	cancelReadFromDevice: function() {
-		if (this.gpsDataType == Garmin.DeviceControl.FILE_TYPES.gpx) {
+		if (this.gpsDataType == FILE_TYPES.gpx) {
 			this.garminPlugin.cancelReadFromGps();
 		} else {
 			this.garminPlugin.cancelReadFitnessData();
@@ -952,15 +1064,15 @@ define([
      */
      getBinaryFile: function(deviceNumber, relativeFilePath) {
         if (!this.isUnlocked())
-			throw new Error(Garmin.DeviceControl.MESSAGES.pluginNotUnlocked);
+			throw new Error(MESSAGES.pluginNotUnlocked);
 		if(this.numDevices == 0)
-			throw new Error(Garmin.DeviceControl.MESSAGES.noDevicesConnected);
+			throw new Error(MESSAGES.noDevicesConnected);
         // Attempt to detect Fit file
         if(relativeFilePath.capitalize().endsWith(".fit")) {
             // Capitalize makes all but first letters lowercase. I can't believe prototype doesn't have a lowercase method. :(
-            this.gpsDataType = Garmin.DeviceControl.FILE_TYPES.fit;
+            this.gpsDataType = FILE_TYPES.fit;
         } else {
-    		this.gpsDataType = Garmin.DeviceControl.FILE_TYPES.binary;
+    		this.gpsDataType = FILE_TYPES.binary;
         }
 		var success;
 		try {
@@ -984,7 +1096,7 @@ define([
      */	
 	writeAddressToDevice: function(address) {
 		if (!this.isUnlocked())
-			throw new Error(Garmin.DeviceControl.MESSAGES.pluginNotUnlocked);
+			throw new Error(MESSAGES.pluginNotUnlocked);
 		if (!this.geocoder) {
 			this.geocoder = new Garmin.Geocode();
 			this.geocoder.register(this);
@@ -1028,40 +1140,45 @@ define([
      * @throws InvalidTypeException, UnsupportedTransferTypeException
      */ 
     writeDataToDevice: function(dataType, dataString, fileName) {
-        if (!this.isUnlocked()) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.pluginNotUnlocked);
-        }
+      if (!this.isUnlocked()) {
+        throw new Error(MESSAGES.pluginNotUnlocked);
+      }
         
-		if (this.numDevices == 0) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.noDevicesConnected);
-        }
+		  if (this.numDevices == 0) {
+        throw new Error(MESSAGES.noDevicesConnected);
+      }
 
-		this.gpsDataType = dataType;
+		  this.gpsDataType = dataType;
         
-		if (!this.checkDeviceWriteSupport(this.gpsDataType)) {
-			throw new Error(Garmin.DeviceControl.MESSAGES.unsupportedWriteDataType + this.gpsDataType);
-		}
+  		if (!this.checkDeviceWriteSupport(this.gpsDataType)) {
+  			throw new Error(MESSAGES.unsupportedWriteDataType + this.gpsDataType);
+  		}
 		
-		try {
-        	this._broadcaster.dispatch("onStartWriteToDevice", {controller: this});
+  		try {
+        this._broadcaster.dispatch("onStartWriteToDevice", {controller: this});
             
-        	switch(this.gpsDataType) {
-            	case Garmin.DeviceControl.FILE_TYPES.gpx:
-        			this.garminPlugin.startWriteToGps(dataString, fileName, this.deviceNumber);
-        			break;
-        		case Garmin.DeviceControl.FILE_TYPES.crs:
-        		case Garmin.DeviceControl.FILE_TYPES.wkt:
-        		case Garmin.DeviceControl.FILE_TYPES.goals:
-        		case Garmin.DeviceControl.FILE_TYPES.tcxProfile:
-        		case Garmin.DeviceControl.FILE_TYPES.nlf:                
-        			this.garminPlugin.startWriteFitnessData(dataString, this.deviceNumber, fileName, this.gpsDataType);
-        			break;
-        		default:
-					throw new Error(Garmin.DeviceControl.MESSAGES.unsupportedWriteDataType + this.gpsDataType);
-        	}
+      	switch(this.gpsDataType) {
+          case FILE_TYPES.gpx:
+      			this.garminPlugin.startWriteToGps(dataString, fileName, this.deviceNumber);
+      			break;
+      		case FILE_TYPES.crs:
+      		case FILE_TYPES.wkt:
+      		case FILE_TYPES.goals:
+      		case FILE_TYPES.tcxProfile:
+      		case FILE_TYPES.nlf:                
+      			this.garminPlugin.startWriteFitnessData(
+              dataString,
+              this.deviceNumber,
+              fileName,
+              this.gpsDataType
+            );
+      			break;
+          default:
+            throw new Error(MESSAGES.unsupportedWriteDataType + this.gpsDataType);
+        }
 		    this._progressWrite();
 	    } catch(e) {
-			this._reportException(e);
+        this._reportException(e);
 	   	}
     },
     
@@ -1072,9 +1189,9 @@ define([
      * @param gpxString XML to be written to the device. This doesn't check validity.
      * @param fileName The filename to write data to.  Validity is not checked here.
      */	
-	writeToDevice: function(gpxString, fileName) {
-        this.writeDataToDevice(Garmin.DeviceControl.FILE_TYPES.gpx, gpxString, fileName);	    
-	},
+    writeToDevice: function(gpxString, fileName) {
+      this.writeDataToDevice(FILE_TYPES.gpx, gpxString, fileName);	    
+    },
 
 	/** DEPRECATED - See {@link #writeCoursesToFitnessDevice}<br/> 
 	 * <br/>
@@ -1086,7 +1203,7 @@ define([
      * @param fileName {String} filename to write data to on the device.  Validity is not checked here.
      */	
 	writeFitnessToDevice: function(tcxString, fileName) {
-		this.writeDataToDevice(Garmin.DeviceControl.FILE_TYPES.crs, tcxString, fileName);
+		this.writeDataToDevice(FILE_TYPES.crs, tcxString, fileName);
 	},
 
 	/** Writes fitness course data (TCX) to the device selected in this.deviceNumber. <br/>
@@ -1097,7 +1214,7 @@ define([
      * @param fileName {String} filename to write data to on the device.  Validity is not checked here.
      */	
 	writeCoursesToFitnessDevice: function(tcxString, fileName) {
-		this.writeDataToDevice(Garmin.DeviceControl.FILE_TYPES.crs, tcxString, fileName);
+		this.writeDataToDevice(FILE_TYPES.crs, tcxString, fileName);
 	},
 
 	/** Writes fitness goals data (TCX) string to the device selected in this.deviceNumber. All fitness goals
@@ -1109,7 +1226,7 @@ define([
      * @param tcxString {String} ActivityGoals TCX string to be written to the device. This doesn't check validity.
      */	
 	writeGoalsToFitnessDevice: function(tcxString) {
-		this.writeDataToDevice(Garmin.DeviceControl.FILE_TYPES.goals, tcxString, '');
+		this.writeDataToDevice(FILE_TYPES.goals, tcxString, '');
 	},
 	
 	/** Writes fitness workouts data (XML) string to the device selected in this.deviceNumber. <br/>
@@ -1120,7 +1237,7 @@ define([
      * @param fileName String of filename to write it to on the device.  Validity is not checked here.
      */	
 	writeWorkoutsToFitnessDevice: function(tcxString, fileName) {
-		this.writeDataToDevice(Garmin.DeviceControl.FILE_TYPES.wkt, tcxString, fileName);
+		this.writeDataToDevice(FILE_TYPES.wkt, tcxString, fileName);
 	},
 	
 	/** Writes fitness user profile data (TCX) string to the device selected in this.deviceNumber. <br/>
@@ -1131,7 +1248,7 @@ define([
      * @param fileName String of filename to write it to on the device.  Validity is not checked here.
      */	
 	writeUserProfileToFitnessDevice: function(tcxString, fileName) {
-		this.writeDataToDevice(Garmin.DeviceControl.FILE_TYPES.tcxProfile, tcxString, fileName);
+		this.writeDataToDevice(FILE_TYPES.tcxProfile, tcxString, fileName);
 	},
 	
 	/** Downloads and writes binary data asynchronously to device. <br/>
@@ -1146,10 +1263,10 @@ define([
      */	
 	downloadToDevice: function(xmlDownloadDescription) {
 		if (!this.isUnlocked())
-			throw new Error(Garmin.DeviceControl.MESSAGES.pluginNotUnlocked);
+			throw new Error(MESSAGES.pluginNotUnlocked);
 		if(this.numDevices == 0)
-			throw new Error(Garmin.DeviceControl.MESSAGES.noDevicesConnected);
-		this.gpsDataType = Garmin.DeviceControl.FILE_TYPES.binary;
+			throw new Error(MESSAGES.noDevicesConnected);
+		this.gpsDataType = FILE_TYPES.binary;
 		try {
 		    this.garminPlugin.startDownloadData(xmlDownloadDescription, this.deviceNumber );
 		    this._progressWrite();
@@ -1177,37 +1294,37 @@ define([
 			
 			switch( this.gpsDataType ) {
 				
-				case Garmin.DeviceControl.FILE_TYPES.gpx : 
+				case FILE_TYPES.gpx : 
 					completionState = this.garminPlugin.finishWriteToGps();
 					success = this.garminPlugin.gpsTransferSucceeded();
 					break;
-				case Garmin.DeviceControl.FILE_TYPES.crs :
-				case Garmin.DeviceControl.FILE_TYPES.goals :
-				case Garmin.DeviceControl.FILE_TYPES.wkt :
-				case Garmin.DeviceControl.FILE_TYPES.tcxProfile :
-				case Garmin.DeviceControl.FILE_TYPES.nlf :
+				case FILE_TYPES.crs :
+				case FILE_TYPES.goals :
+				case FILE_TYPES.wkt :
+				case FILE_TYPES.tcxProfile :
+				case FILE_TYPES.nlf :
 					completionState = this.garminPlugin.finishWriteFitnessData();
 					success = this.garminPlugin.fitnessTransferSucceeded();
 					break;
-				case Garmin.DeviceControl.FILE_TYPES.gpi :
-				case Garmin.DeviceControl.FILE_TYPES.fitCourse :
-				case Garmin.DeviceControl.FILE_TYPES.fitSettings :
-				case Garmin.DeviceControl.FILE_TYPES.fitSport :
-				case Garmin.DeviceControl.FILE_TYPES.binary :
+				case FILE_TYPES.gpi :
+				case FILE_TYPES.fitCourse :
+				case FILE_TYPES.fitSettings :
+				case FILE_TYPES.fitSport :
+				case FILE_TYPES.binary :
 					completionState = this.garminPlugin.finishDownloadData();
 					success = this.garminPlugin.downloadDataSucceeded();
 					break;				
-				case Garmin.DeviceControl.FILE_TYPES.firmware :
+				case FILE_TYPES.firmware :
 					completionState = this.garminPlugin.finishUnitSoftwareUpdate();
 					success = this.garminPlugin.downloadDataSucceeded();
 					break;				
 				default:
-					throw new Error(Garmin.DeviceControl.MESSAGES.unsupportedWriteDataType + this.gpsDataType);
+					throw new Error(MESSAGES.unsupportedWriteDataType + this.gpsDataType);
 			}
 			
-			if( completionState == Garmin.DeviceControl.FINISH_STATES.finished ) {
+			if( completionState == FINISH_STATES.finished ) {
 				this._broadcaster.dispatch("onFinishWriteToDevice", {success: success, controller: this});											
-			} else if( completionState == Garmin.DeviceControl.FINISH_STATES.messageWaiting ) {
+			} else if( completionState == FINISH_STATES.messageWaiting ) {
 				var msg = this._messageWaiting();
 				this._broadcaster.dispatch("onWaitingWriteToDevice", {message: msg, controller: this});
 			} else {
@@ -1225,21 +1342,21 @@ define([
      */	
 	cancelWriteToDevice: function() {
 		switch( this.gpsDataType) {
-			case Garmin.DeviceControl.FILE_TYPES.gpx:
+			case FILE_TYPES.gpx:
 				this.garminPlugin.cancelWriteToGps();
 				break;
-			case Garmin.DeviceControl.FILE_TYPES.gpi:
-			case Garmin.DeviceControl.FILE_TYPES.binary:
+			case FILE_TYPES.gpi:
+			case FILE_TYPES.binary:
 				this.garminPlugin.cancelDownloadData();
 				break;
-			case Garmin.DeviceControl.FILE_TYPES.firmware:
+			case FILE_TYPES.firmware:
 				this.garminPlugin.cancelUnitSoftwareUpdate();
 				break;
-			case Garmin.DeviceControl.FILE_TYPES.crs:
-			case Garmin.DeviceControl.FILE_TYPES.goals:
-			case Garmin.DeviceControl.FILE_TYPES.wkt:
-			case Garmin.DeviceControl.FILE_TYPES.tcxProfile:
-			case Garmin.DeviceControl.FILE_TYPES.nlf:
+			case FILE_TYPES.crs:
+			case FILE_TYPES.goals:
+			case FILE_TYPES.wkt:
+			case FILE_TYPES.tcxProfile:
+			case FILE_TYPES.nlf:
 				this.garminPlugin.cancelWriteFitnessData();
 				break;
 		}
@@ -1276,10 +1393,10 @@ define([
      */
     downloadFirmwareToDevice: function(updateResponsesXml) {
         if (!this.isUnlocked())
-			throw new Error(Garmin.DeviceControl.MESSAGES.pluginNotUnlocked);
+			throw new Error(MESSAGES.pluginNotUnlocked);
 		if(this.numDevices == 0)
-			throw new Error(Garmin.DeviceControl.MESSAGES.noDevicesConnected);
-		this.gpsDataType = Garmin.DeviceControl.FILE_TYPES.firmware;
+			throw new Error(MESSAGES.noDevicesConnected);
+		this.gpsDataType = FILE_TYPES.firmware;
 		try {
             this.garminPlugin.startUnitSoftwareUpdate(updateResponsesXml, this.deviceNumber);
 		    this._progressWrite();
@@ -1481,7 +1598,7 @@ define([
 	checkDeviceReadSupport: function( datatype ) {
 		
     // Do the plugin version check early for fit directory reading
-		if (datatype == Garmin.DeviceControl.FILE_TYPES.fitDir) {
+		if (datatype == FILE_TYPES.fitDir) {
 		  if (this.garminPlugin.getSupportsFitDirectoryRead() == false) {
         // Yeah, breaking the 1 return rule... This is still cleaner than all the other options
         // and at least eliminates confusion between other types.
@@ -1497,21 +1614,21 @@ define([
 
 		// Internal types use base type for the support check.
     switch(datatype) {
-			case Garmin.DeviceControl.FILE_TYPES.gpxDir:
-			case Garmin.DeviceControl.FILE_TYPES.gpxDetail:
-        baseDatatype = Garmin.DeviceControl.FILE_TYPES.gpx;
+			case FILE_TYPES.gpxDir:
+			case FILE_TYPES.gpxDetail:
+        baseDatatype = FILE_TYPES.gpx;
         break;
-      case Garmin.DeviceControl.FILE_TYPES.tcxDir:
-      case Garmin.DeviceControl.FILE_TYPES.tcxDetail:
-        baseDatatype = Garmin.DeviceControl.FILE_TYPES.tcx; 
+      case FILE_TYPES.tcxDir:
+      case FILE_TYPES.tcxDetail:
+        baseDatatype = FILE_TYPES.tcx; 
         break;
-      case Garmin.DeviceControl.FILE_TYPES.crsDir:
-      case Garmin.DeviceControl.FILE_TYPES.crsDetail:
-        baseDatatype = Garmin.DeviceControl.FILE_TYPES.crs;
+      case FILE_TYPES.crsDir:
+      case FILE_TYPES.crsDetail:
+        baseDatatype = FILE_TYPES.crs;
         break;
-      case Garmin.DeviceControl.FILE_TYPES.fitDir:
-      case Garmin.DeviceControl.FILE_TYPES.fitFile:
-        baseDatatype = Garmin.DeviceControl.FILE_TYPES.fit;
+      case FILE_TYPES.fitDir:
+      case FILE_TYPES.fitFile:
+        baseDatatype = FILE_TYPES.fit;
         break;
       default:     
         baseDatatype = datatype;
@@ -1520,10 +1637,10 @@ define([
 		
 		// Special Cases:
 		// Every device has a device xml and firmware.
-		if (baseDatatype == Garmin.DeviceControl.FILE_TYPES.deviceXml || 
-        baseDatatype == Garmin.DeviceControl.FILE_TYPES.firmware ) {
+		if (baseDatatype == FILE_TYPES.deviceXml || 
+        baseDatatype == FILE_TYPES.firmware ) {
 		    isDatatypeSupported = true;
-		} else if (baseDatatype == Garmin.DeviceControl.FILE_TYPES.readableDir) {
+		} else if (baseDatatype == FILE_TYPES.readableDir) {
 		  isDatatypeSupported = device.isFileBased();
 		} else {
 			isDatatypeSupported = device.supportDeviceDataTypeRead(baseDatatype);
@@ -1544,7 +1661,7 @@ define([
 			
 			// Check device support via alternative means for devices which might
 			// not correctly indicate supported datatypes in their GarminDevice.xml files
-		  if (baseDatatype == Garmin.DeviceControl.FILE_TYPES.fitHealthData &&
+		  if (baseDatatype == FILE_TYPES.fitHealthData &&
 		      isDatatypeSupported == false) {
 				isDatatypeSupported = this.doesCurrentDeviceSupportHealth();
 		  }
@@ -1561,16 +1678,16 @@ define([
   mapTcxToFit: function(aTcxType) {
     var theMappedType = null;
     switch(aTcxType) {
-      case Garmin.DeviceControl.FILE_TYPES.tcx:
-      case Garmin.DeviceControl.FILE_TYPES.tcxDir:
-        theMappedType = Garmin.DeviceControl.FILE_TYPES.fitActivity;
+      case FILE_TYPES.tcx:
+      case FILE_TYPES.tcxDir:
+        theMappedType = FILE_TYPES.fitActivity;
         break;
-      case Garmin.DeviceControl.FILE_TYPES.crs:
-      case Garmin.DeviceControl.FILE_TYPES.crsDir:
-        theMappedType = Garmin.DeviceControl.FILE_TYPES.fitCourse;
+      case FILE_TYPES.crs:
+      case FILE_TYPES.crsDir:
+        theMappedType = FILE_TYPES.fitCourse;
         break;
-      case Garmin.DeviceControl.FILE_TYPES.wkt:
-        theMappedType = Garmin.DeviceControl.FILE_TYPES.fitWorkout;
+      case FILE_TYPES.wkt:
+        theMappedType = FILE_TYPES.fitWorkout;
         break;
     }
     return theMappedType;
@@ -1588,8 +1705,8 @@ define([
 		var device = this._getDeviceByNumber(this.deviceNumber);
 		
 		// Don't include types that aren't in the Device XML
-		if ( datatype == Garmin.DeviceControl.FILE_TYPES.binary 
-		  || datatype == Garmin.DeviceControl.FILE_TYPES.gpi) {
+		if ( datatype == FILE_TYPES.binary 
+		  || datatype == FILE_TYPES.gpi) {
 		    isDatatypeSupported = true;
 		} else {
             isDatatypeSupported = device.supportDeviceDataTypeWrite(datatype);
@@ -1656,89 +1773,22 @@ define([
   	}
   };
 
-  /**
-   * Constants defining possible errors messages for various errors on the page
-   */
-  Garmin.DeviceControl.MESSAGES = {
-  	deviceControlMissing: "Garmin.DeviceControl depends on the Garmin.DevicePlugin framework.",
-  	missingPluginTag: "Plug-In HTML tag not found.",
-  	browserNotSupported: "Your browser is not supported by the Garmin Communicator Plug-In.",
-  	pluginNotInstalled: "Garmin Communicator Plugin NOT detected.",
-  	outOfDatePlugin1: "Your version of the Garmin Communicator Plug-In is out of date.<br/>Required: ",
-  	outOfDatePlugin2: "Current: ",
-  	updatePlugin1: "Your version of the Garmin Communicator Plug-In is not the latest version. Latest version: ",
-  	updatePlugin2: ", current: ",
-  	pluginNotUnlocked: "Garmin Plugin has not been unlocked",
-  	noDevicesConnected: "No device connected, can't communicate with device.",
-  	invalidFileType: "Cannot process the device file type: ",
-  	incompleteRead: "Incomplete read, cannot get compressed format.",
-  	unsupportedReadDataType: "Your device does not support reading of the type: ",
-  	unsupportedWriteDataType: "Your device does not support writing of the type: "
-  };
 
-  /**
-   * Constants defining possible states when you poll the finishActions
-   */
-  Garmin.DeviceControl.FINISH_STATES = {
-  	idle: 0,
-  	working: 1,
-  	messageWaiting: 2,
-  	finished: 3	
-  };
-
-  /**
-   * Constants defining possible file types associated with read and write methods.  File types can
-   * be accessed in a static way, like so:<br/>
-   * <br/>
-   * Garmin.DeviceControl.FILE_TYPES.gpx<br/>
-   * <br/>
-   * NOTE: 'gpi' is being deprecated--please use 'binary' instead for gpi and other binary data. 
-   */
-  Garmin.DeviceControl.FILE_TYPES = {
-  	gpx:               "GPSData",
-  	tcx:               "FitnessHistory",
-  	gpi:               "gpi", //deprecated, use binary instead
-  	crs:               "FitnessCourses",
-  	wkt:               "FitnessWorkouts",
-  	goals:             "FitnessActivityGoals",
-  	tcxProfile:        "FitnessUserProfile",
-  	binary:            "BinaryData", // Not in Device XML, so writing this type is "supported" for all devices. For FIT data, use fitFile.
-  	voices:            "Voices",
-  	nlf:               "FitnessNewLeaf",
-  	fit:               "FITBinary",
-  	fitSettings:       "FIT_TYPE_2",
-  	fitSport:          "FIT_TYPE_3",
-  	fitActivity:       "FIT_TYPE_4",
-  	fitWorkout:        "FIT_TYPE_5",
-  	fitCourse:         "FIT_TYPE_6",
-  	fitHealthData:	   "FIT_TYPE_9",
-
-  	// The following types are internal types used by the API only and cannot be found in the Device XML.
-  	// NOTE: When adding or removing types to this internal list, modify checkDeviceReadSupport() accordingly.
-  	readableDir:       "ReadableFilesDirectory",
-  	tcxDir: 		       "FitnessHistoryDirectory",
-  	crsDir: 		       "FitnessCoursesDirectory",
-  	gpxDir: 		       "GPSDataDirectory",
-  	tcxDetail:         "FitnessHistoryDetail",
-  	crsDetail: 		     "FitnessCoursesDetail",
-  	gpxDetail:         "GPSDataDetail",
-  	deviceXml: 	       "DeviceXml",
-  	fitDir:     	     "FitDirectory",
-  	fitFile:    	     "FitFile",
-  	firmware:          "Firmware"
-  };
+  GarminDeviceControl.MESSAGES = MESSAGES;
+  GarminDeviceControl.FINISH_STATES = FINISH_STATES;
+  GarminDeviceControl.FILE_TYPES = FILE_TYPES;
 
   /**
    * Constants defining the strings used by the Device.xml to indicate 
    * transfer direction of each file type
    */
-  Garmin.DeviceControl.TRANSFER_DIRECTIONS = {
+  GarminDeviceControl.TRANSFER_DIRECTIONS = {
   	read:              "OutputFromUnit",
   	write:             "InputToUnit",
   	both:              "InputOutput"
   };
 
-  return Garmin.DeviceControl;
+  return GarminDeviceControl;
 
 });
 

@@ -59,12 +59,6 @@ requirejs.config({
     'highcharts': {
       deps: ['jquery'],
       exports: 'Highcharts'
-    },
-    'prototype': {
-      // Don't actually need to use this object as 
-      // Prototype affects native objects and creates global ones too
-      // but it's the most sensible object to return
-      exports: 'Prototype'
     }
   }
 });

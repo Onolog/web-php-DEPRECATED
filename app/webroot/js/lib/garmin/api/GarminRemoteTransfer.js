@@ -1,5 +1,6 @@
-if (Garmin == undefined) var Garmin = {};
-/** Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
+
+/**
+ * Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
  *
  * Licensed under the Apache License, Version 2.0 (the 'License')
  * you may not use this file except in compliance with the License.
@@ -20,31 +21,33 @@ if (Garmin == undefined) var Garmin = {};
 
 /** 
  *
- * @class Garmin.RemoteTransfer
+ * @class GarminRemoteTransfer
  * @constructor 
  * 
  * requires Prototype and Garmin.DeviceDisplay
  */
-define(['prototype'], function() {
+define(function() {
 
-  Garmin.RemoteTransfer = function(){}; //just here for jsdoc
-  Garmin.RemoteTransfer = Class.create();
+  GarminRemoteTransfer = function() {
+    this.ajaxRequest = null;
+    this.ajaxResponse = null;
+    this.apiResponse = null;
+    this.errorMsg = null;
+  };
+
   Garmin.RemoteTransfer.prototype = {
-  	
-  	initialize: function() {
-      this.ajaxRequest = null;
-      this.ajaxResponse = null;
-      this.apiResponse = null;
-      this.errorMsg = null;
-  	},
-  	
-  	/** Open a REST request to a web service.  The result is returned (if any) along 
-  	 * with request status and any error info provided by the HTTP response.
+  	/**
+     * Open a REST request to a web service.  The result is returned (if any)
+     * along with request status and any error info provided by the HTTP
+     * response.
   	 * 
   	 * @param url - the URL of the web service endpoint
-  	 * @param ajaxOptions - options used for the ajax call. Please see http://www.prototypejs.org/api/ajax/options. 
-  	 * @return a response hash containing the AJAX response object, and an error message if there was one. 
-  	 * 	Ids of the response elements are response and error.
+  	 * @param ajaxOptions - options used for the ajax call. Please see
+     * http://www.prototypejs.org/api/ajax/options.
+     *
+  	 * @return a response hash containing the AJAX response object, and an error
+     *    message if there was one. Ids of the response elements are response
+     *    and error.
   	 */
   	openRequest: function(url, ajaxOptions) {
   		this.ajaxRequest = new Ajax.Request(url, ajaxOptions);
@@ -73,8 +76,8 @@ define(['prototype'], function() {
   /**
    * Error messages used by this class.
    */
-  Garmin.RemoteTransfer.MESSAGES = {
-    badRequestException: "There was a problem with the request.  Check request parameters.",
+  GarminRemoteTransfer.MESSAGES = {
+    badRequestException: "There was a problem with the request. Check request parameters.",
   	/**
   	 * Message used for general exceptions
   	 */
@@ -89,5 +92,5 @@ define(['prototype'], function() {
   	urlNotFoundException: "The URL requested was not found (404).  Check URL."
   };
   
-  return Garmin.RemoteTransfer;
+  return GarminRemoteTransfer;
 });

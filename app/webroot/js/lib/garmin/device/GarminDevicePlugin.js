@@ -1,9 +1,3 @@
-if(Garmin == undefined){
-    /**
-    *@namespace Garmin The Garmin namespace object.
-    */
-    var Garmin = {};
-}
 /** Copyright &copy; 2007-2011 Garmin Ltd. or its subsidiaries.
  *
  * Licensed under the Apache License, Version 2.0 (the 'License')
@@ -47,22 +41,44 @@ if(Garmin == undefined){
  * @requires Prototype
  */
 
-define(['prototype'], function() {
+define(function() {
 
-  Garmin.DevicePlugin = function(pluginElement) {};  //just here for jsdoc
-  Garmin.DevicePlugin = Class.create();
-  Garmin.DevicePlugin.prototype = {
-  
-    /**
-     * Constructor
-     * @private
-     */
-  	initialize: function(pluginElement) {
-      this.plugin = pluginElement;
-      this.unlocked = false;
-      //console.debug("DevicePlugin constructor supportsFitnessWrite="+this.supportsFitnessWrite)
-  	},
-  	
+  /**
+   * Latest version (not required) of the Garmin Communicator Plugin, and a
+   * complementary toString function to print it out with.
+   */
+  var LATEST_VERSION = {
+    versionMajor: 3,
+    versionMinor: 0,
+    buildMajor: 1,
+    buildMinor: 0,
+    
+    toString: function() {
+      return (
+        this.versionMajor + '.' +
+        this.versionMinor + '.' +
+        this.buildMajor + '.' +
+        this.buildMinor
+      );
+    },
+    
+    toArray: function() {
+      return [
+        this.versionMajor,
+        this.versionMinor,
+        this.buildMajor,
+        this.buildMinor
+      ];
+    }
+  };
+
+  var GarminDevicePlugin = function(pluginElement) {
+    this.plugin = pluginElement;
+    this.unlocked = false;
+    //console.debug("DevicePlugin constructor supportsFitnessWrite="+this.supportsFitnessWrite)
+  };
+
+  GarminDevicePlugin.prototype = {
   	/**
   	 * Unlocks the GpsControl object to be used at the given web address.  
      * More than one set of path-key pairs my be passed in, for example:
@@ -76,9 +92,8 @@ define(['prototype'], function() {
      * @return true if successfully unlocked or undefined otherwise
      */
   	unlock: function(pathKeyPairsArray) {
-      debugger;
       var len = pathKeyPairsArray ? pathKeyPairsArray.length / 2 : 0;
-      for (var i=0; i<len; i++) {
+      for (var i=0; i < len; i++) {
       	if (this.plugin.Unlock(pathKeyPairsArray[i*2], pathKeyPairsArray[i*2+1])){
       		this.unlocked = true;
       		return this.unlocked;
@@ -86,9 +101,10 @@ define(['prototype'], function() {
       }
 
       // Unlock codes for local development
-      this.tryUnlock = this.plugin.Unlock("file:///","cb1492ae040612408d87cc53e3f7ff3c")
-        	|| this.plugin.Unlock("http://localhost","45517b532362fc3149e4211ade14c9b2")
-        	|| this.plugin.Unlock("http://127.0.0.1","40cd4860f7988c53b15b8491693de133");
+      this.tryUnlock =
+        this.plugin.Unlock("file:///","cb1492ae040612408d87cc53e3f7ff3c") ||
+        this.plugin.Unlock("http://localhost","45517b532362fc3149e4211ade14c9b2")
+        this.plugin.Unlock("http://127.0.0.1","40cd4860f7988c53b15b8491693de133");
         
       this.unlocked = !this.plugin.Locked;
 
@@ -1054,10 +1070,10 @@ define(['prototype'], function() {
   	 * 			i.e. [2,2,0,1]
   	 */
   	setPluginRequiredVersion: function(reqVersionArray) {
-  		Garmin.DevicePlugin.REQUIRED_VERSION.versionMajor = reqVersionArray[0];
-  		Garmin.DevicePlugin.REQUIRED_VERSION.versionMinor = reqVersionArray[1];
-  		Garmin.DevicePlugin.REQUIRED_VERSION.buildMajor = reqVersionArray[2];
-  		Garmin.DevicePlugin.REQUIRED_VERSION.buildMinor = reqVersionArray[3];
+  		REQUIRED_VERSION.versionMajor = reqVersionArray[0];
+  		REQUIRED_VERSION.versionMinor = reqVersionArray[1];
+  		REQUIRED_VERSION.buildMajor = reqVersionArray[2];
+  		REQUIRED_VERSION.buildMinor = reqVersionArray[3];
   	},
   	
   	/** Sets the latest plugin version number.  This represents the latest version available for download at Garmin.
@@ -1068,10 +1084,10 @@ define(['prototype'], function() {
   	 * 			i.e. [2,2,0,1]
   	 */
   	setPluginLatestVersion: function(reqVersionArray) {
-  		Garmin.DevicePlugin.LATEST_VERSION.versionMajor = reqVersionArray[0];
-  		Garmin.DevicePlugin.LATEST_VERSION.versionMinor = reqVersionArray[1];
-  		Garmin.DevicePlugin.LATEST_VERSION.buildMajor = reqVersionArray[2];
-  		Garmin.DevicePlugin.LATEST_VERSION.buildMinor = reqVersionArray[3];
+  		LATEST_VERSION.versionMajor = reqVersionArray[0];
+  		LATEST_VERSION.versionMinor = reqVersionArray[1];
+  		LATEST_VERSION.buildMajor = reqVersionArray[2];
+  		LATEST_VERSION.buildMinor = reqVersionArray[3];
   	},
   	
   	/** Used to check if the user's installed plugin version meets the required version for feature support purposes.
@@ -1101,7 +1117,7 @@ define(['prototype'], function() {
   	 */
   	isPluginOutOfDate: function() {
     	var pVersion = this._versionToNumber(this.getPluginVersion());
-   		var rVersion = this._versionToNumber(Garmin.DevicePlugin.REQUIRED_VERSION.toArray());
+   		var rVersion = this._versionToNumber(REQUIRED_VERSION.toArray());
         return (pVersion < rVersion);
   	},
 
@@ -1110,7 +1126,7 @@ define(['prototype'], function() {
      */
     isUpdateAvailable: function() {
     	var pVersion = this._versionToNumber(this.getPluginVersion());
-   		var cVersion = this._versionToNumber(Garmin.DevicePlugin.LATEST_VERSION.toArray());
+   		var cVersion = this._versionToNumber(LATEST_VERSION.toArray());
         return (pVersion < cVersion);
     },
 
@@ -1127,40 +1143,25 @@ define(['prototype'], function() {
   		return result;
   	}  	
   };
-  
-  /** Latest version (not required) of the Garmin Communicator Plugin, and a complementary toString function to print it out with
-   */
-  Garmin.DevicePlugin.LATEST_VERSION = {
-    versionMajor: 3,
-    versionMinor: 0,
-    buildMajor: 1,
-    buildMinor: 0,
-    
-    toString: function() {
-      return this.versionMajor + "." + this.versionMinor + "." + this.buildMajor + "." + this.buildMinor;
-    },
-    
-    toArray: function() {
-      return [
-        this.versionMajor,
-        this.versionMinor,
-        this.buildMajor,
-        this.buildMinor
-      ];
-    }
-  };
+
+  GarminDevicePlugin.LATEST_VERSION = LATEST_VERSION;
 
   /**
    * Latest required version of the Garmin Communicator Plugin, and a complementary toString function to print it out with. 
    */
-  Garmin.DevicePlugin.REQUIRED_VERSION = {
+  GarminDevicePlugin.REQUIRED_VERSION = {
     versionMajor: 3,
     versionMinor: 0,
     buildMajor: 0,
     buildMinor: 0,
     
     toString: function() {
-      return this.versionMajor + "." + this.versionMinor + "." + this.buildMajor + "." + this.buildMinor;
+      return (
+        this.versionMajor + "." +
+        this.versionMinor + "." +
+        this.buildMajor + "." +
+        this.buildMinor
+      );
     },
     
     toArray: function() {
@@ -1173,6 +1174,6 @@ define(['prototype'], function() {
     }
   };
 
-  return Garmin.DevicePlugin;
+  return GarminDevicePlugin;
 
 });

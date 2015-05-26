@@ -1,19 +1,18 @@
-define(['prototype'], function() {
+/**
+ * Encapsulates the data provided by the device for the current process' progress.
+ * Use this to relay progress information to the user.
+ * @class Garmin.TransferProgress
+ * @constructor 
+ */
+define(function() {
 
-  /**
-   * Encapsulates the data provided by the device for the current process' progress.
-   * Use this to relay progress information to the user.
-   * @class Garmin.TransferProgress
-   * @constructor 
-   */
-  Garmin.TransferProgress = Class.create();
-  Garmin.TransferProgress.prototype = {
-  	initialize: function(title) {
-  		this.title = title;
-  		this.text = new Array();
-  		this.percentage = null;
-  	},
-  	
+  var GarminTransferProgress = function(title) {
+    this.title = title;
+    this.text = new Array();
+    this.percentage = null;
+  };
+
+  GarminTransferProgress.prototype = {  	
   	addText: function(textString) {
   		this.text.push(textString);
   	},
@@ -58,6 +57,6 @@ define(['prototype'], function() {
   	}
   };
 
-  return Garmin.TransferProgress;
+  return GarminTransferProgress;
 
 });
