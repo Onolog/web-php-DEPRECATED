@@ -81,6 +81,7 @@ class Workout extends AppModel {
    * 
    */
   function afterFind($results) {
+
     foreach($results as $key => $result) {
       $workout = $result['Workout'];
 

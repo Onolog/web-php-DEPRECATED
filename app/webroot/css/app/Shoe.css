@@ -1,5 +1,13 @@
+/**
+ * 
+ */
+
 .shoeList {
   table-layout: fixed;
+}
+
+.modal-body .shoeView {
+  margin: -15px;
 }
 
 .workoutDescription {

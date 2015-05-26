@@ -1,5 +1,6 @@
 <?php
 $this->Include->css(array(
+  'app/Activity',
   'app/Shoe',
   'components/Topline'
 ));

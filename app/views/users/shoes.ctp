@@ -3,8 +3,12 @@
  * Displays a list of all the user's shoes
  */
 $this->Include->css(array(
+  'app/Activity',
   'app/Shoe',
   'components/Topline'
+));
+$this->set('page_classes', array(
+  'narrow-page'
 ));
 
 echo $this->element('loader', array(

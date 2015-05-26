@@ -96,7 +96,7 @@ define([
           alert={this.state.alert}
           isLoading={this.state.isLoading}
           shown={this.state.shown}
-          size="large"
+          size="small"
           onRequestClose={this._toggleModal}
           title={this._getDialogTitle()}
           footer={

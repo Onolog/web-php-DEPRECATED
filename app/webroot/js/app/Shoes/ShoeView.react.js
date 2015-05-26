@@ -8,8 +8,10 @@
 define([
 
   'lib/react/react',
+  'lib/react/jsx!app/Activities/ActivitySection.react',
   'lib/react/jsx!components/Data/Topline.react',
   'lib/react/jsx!components/Data/LabeledStat.react',
+  'lib/react/jsx!components/EmptyState.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Panel/Panel.react',
 
@@ -19,8 +21,10 @@ define([
 ], function(
 
   React,
+  ActivitySection,
   Topline,
   LabeledStat,
+  EmptyState,
   Link,
   Panel,
 
@@ -52,72 +56,57 @@ define([
 
     render: function() {
       return (
-        <div>
-          {this._renderStats()}
-          {this._renderActivities()}
+        <div className="shoeView">
+          <ActivitySection>
+            <Topline>
+              <LabeledStat
+                label="Miles"
+                stat={this.props.mileage}
+              />
+              <LabeledStat
+                label="Runs"
+                stat={this.props.activityCount}
+              />
+            </Topline>
+          </ActivitySection>
+          <ActivitySection title="Activities">
+            {this._renderActivities()}
+          </ActivitySection>
         </div>
-      );
-    },
-
-    _renderStats: function() {
-      return (
-        <Panel>
-          <Topline>
-            <LabeledStat
-              label="Miles"
-              stat={this.props.mileage}
-            />
-            <LabeledStat
-              label="Runs"
-              stat={this.props.activityCount}
-            />
-          </Topline>
-        </Panel>
       );
     },
 
     _renderActivities: function() {
       var activities = this.props.activities;
       if (!activities || !activities.length) {
-        return (
-          <Panel className="emptyState">
-            No runs to display.
-          </Panel>
-        );
+        return <EmptyState message="No activities to display." />;
       }
 
-      var rows = activities.map(function(activity, idx) {
-        var date = DateTimeUtils.formatDate(
-          activity.date * 1000,
-          DATE_FORMAT
-        );
+      return (
+        <table className="item_list shoeList">
+          {activities.map(this._renderRows.bind(this))}
+        </table>
+      );
+    },
 
-        return (
-          <tr key={idx}>
-            <td>
-              {date}
-            </td>
-            <td className="workoutDescription">
-              <div className="workoutDescriptionTruncator">
-                <Link href={'/workouts/view/' + activity.id}>
-                  {activity.notes}
-                </Link>
-              </div>
-            </td>
-            <td className="mileage">
-              {formatDistance(activity.distance) + ' mi'}
-            </td>
-            <td className="time">
-              {DateTimeUtils.secondsToTime(activity.time)}
-            </td>
-          </tr>
-        );
-      });
+    _renderRows: function(activity, idx) {
+      var date = DateTimeUtils.formatDate(
+        activity.date * 1000,
+        DATE_FORMAT
+      );
 
       return (
-        <Panel>
-          <table className="item_list shoeList">{rows}</table>
-        </Panel>
+        <tr key={idx}>
+          <td>
+            {date}
+          </td>
+          <td className="mileage">
+            {formatDistance(activity.distance) + ' mi'}
+          </td>
+          <td className="time">
+            {DateTimeUtils.secondsToTime(activity.time)}
+          </td>
+        </tr>
       );
     }
 

@@ -12,6 +12,7 @@ define([
   'lib/react/jsx!app/Shoes/ShoeView.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
+  'lib/react/jsx!components/Panel/Panel.react',
 
 ], function(
 
@@ -19,7 +20,8 @@ define([
   PageHeader,
   ShoeView,
   Button,
-  ButtonGroup
+  ButtonGroup,
+  Panel
 
 ) {
 
@@ -44,11 +46,13 @@ define([
           <PageHeader title={shoe.name}>
             {this._renderButtonGroup()}
           </PageHeader>
-          <ShoeView
-            activityCount={shoe.activity_count}
-            activities={shoe.activities}
-            mileage={shoe.mileage}
-          />
+          <Panel noPadding={true}>
+            <ShoeView
+              activityCount={shoe.activity_count}
+              activities={shoe.activities}
+              mileage={shoe.mileage}
+            />
+          </Panel>
         </div>
       );
     },

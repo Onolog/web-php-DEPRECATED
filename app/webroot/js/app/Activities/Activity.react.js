@@ -121,10 +121,10 @@ define([
     },
 
     _renderActivityShoes: function(shoes) {
-      if (shoes.id && shoes.name) {
+      if (shoes.name) {
         return (
           <ActivitySection title="Shoes" border={true}>
-            <ShoeViewLink shoeID={shoes.id} shoeName={shoes.name} />
+            {shoes.name}
           </ActivitySection>
         );
       }

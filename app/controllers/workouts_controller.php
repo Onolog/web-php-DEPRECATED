@@ -61,10 +61,7 @@ class WorkoutsController extends AppController {
       $this->goHome(__('That workout doesn\'t exist', 1));
     }
 
-    // Friend info
-    $workout['Workout']['friends'] =
-      $this->getWorkoutFriends($workout['Workout']['friends']);
-
+    $workout = $this->populateWorkoutForView($workout);
 		$viewer = $this->Auth->User('id');
 
     $this->set(compact('workout', 'viewer'));
@@ -86,10 +83,7 @@ class WorkoutsController extends AppController {
         // The workout doesn't exist
         $response->setMessage('That workout doesn\'t exist.');
       } else {
-        // Friend info
-        $workout['Workout']['friends'] =
-          $this->getWorkoutFriends($workout['Workout']['friends']);
-
+        $workout = $this->populateWorkoutForView($workout);
         $response
           ->setSuccess(true)
           ->setPayload($workout['Workout'])
@@ -376,6 +370,25 @@ class WorkoutsController extends AppController {
       ),
     ));
     return json_encode($this->Workout->Shoe->sortShoesForJSON($shoes));
+  }
+
+  protected function populateWorkoutForView($workout) {
+    // Friend info
+    $workout['Workout']['friends'] = $this->getWorkoutFriends(
+      $workout['Workout']['friends']
+    );
+
+    // Shoe info
+    $shoes = $this->Workout->Shoe->read(
+      null,
+      $workout['Workout']['shoes']['id']
+    );
+    $workout['Workout']['shoes'] = array(
+      'id' => $shoes['id'],
+      'name' => $shoes['name']
+    );
+
+    return $workout;
   }
 
   /**
