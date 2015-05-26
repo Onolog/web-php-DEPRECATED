@@ -5,8 +5,8 @@
 define([
 
   'lib/react/react',
-  
-  'lib/react/jsx!app/Workouts/WorkoutView.react',
+
+  'lib/react/jsx!app/Activities/Activity.react',  
   'lib/react/jsx!app/Workouts/WorkoutFields.react',
   
   'lib/react/jsx!components/Button/Button.react',
@@ -36,7 +36,7 @@ define([
 
   React,
 
-  WorkoutView,
+  Activity,
   WorkoutFields,
 
   Button,
@@ -199,8 +199,45 @@ define([
         );
       }
 
-      var workoutView = this._isCached() ?
-        <WorkoutView workout={this.props.workout} /> : null;
+      var workoutView;
+      var footer;
+      if (this._isCached()) {
+        workoutView = <Activity activity={this.props.workout} />;
+        footer =
+          <LeftRight>
+            <ButtonGroup>
+              <Button
+                disabled={isLoading}
+                glyph="pencil"
+                onClick={this._onEditClick}
+                tooltip={{
+                  title: 'Edit workout'
+                }}
+              />
+              <Button
+                disabled={isLoading}
+                glyph="trash"
+                onClick={this._onDeleteClick}
+                tooltip={{
+                  title: 'Delete workout'
+                }}
+              />
+              <Button
+                disabled={isLoading}
+                glyph="link"
+                onClick={this._onPermalinkClick}
+                tooltip={{
+                  title: 'View Permalink'
+                }}
+              />
+            </ButtonGroup>
+            <Button
+              disabled={isLoading}
+              label="Close"
+              onClick={this._toggleModal}
+            />
+          </LeftRight>;
+      }
       
       return (
         <Modal
@@ -208,44 +245,7 @@ define([
           alert={this.state.alert}
           shown={this.state.shown}
           onRequestClose={this._toggleModal}
-          title={DateTimeUtils.formatDate(
-            this.props.workout.date*1000
-          )}
-          footer={
-            <LeftRight>
-              <ButtonGroup>
-                <Button
-                  disabled={isLoading}
-                  glyph="pencil"
-                  onClick={this._onEditClick}
-                  tooltip={{
-                    title: 'Edit workout'
-                  }}
-                />
-                <Button
-                  disabled={isLoading}
-                  glyph="trash"
-                  onClick={this._onDeleteClick}
-                  tooltip={{
-                    title: 'Delete workout'
-                  }}
-                />
-                <Button
-                  disabled={isLoading}
-                  glyph="link"
-                  onClick={this._onPermalinkClick}
-                  tooltip={{
-                    title: 'View Permalink'
-                  }}
-                />
-              </ButtonGroup>
-              <Button
-                disabled={isLoading}
-                label="Close"
-                onClick={this._toggleModal}
-              />
-            </LeftRight>
-          }>
+          footer={footer}>
           {workoutView}
         </Modal>
       );

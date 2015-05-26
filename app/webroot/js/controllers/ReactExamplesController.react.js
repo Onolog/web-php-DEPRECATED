@@ -8,7 +8,10 @@ define([
 
   'lib/react/react',
 
+  'lib/react/jsx!app/Activities/Activity.react',
   'lib/react/jsx!app/Chrome/PageHeader.react',
+  'lib/react/jsx!app/Workouts/WorkoutFields.react',
+
 
   'lib/react/jsx!components/Alert/Alert.react',
   'lib/react/jsx!components/Button/Button.react',
@@ -20,9 +23,6 @@ define([
   'lib/react/jsx!components/Modal/Modal.react',
   'lib/react/jsx!components/Panel/Panel.react',
 
-  'lib/react/jsx!app/Workouts/WorkoutFields.react',
-  'lib/react/jsx!app/Workouts/WorkoutView.react',
-
   'constants/TestData',
   'utils/DateTimeUtils',
 
@@ -32,8 +32,9 @@ define([
 
   React,
 
-  // Chrome
+  Activity,
   PageHeader,
+  WorkoutFields,
 
   // Components
   Alert,
@@ -45,10 +46,6 @@ define([
   LeftRight,
   Modal,
   Panel,
-
-  // Views
-  WorkoutFields,
-  WorkoutView,
 
   DATA,
   DateTimeUtils
@@ -254,10 +251,8 @@ define([
               workout={DATA.WORKOUTS['2014']['10']['21'][1]}
             />
           </Panel>
-          <Panel title="Workout View">
-            <WorkoutView
-              workout={DATA.WORKOUTS['2014']['10']['21'][1]}
-            />
+          <Panel title="Activity">
+            <Activity activity={DATA.WORKOUTS['2014']['10']['21'][1]} />
           </Panel>
           <Panel title="Alerts">
             <Alert type="success">

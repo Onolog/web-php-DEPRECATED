@@ -58,10 +58,18 @@ define({
           time: 3867,
         }],
         '21': [{
+          athlete: {
+            id: 517820043,
+            name: 'Eric Giovanola'
+          },
           id: 1400,
           user_id: 517820043,
           distance: 6.54,
           shoe_id: 40,
+          shoes: {
+            id: 40,
+            name: 'Mizuno Waverider 18.1'
+          },
           notes:
             'Last couple legs of WSER with Paul, starting from Hwy 49 crossing ' +
             'around 5:45 and finishing in Auburn at 7:15.\n\n' +
@@ -73,10 +81,18 @@ define({
             name: 'Paul McDonald'
           }]
         }, {
+          athlete: {
+            id: 517820043,
+            name: 'Eric Giovanola'
+          },
           id: 1411,
           user_id: 517820043,
           distance: 13.78,
           shoe_id: 41,
+          shoes: {
+            id: 40,
+            name: 'Mizuno Waverider 18.1'
+          },
           notes:
             'Long run with Paul in San Carlos. First did a loop around the ' +
             'neighborhood with Patrick, then dropped him off and headed out ' +

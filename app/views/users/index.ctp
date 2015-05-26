@@ -3,6 +3,7 @@
  * Displays the calendar view of all a user's workouts
  */
 $this->Include->css(array(
+  'app/Activity',
   'app/UserCalendar',
   'app/Workout',
   'components/Calendar',

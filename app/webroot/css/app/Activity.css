@@ -8,6 +8,11 @@
   position: relative;
 }
 
+/* TODO: Get rid of this hack */
+.modal-body .activityContainer {
+  margin: -15px;
+}
+
 .activityMapContainer {
   border-bottom: 1px solid #ddd;
   height: 250px;
@@ -17,11 +22,6 @@
   border-radius: 3px 3px 0 0;
   height: 100%;
   width: 100%;
-}
-
-.noMap .activityInfo {
-  float: none;
-  width: auto;
 }
 
 
@@ -42,6 +42,11 @@
 .horizontal .activityInfo {
   float: right;
   width: 50%;
+}
+
+.noMap .activityInfo {
+  float: none;
+  width: auto;
 }
 
 

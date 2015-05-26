@@ -13,8 +13,8 @@ define([
   'lib/react/jsx!app/Activities/ActivityMap.react',
   'lib/react/jsx!app/Activities/ActivitySection.react',
   'lib/react/jsx!app/Activities/ActivitySplitsTable.react',
+  'lib/react/jsx!app/Activities/ActivityStats.react',
   'lib/react/jsx!app/Shoes/ShoeViewLink.react',
-  'lib/react/jsx!app/Workouts/WorkoutStats.react',
   'lib/react/jsx!components/Facepile/Facepile.react',
   'lib/react/jsx!components/Image/FBImage.react',
   'lib/react/jsx!components/Link/Link.react',
@@ -31,8 +31,8 @@ define([
   ActivityMap,
   ActivitySection,
   ActivitySplitsTable,
+  ActivityStats,
   ShoeViewLink,
-  WorkoutStats,
   Facepile,
   FBImage,
   Link,
@@ -83,7 +83,7 @@ define([
             <TabbedSection className="activityPanes">
               <div className="activityNavPane" label="Detail">
                 <ActivitySection>
-                  <WorkoutStats workout={activity} />
+                  <ActivityStats activity={activity} />
                 </ActivitySection>
                 {this._renderActivityNotes(activity.notes)}
                 {this._renderActivityShoes(activity.shoes)}

@@ -1,15 +1,16 @@
 <?php
 $this->Include->css(array(
+  'app/Activity',
   'app/Workout',
   'components/Calendar',
+  'components/Facepile',
   'components/Topline',
   'token-input-facebook',
 ));
 
-// $page_header = '<h2>' . __('React Component Examples', 1) . '</h2>';
-// $this->set('page_header', $page_header);
-
-echo '<div id="reactRoot"></div>';
+echo $this->element('loader', array(
+  'id' => 'reactRoot'
+));
 
 $this->Html->scriptStart(array('inline' => false));
 echo "
