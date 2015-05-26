@@ -54,6 +54,7 @@ a.btn-default {
 }
 
 .close {
+  font-weight: normal;
   line-height: 16px;
 }
 
