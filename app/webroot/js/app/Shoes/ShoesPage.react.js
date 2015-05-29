@@ -56,9 +56,7 @@ define([
     },
 
     _shoesChanged: function() {
-      this.setState({
-        shoes: AllShoesStore.getShoes()
-      });
+      this.setState({shoes: AllShoesStore.getCollection()});
     },
 
     render: function() {

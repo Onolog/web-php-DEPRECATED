@@ -11,26 +11,17 @@ define([
 
   'dispatcher/AppDispatcher',
   'lib/MicroEvent/microevent',
-
   'constants/ActionTypes',
-  'constants/Workouts',
-
-  'utils/cakePHP',
   'lib/jquery/jquery.min'
 
 ], function(
 
   AppDispatcher,
   MicroEvent,
-
-  ActionTypes,
-  Workouts,
-
-  cakePHP
+  ActionTypes
 
 ) {
 
-  var NEW_ID = Workouts.NEW_ID;
   var _workouts = [];
   var _cachedWorkouts = [];
 
@@ -42,7 +33,7 @@ define([
 
     getWorkoutByID: function(/*number*/ workoutID) {
       return _workouts.filter(function(workout) {
-        return +workout.id === +workoutID
+        return workout.id === workoutID
       })[0];
     },
 

@@ -3,52 +3,51 @@
  *
  * Keeps track of all shoes loaded for a particular view.
  */
-
 define([
 
+  'actions/ShoeActions',
+  'constants/ActionTypes',
   'dispatcher/AppDispatcher',
   'lib/MicroEvent/microevent',
-
-  'constants/ActionTypes',
-  'constants/Shoes',
-
-  'utils/cakePHP',
   'lib/jquery/jquery.min'
 
 ], function(
 
-  AppDispatcher,
-  MicroEvent,
-
+  ShoeActions,
   ActionTypes,
-  SHOES,
-
-  cakePHP
+  AppDispatcher,
+  MicroEvent
 
 ) {
 
-  var NEW_ID = SHOES.NEW_ID;
-  var _shoes = [];
+  var _collection = [];
   var _cache = [];
 
   var AllShoesStore = {
 
-    getShoes: function() {
-      return _shoes;
+    getCollection: function() {
+      return _collection;
     },
 
-    getShoeByID: function(/*number*/ shoeID) {
-      return _shoes.filter(function(shoe) {
-        return +shoe.id === +shoeID
-      })[0];
+    getItem: function(/*number*/ itemID) {
+      // Return the item if we already have it
+      if (this.getIsCached(itemID)) {
+        return _collection.filter(function(item) {
+          return item.id === itemID
+        })[0];
+      }
+
+      // Otherwise fetch it
+      ShoeActions.view(itemID);
+      return false;
     },
 
     /**
      * Checks whether the shoe data has already been fetched from the
      * server and stored.
      */
-    getIsCached: function(/*number*/ shoeID) /*bool*/ {
-      return $.inArray(shoeID, _cache) !== -1;
+    getIsCached: function(/*number*/ itemID) /*bool*/ {
+      return $.inArray(itemID, _cache) !== -1;
     }
   };
 
@@ -58,29 +57,29 @@ define([
     switch(payload.eventName) {
 
       case ActionTypes.ALL_SHOES_FETCH:
-        _shoes = payload.data;
+        _collection = payload.data;
         AllShoesStore.trigger(ActionTypes.CHANGE);
         break;
 
       case ActionTypes.SHOE_ADD:
-        _shoes.push(payload.data);
+        _collection.push(payload.data);
         AllShoesStore.trigger(ActionTypes.CHANGE);
         break;
 
       case ActionTypes.SHOE_DELETE:
-        _shoes = _shoes.filter(function(shoe) {
-          return shoe.id !== +payload.data;
+        _collection = _collection.filter(function(item) {
+          return item.id !== payload.data;
         });
         AllShoesStore.trigger(ActionTypes.CHANGE);
         break;
 
       case ActionTypes.SHOE_EDIT:
       case ActionTypes.SHOE_VIEW:
-        var shoeID = payload.data.id;
-        _shoes = _shoes.map(function(shoe) {
-          return shoe.id === shoeID ? payload.data : shoe;
+        var itemID = payload.data.id;
+        _collection = _collection.map(function(item) {
+          return item.id === itemID ? payload.data : item;
         });
-        _cache.push(shoeID);
+        _cache.push(itemID);
         AllShoesStore.trigger(ActionTypes.CHANGE);
         break;
     }

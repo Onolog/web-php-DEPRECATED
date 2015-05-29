@@ -17,7 +17,6 @@ define([
   'mixins/StoreMixin.react',
 
   'actions/ShoeActions',
-  'stores/AllShoesStore',
   'stores/ShoeStore',
 
   'utils/cx'
@@ -35,7 +34,6 @@ define([
   StoreMixin,
 
   ShoeActions,
-  AllShoesStore,
   ShoeStore,
 
   cx
@@ -48,33 +46,26 @@ define([
     mixins: [LayerMixin, StoreMixin],
 
     propTypes: {
-      shoeID: React.PropTypes.number
+      initialShoe: React.PropTypes.object.isRequired
     },
 
     getInitialState: function() {
       return {
         isLoading: false,
-        shoe: AllShoesStore.getShoeByID(this.props.shoeID),
+        shoe: this.props.initialShoe,
         shown: false
       };
     },
 
     componentWillMount: function() {
       this.stores = [
-        this.setStoreInfo(AllShoesStore, this._allShoesChanged),
         this.setStoreInfo(ShoeStore, this._shoeChanged)
       ];
     },
 
-    _allShoesChanged: function() {
-      this.setState({
-        shoe: AllShoesStore.getShoeByID(this.props.shoeID)
-      });
-    },
-
     _shoeChanged: function() {
       var shoe = ShoeStore.getData();
-      if (shoe && shoe.id === this.props.shoeID) {
+      if (shoe && shoe.id === this.props.initialShoe.id) {
         this.setState({
           isLoading: false,
           shoe: shoe
@@ -83,6 +74,7 @@ define([
         // There was either a cancel or successful edit action
         this.setState({
           isLoading: false,
+          shoe: this.props.initialShoe,
           shown: false
         });
       }

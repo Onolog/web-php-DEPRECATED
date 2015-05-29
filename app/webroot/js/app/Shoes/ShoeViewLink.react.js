@@ -46,113 +46,88 @@ define([
     mixins: [LayerMixin, StoreMixin],
 
     propTypes: {
-      shoeID: React.PropTypes.number.isRequired,
-      shoeName: React.PropTypes.string.isRequired
+      shoe: React.PropTypes.object.isRequired
     },
 
     getInitialState: function() {
       return {
         isLoading: false,
-        shoe: null,
         shown: false
       };
     },
 
     componentWillMount: function() {
       this.stores = [
-        this.setStoreInfo(AllShoesStore, this._allShoesChanged),
         this.setStoreInfo(ShoeStore, this._shoeChanged)
       ];
     },
 
-    _allShoesChanged: function() {
-      this.setState({
-        shoe: AllShoesStore.getShoeByID(this.props.shoeID)
-      });
-    },
-
     _shoeChanged: function() {
       var shoe = ShoeStore.getData();
-      if (shoe && shoe.id === this.props.shoeID) {
+      if (shoe && shoe.id === this.props.shoe.id) {
         this.setState({
-          isLoading: false,
-          shoe: shoe
+          isLoading: false
         });
       }
     },
 
     render: function() {
-      var shoe = AllShoesStore.getShoeByID();
       return (
         <Link href="javascript:;" onClick={this._onViewClick}>
-          {this.props.shoeName}
+          {this.props.shoe.name}
         </Link>
       );
     },
 
     renderLayer: function() {
+      var shoe = this.props.shoe;
       return (
         <Modal
           alert={this.state.alert}
           isLoading={this.state.isLoading}
           shown={this.state.shown}
           size="small"
-          onRequestClose={this._toggleModal}
-          title={this._getDialogTitle()}
+          onRequestClose={this._closeDialog}
+          title={shoe.name}
           footer={
             <Button
               label="Close"
-              disabled={this.state.isLoading}
-              onClick={this._toggleModal}
+              onClick={this._closeDialog}
             />
           }>
-          {this._renderShoeView()}
-        </Modal>
-      );
-    },
-
-    _getDialogTitle: function() {
-      if (this.state.shoe) {
-        return this.state.shoe.name;
-      }
-    },
-
-    _renderShoeView: function() {
-      var shoe = this.state.shoe;
-      if (shoe && this._isCached()) {
-        return (
           <ShoeView
             activities={shoe.activities}
             activityCount={shoe.activity_count}
             mileage={shoe.mileage}
           />
-        );
-      }
+        </Modal>
+      );
     },
 
-    _toggleModal: function() {
+    _closeDialog: function() {
       if (!this.isMounted()) {
         // Deleting the shoe unmounts the component
         return;
       }
 
       this.setState({
-        shown: !this.state.shown,
         isLoading: false,
+        shown: false
       });
     },
 
     _onViewClick: function() {
-      this._toggleModal();
-      if (!this._isCached()) {
-        // Fetch the full set of data if we don't already have it
-        this.setState({ isLoading: true });
-        ShoeActions.view(this.props.shoeID);
-      }
-    },
-
-    _isCached: function() {
-      return AllShoesStore.getIsCached(this.props.shoeID);
+      // TODO: This is currently inefficient. The first call will not be cached
+      // and we'll fetch the individual shoe data even though currently we
+      // already get everything we need when we fetch all the shoe data. Quick
+      // fix is simply to omit `getItem` here, though eventually we may need the
+      // check. It would also be nice to abstract these stores, in which case
+      // we'd generally want a to check.
+      var shoe = AllShoesStore.getItem(this.props.shoe.id);
+      this.setState({
+        isLoading: !shoe,
+        shown: true
+      });
     }
   });
 

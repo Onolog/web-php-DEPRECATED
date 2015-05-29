@@ -113,17 +113,14 @@ define([
           })}
           key={idx}>
           <td>
-            <ShoeViewLink
-              shoeID={shoe.id}
-              shoeName={shoe.name}
-            />
+            <ShoeViewLink shoe={shoe} />
           </td>
           <td className="activities">
             {shoe.activity_count + ' runs'}
           </td>
           <td className="mileage">{shoe.mileage + ' mi'}</td>
           <td className="actions">
-            <ShoeEditLink shoeID={shoe.id} />
+            <ShoeEditLink initialShoe={shoe} />
             <CloseButton
               onClick={this._onDeleteClick.bind(this, shoe.id)}
               tooltip={{title: 'Delete'}}

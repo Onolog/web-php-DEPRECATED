@@ -20,34 +20,34 @@ define([
 
 ) {
 
-  var _data;
-  var _initialData;
+  var _item;
+  var _initialItem;
 
-  function _resetData() {
-    _data = {};
-    _initialData = {};
+  function _resetItem() {
+    _item = {};
+    _initialItem = {};
   }
 
   function _copy(obj) {
     return $.extend(true, {}, obj);
   }
-  _resetData();
+  _resetItem();
 
   var ShoeStore = {
     /**
      * Check whether or not the shoe has been modified
      */
     getHasEdits: function() {
-      return JSON.stringify(_data) !== JSON.stringify(_initialData);
+      return JSON.stringify(_item) !== JSON.stringify(_initialItem);
     },
 
     getData: function() {
-      return _data;
+      return _item;
     },
 
-    setData: function(data) {
-      _data = _copy(data);
-      _initialData = _copy(data);
+    setData: function(item) {
+      _item = _copy(item);
+      _initialItem = _copy(item);
     }
   };
 
@@ -56,8 +56,8 @@ define([
   AppDispatcher.register(function(payload) {
     switch(payload.eventName) {
       case ActionTypes.SHOE_VIEW:
-        _data = _copy(payload.data);
-        _initialData = _copy(payload.data);
+        _item = _copy(payload.data);
+        _initialItem = _copy(payload.data);
         ShoeStore.trigger(ActionTypes.CHANGE);
         break;
 
@@ -65,10 +65,10 @@ define([
         var field = payload.field;
         var value = payload.value;
 
-        _data[field] = value;
+        _item[field] = value;
         if (value == null || ($.isArray(value) && !value.length)) {
           // Remove null values
-          delete _data[field];
+          delete _item[field];
         }
         ShoeStore.trigger(ActionTypes.CHANGE);
         break;
@@ -78,8 +78,7 @@ define([
       case ActionTypes.SHOE_EDIT:
       case ActionTypes.SHOE_DELETE:
         // Reset data when adding/deleting an item, or cancelling an action
-        _resetData();
-
+        _resetItem();
         ShoeStore.trigger(ActionTypes.CHANGE);
         break;
     }
