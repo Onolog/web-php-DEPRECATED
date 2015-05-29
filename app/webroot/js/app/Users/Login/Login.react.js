@@ -13,7 +13,12 @@ define([
 
   // Set permission scope here  
   var permissions = {
-    scope: 'email, user_location'
+    scope: [
+      'email',
+      'public_profile',
+      'user_friends',
+      'user_location'
+    ]
   };
 
   function _fbConnect() {
@@ -36,7 +41,7 @@ define([
       } else {
         // user hit cancel button
       }
-    }, permissions);
+    }, permissions.join(','));
   };
 
   return React.createClass({
