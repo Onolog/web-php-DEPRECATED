@@ -1,5 +1,5 @@
 /**
- * ReactExamplesController.react
+ * ReactPage.react
  * @jsx React.DOM
  *
  * Displays React components
@@ -9,18 +9,23 @@ define([
   'lib/react/react',
 
   'lib/react/jsx!app/Activities/Activity.react',
-  'lib/react/jsx!app/Chrome/PageHeader.react',
   'lib/react/jsx!app/Workouts/WorkoutFields.react',
 
 
   'lib/react/jsx!components/Alert/Alert.react',
   'lib/react/jsx!components/Button/Button.react',
+  'lib/react/jsx!components/Button/DropdownButton.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Calendar/Calendar.react',
   'lib/react/jsx!components/Tokenizer/FriendTokenizer.react',
   'lib/react/jsx!components/Graph/BarGraph/BarGraph.react',
   'lib/react/jsx!components/LeftRight/LeftRight.react',
+  'lib/react/jsx!components/Menu/Menu.react',
+  'lib/react/jsx!components/Menu/MenuDivider.react',
+  'lib/react/jsx!components/Menu/MenuItem.react',
   'lib/react/jsx!components/Modal/Modal.react',
+  'lib/react/jsx!components/Navbar/Navbar.react',
+  'lib/react/jsx!components/Page/PageHeader.react',
   'lib/react/jsx!components/Panel/Panel.react',
 
   'constants/TestData',
@@ -33,18 +38,23 @@ define([
   React,
 
   Activity,
-  PageHeader,
   WorkoutFields,
 
   // Components
   Alert,
   Button,
+  DropdownButton,
   ButtonGroup,
   Calendar,
   FriendTokenizer,
   Graph,
   LeftRight,
+  Menu,
+  MenuDivider,
+  MenuItem,
   Modal,
+  Navbar,
+  PageHeader,
   Panel,
 
   DATA,
@@ -53,7 +63,7 @@ define([
 ) {
 
   return React.createClass({
-    displayName: 'ReactExamplesController',
+    displayName: 'ReactPage',
 
     getInitialState: function() {
       var today = new Date();
@@ -125,6 +135,42 @@ define([
       return (
         <div>
           <PageHeader title="React Component Examples" />
+          <Panel title="Navbar">
+            <Navbar>
+
+            </Navbar>
+          </Panel>
+          <Panel title="Dropdown Button">
+            <DropdownButton
+              label="Open Me!"
+              menu={
+                <Menu>
+                  <MenuItem
+                    label="Alert"
+                    onClick={function() {
+                      alert('You clicked the menu item!');
+                    }}
+                  />
+                  <MenuItem label="Item 2" />
+                  <MenuDivider />
+                  <MenuItem label="Item 3" />
+                </Menu>
+              }
+            />
+            <DropdownButton
+              label="Split Button"
+              menu={
+                <Menu align="right">
+                  <MenuItem label="Item 1" />
+                  <MenuItem label="Item 2" />
+                  <MenuDivider />
+                  <MenuItem label="Item 3" />
+                </Menu>
+              }
+              split={true}
+              use="danger"
+            />
+          </Panel>
           <Panel title="Calendar">
             <LeftRight style={{'marginBottom': '10px'}}>
               <h3>

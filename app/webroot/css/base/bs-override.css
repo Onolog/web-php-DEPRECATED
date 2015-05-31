@@ -44,8 +44,8 @@
 }
 
 /* Add spacing when button has an icon and label */
-.glyphicon + .btnLabel,
-.btnLabel + .glyphicon {
+.glyphChild + .btnLabel,
+.btnLabel + .glyphChild {
   margin-left: 5px;
 }
 

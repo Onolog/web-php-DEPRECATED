@@ -15,10 +15,10 @@ echo $this->element('loader', array(
 $this->Html->scriptStart(array('inline' => false));
 echo "
   require([
-    'lib/react/jsx!controllers/ReactExamplesController.react',
+    'lib/react/jsx!app/Pages/ReactPage.react',
     'utils/reactRender',
-  ], function(ReactExamples, reactRender) {
-    reactRender(ReactExamples, {}, 'reactRoot');
+  ], function(ReactPage, reactRender) {
+    reactRender(ReactPage, {}, 'reactRoot');
   });
 ";
 $this->Html->scriptEnd();

@@ -57,20 +57,26 @@ define([
           </span>;
       }
   
-      var newProps;
       var glyphChild = this.props.customGlyph || this.props.glyph;
       if (this.props.glyph) {
         glyphChild =
-          <i key="glyphChild" className={'glyphicon glyphicon-' + glyphChild} />;
+          <i
+            className={'glyphChild glyphicon glyphicon-' + glyphChild}
+            key="glyphChild"
+          />;
       }
-  
+
       var glyphRightChild;
+      var newProps;
       if (this.props.glyphPosition === 'right') {
         glyphRightChild = glyphChild;
+        glyphChild = null;
+
         newProps = {};
         if (this.props.label) {
-          newProps.className = 'mls';
+          newProps.className = 'glyphChild';
         }
+
         if (!glyphRightChild.props.key) {
           newProps.key = 'glyphRight';
         }
