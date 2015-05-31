@@ -18,7 +18,7 @@ define([
       'public_profile',
       'user_friends',
       'user_location'
-    ]
+    ].join(',')
   };
 
   function _fbConnect() {
@@ -41,7 +41,7 @@ define([
       } else {
         // user hit cancel button
       }
-    }, permissions.join(','));
+    }, permissions);
   };
 
   return React.createClass({

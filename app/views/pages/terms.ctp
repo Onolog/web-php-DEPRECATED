@@ -11,7 +11,8 @@ $this->Html->scriptStart(array('inline' => false));
 echo "
   require([
     'utils/reactRender',
-    'lib/react/jsx!app/Pages/TermsPage.react'
+    'lib/react/jsx!app/Pages/TermsPage.react',
+    'lib/bootstrap.min'
   ], function(reactRender, TermsPage) {
     reactRender(TermsPage, {}, 'reactRoot');
   });

@@ -11,7 +11,8 @@ $this->Html->scriptStart(array('inline' => false));
 echo "
   require([
     'utils/reactRender',
-    'lib/react/jsx!app/Pages/PrivacyPage.react'
+    'lib/react/jsx!app/Pages/PrivacyPage.react',
+    'lib/bootstrap.min'
   ], function(reactRender, PrivacyPage) {
     reactRender(PrivacyPage, {}, 'reactRoot');
   });
