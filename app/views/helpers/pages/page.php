@@ -38,7 +38,7 @@ class PageHelper extends AppHelper {
 
     // TODO: Is there a better way to reference the View than this?
     $this->View =& ClassRegistry::getObject('view');
-    $this->Facebook = $this->View->Facebook;
+    // $this->Facebook = $this->View->Facebook;
   }
 
   /**
@@ -49,7 +49,7 @@ class PageHelper extends AppHelper {
   public function render() {
     echo
       $this->Html->doctype('xhtml-strict') .
-        $this->Facebook->html() . // Namespace for FB Platform/Connect
+        // $this->Facebook->html() . // Namespace for FB Platform/Connect
           '<head>' .
             // $this->Html->meta('icon') .
             '<link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">' .

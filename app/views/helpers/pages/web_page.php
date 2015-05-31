@@ -163,7 +163,7 @@ class WebPageHelper extends PageHelper {
     return
       $this->getBaseJS() .
       $this->getPageJS() .
-      $this->Facebook->init() .
+      // $this->Facebook->init() .
       $this->renderGoogleAnalyticsJS();
   }
 

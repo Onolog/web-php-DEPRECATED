@@ -85,10 +85,12 @@ class UsersController extends AppController {
   }
 
   public function ajax_login() {
-    debug($this->data);
+    $this->setIsAjax();
+    $response = new Response();
+    $data = $this->params['form'];
 
     // Write the user data to the session
-    $this->Session->write('Auth', $data);
+    $this->Session->write('Auth.User', $data);
 
     // Redirect to Home if the user is logged in
     if ($this->Auth->User('id')) {
@@ -98,9 +100,10 @@ class UsersController extends AppController {
 
       // Explicitly redirect to index instead of using Auth since it is causing
       // a redirect loop for some reason
-      $this->redirect(date(CALENDAR_URI_FORMAT));
+      // $this->redirect(date(CALENDAR_URI_FORMAT));
+      $response->setSuccess(true);
     }
-
+    return $response->send();
   }
 
   /**

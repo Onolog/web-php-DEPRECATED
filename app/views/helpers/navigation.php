@@ -27,7 +27,7 @@ class NavigationHelper extends AppHelper {
 
     // Set Helpers & Components
     $view =& ClassRegistry::getObject('view');
-    $this->Facebook = $view->Facebook;
+    // $this->Facebook = $view->Facebook;
 
     $this->Html = new HtmlHelper();
     $this->Include = new IncludeHelper();
@@ -182,6 +182,14 @@ class NavigationHelper extends AppHelper {
             array('divider' => true),
             // Logout Link
             array(
+              'content' => __('Sign Out', 1),
+              'href' => array(
+                'controller' => 'users',
+                'action' => 'logout',
+              )
+            )
+            /*
+            array(
               'link' => $this->Facebook->logout(array(
                 'label' => 'Sign Out',
                 'redirect' => array(
@@ -190,6 +198,7 @@ class NavigationHelper extends AppHelper {
                 )
               ))
             )
+            */
           )
         )
       )

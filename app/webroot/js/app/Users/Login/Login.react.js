@@ -31,12 +31,18 @@ define([
   function _fbLogin() {
     FB.login(function(response) {
       if (response.status === 'connected') {
+        var accessToken = response.authResponse.accessToken;
         FB.api('/me', function(response) {
           // Send info to server
+          response.accessToken = accessToken;
           $.ajax({
             url: '/ajax/users/login',
             type: 'POST',
-            data: response
+            data: response,
+            success: function(response) {
+              debugger;
+              // Redirect here...
+            }
           });
         });
       } else {
