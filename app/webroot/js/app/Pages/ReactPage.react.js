@@ -24,7 +24,6 @@ define([
   'lib/react/jsx!components/Menu/MenuDivider.react',
   'lib/react/jsx!components/Menu/MenuItem.react',
   'lib/react/jsx!components/Modal/Modal.react',
-  'lib/react/jsx!components/Navbar/Navbar.react',
   'lib/react/jsx!components/Page/PageHeader.react',
   'lib/react/jsx!components/Panel/Panel.react',
 
@@ -53,7 +52,6 @@ define([
   MenuDivider,
   MenuItem,
   Modal,
-  Navbar,
   PageHeader,
   Panel,
 
@@ -135,11 +133,6 @@ define([
       return (
         <div>
           <PageHeader title="React Component Examples" />
-          <Panel title="Navbar">
-            <Navbar>
-
-            </Navbar>
-          </Panel>
           <Panel title="Dropdown Button">
             <DropdownButton
               label="Open Me!"
