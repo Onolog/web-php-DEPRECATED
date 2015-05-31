@@ -84,6 +84,25 @@ class UsersController extends AppController {
   	}
   }
 
+  public function ajax_login() {
+    debug($this->data);
+
+    // Write the user data to the session
+    $this->Session->write('Auth', $data);
+
+    // Redirect to Home if the user is logged in
+    if ($this->Auth->User('id')) {
+      // Save the latest login date for the user
+      $this->User->id = $this->Auth->User('id');
+      $this->User->saveField('last_login', date('Y-m-d h:i:s', time()));
+
+      // Explicitly redirect to index instead of using Auth since it is causing
+      // a redirect loop for some reason
+      $this->redirect(date(CALENDAR_URI_FORMAT));
+    }
+
+  }
+
   /**
    * Log the User out of Onolog and Facebook
    */

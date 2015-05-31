@@ -30,13 +30,14 @@ define([
 
   function _fbLogin() {
     FB.login(function(response) {
-      if (response.authResponse) {
-        access_token = response.authResponse.accessToken;
-        user_id = response.authResponse.userID;
-  
+      if (response.status === 'connected') {
         FB.api('/me', function(response) {
-          user_email = response.email; // get user email
-          // You can store this data into your database             
+          // Send info to server
+          $.ajax({
+            url: '/ajax/users/login',
+            type: 'POST',
+            data: response
+          });
         });
       } else {
         // user hit cancel button
