@@ -28,52 +28,8 @@ class UsersController extends AppController {
     $this->layout = 'marketing';
     $this->set('title_for_layout', 'Welcome');
 
-    $fbid = $this->Connect->user('id');
-
-    if (!$this->Auth->User() && $fbid) {
-
-      // See if this facebook id is in the User database
-      $data = $this->User->find('first', array(
-        'conditions' => array('User.id' => $fbid),
-      ));
-
-      // Create new user if no records exist
-      if (empty($data)) {
-
-        $this->User->create();
-
-  		  // Add the user's info
-        $data['User'] = array(
-          'id' => $fbid,
-          'first_name' => $this->Connect->user('first_name'),
-          'last_name' => $this->Connect->user('last_name'),
-          'email' => $this->Connect->user('email'),
-          'password' => null, // Default pw, since FB takes care of auth
-          'created' => date('Y-m-d h:i:s', time()), // 2011-01-04 08:33:24
-          'last_login' => date('Y-m-d h:i:s', time())
-        );
-
-  			if ($this->User->save($data)) {
-  				$this->Session->setFlash(__('Your account has been created', 1));
-
-          // We manually add 'name' on account creation/first login
-          // only. For subsequent logins, it's added in afterFind().
-          $data['User']['name'] = $this->Connect->user('name');
-
-  			} else {
-  				$this->Session->setFlash(__('Your account could not be created. Please, try again.', 1));
-  			}
-  		}
-
-  		// Write the user data to the session
-      $this->Session->write('Auth', $data);
-    }
-
     // Redirect to Home if the user is logged in
     if ($this->Auth->User('id')) {
-    
-      // TODO: Save auth token for the session
-
       // Save the latest login date for the user
       $this->User->id = $this->Auth->User('id');
       $this->User->saveField('last_login', date('Y-m-d h:i:s', time()));
@@ -87,23 +43,69 @@ class UsersController extends AppController {
   public function ajax_login() {
     $this->setIsAjax();
     $response = new Response();
+
     $data = $this->params['form'];
 
     // Write the user data to the session
     $this->Session->write('Auth.User', $data);
+    $uid = $this->Auth->User('id');
 
-    // Redirect to Home if the user is logged in
-    if ($this->Auth->User('id')) {
-      // Save the latest login date for the user
+    if (!$uid) {
+      // There was somekind of problem receiving the auth response from FB.
+      return $response
+        ->setMessage(
+          'Sorry, your information could not be authenticated. Please try ' .
+          'again later.'
+        )
+        ->send();
+    }
+
+    // See if this user is already in the database
+    $user = $this->User->find('first', array(
+      'conditions' => array('User.id' => $uid),
+    ));
+
+    if (!empty($user)) {
+      // User already exists. Save the latest login date and send back a
+      // successful response.
       $this->User->id = $this->Auth->User('id');
       $this->User->saveField('last_login', date('Y-m-d h:i:s', time()));
 
-      // Explicitly redirect to index instead of using Auth since it is causing
-      // a redirect loop for some reason
-      // $this->redirect(date(CALENDAR_URI_FORMAT));
-      $response->setSuccess(true);
+      return $response
+        ->setSuccess(true)
+        ->send();
     }
-    return $response->send();
+
+    // Create new user if no records exist
+    $this->User->create();
+
+    // Add the user's info
+    $user['User'] = array(
+      'id' => $uid,
+      'first_name' => $this->Auth->User('first_name'),
+      'last_name' => $this->Auth->User('last_name'),
+      'email' => $this->Auth->User('email'),
+      'password' => null, // Default pw, since FB takes care of auth
+      'created' => date('Y-m-d h:i:s', time()), // 2011-01-04 08:33:24
+      'last_login' => date('Y-m-d h:i:s', time())
+    );
+
+    if ($this->User->save($user)) {
+      $this->Session->setFlash(__('Your account has been created', 1));
+
+      // We manually add 'name' on account creation/first login
+      // only. For subsequent logins, it's added in afterFind().
+      $user['User']['name'] = $this->Auth->user('name');
+
+      return $response
+        ->setSuccess(true)
+        ->send();
+    }
+
+    // The sccount couldn't be created for some reason.
+    return $response
+      ->setMessage('Your account could not be created. Please, try again.')
+      ->send();
   }
 
   /**
@@ -451,9 +453,9 @@ class UsersController extends AppController {
    *
    * @param  str  $q    The search query
    */
-  public function ajax_friends_list() {    
-    $this->layout = 'ajax';
+  public function ajax_friends_list() {
     $user = $this->requireLoggedInUser();
+    $this->setIsAjax();
 
     // Retrieve all the user's friends
     $friends = $this->getFbFriends();

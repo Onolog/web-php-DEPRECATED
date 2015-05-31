@@ -1,5 +1,4 @@
 <?php
-App::import('Plugins', 'facebook/facebook');
 
 /**
  * Application level Controller
@@ -38,7 +37,6 @@ class AppController extends Controller {
     'Auth',
     'Cookie',
     'Session',
-    'Facebook.Connect',
     'RequestHandler',
   );
 
@@ -49,7 +47,6 @@ class AppController extends Controller {
     'Session',
     'Js',
     'Include',
-    'Facebook.Facebook',
     'Meta'
   );
 
@@ -66,10 +63,6 @@ class AppController extends Controller {
     // controllers/actions.
     $this->Auth->actionPath = 'controllers/';
     $this->Auth->allowedActions = array('display');
-
-    // Set Facebook user data for views
-    // TODO: Is this needed or is it already in the Connect Session?
-    $this->set('fb_user', $this->Connect->user());
   }
 
   /**
@@ -183,14 +176,10 @@ class AppController extends Controller {
   }
 
   /**
-   * Retrieves the user's access token for the Connect session
+   * Get user's FB access token from the session
    */
   private function getAccessToken() {
-    $facebook = new Facebook(array(
-      'appId'  => FB_APP_ID,
-      'secret' => FB_SECRET,
-    ));
-    return $facebook->getAccessToken();
+    return $this->Auth->User('accessToken');
   }
 
   public function setIsAjax() {

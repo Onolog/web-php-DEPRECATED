@@ -1,5 +1,12 @@
 <?php
-// Config file for Facebook Platform
+/**
+ * Config file for Facebook Platform.
+ *
+ * Configure the App ID and Secret on individual machines.
+ */
+define('FB_APP_ID', '');
+define('FB_SECRET', '');
+
 $config = array(
   'Facebook' => array(
     'appId'  => FB_APP_ID,
