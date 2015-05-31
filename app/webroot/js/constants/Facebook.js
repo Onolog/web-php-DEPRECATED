@@ -1,5 +1,5 @@
 /**
- * Facebook-related constants
+ * Constants for Facebook API
  */
 define({
   // Define the app id and app secret on individual machines both for security
