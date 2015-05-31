@@ -108,8 +108,19 @@ class WebPageHelper extends PageHelper {
       // Footer
       '<div id="footerWrapper">' .
         '<div id="footer" class="container clearfix">' .
-          '<div class="copyright">' .
+          '<div class="copyright pull-left">' .
             'Copyright &copy; ' . date('Y') . ' Onolog' .
+          '</div>' .
+          '<div class="pull-right">' .
+            $this->Html->link(
+              'Privacy',
+              '/pages/privacy'
+            ) .
+            '<span class="middot">&middot;</span>' .
+            $this->Html->link(
+              'Terms',
+              '/pages/terms'
+            ) .
           '</div>' .
         '</div>' .
       '</div>';
