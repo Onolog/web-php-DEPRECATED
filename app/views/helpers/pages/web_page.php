@@ -163,8 +163,12 @@ class WebPageHelper extends PageHelper {
     return
       $this->getBaseJS() .
       $this->getPageJS() .
-      // $this->Facebook->init() .
+      $this->renderFBRoot() .
       $this->renderGoogleAnalyticsJS();
+  }
+
+  protected function renderFBRoot() {
+    return '<div id="fb-root" class=" fb_reset"></div>';
   }
 
   /**

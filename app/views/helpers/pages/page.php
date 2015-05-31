@@ -22,7 +22,6 @@ class PageHelper extends AppHelper {
   // Helpers/Components
   // These are protected so subclasses can access them
   protected
-    $Facebook,
     $View;
 
   public function __construct($scripts='', $classes=null) {
@@ -38,7 +37,6 @@ class PageHelper extends AppHelper {
 
     // TODO: Is there a better way to reference the View than this?
     $this->View =& ClassRegistry::getObject('view');
-    // $this->Facebook = $this->View->Facebook;
   }
 
   /**
@@ -49,29 +47,28 @@ class PageHelper extends AppHelper {
   public function render() {
     echo
       $this->Html->doctype('xhtml-strict') .
-        // $this->Facebook->html() . // Namespace for FB Platform/Connect
-          '<head>' .
-            // $this->Html->meta('icon') .
-            '<link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">' .
-            $this->Html->meta('keywords') .
-            $this->Html->meta('description') .
-            $this->Html->meta(array(
-              'name' => 'viewport',
-              'content' => 'width=device-width, initial-scale=1.0, user-scalable=no'
-            )) .
-            $this->getPageMeta() .
-            $this->Html->charset() .
-            '<title>' . $this->renderPageTitle() . '</title>' .
-            $this->getBaseCSS() .
-            $this->getPageCSS() .
-          '</head>' .
-          '<body class="' . implode(' ', $this->getClasses()) . '">' .
-            $this->renderPageContent() .
-            $this->renderDevConsole() .
-            // Always put JS at the bottom so it doesn't stop the page from loading!
-            $this->renderPageJS() .
-          '</body>' .
-        '</html>';
+        '<head>' .
+          // $this->Html->meta('icon') .
+          '<link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">' .
+          $this->Html->meta('keywords') .
+          $this->Html->meta('description') .
+          $this->Html->meta(array(
+            'name' => 'viewport',
+            'content' => 'width=device-width, initial-scale=1.0, user-scalable=no'
+          )) .
+          $this->getPageMeta() .
+          $this->Html->charset() .
+          '<title>' . $this->renderPageTitle() . '</title>' .
+          $this->getBaseCSS() .
+          $this->getPageCSS() .
+        '</head>' .
+        '<body class="' . implode(' ', $this->getClasses()) . '">' .
+          $this->renderPageContent() .
+          $this->renderDevConsole() .
+          // Always put JS at the bottom so it doesn't stop the page from loading!
+          $this->renderPageJS() .
+        '</body>' .
+      '</html>';
   }
 
   /**

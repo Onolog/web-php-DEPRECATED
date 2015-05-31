@@ -7,9 +7,16 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!components/Facebook/FBLoginButton.react',
-  'lib/jquery/jquery.min',
+  'utils/ResponseHandler',
+  'lib/jquery/jquery.min'
 
-], function(React, FBLoginButton) {
+], function(
+
+  React,
+  FBLoginButton,
+  ResponseHandler
+
+) {
 
   // Set permission scope here  
   var permissions = {
@@ -20,6 +27,17 @@ define([
       'user_location'
     ].join(',')
   };
+
+  function onSuccess(response) {
+    debugger;
+    var response = new ResponseHandler(response);
+    if (response.getWasSuccessful()) {
+      document.location = '/';
+      return;
+    }
+
+    alert('There was a problem logging in. Please try again later.');
+  }
 
   function _fbConnect() {
     var e = document.createElement('script');
@@ -39,10 +57,7 @@ define([
             url: '/ajax/users/login',
             type: 'POST',
             data: response,
-            success: function(response) {
-              debugger;
-              // Redirect here...
-            }
+            success: onSuccess
           });
         });
       } else {
