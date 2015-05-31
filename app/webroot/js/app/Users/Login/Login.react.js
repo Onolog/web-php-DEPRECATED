@@ -7,6 +7,7 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!components/Facebook/FBLoginButton.react',
+  'utils/pad',
   'utils/ResponseHandler',
   'lib/jquery/jquery.min'
 
@@ -14,6 +15,7 @@ define([
 
   React,
   FBLoginButton,
+  pad,
   ResponseHandler
 
 ) {
@@ -29,10 +31,14 @@ define([
   };
 
   function onSuccess(response) {
-    debugger;
     var response = new ResponseHandler(response);
     if (response.getWasSuccessful()) {
-      document.location = '/';
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = pad(date.getMonth() + 1, 2);
+
+      // If successful, redirect to the calendar view for the current month.
+      document.location = '/' + year + '/' + month;
       return;
     }
 
