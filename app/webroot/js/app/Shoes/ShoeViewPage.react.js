@@ -8,19 +8,19 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!app/Chrome/PageHeader.react',
   'lib/react/jsx!app/Shoes/ShoeView.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
+  'lib/react/jsx!components/Page/PageHeader.react',
   'lib/react/jsx!components/Panel/Panel.react',
 
 ], function(
 
   React,
-  PageHeader,
   ShoeView,
   Button,
   ButtonGroup,
+  PageHeader,
   Panel
 
 ) {

@@ -8,12 +8,12 @@ define([
 
   'lib/react/react',
 
-  'lib/react/jsx!app/Chrome/PageHeader.react',
   'lib/react/jsx!app/Users/Calendar/UserCalendar.react',
 
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Loader/Loader.react',
+  'lib/react/jsx!components/Page/PageHeader.react',
   'lib/react/jsx!components/Panel/Panel.react',
 
   'actions/CalendarActions',
@@ -28,11 +28,11 @@ define([
 
   React,
 
-  PageHeader,
   UserCalendar,
   Button,
   ButtonGroup,
   Loader,
+  PageHeader,
   Panel,
 
   CalendarActions,

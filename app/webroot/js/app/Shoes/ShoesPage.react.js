@@ -8,11 +8,11 @@ define([
 
   'lib/react/react',
 
-  'lib/react/jsx!app/Chrome/PageHeader.react',
   'lib/react/jsx!app/Shoes/AllShoesView.react',
   'lib/react/jsx!app/Shoes/ShoeAddButton.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Loader/Loader.react',
+  'lib/react/jsx!components/Page/PageHeader.react',
 
   'actions/ShoeActions',
   'constants/ActionTypes',
@@ -22,11 +22,11 @@ define([
 
   React,
 
-  PageHeader,
   AllShoesView,
   ShoeAddButton,
   Button,
   Loader,
+  PageHeader,
 
   ShoeActions,
   ActionTypes,
