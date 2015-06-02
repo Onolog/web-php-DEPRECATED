@@ -4,19 +4,9 @@
  * Given a month and year, returns an array describing how to lay out the
  * full month as a grid.
  */
-define(function() {
+define(['utils/isInt'], function(isInt) {
 
-  function isInt(val) {
-    return (
-      typeof val === 'number' &&
-      isFinite(val) &&
-      val > -9007199254740992 &&
-      val < 9007199254740992 &&
-      Math.floor(val) === val
-    );
-  };
-
-  function getDate(day, month, year) {
+  function getDate(year, month, day) {
     return new Date(year, month, day);
   }
 
@@ -28,10 +18,10 @@ define(function() {
     }
 
     // Number of days in the given month
-    var daysInMonth = new Date(year, month + 1, 0).getUTCDate();
+    var daysInMonth = getDate(year, month + 1, 0).getUTCDate();
 
     // Numeric representation of the day of the week
-    var monthStartDay = new Date(year, month, 1).getUTCDay();
+    var monthStartDay = getDate(year, month, 1).getUTCDay();
 
     var day;
     var monthArr = [];
@@ -43,7 +33,7 @@ define(function() {
       for (ii = 0; ii < monthStartDay; ii++) {
         // Calculate the days from the previous month to display
         day = ii + 1 - monthStartDay;
-        weekArr.push({ date: new Date(year, month, day) });
+        weekArr.push({ date: getDate(year, month, day) });
       }
     }
 
@@ -55,7 +45,7 @@ define(function() {
       }
 
       // Add the record
-      weekArr.push({ date: new Date(year, month, day) });
+      weekArr.push({ date: getDate(year, month, day) });
 
       ii++;
 
@@ -74,7 +64,7 @@ define(function() {
       // Continue incrementing day; ex: Oct 32nd == Nov. 1st
       for (ii; ii < DAYS_IN_WEEK; ii++, day++) {
         weekArr.push({
-          date: new Date(year, month, day)
+          date: getDate(year, month, day)
         });
       }
       monthArr.push(weekArr);

@@ -7,9 +7,7 @@
 define([
 
   'lib/react/react',
-
   'lib/react/jsx!app/Users/Calendar/UserCalendar.react',
-
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Loader/Loader.react',
@@ -19,15 +17,13 @@ define([
   'actions/CalendarActions',
   'constants/ActionTypes',
   'stores/WorkoutsStore',
-
+  'utils/cloneDate',
   'utils/cx',
-  'utils/DateTimeUtils',
-  'utils/pad'
+  'utils/DateTimeUtils'
 
 ], function(
 
   React,
-
   UserCalendar,
   Button,
   ButtonGroup,
@@ -38,10 +34,9 @@ define([
   CalendarActions,
   ActionTypes,
   WorkoutsStore,
-
+  cloneDate,
   cx,
-  DateTimeUtils,
-  pad
+  DateTimeUtils
 
 ) {
 
@@ -69,11 +64,10 @@ define([
 
     getInitialState: function() {
       return {
-        month: this.props.month,
+        date: new Date(this.props.year, this.props.month, 1),
         // Null means we haven't gotten a response back yet. An empty array
         // means there are no workouts for that timeframe.
-        workouts: null,
-        year: this.props.year
+        workouts: null
       };
     },
 
@@ -100,10 +94,7 @@ define([
     },
 
     render: function() {
-      var month = this.state.month;
-      var year = this.state.year;
-
-      var date = new Date(year, month, 1);
+      var date = this.state.date;
       return (
         <div>
           <PageHeader title={DateTimeUtils.formatDate(date, 'MMMM YYYY')}>
@@ -118,10 +109,10 @@ define([
               })}
             />
             <UserCalendar
-              {...this.props}
-              month={this.state.month}
+              date={date}
+              friends={this.props.friends}
+              shoes={this.props.shoes}
               workouts={this.state.workouts}
-              year={this.state.year}
             />
           </Panel>
         </div>
@@ -132,7 +123,8 @@ define([
       return (
         <ButtonGroup>
           <Button
-            label="◄"
+            className="monthArrow"
+            glyph="triangle-left"
             tooltip={{
               title: 'Last month'
             }}
@@ -146,7 +138,8 @@ define([
             onClick={this._onThisMonthClick}
           />
           <Button
-            label="►"
+            className="monthArrow"
+            glyph="triangle-right"
             tooltip={{
               title: 'Next month'
             }}
@@ -156,62 +149,41 @@ define([
       );
     },
 
-    _updateCalendar: function(/*number*/ month, /*number*/ year) {
+    _updateCalendar: function(/*Date*/ date) {
+      // Update component state
       this.setState({
-        month: month,
-        workouts: null, // Reset workouts to trigger loader
-        year: year
+        date: date,
+        workouts: null // Reset workouts to trigger loader
       });
 
+      // Update the browser state history
       history.pushState(
-        // State object
-        {
-          month: month,
-          year: year
-        },
-        // Title
-        '',
-        // URL
-        '/' + year + '/' + pad(month + 1, 2) + '/'
+        {}, // State object
+        '', // Title
+        DateTimeUtils.formatDate(date, '/YYYY/MM/') // URL
       );
 
+      // Fetch workouts for the selected month
       CalendarActions.fetch(
-        year,
-        month + 1
+        date.getFullYear(),
+        date.getMonth() + 1
       );
     },
 
     _onLastMonthClick: function() {
-      var month = this.state.month;
-      var year = this.state.year;
-
-      if (month === 0) {
-        month = 11;
-        year--;
-      } else {
-        month--;
-      }
-
-      this._updateCalendar(month, year);
+      var date = cloneDate(this.state.date);
+      date.setUTCMonth(date.getUTCMonth() - 1);
+      this._updateCalendar(date);
     },
 
     _onThisMonthClick: function() {
-      var today = new Date();
-      this._updateCalendar(today.getMonth(), today.getFullYear());
+      this._updateCalendar(new Date());
     },
 
     _onNextMonthClick: function() {
-      var month = this.state.month;
-      var year = this.state.year;
-
-      if (month === 11) {
-        month = 0;
-        year++;
-      } else {
-        month++;
-      }
-
-      this._updateCalendar(month, year);
+      var date = cloneDate(this.state.date);
+      date.setUTCMonth(date.getUTCMonth() + 1);
+      this._updateCalendar(date);
     },
   });
 

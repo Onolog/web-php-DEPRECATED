@@ -14,6 +14,7 @@ define([
   'lib/react/jsx!components/Forms/HiddenInput.react',
   'lib/react/jsx!components/Forms/TextInput.react',
   'lib/react/jsx!components/Link/Link.react',
+  'utils/cloneDate',
   'utils/cx',
   'utils/DateTimeUtils'
 
@@ -26,14 +27,11 @@ define([
   HiddenInput,
   TextInput,
   Link,
+  cloneDate,
   cx,
   DateTimeUtils
 
 ) {
-
-  function cloneDate(date) {
-    return new Date(date.valueOf());
-  }
 
   return React.createClass({
     displayName: 'Datepicker',
@@ -110,10 +108,9 @@ define([
           </div>
           <div className="popover-content">
             <DatepickerCalendar
-              selectedDate={cloneDate(this.state.selectedDate)}
-              month={date.getMonth()}
-              year={date.getFullYear()}
+              date={date}
               onChange={this._onChange}
+              selectedDate={this.state.selectedDate}
             />
           </div>
         </div>
@@ -135,7 +132,7 @@ define([
     _onChange: function(selectedDate) {
       this.setState({
         date: cloneDate(selectedDate),
-        selectedDate: cloneDate(selectedDate),
+        selectedDate: selectedDate,
         show: false
       });
     },

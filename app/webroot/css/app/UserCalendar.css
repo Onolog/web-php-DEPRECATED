@@ -4,10 +4,14 @@
  * Specific CSS for UserCalendar page
  */
 
+.monthArrow .glyphChild {
+  top: 2px;
+}
+
 .calendarContainer {
   position: relative;
 }
 
-table.calendar td {
+.calendar td {
   height: 115px;
 }

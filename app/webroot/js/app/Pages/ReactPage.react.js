@@ -30,6 +30,7 @@ define([
   'lib/react/jsx!components/Panel/Panel.react',
 
   'constants/TestData',
+  'utils/cloneDate',
   'utils/DateTimeUtils',
 
   'lib/bootstrap.min'
@@ -60,6 +61,7 @@ define([
   Panel,
 
   DATA,
+  cloneDate,
   DateTimeUtils
 
 ) {
@@ -68,10 +70,8 @@ define([
     displayName: 'ReactPage',
 
     getInitialState: function() {
-      var today = new Date();
       return {
-        month: today.getMonth(),
-        year: today.getFullYear(),
+        calendarDate: new Date(),
         workouts: DATA.WORKOUTS
       };
     },
@@ -132,8 +132,6 @@ define([
         );
       });
 
-      var calendarDate = new Date(this.state.year, this.state.month);
-
       return (
         <div>
           <PageHeader title="React Component Examples" />
@@ -179,7 +177,10 @@ define([
           <Panel title="Calendar">
             <LeftRight style={{'marginBottom': '10px'}}>
               <h3>
-                {DateTimeUtils.formatDate(calendarDate, 'MMMM YYYY')}
+                {DateTimeUtils.formatDate(
+                  this.state.calendarDate,
+                  'MMMM YYYY'
+                )}
               </h3>
               <ButtonGroup>
                 <Button
@@ -205,10 +206,7 @@ define([
                 />
               </ButtonGroup>
             </LeftRight>
-            <Calendar
-              month={this.state.month}
-              year={this.state.year}
-            />
+            <Calendar date={this.state.calendarDate} />
           </Panel>
           <Panel title="Buttons">
             <h4>Button Uses</h4>
@@ -332,45 +330,19 @@ define([
     },
 
     onLastMonthClick: function() {
-      var month = this.state.month;
-      var year = this.state.year;
-
-      if (month === 0) {
-        month = 11;
-        year--;
-      } else {
-        month--;
-      }
-
-      this.setState({
-        month: month,
-        year: year
-      });
+      var date = cloneDate(this.state.calendarDate);
+      date.setUTCMonth(date.getUTCMonth() - 1);
+      this.setState({calendarDate: date});
     },
 
     onThisMonthClick: function() {
-      var today = new Date();
-      this.setState({
-        month: today.getMonth(),
-        year: today.getFullYear()
-      });
+      this.setState({calendarDate: new Date()});
     },
 
     onNextMonthClick: function() {
-      var month = this.state.month;
-      var year = this.state.year;
-
-      if (month === 11) {
-        month = 0;
-        year++;
-      } else {
-        month++;
-      }
-
-      this.setState({
-        month: month,
-        year: year
-      });
+      var date = cloneDate(this.state.calendarDate);
+      date.setUTCMonth(date.getUTCMonth() + 1);
+      this.setState({calendarDate: date});
     },
 
     _onWorkoutsUpdate: function(workouts) {

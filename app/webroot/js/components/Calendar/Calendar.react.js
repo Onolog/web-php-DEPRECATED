@@ -27,12 +27,15 @@ define([
     displayName: 'Calendar',
 
     propTypes: {
-      month: React.PropTypes.number.isRequired,
-      year: React.PropTypes.number.isRequired
+      date: React.PropTypes.instanceOf(Date).isRequired
     },
   
     render: function() {
-      var grid = calendarGrid(this.props.month, this.props.year);  
+      var grid = calendarGrid(
+        this.props.date.getMonth(),
+        this.props.date.getFullYear()
+      );
+
       return (
         <BaseCalendar className="calendar">
           {grid.map(this._renderWeek)}
@@ -54,7 +57,7 @@ define([
         <BaseCalendarDay
           date={date}
           key={idx}
-          month={this.props.month}>
+          month={this.props.date.getMonth()}>
           <CalendarDate date={date} />
         </BaseCalendarDay>
       );

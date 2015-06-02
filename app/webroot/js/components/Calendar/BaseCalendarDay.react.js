@@ -26,8 +26,8 @@ define([
     },
 
     render: function() {
-      var dateObject = this.props.date;
-      var month = dateObject.getMonth();
+      var dateObj = this.props.date;
+      var month = dateObj.getMonth();
       var calMonth = this.props.month;
       var lastMonth = calMonth === 0 ? 11 : calMonth - 1;
       var nextMonth = calMonth === 11 ? 0 : calMonth + 1;
@@ -37,7 +37,7 @@ define([
           className={cx({
             'lastMonth': month === lastMonth,
             'nextMonth': month === nextMonth,
-            'today': this._isToday(dateObject)
+            'today': this._isToday(dateObj)
           })}>
           {this.props.children}
         </td>

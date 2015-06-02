@@ -9,6 +9,7 @@ define([
   'lib/react/jsx!components/Calendar/BaseCalendarWeek.react',
   'lib/react/jsx!components/Link/Link.react',
   'utils/calendarGrid',
+  'utils/cloneDate',
   'utils/cx'
 
 ], function(
@@ -21,6 +22,7 @@ define([
   Link,
 
   calendarGrid,
+  cloneDate,
   cx
 
 ) {
@@ -29,13 +31,16 @@ define([
     displayName: 'DatepickerCalendar',
 
     propTypes: {
-      month: React.PropTypes.number.isRequired,
-      selectedDate: React.PropTypes.instanceOf(Date),
-      year: React.PropTypes.number.isRequired
+      date: React.PropTypes.instanceOf(Date).isRequired,
+      selectedDate: React.PropTypes.instanceOf(Date)
     },
   
     render: function() {
-      var grid = calendarGrid(this.props.month, this.props.year);  
+      var grid = calendarGrid(
+        this.props.date.getMonth(),
+        this.props.date.getFullYear()
+      );
+
       return (
         <BaseCalendar
           className="DatepickerCalendar"
@@ -54,19 +59,19 @@ define([
     },
 
     _renderDay: function(day, idx) {
-      var date = day.date;
+      var dayDate = day.date;
       return (
         <BaseCalendarDay
-          date={date}
+          date={dayDate}
           key={idx}
-          month={this.props.month}>
+          month={this.props.date.getMonth()}>
           <Link
             className={cx({
-              'selected': this._isSelected(date)
+              'selected': this._isSelected(dayDate)
             })}
             href="javascript:;"
-            onClick={this._onDayClick.bind(this, date)}>
-            {date.getDate()}
+            onClick={this._onDayClick.bind(this, dayDate)}>
+            {dayDate.getDate()}
           </Link>
         </BaseCalendarDay>
       );

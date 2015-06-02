@@ -34,30 +34,27 @@ define([
     displayName: 'UserCalendar',
 
     propTypes: {
+      date: React.PropTypes.instanceOf(Date).isRequired,
       /**
        * Array of the user's friends for display in the workout fields view
        */
       friends: React.PropTypes.array,
       /**
-       * UTC month, ie: August === 7
-       */
-      month: React.PropTypes.number,
-      /**
        * Array of the user's shoes for display in the workout fields view
        */
       shoes: React.PropTypes.array,
       workouts: React.PropTypes.array,
-      /**
-       * UTC Full Year, ie: 2014
-       */
-      year: React.PropTypes.number
     },
 
     render: function() {
-      var props = this.props;
+      var grid = calendarGrid(
+        this.props.date.getMonth(),
+        this.props.date.getFullYear()
+      );
+
       return (
         <BaseCalendar className="calendar">
-          {calendarGrid(props.month, props.year).map(this._renderWeek)}
+          {grid.map(this._renderWeek)}
         </BaseCalendar>
       );
     },
@@ -90,7 +87,7 @@ define([
           date={dateObject}
           friends={this.props.friends}
           key={idx}
-          month={this.props.month}
+          month={this.props.date.getMonth()}
           shoes={this.props.shoes}
           weeklyMileage={this._weeklyMileage}
           workouts={workouts}
