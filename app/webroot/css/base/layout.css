@@ -4,12 +4,12 @@
 
 /* Header */
 #headerWrapper {
-  background: #e97f10;
+  background: #f48711;
   background: -webkit-gradient(linear, 0 0, 0 100%, from(#f48711), to(#e97f10));
   background: -moz-linear-gradient(top, #f48711, #e97f10);
   border-bottom: 1px solid #c26f19;
-  box-shadow: 0 1px 2px rgba(100, 100, 100, 0.25);
-  z-index: 10;
+  box-shadow: 0 1px 1px rgba(100, 100, 100, 0.25);
+  z-index: 1000;
 }
 
 #header .navbar-collapse {
