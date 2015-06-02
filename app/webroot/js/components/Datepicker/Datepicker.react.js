@@ -119,13 +119,13 @@ define([
 
     _onPrevMonthClick: function() {
       var date = cloneDate(this.state.date);
-      date.setUTCMonth(date.getUTCMonth() - 1);
+      date.setMonth(date.getMonth() - 1);
       this.setState({date: date});
     },
 
     _onNextMonthClick: function() {
       var date = cloneDate(this.state.date);
-      date.setUTCMonth(date.getUTCMonth() + 1);
+      date.setMonth(date.getMonth() + 1);
       this.setState({date: date});
     },
 
