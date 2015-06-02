@@ -1,0 +1,116 @@
+/**
+ * Datepicker.css
+ */
+
+.Datepicker {
+  position: relative;
+  width: 125px;
+}
+
+.DatePickerInput {
+  cursor: pointer;
+  padding-right: 30px;
+}
+
+.DatePickerCalendarIcon {
+  margin-top: -7px;
+  position: absolute;
+  right: 11px;
+  top: 50%;
+  z-index: 10;
+}
+
+.Datepicker .popover {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  display: block;
+  top: 110%;
+}
+
+.Datepicker .popover.bottom > .arrow {
+  border-bottom-color: rgba(0, 0, 0, 0.15);
+  left: 20px;
+  margin-left: 0;
+}
+.Datepicker .popover.bottom > .arrow:after {
+  border-bottom-color: #f5f5f5;
+}
+
+.Datepicker .popover-header {
+  background-color: #f5f5f5;
+  border-radius: 2px 2px 0 0;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 8px 24px;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.monthPickerLeft,
+.monthPickerRight {
+  border-radius: 3px;
+  height: 23px;
+  line-height: 17px;
+  position: absolute;
+  top: 5px;
+  width: 23px;
+}
+.monthPickerLeft {
+  left: 5px;
+}
+.monthPickerRight {
+  right: 5px;
+}
+.monthPickerLeft:hover,
+.monthPickerRight:hover {
+  background-color: #e5e5e5;
+}
+
+.Datepicker .popover-content {
+  padding: 5px;
+}
+
+
+/* Calendar */
+.DatepickerCalendar {
+  background-color: #fff;
+  border-width: 0;
+}
+
+.DatepickerCalendar td,
+.DatepickerCalendar th  {
+  border-width: 0;
+}
+
+.DatepickerCalendar th {
+  font-size: 10px;
+  padding: 5px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.DatepickerCalendar td {
+  padding: 0;
+}
+
+.DatepickerCalendar a {
+  border-radius: 3px;
+  color: #808080;
+  display: block;
+  font-size: 12px;
+  line-height: 1em;
+  padding: 10px;
+  text-align: center;
+}
+
+.DatepickerCalendar .lastMonth a,
+.DatepickerCalendar .nextMonth a {
+  color: #e5e5e5;
+}
+
+.DatepickerCalendar a.selected,
+.DatepickerCalendar a:hover {
+  color: #1f8dd6;
+  background-color: #e7f4ff;
+  text-decoration: none;
+}

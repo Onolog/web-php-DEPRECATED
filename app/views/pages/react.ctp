@@ -3,6 +3,7 @@ $this->Include->css(array(
   'app/Activity',
   'app/Workout',
   'components/Calendar',
+  'components/Datepicker',
   'components/Facepile',
   'components/Topline',
   'token-input-facebook',

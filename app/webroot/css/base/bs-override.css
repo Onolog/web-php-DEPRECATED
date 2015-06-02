@@ -36,6 +36,7 @@ h3 {
 .dropdown-menu,
 .form-control,
 .input-group-addon,
+.popover,
 .progress,
 .tooltip-inner,
 .well {
@@ -128,7 +129,12 @@ section + section,
 
 /* Popover */
 .popover {
+  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   padding: 0;
+}
+.popover-title {
+  border-radius: 3px 3px 0 0;
 }
 
 

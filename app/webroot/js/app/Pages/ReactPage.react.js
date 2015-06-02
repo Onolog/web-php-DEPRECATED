@@ -17,6 +17,7 @@ define([
   'lib/react/jsx!components/Button/DropdownButton.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Calendar/Calendar.react',
+  'lib/react/jsx!components/Datepicker/Datepicker.react',
   'lib/react/jsx!components/Tokenizer/FriendTokenizer.react',
   'lib/react/jsx!components/Graph/BarGraph/BarGraph.react',
   'lib/react/jsx!components/LeftRight/LeftRight.react',
@@ -45,6 +46,7 @@ define([
   DropdownButton,
   ButtonGroup,
   Calendar,
+  Datepicker,
   FriendTokenizer,
   Graph,
   LeftRight,
@@ -66,8 +68,8 @@ define([
     getInitialState: function() {
       var today = new Date();
       return {
-        month: today.getUTCMonth(),
-        year: today.getUTCFullYear(),
+        month: today.getMonth(),
+        year: today.getFullYear(),
         workouts: DATA.WORKOUTS
       };
     },
@@ -133,6 +135,9 @@ define([
       return (
         <div>
           <PageHeader title="React Component Examples" />
+          <Panel title="Date Picker">
+            <Datepicker />
+          </Panel>
           <Panel title="Dropdown Button">
             <DropdownButton
               label="Open Me!"
@@ -323,22 +328,44 @@ define([
     },
 
     onLastMonthClick: function() {
+      var month = this.state.month;
+      var year = this.state.year;
+
+      if (month === 0) {
+        month = 11;
+        year--;
+      } else {
+        month--;
+      }
+
       this.setState({
-        month: this.state.month === 0 ? 11 : this.state.month - 1
+        month: month,
+        year: year
       });
     },
 
     onThisMonthClick: function() {
       var today = new Date();
       this.setState({
-        month: today.getUTCMonth(),
-        year: today.getUTCFullYear()
+        month: today.getMonth(),
+        year: today.getFullYear()
       });
     },
 
     onNextMonthClick: function() {
+      var month = this.state.month;
+      var year = this.state.year;
+
+      if (month === 11) {
+        month = 0;
+        year++;
+      } else {
+        month++;
+      }
+
       this.setState({
-        month: this.state.month === 11 ? 0 : this.state.month + 1
+        month: month,
+        year: year
       });
     },
 
