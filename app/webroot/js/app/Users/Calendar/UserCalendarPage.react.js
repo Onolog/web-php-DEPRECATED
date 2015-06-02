@@ -172,7 +172,7 @@ define([
 
     _onLastMonthClick: function() {
       var date = cloneDate(this.state.date);
-      date.setUTCMonth(date.getUTCMonth() - 1);
+      date.setMonth(date.getMonth() - 1);
       this._updateCalendar(date);
     },
 
@@ -182,7 +182,7 @@ define([
 
     _onNextMonthClick: function() {
       var date = cloneDate(this.state.date);
-      date.setUTCMonth(date.getUTCMonth() + 1);
+      date.setMonth(date.getMonth() + 1);
       this._updateCalendar(date);
     },
   });
