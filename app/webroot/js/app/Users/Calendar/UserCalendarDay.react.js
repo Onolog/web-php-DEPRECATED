@@ -8,6 +8,7 @@ define([
   'lib/react/jsx!app/Users/Calendar/WorkoutAddButton.react',
   'lib/react/jsx!app/Users/Calendar/WorkoutLink.react',
   'lib/react/jsx!components/Calendar/BaseCalendarDay.react',
+  'lib/react/jsx!components/Calendar/CalendarDate.react',
   'utils/formatDistance'
 
 ], function(
@@ -16,6 +17,7 @@ define([
   WorkoutAddButton,
   WorkoutLink,
   BaseCalendarDay,
+  CalendarDate,
   formatDistance
 
 ) {
@@ -55,13 +57,16 @@ define([
         <BaseCalendarDay
           date={dateObject}
           month={this.props.month}>
-          {this._renderWorkouts()}
-          <WorkoutAddButton
-            dateObject={dateObject}
-            friends={this.props.friends}
-            shoes={this.props.shoes}
-          />
-          {this._renderWeeklyTotal(dateObject)}
+          <div className="wrapper">
+            <CalendarDate date={dateObject} />
+            {this._renderWorkouts()}
+            <WorkoutAddButton
+              dateObject={dateObject}
+              friends={this.props.friends}
+              shoes={this.props.shoes}
+            />
+            {this._renderWeeklyTotal(dateObject)}
+          </div>
         </BaseCalendarDay>
       );
     },

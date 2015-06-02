@@ -56,7 +56,7 @@ define([
     render: function() {
       var props = this.props;
       return (
-        <BaseCalendar>
+        <BaseCalendar className="calendar">
           {calendarGrid(props.month, props.year).map(this._renderWeek)}
         </BaseCalendar>
       );

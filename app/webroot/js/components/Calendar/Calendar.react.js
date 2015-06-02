@@ -7,6 +7,7 @@ define([
   'lib/react/jsx!components/Calendar/BaseCalendar.react',
   'lib/react/jsx!components/Calendar/BaseCalendarDay.react',
   'lib/react/jsx!components/Calendar/BaseCalendarWeek.react',
+  'lib/react/jsx!components/Calendar/CalendarDate.react',
   'utils/calendarGrid'
 
 ], function(
@@ -16,6 +17,7 @@ define([
   BaseCalendar,
   BaseCalendarDay,
   BaseCalendarWeek,
+  CalendarDate,
 
   calendarGrid
 
@@ -30,26 +32,31 @@ define([
     },
   
     render: function() {
-      this.key = 0;
-      var grid = calendarGrid(this.props.month, this.props.year);
-  
-      weeks = grid.map(function(week) {
-        var days = week.map(this._renderDay);
-        this.key++;
-        return <BaseCalendarWeek key={this.key}>{days}</BaseCalendarWeek>;
-      }.bind(this));
-  
-      return <BaseCalendar>{weeks}</BaseCalendar>;
+      var grid = calendarGrid(this.props.month, this.props.year);  
+      return (
+        <BaseCalendar className="calendar">
+          {grid.map(this._renderWeek)}
+        </BaseCalendar>
+      );
     },
-  
-    _renderDay: function(day) {
+
+    _renderWeek: function(week, idx) {
+      return (
+        <BaseCalendarWeek key={idx}>
+          {week.map(this._renderDay)}
+        </BaseCalendarWeek>
+      );
+    },
+
+    _renderDay: function(day, idx) {
       var date = day.date;
       return (
         <BaseCalendarDay
           date={date}
-          key={date.getUTCDate()}
-          month={this.props.month}
-        />
+          key={idx}
+          month={this.props.month}>
+          <CalendarDate date={date} />
+        </BaseCalendarDay>
       );
     }
   });

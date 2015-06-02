@@ -5,9 +5,18 @@
 define([
 
   'lib/react/react',
-  'lib/Moment/Moment'
+  'lib/Moment/Moment',
+  'utils/cx',
+  'utils/joinClasses'
 
-], function(React, moment) {
+], function(
+
+  React,
+  moment,
+  cx,
+  joinClasses
+
+) {
 
   var DAYS_IN_WEEK = 7;
   var ISO_DAY_OF_WEEK = 'E';
@@ -16,6 +25,7 @@ define([
     displayName: 'BaseCalendar',
 
     propTypes: {
+      borders: React.PropTypes.bool,
       headerFormat: React.PropTypes.oneOf([
         'd',    // M, T, W...
         'dd',   // Mo, Tu, We...
@@ -26,14 +36,19 @@ define([
 
     getDefaultProps: function() {
       return {
+        borders: true,
         headerFormat: 'ddd'
       };
     },
 
     render: function() {
-      // TODO: Validate children?
+      var classes = cx({
+        'calendar': true,
+        'noBorders': !this.props.borders
+      });
+
       return (
-        <table className="calendar">
+        <table className={this.props.className}>
           {this._renderHeaderRow()}
           <tbody>
             {this.props.children}
@@ -49,7 +64,7 @@ define([
      */
     _renderHeaderRow: function() {
       var headerCells = [];
-      for (var ii=0; ii<DAYS_IN_WEEK; ii++) {
+      for (var ii=0; ii < DAYS_IN_WEEK; ii++) {
         headerCells.push(
           <th key={ii}>{this._formatDayOfWeek(ii)}</th>
         );
