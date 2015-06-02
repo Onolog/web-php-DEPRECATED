@@ -5,11 +5,22 @@
 define([
 
   'lib/react/react',
+  'lib/react/jsx!components/Glyph/Glyph.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!mixins/TooltipMixin.react',
   'utils/cx',
+  'utils/joinClasses'
 
-], function(React, Link, TooltipMixin, cx) {
+], function(
+
+  React,
+  Glyph,
+  Link,
+  TooltipMixin,
+  cx,
+  joinClasses
+
+) {
 
   return React.createClass({
     displayName: 'AbstractButton',
@@ -42,62 +53,68 @@ define([
     },
 
     render: function() {
-      var cloneWithProps = React.addons.cloneWithProps;
-      
       var className = cx({
         'disabled': this.props.disabled && this.props.href,
         'active': this.props.depressed
       });
-  
-      var labelChild = this.props.label;
-      if (labelChild) {
-        labelChild =
-          <span key="labelChild" className="btnLabel">
-            {labelChild}
-          </span>;
-      }
-  
-      var glyphChild = this.props.customGlyph || this.props.glyph;
-      if (this.props.glyph) {
-        glyphChild =
-          <i
-            className={'glyphChild glyphicon glyphicon-' + glyphChild}
-            key="glyphChild"
-          />;
-      }
 
-      var glyphRightChild;
-      var newProps;
+      var children = [this._renderLabel()];
+      var glyphChild = this._renderGlyph();
+
       if (this.props.glyphPosition === 'right') {
-        glyphRightChild = glyphChild;
-        glyphChild = null;
-
-        newProps = {};
-        if (this.props.label) {
-          newProps.className = 'glyphChild';
-        }
-
-        if (!glyphRightChild.props.key) {
-          newProps.key = 'glyphRight';
-        }
-        glyphRightChild = cloneWithProps(glyphRightChild, newProps);
+        children.push(glyphChild);
+      } else {
+        children.unshift(glyphChild);
       }
-  
-      var root;
+
       if (this.props.href) {
-        root = <Link disabled={null} />;
+        return (
+          <Link
+            {...this.props}
+            className={joinClasses(className, this.props.className)}
+            disabled={null}>
+            {children}
+          </Link>
+        );
       } else {
         var type = this.props.type || 'submit';
-        root = <button type={type} disabled={this.props.disabled} />;
-        if (type === 'submit') {
-          root.props.value = '1';
-        }
+        var value = type === 'submit' ? '1' : null;
+        return (
+          <button
+            {...this.props}
+            className={joinClasses(className, this.props.className)}
+            disabled={this.props.disabled}
+            type={type}
+            value={value}>
+            {children}
+          </button>
+        );
       }
-  
-      root.props.children = [glyphChild, labelChild, glyphRightChild];
-      root.props.className = className;
-      root.props.label = null;
-      return this.transferPropsTo(root);
+    },
+
+    _renderLabel: function() {
+      var label = this.props.label;
+      if (label) {
+        return (
+          <span key="labelChild" className="btnLabel">
+            {label}
+          </span>
+        );
+      }
+    },
+
+    _renderGlyph: function() {
+      var cloneWithProps = React.addons.cloneWithProps;
+      var glyphChild = this.props.customGlyph || this.props.glyph;
+
+      if (this.props.glyph) {
+        glyphChild = <Glyph icon={this.props.glyph} />;
+      }
+
+      return glyphChild && cloneWithProps(glyphChild, {
+        className: 'glyphChild',
+        key: 'glyphChild'
+      });
     }
 
   });
