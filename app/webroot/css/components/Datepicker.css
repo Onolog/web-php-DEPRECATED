@@ -46,8 +46,8 @@
   text-transform: uppercase;
 }
 
-.monthPickerLeft,
-.monthPickerRight {
+.Datepicker .monthArrow {
+  color: #c5c5c5;
   border-radius: 3px;
   height: 23px;
   line-height: 17px;
@@ -55,14 +55,28 @@
   top: 5px;
   width: 23px;
 }
-.monthPickerLeft {
+
+.Datepicker .arrowLeft {
   left: 5px;
 }
-.monthPickerRight {
+.Datepicker .arrowLeft span {
+  top: 4px;
+  left: -1px;
+}
+
+.Datepicker .arrowRight {
   right: 5px;
 }
-.monthPickerLeft:hover,
-.monthPickerRight:hover {
+.Datepicker .arrowRight span {
+  top: 4px;
+  right: -1px;
+}
+
+.Datepicker .monthArrow:hover {
+  background-color: #ececec;
+}
+.Datepicker .monthArrow:active {
+  color: #b5b5b5;
   background-color: #e5e5e5;
 }
 

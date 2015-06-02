@@ -19,6 +19,7 @@ define([
   'lib/react/jsx!components/Calendar/Calendar.react',
   'lib/react/jsx!components/Datepicker/Datepicker.react',
   'lib/react/jsx!components/Tokenizer/FriendTokenizer.react',
+  'lib/react/jsx!components/Glyph/Glyph.react',
   'lib/react/jsx!components/Graph/BarGraph/BarGraph.react',
   'lib/react/jsx!components/LeftRight/LeftRight.react',
   'lib/react/jsx!components/Menu/Menu.react',
@@ -48,6 +49,7 @@ define([
   Calendar,
   Datepicker,
   FriendTokenizer,
+  Glyph,
   Graph,
   LeftRight,
   Menu,
@@ -135,6 +137,11 @@ define([
       return (
         <div>
           <PageHeader title="React Component Examples" />
+          <Panel title="Glyph">
+            <Glyph icon="heart" />
+            <Glyph icon="triangle-left" />
+            <Glyph icon="triangle-right" />
+          </Panel>
           <Panel title="Date Picker">
             <Datepicker />
           </Panel>
@@ -176,8 +183,7 @@ define([
               </h3>
               <ButtonGroup>
                 <Button
-            	    glyph="chevron-left"
-            	    id="lastMonth"
+            	    glyph="triangle-left"
                   tooltip={{
                     title: 'Last month'
                   }}
@@ -185,15 +191,13 @@ define([
                 />
                 <Button
             	    glyph="stop"
-                  id="thisMonth"
                   tooltip={{
                     title: 'This month'
                   }}
                   onClick={this.onThisMonthClick}
                 />
                 <Button
-            	    glyph="chevron-right"
-            	    id="nextMonth"
+            	    glyph="triangle-right"
                   tooltip={{
                     title: 'Next month'
                   }}

@@ -10,6 +10,7 @@ define([
   'lib/react/react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Datepicker/DatepickerCalendar.react',
+  'lib/react/jsx!components/Glyph/Glyph.react',
   'lib/react/jsx!components/Forms/HiddenInput.react',
   'lib/react/jsx!components/Forms/TextInput.react',
   'lib/react/jsx!components/Link/Link.react',
@@ -21,6 +22,7 @@ define([
   React,
   Button,
   DatepickerCalendar,
+  Glyph,
   HiddenInput,
   TextInput,
   Link,
@@ -67,8 +69,9 @@ define([
             className="DatePickerInput form-control"
             onClick={this._showCalendar}>
             {DateTimeUtils.formatDate(this.state.selectedDate, 'M/D/YYYY')}
-            <span
-              className="DatePickerCalendarIcon glyphicon glyphicon-calendar"
+            <Glyph
+              className="DatePickerCalendarIcon"
+              icon="calendar"
               onClick={this._showCalendar}
             />
           </div>
@@ -92,17 +95,17 @@ define([
           <div className="arrow"></div>
           <div className="popover-header">
             <Link
-              className="monthPickerLeft"
+              className="monthArrow arrowLeft"
               href="javascript:;"
               onClick={this._onPrevMonthClick}>
-              {'<'}
+              <Glyph icon="triangle-left" />
             </Link>
             {DateTimeUtils.formatDate(date, 'MMMM YYYY')}
             <Link
-              className="monthPickerRight"
+              className="monthArrow arrowRight"
               href="javascript:;"
               onClick={this._onNextMonthClick}>
-              {'>'}
+              <Glyph icon="triangle-right" />
             </Link>
           </div>
           <div className="popover-content">
