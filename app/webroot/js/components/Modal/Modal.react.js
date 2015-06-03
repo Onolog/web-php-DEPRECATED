@@ -74,6 +74,7 @@ define([
 
     componentWillUnmount: function() {
       window.removeEventListener('keydown', this._onKeyDown, true);
+      $(document.body).removeClass('modal-open');
     },
 
     render: function() {
