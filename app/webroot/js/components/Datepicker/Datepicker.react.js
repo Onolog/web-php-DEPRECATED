@@ -46,18 +46,11 @@ define([
     },
 
     componentDidMount: function() {
-      // Collapse the dropdown if the user clicks somewhere other than the
-      // trigger button.
-      window.addEventListener('click', function(evt) {
-        var target = evt.target;
-        var parent = this.getDOMNode();
-        if (!(parent.contains(target) || target === parent)) {
-          this.setState({
-            date: cloneDate(this.state.selectedDate),
-            show: false
-          })
-        }
-      }.bind(this));
+      window.addEventListener('click', this._closeOnBlur);
+    },
+
+    componentWillUnmount: function() {
+      window.removeEventListener('click', this._closeOnBlur);
     },
 
     render: function() {
@@ -115,6 +108,21 @@ define([
           </div>
         </div>
       );
+    },
+
+    /**
+     * Hide the flyout if the user clicks somewhere other than the
+     * trigger element or the flyout.
+     */
+    _closeOnBlur: function(evt) {
+      var target = evt.target;
+      var parent = this.getDOMNode();
+      if (!(parent.contains(target) || target === parent)) {
+        this.setState({
+          date: cloneDate(this.state.selectedDate),
+          show: false
+        })
+      }
     },
 
     _onPrevMonthClick: function() {
