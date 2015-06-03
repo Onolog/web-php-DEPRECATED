@@ -57,7 +57,7 @@ define([
 
     componentDidMount: function() {
       this._setOrientation();
-      jQuery(this.getDOMNode()).resize(function() {
+      $(this.getDOMNode()).resize(function() {
         // Update the component if it's resized for some reason
         this._setOrientation();
       }.bind(this));
