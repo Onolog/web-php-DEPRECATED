@@ -16,7 +16,8 @@ define([
   'lib/react/jsx!components/Link/Link.react',
   'utils/cloneDate',
   'utils/cx',
-  'utils/DateTimeUtils'
+  'utils/DateTimeUtils',
+  'utils/dateToUnixTime'
 
 ], function(
 
@@ -29,19 +30,30 @@ define([
   Link,
   cloneDate,
   cx,
-  DateTimeUtils
+  DateTimeUtils,
+  dateToUnixTime
 
 ) {
 
   return React.createClass({
     displayName: 'Datepicker',
 
-    getInitialState: function() {
-      var date = new Date();
+    propTypes: {
+      initialDate: React.PropTypes.instanceOf(Date),
+      onChange: React.PropTypes.func
+    },
+
+    getDefaultProps: function() {
       return {
-        date: date,
+        initialDate: new Date()
+      };
+    },
+
+    getInitialState: function() {
+      return {
+        date: this.props.initialDate,
         show: false,
-        selectedDate: cloneDate(date)
+        selectedDate: cloneDate(this.props.initialDate)
       };
     },
 
@@ -67,7 +79,10 @@ define([
             />
           </div>
           {this._renderCalendarLayer()}
-          <HiddenInput />
+          <HiddenInput
+            name={this.props.name}
+            value={dateToUnixTime(this.state.selectedDate)}
+          />
         </div>
       );
     },
@@ -142,6 +157,13 @@ define([
         date: cloneDate(selectedDate),
         selectedDate: selectedDate,
         show: false
+      });
+
+      this.props.onChange && this.props.onChange({
+        target: {
+          name: this.props.name,
+          value: dateToUnixTime(selectedDate)
+        }
       });
     },
 

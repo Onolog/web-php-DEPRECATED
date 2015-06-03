@@ -7,6 +7,7 @@
 define([
 
   'lib/react/react',
+  'lib/react/jsx!components/Datepicker/Datepicker.react',
   'lib/react/jsx!components/Forms/FormGroup.react',
   'lib/react/jsx!components/Forms/HiddenInput.react',
   'lib/react/jsx!components/Forms/Textarea.react',
@@ -20,11 +21,13 @@ define([
   'constants/Workouts',
   'stores/WorkoutStore',
   'utils/cakePHP',
-  'utils/calculatePace'
+  'utils/calculatePace',
+  'utils/unixTimeToDate'
 
 ], function(
 
   React,
+  Datepicker,
   FormGroup,
   HiddenInput,
   Textarea,
@@ -37,7 +40,8 @@ define([
   WorkoutConstants,
   WorkoutStore,
   cakePHP,
-  calculatePace
+  calculatePace,
+  unixTimeToDate
 
 ) {
 
@@ -48,7 +52,7 @@ define([
 
     propTypes: {
       /**
-       * Unix timestamp.
+       * Unix timestamp (seconds).
        *
        * Note: A date is required for the "add" action.
        */
@@ -103,6 +107,10 @@ define([
 
       return (
         <div className="form-horizontal workoutForm">
+          <HiddenInput
+            name={cakePHP.encodeFormFieldName('date', FORM_NAME)}
+            value={date}
+          />
           <FormGroup label="Distance">
             <TextInput
               className="distance"
@@ -125,7 +133,15 @@ define([
           		  <span>{this.state.pace}</span> per mile
           		</span>
         		</div>
-        	 </FormGroup>
+        	</FormGroup>
+
+          <FormGroup label="Date">
+            <Datepicker
+              initialDate={unixTimeToDate(date)}
+              name={cakePHP.encodeFormFieldName('date', FORM_NAME)}
+              onChange={this._onUpdate}
+            />
+          </FormGroup>
 
           <FormGroup label="Avg. Heart Rate">
             <TextInput
@@ -164,14 +180,10 @@ define([
               defaultValue={workout && workout.notes}
               name={cakePHP.encodeFormFieldName('notes', FORM_NAME)}
               onChange={this._onUpdate}
-              placeholder="Notes"
+              placeholder="Add some details about your activity..."
               rows="6"
             />
           </FormGroup>
-          <HiddenInput
-            name={cakePHP.encodeFormFieldName('date', FORM_NAME)}
-            value={date}
-          />
         </div>
       );
     },
@@ -205,8 +217,6 @@ define([
 
     // TODO: Finish this. Should each individual form field have its own validation?
     _validateForm: function() {
-      return true;
-
       var error;
       var workout = WorkoutStore.getWorkout();
 

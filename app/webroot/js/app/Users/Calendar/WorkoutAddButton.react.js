@@ -135,7 +135,7 @@ define([
           onRequestClose={this._onCancel}
           isLoading={this.state.isLoading}
           alert={this.state.alert}
-          title={DateTimeUtils.formatDate(this.props.dateObject)}
+          title="New Activity"
           footer={
             <div>
               <Button
