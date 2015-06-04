@@ -11,6 +11,34 @@ define([
 
 ], function(React) {
 
+  // Note: We expect the datasource to be either an array or a string , which
+  // means we can make assumptions about how to compare. If the expected type
+  // changes, this function could break.
+  function dataSourceChanged(source1, source2) {
+    // We only accept strings or arrays, so check that they're both at least the
+    // same type.
+    if (typeof source1 !== typeof source2) {
+      return true;
+    }
+
+    // If the datasource is a URL, comparison is easy.
+    if (typeof source1 === 'string') {
+      return source1 !== source2;
+    }
+
+    // Compare arrays
+    var length = source1.length;
+    if (source2.length !== length) {
+      return true;
+    }
+
+    // Again, the data source structure should be predictable here (an array of
+    // shallow objects), so we can skip some comparison steps.
+    for (var ii=0; ii < length; ii++) {
+      return JSON.stringify(source1[ii]) !== JSON.stringify(source2[ii]);
+    }
+  }
+
   return React.createClass({
     displayName: 'Tokenizer',
 
@@ -57,6 +85,16 @@ define([
         onAdd: this._onAdd,
         onDelete: this._onDelete
       });
+    },
+
+    componentDidUpdate: function(prevProps, prevState) {
+      // Update the data source if it has changed
+      if (dataSourceChanged(prevProps.dataSource, this.props.dataSource)) {
+        $(this.refs.input.getDOMNode()).tokenInput(
+          'updateLocalData',
+          this.props.dataSource
+        );
+      }
     },
 
     render: function() {

@@ -81,14 +81,20 @@ define([
 
   return function ($) {
     
+    var _settings = {};
+
     // Additional public (exposed) methods
     var methods = {
 
       init: function(url_or_data_or_function, options) {
-        var settings = $.extend({}, DEFAULT_SETTINGS, options || {});
+        _settings = $.extend({}, DEFAULT_SETTINGS, options || {});
 
         return this.each(function () {
-          $(this).data("tokenInputObject", new $.TokenList(this, url_or_data_or_function, settings));
+          $(this).data("tokenInputObject", new $.TokenList(
+            this,
+            url_or_data_or_function,
+            _settings
+          ));
         });
       },
 
@@ -105,9 +111,13 @@ define([
       remove: function(item) {
         this.data("tokenInputObject").remove(item);
         return this;
+      },
+
+      updateLocalData: function(/*array*/ data) {
+        return _settings.local_data = data;
       }
     }
-    
+
     // Expose the .tokenInput function to jQuery as a plugin
     $.fn.tokenInput = function (method) {
       // Method calling and initialization logic
