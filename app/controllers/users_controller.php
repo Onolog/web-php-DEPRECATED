@@ -394,24 +394,8 @@ class UsersController extends AppController {
     $user = $this->requireLoggedInUser();
     $this->set('title_for_layout', 'Friends');
 
-    $fb_friends = $this->getFbFriends();
     $friends = array();
 
-    // Only display friends that are in the system
-    if (!empty($fb_friends)) {
-      foreach ($fb_friends as $friend) {
-        $f = $this->User->find('first', array(
-          'conditions' => array('User.id' => $friend['id'])
-        ));
-  
-        if ($f) {
-          $friends[] = $f['User'];
-        }
-      }
-    }
-
-    // TODO: Once we have the list of friends, we need to go find the
-    // associated workouts.
     $this->set('friends', $friends);
   }
 
@@ -467,12 +451,6 @@ class UsersController extends AppController {
         return $aMiles > $bMiles ? -1 : 1;
       }
       return $aRuns > $bRuns ? -1 : 1;
-    }
-
-    // Add friend names, since all we currently have is the id.
-    $friendData = $this->getPublicFbUserData(array_keys($grouped));
-    foreach($grouped as $id => $friend) {
-      $grouped[$id]['name'] = $friendData[$id]['name'];
     }
 
     // Sort first by number of runs, then by mileage.

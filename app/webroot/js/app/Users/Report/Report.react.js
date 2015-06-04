@@ -33,7 +33,6 @@ define([
   BarGraphBar,
   BarGraphSection,
   BarGraphSectionUnit,
-  FBImage,
   Link,
   Middot,
   Panel,
@@ -81,6 +80,10 @@ define([
       }).isRequired,
 
       workoutDataByWeek: React.PropTypes.object.isRequired
+    },
+
+    componentWillMount: function() {
+      
     },
 
     render: function() {
