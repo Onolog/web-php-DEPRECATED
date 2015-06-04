@@ -44,7 +44,7 @@ define([
     },
 
     componentWillMount: function() {
-      var friends = this.props.friends;
+      var friends = this.props.friends + '';
       if (!friends) {
         return;
       }
