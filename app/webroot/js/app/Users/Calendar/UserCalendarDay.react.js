@@ -33,10 +33,6 @@ define([
        */
       date: React.PropTypes.instanceOf(Date),
       /**
-       * Array of the user's friends for display in the workout fields view
-       */
-      friends: React.PropTypes.array,
-      /**
        * UTC month, ie: August === 7
        */
       month: React.PropTypes.number,
@@ -62,7 +58,6 @@ define([
             {this._renderWorkouts()}
             <WorkoutAddButton
               dateObject={dateObject}
-              friends={this.props.friends}
               shoes={this.props.shoes}
             />
             {this._renderWeeklyTotal(dateObject)}
@@ -81,7 +76,6 @@ define([
       return workouts.map(function(/*object*/ workout) {
         return (
           <WorkoutLink
-            friends={this.props.friends}
             key={workout.id}
             shoes={this.props.shoes}
             workout={workout}

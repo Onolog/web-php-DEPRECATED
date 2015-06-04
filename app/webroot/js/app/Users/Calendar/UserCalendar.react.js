@@ -85,7 +85,6 @@ define([
       return (
         <UserCalendarDay
           date={dateObject}
-          friends={this.props.friends}
           key={idx}
           month={this.props.date.getMonth()}
           shoes={this.props.shoes}

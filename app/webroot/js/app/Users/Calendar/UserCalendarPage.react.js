@@ -45,10 +45,6 @@ define([
 
     propTypes: {
       /**
-       * Array of the user's friends for display in the workout fields view
-       */
-      friends: React.PropTypes.array,
-      /**
        * UTC month, ie: August === 7
        */
       month: React.PropTypes.number,
@@ -110,7 +106,6 @@ define([
             />
             <UserCalendar
               date={date}
-              friends={this.props.friends}
               shoes={this.props.shoes}
               workouts={this.state.workouts}
             />

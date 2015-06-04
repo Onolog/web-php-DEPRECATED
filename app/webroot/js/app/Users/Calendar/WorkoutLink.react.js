@@ -72,7 +72,6 @@ define([
     mixins: [LayerMixin, StoreMixin],
 
     propTypes: {
-      friends: React.PropTypes.array,
       shoes: React.PropTypes.array,
       workout: React.PropTypes.object.isRequired
     },
@@ -191,7 +190,6 @@ define([
             }>
             <WorkoutFields
               action="edit"
-              friends={this.props.friends}
               shoes={this.props.shoes}
               workout={this.state.workout}
             />

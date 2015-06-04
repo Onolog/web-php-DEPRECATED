@@ -57,7 +57,6 @@ define([
        * Note: A date is required for the "add" action.
        */
       date: React.PropTypes.number,
-      friends: React.PropTypes.array,
       /**
        * The selected shoe in an existing workout, if one has been selected.
        */
@@ -167,7 +166,6 @@ define([
 
           <FormGroup label="Friends">
             <FriendTokenizer
-              friends={this.props.friends}
               prePopulate={workout && workout.friends}
               name={cakePHP.encodeFormFieldName('friends', FORM_NAME)}
               onChange={this._onUpdate}

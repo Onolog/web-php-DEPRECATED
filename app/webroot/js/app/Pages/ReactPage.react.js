@@ -279,12 +279,8 @@ define([
             </Panel>
           </Panel>
           <Panel title="Friend Typeahead">
-            <h4 style={{margin: '0 0 5px'}}>Remote Data Source</h4>
+            <h4 style={{margin: '0 0 5px'}}>Initially Empty</h4>
             <FriendTokenizer />
-            <h4 style={{margin: '15px 0 5px'}}>Local Data Source</h4>
-            <FriendTokenizer
-              friends={DATA.FRIENDS}
-            />
             <h4 style={{margin: '15px 0 5px'}}>Pre-Populated</h4>
             <FriendTokenizer
               prePopulate={DATA.FRIENDS}

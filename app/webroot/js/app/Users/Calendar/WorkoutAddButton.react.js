@@ -59,10 +59,6 @@ define([
        */
       dateObject: React.PropTypes.instanceOf(Date).isRequired,
       /**
-       * Array of the user's friends for display in the workout fields view
-       */
-      friends: React.PropTypes.array,
-      /**
        * Array of the user's shoes for display in the workout fields view
        */
       shoes: React.PropTypes.array,
@@ -152,7 +148,6 @@ define([
             </div>
           }>
           <WorkoutFields
-            friends={this.props.friends}
             shoes={this.props.shoes}
             workout={this.state.workoutData}
           />

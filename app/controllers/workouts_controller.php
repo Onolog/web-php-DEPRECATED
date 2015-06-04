@@ -121,13 +121,6 @@ class WorkoutsController extends AppController {
 
       $this->formatWorkoutDataForWrite();
 
-      // Check the list of friends and add any that are not already in the system
-      /*
-      $friends = explode(',', $this->data['Workout']['friends']);
-      $r = $this->Workout->User->checkAndAddFriends($friends);
-		  debug($friends);
-		  */
-
 			$this->Workout->create();
 			if ($this->Workout->save($this->data)) {
 				$this->Session->setFlash(__('Your workout was added', 1));
@@ -232,17 +225,14 @@ class WorkoutsController extends AppController {
       }
 		}
 
-    $fbFriends = $this->getFbFriends();
-
     // Format friend data associated with the workout
     $this->data['Workout']['friends'] = $this->getWorkoutFriends(
       $this->data['Workout']['friends']
     );
 
     $json_shoes = $this->getShoesForWorkoutJSON();
-    $json_friends = json_encode(array_values($fbFriends));
 
-		$this->set(compact('json_shoes', 'json_friends'));
+		$this->set(compact('json_shoes'));
 	}
 
   /**

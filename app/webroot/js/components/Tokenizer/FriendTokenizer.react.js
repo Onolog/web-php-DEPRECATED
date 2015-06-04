@@ -8,36 +8,33 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!components/Tokenizer/Tokenizer.react',
+  'facebook'
 
 ], function(React, Tokenizer) {
 
   return React.createClass({
     displayName: 'FriendTokenizer',
 
-    propTypes: {
-      /**
-       * The user's list of friends, for use as a local data source
-       */
-      friends: React.PropTypes.array
-    },
-
     getInitialState: function() {
       return {
+        friends: [],
         items: this.props.prePopulate
       };
     },
 
-    render: function() {
-      // If there's no local datasource, use a remote one
-      var dataSource = '/ajax/users/friends_list/';
-      var friends = this.props.friends;
-      if (friends && friends.length) {
-        dataSource = friends;
-      }
+    componentWillMount: function() {
+      // Get taggable FB friends
+      FB.getLoginStatus(function(response) {
+        FB.api('/me/friends', function(response) {
+          this.setState({friends: response.data});
+        }.bind(this));
+      }.bind(this));
+    },
 
+    render: function() {
       return (
         <Tokenizer
-          dataSource={dataSource}
+          dataSource={this.state.friends}
           hintText="Type a friend's name..."
           onChange={this._onChange}
           items={this.state.items}

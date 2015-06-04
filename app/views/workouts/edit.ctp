@@ -6,6 +6,7 @@
  */
 $this->Include->css(array(
   'app/Workout',
+  'components/Datepicker',
   'token-input-facebook'
 ));
 $this->set('page_classes', array(
@@ -75,7 +76,6 @@ echo "
   ], function(reactRender, WorkoutFields) {
     reactRender(WorkoutFields, {
       action: 'edit',
-      friends: $json_friends,
       shoes: $json_shoes,
       workout: $workout
     }, 'reactRoot');

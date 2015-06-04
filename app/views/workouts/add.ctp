@@ -6,6 +6,7 @@
  */
 $this->Include->css(array(
   'app/Workout',
+  'components/Datepicker',
   'token-input-facebook'
 ));
 $this->set('page_classes', array(

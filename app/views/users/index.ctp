@@ -26,7 +26,6 @@ echo "
   ], function(reactRender, UserCalendarPage) {
     reactRender(
       UserCalendarPage, {
-        friends: $json_friends,
         month: $month-1,
         shoes: $json_shoes,
         year: $year

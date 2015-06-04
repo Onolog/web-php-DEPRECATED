@@ -18,20 +18,20 @@ requirejs.config({
   paths: {
     async: 'lib/require/async',
     bootstrap: 'lib/bootstrap.min',
-    facebook: '//connect.facebook.net/en_US/all',
-    'highcharts': [
+    facebook: '//connect.facebook.net/en_US/sdk',
+    highcharts: [
       // CDN
       // 'https://code.highcharts.com/highcharts',
       // Local
       'lib/highcharts/highcharts'
     ],
-    'jquery': [
+    jquery: [
       // CDN
       // '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min',
       // Local fallback
       'lib/jquery/jquery.min'
     ],
-    'jsx': 'lib/react/jsx',
+    jsx: 'lib/react/jsx',
     JSXTransformer: 'lib/react/JSXTransformer',
     prototype: [
       // CDN

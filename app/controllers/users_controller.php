@@ -135,12 +135,9 @@ class UsersController extends AppController {
         'Shoe.user_id' => $this->Auth->User('id'),
       ),
     ));
+
     $json_shoes = json_encode(
       $this->User->Shoe->sortShoesForJSON($shoes)
-    );
-
-    $json_friends = json_encode(
-      array_values($this->getFbFriends())
     );
 
     $this->set(
@@ -151,8 +148,7 @@ class UsersController extends AppController {
     $this->set(compact(
       'year',
       'month',
-      'json_shoes',
-      'json_friends'
+      'json_shoes'
     ));
 	}
 
@@ -420,62 +416,6 @@ class UsersController extends AppController {
   }
 
   /**
-   * Shows a list of all the logged in user's friends, with running data
-   * about them (num of runs/miles together)
-   */
-  public function ajax_friends() {
-    $this->layout = 'ajax';
-    $user = $this->requireLoggedInUser();
-
-    // Retrieve all the user's friends
-    $fbFriends = $this->getFbFriends();
-    $friends = array();
-
-    // Only display friends that are in the system
-    foreach ($fbFriends as $friend) {
-      $f = $this->User->find('first', array(
-        'conditions' => array('User.id' => $friend['id'])
-      ));
-
-      if ($f) {
-        $friends[] = $f['User'];
-      }
-    }
-
-    // TODO: Get a common workout count for each friend and
-    // display only the top 5
-    $this->set('friends', $friends);
-  }
-
-  /**
-   * Ajax endpoint controller for friend tokenizer.
-   * Takes a search query and retrieves matching friends
-   *
-   * @param  str  $q    The search query
-   */
-  public function ajax_friends_list() {
-    $user = $this->requireLoggedInUser();
-    $this->setIsAjax();
-
-    // Retrieve all the user's friends
-    $friends = $this->getFbFriends();
-
-    // Get the query param from the url
-    $q = idx($this->params['url'], 'q');
-
-    $query = '/'.$q.'/i'; // case-insensitive
-    $results = array();
-    foreach ($friends as $friend) {
-      // Only return the set of friends that matches the query string
-      if (preg_match($query, $friend['name'])) {
-        $results[] = $friend;
-      }
-    }
-
-    $this->set('friends', $results);
-  }
-
-  /**
    * Overview of all a user's shoes, including mileage for each.
    * Not public.
    *
@@ -505,25 +445,6 @@ class UsersController extends AppController {
 
     $stats = $this->User->Workout->getWorkoutStats($workouts);
     $this->set('stats', $stats);
-  }
-
-  /**
-   * Takes an array of fbids and checks to see if they are already Onolog users.
-   * If not, they are added.
-   *
-   * @param   arr   $friends
-   * @returns
-   */
-  public function checkAndAddFriends($friends) {
-    // Try and see if the users are already in the system
-    $users = $this->User->find('all', array(
-      'conditions' => array('User.fbid' => $friends),
-    ));
-
-    // If not all the users are in the system, we need to add the ones who aren't
-    if (count($users) != count($friends)) {
-      
-    }
   }
 
   /**
