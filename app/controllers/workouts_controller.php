@@ -225,11 +225,6 @@ class WorkoutsController extends AppController {
       }
 		}
 
-    // Format friend data associated with the workout
-    $this->data['Workout']['friends'] = $this->getWorkoutFriends(
-      $this->data['Workout']['friends']
-    );
-
     $json_shoes = $this->getShoesForWorkoutJSON();
 
 		$this->set(compact('json_shoes'));
@@ -266,13 +261,10 @@ class WorkoutsController extends AppController {
       $this->formatWorkoutDataForWrite();
 
 			if ($this->Workout->save($this->data)) {
-				$workout = $this->data['Workout'];
-				$workout['friends'] = $this->getWorkoutFriends($workout['friends']);
-
         $response
           ->setSuccess(true)
 				  ->setMessage('Your workout was successfully updated.')
-				  ->setPayload($workout);
+				  ->setPayload($this->data['Workout']);
 
 			} else {
         $response->setMessage(
@@ -363,11 +355,6 @@ class WorkoutsController extends AppController {
   }
 
   protected function populateWorkoutForView($workout) {
-    // Friend info
-    $workout['Workout']['friends'] = $this->getWorkoutFriends(
-      $workout['Workout']['friends']
-    );
-
     // Shoe info
     $shoes = $this->Workout->Shoe->read(
       null,
@@ -379,20 +366,6 @@ class WorkoutsController extends AppController {
     );
 
     return $workout;
-  }
-
-  /**
-   * Get info about friends associated with a particular workout
-   *
-   * @param   str  Comma delimited string of fbids: "11,4280"
-   * @returns arr
-   */
-  public function getWorkoutFriends(/*string*/ $friends) {
-    if (!isset($friends) || !$friends) {
-      return array();
-    }
-    $friends = explode(',', $friends);
-    return array_values($this->getPublicFbUserData($friends));
   }
 
   /**

@@ -9,3 +9,7 @@
 .FacepileLink + .FacepileLink {
   margin-left: 1px;
 }
+
+.FacepileLoader.loader {
+  min-height: 50px;
+}

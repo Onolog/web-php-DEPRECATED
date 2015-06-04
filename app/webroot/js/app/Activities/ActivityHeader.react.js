@@ -7,8 +7,8 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!app/Activities/ActivitySection.react',
+  'lib/react/jsx!components/Facebook/FBImage.react',
   'lib/react/jsx!components/Facebook/FBLikeButton.react',
-  'lib/react/jsx!components/Image/FBImage.react',
   'lib/react/jsx!components/ImageBlock/ImageBlock.react',
   'lib/react/jsx!components/LeftRight/LeftRight.react',
   'lib/react/jsx!components/Link/Link.react',
@@ -19,8 +19,8 @@ define([
 
   React,
   ActivitySection,
-  FBLikeButton,
   FBImage,
+  FBLikeButton,
   ImageBlock,
   LeftRight,
   Link,

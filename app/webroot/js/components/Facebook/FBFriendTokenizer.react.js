@@ -13,7 +13,7 @@ define([
 ], function(React, Tokenizer) {
 
   return React.createClass({
-    displayName: 'FriendTokenizer',
+    displayName: 'FBFriendTokenizer',
 
     getInitialState: function() {
       return {

@@ -16,7 +16,10 @@ define([
     displayName: 'FBImage',
 
     propTypes: {
-      fbid: React.PropTypes.number.isRequired,
+      fbid: React.PropTypes.oneOfType([
+        React.PropTypes.number,
+        React.PropTypes.string
+      ]).isRequired,
       height: React.PropTypes.number,
       width: React.PropTypes.number
     },
@@ -32,7 +35,7 @@ define([
       var src =
         'https://graph.facebook.com/' + this.props.fbid + '/picture?' +
           // Double the height and width for retina displays
-          jQuery.param({
+          $.param({
             height: this.props.height * 2,
             width: this.props.width * 2
           });

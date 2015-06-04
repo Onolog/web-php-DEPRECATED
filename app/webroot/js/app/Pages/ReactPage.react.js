@@ -18,7 +18,7 @@ define([
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Calendar/Calendar.react',
   'lib/react/jsx!components/Datepicker/Datepicker.react',
-  'lib/react/jsx!components/Tokenizer/FriendTokenizer.react',
+  'lib/react/jsx!components/Facebook/FBFriendTokenizer.react',
   'lib/react/jsx!components/Glyph/Glyph.react',
   'lib/react/jsx!components/Graph/BarGraph/BarGraph.react',
   'lib/react/jsx!components/LeftRight/LeftRight.react',
@@ -49,7 +49,7 @@ define([
   ButtonGroup,
   Calendar,
   Datepicker,
-  FriendTokenizer,
+  FBFriendTokenizer,
   Glyph,
   Graph,
   LeftRight,
@@ -280,9 +280,9 @@ define([
           </Panel>
           <Panel title="Friend Typeahead">
             <h4 style={{margin: '0 0 5px'}}>Initially Empty</h4>
-            <FriendTokenizer />
+            <FBFriendTokenizer />
             <h4 style={{margin: '15px 0 5px'}}>Pre-Populated</h4>
-            <FriendTokenizer
+            <FBFriendTokenizer
               prePopulate={DATA.FRIENDS}
             />
           </Panel>

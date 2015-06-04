@@ -14,7 +14,7 @@ define([
   'lib/react/jsx!components/Forms/TextInput.react',
   'lib/react/jsx!components/Forms/TimeInput.react',
   'lib/react/jsx!components/Select/Select.react',
-  'lib/react/jsx!components/Tokenizer/FriendTokenizer.react',
+  'lib/react/jsx!components/Facebook/FBFriendTokenizer.react',
 
   'actions/WorkoutActions',
   'constants/ActionTypes',
@@ -34,7 +34,7 @@ define([
   TextInput,
   TimeInput,
   Select,
-  FriendTokenizer,
+  FBFriendTokenizer,
   WorkoutActions,
   ActionTypes,
   WorkoutConstants,
@@ -165,7 +165,7 @@ define([
           </FormGroup>
 
           <FormGroup label="Friends">
-            <FriendTokenizer
+            <FBFriendTokenizer
               prePopulate={workout && workout.friends}
               name={cakePHP.encodeFormFieldName('friends', FORM_NAME)}
               onChange={this._onUpdate}

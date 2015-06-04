@@ -14,9 +14,7 @@ define([
   'lib/react/jsx!app/Activities/ActivitySection.react',
   'lib/react/jsx!app/Activities/ActivitySplitsTable.react',
   'lib/react/jsx!app/Activities/ActivityStats.react',
-  'lib/react/jsx!app/Shoes/ShoeViewLink.react',
-  'lib/react/jsx!components/Facepile/Facepile.react',
-  'lib/react/jsx!components/Image/FBImage.react',
+  'lib/react/jsx!components/Facebook/FBFacepile.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Navigation/TabbedSection.react',
   'lib/Autolinker.min',
@@ -32,9 +30,7 @@ define([
   ActivitySection,
   ActivitySplitsTable,
   ActivityStats,
-  ShoeViewLink,
-  Facepile,
-  FBImage,
+  FBFacepile,
   Link,
   TabbedSection,
   Autolinker,
@@ -120,7 +116,7 @@ define([
       }
     },
 
-    _renderActivityShoes: function(shoes) {
+    _renderActivityShoes: function(/*object*/ shoes) {
       if (shoes.name) {
         return (
           <ActivitySection title="Shoes" border={true}>
@@ -130,17 +126,17 @@ define([
       }
     },
 
-    _renderActivityFriends: function(friends) {
-      if (friends && friends.length) {
+    _renderActivityFriends: function(/*string*/ friends) {
+      if (friends) {
         return (
           <ActivitySection border={true} title="Friends">
-            <Facepile friends={friends} />
+            <FBFacepile friends={friends} />
           </ActivitySection>
         );
       }
     },
 
-    _renderDeviceInfo: function(device) {
+    _renderDeviceInfo: function(/*object*/ device) {
       if (device && Object.keys(device).length) {
         return (
           <ActivitySection border={true} title="Device">
@@ -153,7 +149,7 @@ define([
       }
     },
 
-    _renderSplitsPane: function(laps) {
+    _renderSplitsPane: function(/*array*/ laps) {
       if (laps && laps.length) {
         return (
           <div className="activityNavPane" label="Splits">

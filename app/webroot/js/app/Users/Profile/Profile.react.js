@@ -14,7 +14,7 @@ define([
   'lib/react/jsx!components/Chart/Chart.react',
   'lib/react/jsx!components/Data/LabeledStat.react',
   'lib/react/jsx!components/Data/Topline.react',
-  'lib/react/jsx!components/Image/FBImage.react',
+  'lib/react/jsx!components/Facebook/FBImage.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Panel/Panel.react',
 

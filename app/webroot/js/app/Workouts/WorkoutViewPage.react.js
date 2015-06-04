@@ -9,7 +9,6 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!app/Activities/Activity.react',
-  'lib/react/jsx!app/Workouts/WorkoutView.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Panel/Panel.react',
@@ -19,7 +18,6 @@ define([
 
   React,
   Activity,
-  WorkoutView,
   Button,
   ButtonGroup,
   Panel,
