@@ -166,7 +166,7 @@ define([
 
           <FormGroup label="Friends">
             <FBFriendTokenizer
-              prePopulate={workout && workout.friends}
+              friends={workout && workout.friends}
               name={cakePHP.encodeFormFieldName('friends', FORM_NAME)}
               onChange={this._onUpdate}
             />

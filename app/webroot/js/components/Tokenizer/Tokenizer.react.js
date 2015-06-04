@@ -26,16 +26,20 @@ define([
       return source1 !== source2;
     }
 
+    return friendListsAreDifferent(source1, source2);
+  }
+
+  function friendListsAreDifferent(list1, list2) {
     // Compare arrays
-    var length = source1.length;
-    if (source2.length !== length) {
+    var length = list1.length;
+    if (list2.length !== length) {
       return true;
     }
 
     // Again, the data source structure should be predictable here (an array of
     // shallow objects), so we can skip some comparison steps.
     for (var ii=0; ii < length; ii++) {
-      return JSON.stringify(source1[ii]) !== JSON.stringify(source2[ii]);
+      return JSON.stringify(list1[ii]) !== JSON.stringify(list2[ii]);
     }
   }
 
@@ -58,7 +62,7 @@ define([
       /**
        * Items to display in the tokenizer
        */
-      items: React.PropTypes.array,
+      prePopulate: React.PropTypes.array,
       preventDuplicates: React.PropTypes.bool
     },
 
@@ -81,7 +85,7 @@ define([
         searchingText: this.props.searchingText,
         preventDuplicates: this.props.preventDuplicates,
         animateDropdown: this.props.animateDropdown,
-        prePopulate: this.props.items,
+        prePopulate: this.props.prePopulate,
         onAdd: this._onAdd,
         onDelete: this._onDelete
       });
@@ -93,6 +97,16 @@ define([
         $(this.refs.input.getDOMNode()).tokenInput(
           'updateLocalData',
           this.props.dataSource
+        );
+      }
+
+      if (friendListsAreDifferent(
+        prevProps.prePopulate,
+        this.props.prePopulate
+      )) {
+        $(this.refs.input.getDOMNode()).tokenInput(
+          'updatePrePopulate',
+          this.props.prePopulate
         );
       }
     },
@@ -111,14 +125,18 @@ define([
     },
 
     _onAdd: function(/*object*/ item) {
-      var items = this.props.items || [];
-      // tokenInput handles de-duping, so no need to do it here...
-      items.push(item);
+      var items = this.props.prePopulate || [];
+
+      // Don't add items that have already been added.
+      if (items.indexOf(item) === -1) {
+        items.push(item);
+      }
+
       this._onChange(items);
     },
 
     _onDelete: function(/*object*/ item) {
-      var items = this.props.items.filter(function(existingItem) {
+      var items = this.props.prePopulate.filter(function(existingItem) {
         return item.id !== existingItem.id;
       });
       this._onChange(items);

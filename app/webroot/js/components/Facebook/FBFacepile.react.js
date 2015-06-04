@@ -28,9 +28,13 @@ define([
 
     propTypes: {
       /**
-       * A comma-delimited string of FBIDs.
+       * A comma-delimited string of FBIDs. Can also be a single fbid as a
+       * number or string.
        */
-      friends: React.PropTypes.string.isRequired
+      friends: React.PropTypes.oneOfType([
+        React.PropTypes.number,
+        React.PropTypes.string
+      ]).isRequired
     },
 
     getInitialState: function() {
@@ -40,7 +44,12 @@ define([
     },
 
     componentWillMount: function() {
-      var fbids = this.props.friends.split(',');
+      var friends = this.props.friends;
+      if (!friends) {
+        return;
+      }
+
+      var fbids = friends.split(',');
       var batch = [];
 
       // Construct the batch query

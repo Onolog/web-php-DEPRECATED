@@ -114,7 +114,21 @@ define([
       },
 
       updateLocalData: function(/*array*/ data) {
-        return _settings.local_data = data;
+        _settings.local_data = data;
+        return this;
+      },
+
+      updatePrePopulate: function(/*array*/ prePopulate) {
+        this.data('tokenInputObject').clear();
+        prePopulate.forEach(function(item) {
+          this.data('tokenInputObject').add(item);
+        }.bind(this));
+        return this;
+      },
+
+      updateOptions: function(/*object*/ options) {
+        _settings = $.extend({}, _settings, options);
+        return this;
       }
     }
 
