@@ -46,6 +46,8 @@ define([
   var GRAPH_HEIGHT = 200;
 
   return React.createClass({
+    displayName: 'Profile',
+
     propTypes: {
       /**
        * Total number of shoes used

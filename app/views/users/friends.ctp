@@ -1,16 +1,25 @@
 <?php
+/**
+ * Displays a list of all the user's shoes
+ */
+$this->Include->css(array(
+  //'app/Friends'
+));
+$this->set('page_classes', array(
+  'narrow-page'
+));
 
-$page_header =
-  '<h2>' . __('Friends', 1) . '</h2>';
+echo $this->element('loader', array(
+  'id' => 'reactRoot'
+));
 
-$r =
-  '<div class="card">' .
-    $this->element('friend_list', array(
-      'friends' => $friends,
-    )) .
-  '</div>';
-
-echo $r;
-
-$this->set('page_header', $page_header);
-$this->set('sidebar', '');
+$this->Html->scriptStart(array('inline' => false));
+echo "
+  require([
+    'utils/reactRender',
+    'lib/react/jsx!app/Users/Friends/Friends.react'
+  ], function(reactRender, Friends) {
+    reactRender(Friends, {}, 'reactRoot');
+  });
+";
+$this->Html->scriptEnd();
