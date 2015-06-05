@@ -7,9 +7,9 @@ $this->set(
   '<h2>' . __('Daniels VDOT Resources', 1) . '</h2>'
 );
 
-$r = '<div id="reactRoot"></div>';
-
-echo $r;
+echo $this->element('loader', array(
+  'id' => 'reactRoot'
+));
 
 $this->Html->scriptStart(array('inline' => false));
 echo "

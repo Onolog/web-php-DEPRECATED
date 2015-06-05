@@ -17,7 +17,7 @@ $this->set('page_classes', array(
 
 $page_url = 'http://www.onolog.com/workouts/view/'.$workout['Workout']['id'];
 $date = date('F jS, Y', $workout['Workout']['date']);
-$time = format_time(sec_to_time($workout['Workout']['time']));
+$time = format_time($workout['Workout']['time']);
 $distance = number_format($workout['Workout']['distance'], 2);
 
 // Set OG meta tags
