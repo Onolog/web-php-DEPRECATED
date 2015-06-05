@@ -5,8 +5,8 @@ $this->Include->css(array(
   'components/Calendar',
   'components/Datepicker',
   'components/Facepile',
+  'components/FBFriendTokenizer',
   'components/Topline',
-  'token-input-facebook',
 ));
 
 echo $this->element('loader', array(

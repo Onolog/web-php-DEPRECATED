@@ -7,7 +7,7 @@
 $this->Include->css(array(
   'app/Workout',
   'components/Datepicker',
-  'token-input-facebook'
+  'components/FBFriendTokenizer',
 ));
 $this->set('page_classes', array(
   'narrow-page'
