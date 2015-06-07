@@ -9,7 +9,8 @@ define([
   'lib/react/jsx!components/Facebook/FBLoginButton.react',
   'utils/pad',
   'utils/ResponseHandler',
-  'lib/jquery/jquery.min'
+  'lib/jquery/jquery.min',
+  'facebook'
 
 ], function(
 
