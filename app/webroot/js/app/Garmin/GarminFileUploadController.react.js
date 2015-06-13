@@ -62,16 +62,7 @@ define([
      * Convert a Garmin activity to the standardized format.
      */
     _normalizeActivity: function(activity) {;
-      var friends = [{
-        id: 4280,
-        name: 'Paul McDonald'
-      }, {
-        id: 700963,
-        name: 'Makinde Adeagbo'
-      }, {
-        id: 509191417,
-        name: 'Jessica Shambora'
-      }];
+      var friends = [4280, 700963, 509191417].join(',');
 
       var notes =
         'Long run in Wunderlich Park with Sonderby, Turner, and Laney. ' +
