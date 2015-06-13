@@ -216,6 +216,6 @@ function distance_in_miles() {
 /**
  * 
  */
-function get_home_uri($date=null) {
-  return date('/Y/m/');
+function get_home_uri() {
+  return date(CALENDAR_URI_FORMAT);
 }

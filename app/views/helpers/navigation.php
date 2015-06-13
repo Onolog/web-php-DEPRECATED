@@ -53,7 +53,7 @@ class NavigationHelper extends AppHelper {
             // Logo
             $this->Html->link(
               __('Onolog', 1),
-              date('/Y/m/'),
+              date(CALENDAR_URI_FORMAT),
               array('class' => 'logo')
             ) .
           '</div>' .
