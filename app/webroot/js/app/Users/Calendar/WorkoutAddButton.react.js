@@ -101,7 +101,7 @@ define([
 
     _workoutChanged: function() {
       var workout = WorkoutStore.getWorkout();
-      if (workout.id === NEW_ID) {
+      if (workout && workout.id === NEW_ID) {
         this.setState({
           workoutData: workout
         });
@@ -185,6 +185,8 @@ define([
 
     _getNewWorkout: function() {
       return {
+        // TODO: Make sure this doesn't conflict with datepicker in
+        // workout fields.
         date: this.props.dateObject.getTime() / 1000,
         id: NEW_ID
       };

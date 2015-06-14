@@ -26,8 +26,8 @@ define([
   var _initialWorkout;
 
   function _resetData() {
-    _workout = {};
-    _initialWorkout = {};
+    _workout = null;
+    _initialWorkout = null;
   }
 
   function _copy(obj) {

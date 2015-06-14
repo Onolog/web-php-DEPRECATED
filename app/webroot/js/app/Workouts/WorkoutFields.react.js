@@ -86,8 +86,12 @@ define([
     },
 
     componentWillMount: function() {
-      // Keep a copy of the workout in the store for modification.
-      WorkoutActions.initWorkout(this.props.workout);
+      // Initialize the workout data in the store
+      var workout = this.props.workout;
+      if (!workout.date && this.props.date) {
+        workout.date = this.props.date;
+      }
+      WorkoutActions.initWorkout(workout);
 
       this.setState({
         pace: this._getPace()

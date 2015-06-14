@@ -13,7 +13,9 @@ define([
   'stores/AlertStore',
   'stores/WorkoutsStore',
 
-  'utils/calendarGrid'
+  'utils/calendarGrid',
+  'utils/isSameDay',
+  'utils/unixTimeToDate'
 
 ], function(
 
@@ -26,7 +28,9 @@ define([
   AlertStore,
   WorkoutsStore,
 
-  calendarGrid
+  calendarGrid,
+  isSameDay,
+  unixTimeToDate
 
 ) {
 
@@ -73,7 +77,10 @@ define([
       var workouts = this.props.workouts || [];
 
       workouts = workouts.filter(function(workout) {
-        return workout.date === (dateObject.getTime() / 1000);
+        return isSameDay(
+          dateObject,
+          unixTimeToDate(workout.date)
+        );
       });
 
       if (workouts.length) {

@@ -7,9 +7,10 @@
 define([
 
   'lib/react/react',
-  'utils/cx'
+  'utils/cx',
+  'utils/isSameDay'
 
-], function(React, cx) {
+], function(React, cx, isSameDay) {
 
   return React.createClass({
     displayName: 'BaseCalendarDay',
@@ -37,24 +38,10 @@ define([
           className={cx({
             'lastMonth': month === lastMonth,
             'nextMonth': month === nextMonth,
-            'today': this._isToday(dateObj)
+            'today': isSameDay(dateObj, new Date())
           })}>
           {this.props.children}
         </td>
-      );
-    },
-
-    /**
-     * Determines if the date object in question corresponds to today's date
-     *
-     * TODO: Should I be using UTC and offsets?
-     */
-    _isToday: function(/*Date*/ dateObj) /*boolean*/ {
-      var today = new Date();
-      return (
-        today.getFullYear() === dateObj.getFullYear() &&
-        today.getMonth() === dateObj.getMonth() &&
-        today.getDate() === dateObj.getDate()
       );
     }
   });

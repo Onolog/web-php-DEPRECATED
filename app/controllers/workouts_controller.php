@@ -125,10 +125,16 @@ class WorkoutsController extends AppController {
 			if ($this->Workout->save($this->data)) {
 				$this->Session->setFlash(__('Your workout was added', 1));
 
-        // Redirect to the calendar page
-				$this->redirect(date(CALENDAR_URI_FORMAT, $date));
+        // Display the newly-added workout
+				$this->redirect(array(
+          'controller' => 'workouts',
+          'action' => 'view',
+          $this->Workout->id
+        ));
 			} else {
-				$this->Session->setFlash(__('Your workout could not be added. Please try again.', 1));
+				$this->Session->setFlash(
+          __('Your workout could not be added. Please try again.', 1)
+        );
 			}
 		}
 
@@ -170,7 +176,7 @@ class WorkoutsController extends AppController {
 			$this->Workout->create();
       if ($this->Workout->save($this->data)) {
 			  // Return the newly added workout in the response.
-			  $workout = $this->Workout->read(null,$this->Workout->id);
+			  $workout = $this->Workout->read(null, $this->Workout->id);
 			  $response
 				  ->setSuccess(true)
 			    ->setPayload($workout['Workout'])
@@ -372,20 +378,6 @@ class WorkoutsController extends AppController {
    * Formats workout data when adding or editing to properly write to the DB.
    */
   private function formatWorkoutDataForWrite() {
-    if ($this->layout !== 'ajax') {
-      // Take hh:mm:ss and convert to seconds
-      $this->data['Workout']['time'] = time_to_sec(array(
-        $this->data['Workout']['hh'],
-        $this->data['Workout']['mm'],
-        $this->data['Workout']['ss']
-      ));
-  
-      // Unset the hh:mm:ss data
-      unset($this->data['Workout']['hh']);
-      unset($this->data['Workout']['mm']);
-      unset($this->data['Workout']['ss']);
-    }
-
     // Convert friends to a string if they're in array form
     $friends = idx($this->data['Workout'], 'friends', array());
     if (is_array($friends) && !empty($friends)) {

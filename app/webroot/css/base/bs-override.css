@@ -136,6 +136,10 @@ a.btn-default {
   border-color: #e7e7e7;
 }
 
+.panel-body {
+  position: relative;
+}
+
 section + section,
 .panel + .panel {
   margin-top: 15px;
