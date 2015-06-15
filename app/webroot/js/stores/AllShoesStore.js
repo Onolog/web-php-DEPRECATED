@@ -20,12 +20,16 @@ define([
 
 ) {
 
-  var _collection = [];
+  var _collection;
   var _cache = [];
 
   var AllShoesStore = {
 
     getCollection: function() {
+      if (!_collection) {
+        ShoeActions.fetch();
+        return [];
+      }
       return _collection;
     },
 

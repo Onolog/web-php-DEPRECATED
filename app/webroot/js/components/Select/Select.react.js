@@ -33,7 +33,6 @@ define([
 
     getDefaultProps: function() {
       return {
-        defaultValue: 0,
         defaultLabel: ''
       };
     },
@@ -45,19 +44,7 @@ define([
     },
 
     render: function() {
-      var options = this.props.options.map(function(option, idx) {
-        // If we have a standard set of options, render a flat list
-        if (!option.options || !Array.isArray(option.options)) {
-          return this._renderOption(option, idx);
-        }
-
-        // Otherwise render <optgroup> with suboptions
-        return (
-          <optgroup key={'optgroup' + idx} label={option.label}>
-            {option.options.map(this._renderOption)}
-          </optgroup>
-        );
-      }.bind(this));
+      var options = this.props.options.map(this._renderOptions);
 
       // Add a default option if there's no pre-selected option. Note that
       // we're explicitly doing a null-check here, since `0` could be a valid
@@ -80,10 +67,21 @@ define([
       );
     },
 
-    _renderOption: function(
-      /*object*/ option,
-      /*number*/ idx
-    ) /*object*/ {
+    _renderOptions: function(/*object*/ option, /*number*/ idx) /*object*/ {
+      // If the option contains sub-options, render an <optgroup>
+      if (option.options && Array.isArray(option.options)) {
+        return (
+          <optgroup key={'optgroup' + idx} label={option.label}>
+            {option.options.map(this._renderOption)}
+          </optgroup>
+        );
+      }
+
+      // Otherwise, just render normal options
+      return this._renderOption(option, idx);
+    },
+
+    _renderOption: function(/*object*/ option, /*number*/ idx) /*object*/ {
       return (
         <option key={idx} value={option.value}>
           {option.label}

@@ -7,13 +7,13 @@
 define([
 
   'lib/react/react',
+  'lib/react/jsx!app/Workouts/ShoeSelector.react',
   'lib/react/jsx!components/Datepicker/Datepicker.react',
   'lib/react/jsx!components/Forms/FormGroup.react',
   'lib/react/jsx!components/Forms/HiddenInput.react',
   'lib/react/jsx!components/Forms/Textarea.react',
   'lib/react/jsx!components/Forms/TextInput.react',
   'lib/react/jsx!components/Forms/TimeInput.react',
-  'lib/react/jsx!components/Select/Select.react',
   'lib/react/jsx!components/Facebook/FBFriendTokenizer.react',
 
   'actions/WorkoutActions',
@@ -27,13 +27,13 @@ define([
 ], function(
 
   React,
+  ShoeSelector,
   Datepicker,
   FormGroup,
   HiddenInput,
   Textarea,
   TextInput,
   TimeInput,
-  Select,
   FBFriendTokenizer,
   WorkoutActions,
   ActionTypes,
@@ -151,13 +151,10 @@ define([
           </FormGroup>
 
           <FormGroup label="Shoes">
-            <Select
+            <ShoeSelector
+              defaultValue={workout.shoe_id}
               name={cakePHP.encodeFormFieldName('shoe_id', FORM_NAME)}
-              className="form-control"
               onChange={this._onUpdate}
-              defaultLabel="Select a shoe:"
-              defaultValue={this._getSelectedShoe()}
-              options={this.props.shoes}
             />
           </FormGroup>
 
@@ -199,23 +196,6 @@ define([
         (workout && workout.distance) || 0,
         (workout && workout.time) || 0
       );
-    },
-
-    /**
-     * TODO: Move this into Shoe selector.
-     */
-    _getSelectedShoe: function() {
-      var workout = WorkoutStore.getWorkout();
-      var shoes = this.props.shoes;
-      var activeShoe = (
-        shoes &&
-        shoes.length &&
-        shoes[0].options &&
-        shoes[0].options.length &&
-        shoes[0].options[0]
-      );
-
-      return workout.shoe_id || activeShoe || 0;
     },
 
     // TODO: Finish this. Should each individual form field have its own validation?

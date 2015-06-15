@@ -18,7 +18,8 @@ define([
   'lib/react/jsx!components/Table/Table.react',
 
   'actions/ShoeActions',
-  'utils/cx'
+  'utils/cx',
+  'utils/ShoeUtils'
 
 ], function(
 
@@ -34,7 +35,8 @@ define([
   Table,
 
   ShoeActions,
-  cx
+  cx,
+  ShoeUtils
 
 ) {
 
@@ -46,30 +48,19 @@ define([
     },
 
     render: function() {
-      var shoes = this.props.shoes;
-      var activeShoes = [];
-      var inactiveShoes = [];
-
-      // Split the shoes into groups by inactive state
-      shoes.forEach(function(shoe) {
-        if (shoe.inactive) {
-          inactiveShoes.push(shoe);
-        } else {
-          activeShoes.push(shoe);
-        }
-      });
+      var shoes = ShoeUtils.groupByActivity(this.props.shoes);
 
       return (
         <div>
-          {this._renderActiveShoes(activeShoes)}
-          {this._renderInactiveShoes(inactiveShoes)}
+          {this._renderActiveShoes(shoes.active)}
+          {this._renderInactiveShoes(shoes.inactive)}
         </div>
       );
     },
 
     _renderActiveShoes: function(/*array*/ activeShoes) {
       var contents;
-      if (activeShoes && activeShoes.length) {
+      if (activeShoes.length) {
         contents = this._renderShoeTable(activeShoes);
       } else {
         contents =
@@ -86,7 +77,7 @@ define([
     },
 
     _renderInactiveShoes: function(/*array*/ inactiveShoes) {
-      if (inactiveShoes && inactiveShoes.length) {
+      if (inactiveShoes.length) {
         return (
           <Panel title="Inactive">
             {this._renderShoeTable(inactiveShoes)}
