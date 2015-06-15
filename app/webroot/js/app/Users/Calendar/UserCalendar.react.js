@@ -39,14 +39,6 @@ define([
 
     propTypes: {
       date: React.PropTypes.instanceOf(Date).isRequired,
-      /**
-       * Array of the user's friends for display in the workout fields view
-       */
-      friends: React.PropTypes.array,
-      /**
-       * Array of the user's shoes for display in the workout fields view
-       */
-      shoes: React.PropTypes.array,
       workouts: React.PropTypes.array,
     },
 
@@ -94,7 +86,6 @@ define([
           date={dateObject}
           key={idx}
           month={this.props.date.getMonth()}
-          shoes={this.props.shoes}
           weeklyMileage={this._weeklyMileage}
           workouts={workouts}
         />

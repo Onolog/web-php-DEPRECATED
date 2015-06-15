@@ -128,8 +128,6 @@ class WorkoutsController extends AppController {
         );
 			}
 		}
-
-		$this->set('json_shoes', $this->getShoesForWorkoutJSON());
 	}
 
   /**
@@ -223,10 +221,6 @@ class WorkoutsController extends AppController {
         $this->goHome(__('You are not allowed to edit this workout', 1));
       }
 		}
-
-    $json_shoes = $this->getShoesForWorkoutJSON();
-
-		$this->set(compact('json_shoes'));
 	}
 
   /**
@@ -340,18 +334,6 @@ class WorkoutsController extends AppController {
 
     return $response->send();
 	}
-
-  /**
-   * Same as getShoesForWorkout, but formatted for JSON
-   */
-  protected function getShoesForWorkoutJSON() {
-    $shoes = $this->Workout->Shoe->find('all', array(
-		  'conditions' => array(
-        'Shoe.user_id' => $this->Auth->User('id'),
-      ),
-    ));
-    return json_encode($this->Workout->Shoe->sortShoesForJSON($shoes));
-  }
 
   protected function populateWorkoutForView($workout) {
     // Shoe info

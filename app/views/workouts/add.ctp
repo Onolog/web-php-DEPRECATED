@@ -25,9 +25,7 @@ echo "
     'utils/reactRender',
     'lib/react/jsx!app/Workouts/WorkoutAddEditPage.react'
   ], function(reactRender, WorkoutAddEditPage) {
-    reactRender(WorkoutAddEditPage, {
-      shoes: $json_shoes
-    }, 'reactRoot');
+    reactRender(WorkoutAddEditPage, {}, 'reactRoot');
   });
 ";
 $this->Html->scriptEnd();

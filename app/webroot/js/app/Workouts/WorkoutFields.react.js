@@ -56,10 +56,6 @@ define([
        */
       date: React.PropTypes.number,
       /**
-       * An array of all the user's shoes
-       */
-      shoes: React.PropTypes.array,
-      /**
        * Whether or not to validate the data
        */
       validate: React.PropTypes.bool,
@@ -74,7 +70,6 @@ define([
 
     getDefaultProps: function() {
       return {
-        shoes: [],
         workout: {}
       };
     },

@@ -49,10 +49,6 @@ define([
        */
       month: React.PropTypes.number,
       /**
-       * Array of the user's shoes for display in the workout fields view
-       */
-      shoes: React.PropTypes.array,
-      /**
        * UTC Full Year, ie: 2014
        */
       year: React.PropTypes.number
@@ -106,7 +102,6 @@ define([
             />
             <UserCalendar
               date={date}
-              shoes={this.props.shoes}
               workouts={this.state.workouts}
             />
           </Panel>

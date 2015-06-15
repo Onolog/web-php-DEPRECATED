@@ -72,7 +72,6 @@ define([
     mixins: [LayerMixin, StoreMixin],
 
     propTypes: {
-      shoes: React.PropTypes.array,
       workout: React.PropTypes.object.isRequired
     },
 
@@ -188,11 +187,7 @@ define([
                 </div>
               </LeftRight>
             }>
-            <WorkoutFields
-              action="edit"
-              shoes={this.props.shoes}
-              workout={this.state.workout}
-            />
+            <WorkoutFields workout={this.state.workout} />
           </Modal>
         );
       }

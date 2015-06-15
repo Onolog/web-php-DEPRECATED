@@ -43,10 +43,6 @@ define([
     propTypes: {
       isEditing: React.PropTypes.bool,
       /**
-       * An array of all the user's shoes
-       */
-      shoes: React.PropTypes.array,
-      /**
        * If editing, the existing workout object
        */
       workout: React.PropTypes.object
@@ -92,8 +88,8 @@ define([
           <Panel footer={this._renderFooter()}>
             <form action={this._getFormAction()} method="POST" ref="form">
               <WorkoutFields
-                {...this.props}
                 date={date}
+                workout={this.state.workout}
               />
             </form>
             <Loader

@@ -27,7 +27,6 @@ echo "
   ], function(reactRender, WorkoutAddEditPage) {
     reactRender(WorkoutAddEditPage, {
       isEditing: true,
-      shoes: $json_shoes,
       workout: $workout
     }, 'reactRoot');
   });

@@ -58,10 +58,6 @@ define([
        * Date object for the given day
        */
       dateObject: React.PropTypes.instanceOf(Date).isRequired,
-      /**
-       * Array of the user's shoes for display in the workout fields view
-       */
-      shoes: React.PropTypes.array,
     },
 
     getInitialState: function() {
@@ -147,10 +143,7 @@ define([
               />
             </div>
           }>
-          <WorkoutFields
-            shoes={this.props.shoes}
-            workout={this.state.workoutData}
-          />
+          <WorkoutFields workout={this.state.workoutData} />
         </Modal>
       );
     },

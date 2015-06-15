@@ -136,10 +136,6 @@ class UsersController extends AppController {
       ),
     ));
 
-    $json_shoes = json_encode(
-      $this->User->Shoe->sortShoesForJSON($shoes)
-    );
-
     $this->set(
       'title_for_layout',
       $this->Auth->User('name')
@@ -147,8 +143,7 @@ class UsersController extends AppController {
 
     $this->set(compact(
       'year',
-      'month',
-      'json_shoes'
+      'month'
     ));
 	}
 

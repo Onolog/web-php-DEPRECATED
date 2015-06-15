@@ -36,10 +36,6 @@ define([
        * UTC month, ie: August === 7
        */
       month: React.PropTypes.number,
-      /**
-       * Array of the user's shoes for display in the workout fields view
-       */
-      shoes: React.PropTypes.array,
       weeklyMileage: React.PropTypes.number,
       /**
        * Workouts for the given day
@@ -56,10 +52,7 @@ define([
           <div className="wrapper">
             <CalendarDate date={dateObject} />
             {this._renderWorkouts()}
-            <WorkoutAddButton
-              dateObject={dateObject}
-              shoes={this.props.shoes}
-            />
+            <WorkoutAddButton dateObject={dateObject} />
             {this._renderWeeklyTotal(dateObject)}
           </div>
         </BaseCalendarDay>
@@ -72,16 +65,14 @@ define([
         return;
       }
 
-      var dateObj = this.props.date;
       return workouts.map(function(/*object*/ workout) {
         return (
           <WorkoutLink
             key={workout.id}
-            shoes={this.props.shoes}
             workout={workout}
           />
         );
-      }.bind(this));
+      });
     },
 
     _renderWeeklyTotal: function(dateObject) {

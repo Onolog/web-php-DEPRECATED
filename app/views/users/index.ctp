@@ -27,7 +27,6 @@ echo "
     reactRender(
       UserCalendarPage, {
         month: $month-1,
-        shoes: $json_shoes,
         year: $year
       }, 'reactRoot'
     );
