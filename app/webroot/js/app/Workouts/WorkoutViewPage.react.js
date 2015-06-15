@@ -71,17 +71,18 @@ define([
         return (
           <ButtonGroup>
             <Button
+              glyph="pencil"
+              href={'/workouts/edit/' + this.props.workout.id}
+              onClick={this._onWorkoutEdit}
+              tooltip={{
+                title: 'Edit Workout'
+              }}
+            />
+            <Button
               glyph="trash"
               onClick={this._onWorkoutDelete}
               tooltip={{
                 title: 'Delete Workout'
-              }}
-            />
-            <Button
-              glyph="th"
-              href="/"
-              tooltip={{
-                title: 'All Workouts'
               }}
             />
           </ButtonGroup>

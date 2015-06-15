@@ -1,8 +1,8 @@
 /**
- * WorkoutAddPermalink.react
+ * WorkoutAddEditPage.react
  * @jsx React.DOM
  *
- * Permalink for adding new workouts
+ * Permalink page for adding new workouts or editing existing ones.
  */
 
 define([
@@ -38,33 +38,33 @@ define([
 ) {
 
   return React.createClass({
-    displayName: 'WorkoutPermalink',
+    displayName: 'WorkoutAddEditPage',
 
     propTypes: {
-      /**
-       * Unix timestamp.
-       *
-       * Note: A date is required for the "add" action.
-       */
-      date: React.PropTypes.number,
-      /**
-       * The selected shoe in an existing workout, if one has been selected.
-       */
-      selectedShoe: React.PropTypes.number,
+      isEditing: React.PropTypes.bool,
       /**
        * An array of all the user's shoes
        */
       shoes: React.PropTypes.array,
+      /**
+       * If editing, the existing workout object
+       */
+      workout: React.PropTypes.object
+    },
+
+    getDefaultProps: function() {
+      return {
+        isEditing: false
+      };
     },
 
     getInitialState: function() {
-      var date = this.props.date || dateToUnixTime(new Date());
+      var workout = this.props.workout;
+      var date = (workout && workout.date) || dateToUnixTime(new Date());
+
       return {
-        date: date,
         isSaving: false,
-        workout: {
-          date: date
-        }
+        workout: workout || {date: date}
       };
     },
 
@@ -79,21 +79,18 @@ define([
     _workoutChanged: function() {
       var workout = WorkoutStore.getWorkout();
       this.setState({
-        date: workout.date,
         workout: workout
       });
     },
 
     render: function() {
-      var date = this.state.date;
+      var date = this.state.workout.date;
+
       return (
         <div>
-          <PageHeader title="New Activity" />
+          <PageHeader title={this._getTitle()} />
           <Panel footer={this._renderFooter()}>
-            <form
-              action={'/workouts/add/' + date}
-              method="POST"
-              ref="form">
+            <form action={this._getFormAction()} method="POST" ref="form">
               <WorkoutFields
                 {...this.props}
                 date={date}
@@ -111,7 +108,24 @@ define([
       );
     },
 
+    _getFormAction: function() {
+      var isEditing = this.props.isEditing;
+      var workout = this.state.workout;
+      return [
+        '/workouts',
+        isEditing ? 'edit' : 'add',
+        isEditing ? workout.id : workout.date
+      ].join('/');
+    },
+
+    _getTitle: function() {
+      return this.props.isEditing ? 'Edit Activity' : 'New Activity';
+    },
+
     _renderFooter: function() {
+      var submitLabel =
+        this.props.isEditing ? 'Update Activity' : 'Add Activity';
+
       return (
         <div className="pull-right">
           <Button
@@ -121,7 +135,7 @@ define([
           />
           <Button
             disabled={this.state.isSaving}
-            label="Add Workout"
+            label={submitLabel}
             onClick={this._onSubmit}
             type="submit"
             use="primary"

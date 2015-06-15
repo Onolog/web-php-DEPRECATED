@@ -43,7 +43,7 @@ echo "
     'lib/react/jsx!app/Workouts/WorkoutViewPage.react'
   ], function(reactRender, WorkoutViewPage) {
     reactRender(WorkoutViewPage, {
-      viewer: $viewer || 0,
+      viewer: $viewer,
       workout: $json_workout
     }, 'reactRoot');
   });

@@ -62,7 +62,7 @@ class WorkoutsController extends AppController {
     }
 
     $workout = $this->populateWorkoutForView($workout);
-		$viewer = $this->Auth->User('id');
+		$viewer = $this->Auth->User('id') ?: 0;
 
     $this->set(compact('workout', 'viewer'));
 	}
@@ -97,27 +97,18 @@ class WorkoutsController extends AppController {
 	}
 
   /**
-   * Lets the user add a workout
+   * Allows the user to add a workout.
    *
    * TODO: Don't let the user submit an empty workout
    * TODO: Can this somehow be combined with edit()?
    * 
    * @param   int   $date   unix timestamp of the workout date
    */
-	public function add($date=null) {
+	public function add() {
     $user = $this->requireLoggedInUser();
-
-    // If there's no date selected, default to today.
-    if (!$date) {
-      $date = time();
-    }
 
     // On form submission
 		if (!empty($this->data)) {
-
-		  // Add the user id and date to the data
-      $this->data['Workout']['user_id'] = $user;
-      $this->data['Workout']['date'] = $date;
 
       $this->formatWorkoutDataForWrite();
 
@@ -138,11 +129,7 @@ class WorkoutsController extends AppController {
 			}
 		}
 
-    $title = date('F jS, Y', $date);
-    $this->set('title_for_layout', $title);
-    $json_shoes = $this->getShoesForWorkoutJSON();
-
-		$this->set(compact('json_shoes', 'date', 'title'));
+		$this->set('json_shoes', $this->getShoesForWorkoutJSON());
 	}
 
   /**
@@ -164,7 +151,6 @@ class WorkoutsController extends AppController {
     // On form submission
 		if (!empty($this->data)) {
 		  // Add the user id and date to the data
-      $this->data['Workout']['user_id'] = $user;
       $this->data['Workout']['date'] = $date;
 
       // Unset the placeholder ID
@@ -193,17 +179,15 @@ class WorkoutsController extends AppController {
   }
 
   /**
-   * Lets the user edit a given workout
-   *
-   * TODO: Can this somehow be combined with add()?
+   * Allows the user to edit the selected workout.
    * 
    * @param   int   $wid   Workout id
    */
-	public function edit($wid = null) {
+	public function edit($wid=null) {
     $user = $this->requireLoggedInUser();
 
 		if (!$wid && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid workout', true));
+			$this->Session->setFlash(__('Invalid workout', 1));
 			$this->redirect(array(
         'controller' => 'users',
         'action' => 'index'
@@ -212,14 +196,23 @@ class WorkoutsController extends AppController {
 
     // On submit, update the workout
 		if (!empty($this->data)) {
+
+      $this->data['Workout']['id'] = $wid;
       $this->formatWorkoutDataForWrite();
 
 			if ($this->Workout->save($this->data)) {
-				$this->Session->setFlash(__('Workout saved', true));
-				$this->redirect(date(CALENDAR_URI_FORMAT, $this->data['Workout']['date']));
-			} else {
-				$this->Session->setFlash(__('The workout could not be saved. Please try again.', true));
+				$this->Session->setFlash(__('Activity saved.', 1));
+				$this->redirect(array(
+          'controller' => 'workouts',
+          'action' => 'view',
+          $this->Workout->id
+        ));
 			}
+
+      // Something went wrong
+			$this->Session->setFlash(
+        __('The workout could not be saved. Please try again.', 1)
+      );
 		}
 
 		if (empty($this->data)) {
@@ -227,7 +220,7 @@ class WorkoutsController extends AppController {
 
       // Make sure users only edit their own workouts!
       if ($this->data['User']['id'] !== $user) {
-        $this->goHome(__('You are not allowed to edit this workout', true));
+        $this->goHome(__('You are not allowed to edit this workout', 1));
       }
 		}
 
@@ -378,6 +371,9 @@ class WorkoutsController extends AppController {
    * Formats workout data when adding or editing to properly write to the DB.
    */
   private function formatWorkoutDataForWrite() {
+    // Add the logged-in user's ID
+    $this->data['Workout']['user_id'] = $this->getLoggedInUser();
+
     // Convert friends to a string if they're in array form
     $friends = idx($this->data['Workout'], 'friends', array());
     if (is_array($friends) && !empty($friends)) {

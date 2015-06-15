@@ -52,15 +52,9 @@ define([
 
     propTypes: {
       /**
-       * Unix timestamp (seconds).
-       *
-       * Note: A date is required for the "add" action.
+       * Unix timestamp (seconds)
        */
       date: React.PropTypes.number,
-      /**
-       * The selected shoe in an existing workout, if one has been selected.
-       */
-      selectedShoe: React.PropTypes.number,
       /**
        * An array of all the user's shoes
        */
@@ -104,20 +98,19 @@ define([
     },
 
     render: function() {
-      // Existing workout data
       var workout = WorkoutStore.getWorkout();
-      var date = (workout && workout.date) || this.props.date;
+      var date = workout.date || this.props.date;
 
       return (
         <div className="form-horizontal workoutForm">
           <HiddenInput
-            name={cakePHP.encodeFormFieldName('date', FORM_NAME)}
-            value={date}
+            name={cakePHP.encodeFormFieldName('user_id', FORM_NAME)}
+            value={workout.user_id}
           />
           <FormGroup label="Distance">
             <TextInput
               className="distance"
-              defaultValue={workout && workout.distance}
+              defaultValue={workout.distance}
               name={cakePHP.encodeFormFieldName('distance', FORM_NAME)}
               onChange={this._onUpdate}
               ref="distance"
@@ -128,7 +121,7 @@ define([
           <FormGroup label="Time" className="time">
             <div className="time">
               <TimeInput
-                duration={workout && workout.time}
+                duration={workout.time}
                 formName={FORM_NAME}
                 onChange={this._onUpdate}
               />
@@ -149,7 +142,7 @@ define([
           <FormGroup label="Avg. Heart Rate">
             <TextInput
               className="distance"
-              defaultValue={workout && workout.avg_hr}
+              defaultValue={workout.avg_hr}
               maxLength="3"
               name={cakePHP.encodeFormFieldName('avg_hr', FORM_NAME)}
               onChange={this._onUpdate}
@@ -170,7 +163,7 @@ define([
 
           <FormGroup label="Friends">
             <FBFriendTokenizer
-              friends={workout && workout.friends}
+              friends={workout.friends}
               name={cakePHP.encodeFormFieldName('friends', FORM_NAME)}
               onChange={this._onUpdate}
             />
@@ -179,7 +172,7 @@ define([
           <FormGroup label="Notes">
             <Textarea
               className="notes"
-              defaultValue={workout && workout.notes}
+              defaultValue={workout.notes}
               name={cakePHP.encodeFormFieldName('notes', FORM_NAME)}
               onChange={this._onUpdate}
               placeholder="Add some details about your activity..."
@@ -208,13 +201,21 @@ define([
       );
     },
 
+    /**
+     * TODO: Move this into Shoe selector.
+     */
     _getSelectedShoe: function() {
       var workout = WorkoutStore.getWorkout();
-      return (
-        (workout && workout.shoe_id) ||
-        this.props.selectedShoe ||
-        0
+      var shoes = this.props.shoes;
+      var activeShoe = (
+        shoes &&
+        shoes.length &&
+        shoes[0].options &&
+        shoes[0].options.length &&
+        shoes[0].options[0]
       );
+
+      return workout.shoe_id || activeShoe || 0;
     },
 
     // TODO: Finish this. Should each individual form field have its own validation?

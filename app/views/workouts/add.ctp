@@ -9,31 +9,23 @@ $this->Include->css(array(
   'components/Datepicker',
   'components/FBFriendTokenizer',
 ));
+
+$this->set('title_for_layout', __('Add Activity', 1));
 $this->set('page_classes', array(
   'narrow-page'
 ));
-
-$selectedShoe = 0;
-if (!empty($shoes)) {
-  $activeShoeIDs = array_keys($shoes['Active']);
-  $selectedShoe = reset($activeShoeIDs);
-}
 
 echo $this->element('loader', array(
   'id' => 'reactRoot',
 ));
 
-$this->Js->set('date', $date);
-
 $this->Html->scriptStart(array('inline' => false));
 echo "
   require([
     'utils/reactRender',
-    'lib/react/jsx!app/Workouts/WorkoutAddPage.react'
-  ], function(reactRender, WorkoutAddPage) {
-    reactRender(WorkoutAddPage, {
-      date: $date,
-      selectedShoe: $selectedShoe,
+    'lib/react/jsx!app/Workouts/WorkoutAddEditPage.react'
+  ], function(reactRender, WorkoutAddEditPage) {
+    reactRender(WorkoutAddEditPage, {
       shoes: $json_shoes
     }, 'reactRoot');
   });
