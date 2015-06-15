@@ -57,8 +57,6 @@ define([
     },
 
     render: function() {
-      var shoes = ShoeUtils.groupByActivity(this.state.shoes);
-
       return (
         <Select
           {...this.props}
