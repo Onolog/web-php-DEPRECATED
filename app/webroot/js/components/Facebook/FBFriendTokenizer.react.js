@@ -28,26 +28,23 @@ define([
     },
 
     componentWillMount: function() {
-      var friends = this.props.friends + '';
-      if (!friends) {
-        return;
-      }
-
-      var fbids = friends.split(',');
-
       // Get all taggable friends
       var batch = [{
         method: 'GET',
         relative_url: 'me/friends'
       }];
 
-      // Add any already-tagged friends
-      fbids.forEach(function(fbid) {
-        batch.push({
-          method: 'GET',
-          relative_url: fbid + '?fields=name'
+      // Get info for any already-tagged friends
+      var friends = this.props.friends + '';
+      if (friends) {
+        var fbids = friends.split(',');
+        fbids.forEach(function(fbid) {
+          batch.push({
+            method: 'GET',
+            relative_url: fbid + '?fields=name'
+          });
         });
-      });
+      }
 
       // Get taggable + already tagged FB friends
       FB.getLoginStatus(function(response) {
