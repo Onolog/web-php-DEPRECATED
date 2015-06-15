@@ -9,8 +9,6 @@ define([
   'lib/react/react',
   'lib/react/jsx!components/Forms/TextInput.react',
   'lib/react/jsx!components/Select/Select.react',
-
-  'actions/BrandActions',
   'mixins/StoreMixin.react',
   'stores/BrandsStore'
 
@@ -19,8 +17,6 @@ define([
   React,
   TextInput,
   Select,
-
-  BrandActions,
   StoreMixin,
   BrandsStore
 
@@ -31,43 +27,24 @@ define([
 
     mixins: [StoreMixin],
 
-    getInitialState: function() {
-      return {
-        brands: BrandsStore.getItems()
-      };
-    },
-
     componentWillMount: function() {
       this.stores = [
-        this.setStoreInfo(BrandsStore, this._brandsChanged)
+        this.setStoreInfo(BrandsStore, this._setBrands)
       ];
 
-      // Check the store to see if we already have the items so we don't keep
-      // re-fetching the data.
-      var brands = BrandsStore.getItems();
-      if (!brands || !brands.length) {
-        BrandActions.fetch();
-      }
+      this._setBrands();
     },
 
-    _brandsChanged: function() {
-      this.setState({
-        brands: BrandsStore.getItems()
-      });
+    _setBrands: function() {
+      this.setState({brands: BrandsStore.getItems()});
     },
 
     render: function() {
       var options = this._getBrandOptions();
-      if (!options.length) {
-        // Hacky placeholder while we wait for the brands to load.
-        // TODO: figure out a better solution?
-        return <TextInput disabled={true} value="Select a shoe:" />;
-      }
-
       return (
         <Select
           {...this.props}
-          className="form-control"
+          defaultLabel="Select a brand:"
           disabled={!options.length}
           options={options}
         />
@@ -87,14 +64,6 @@ define([
           value: +brand.id
         });
       });
-
-      // We're adding a new shoe; display a prompt
-      if (!this.props.defaultValue) {
-        options.unshift({
-          label: 'Select a shoe:',
-          value: 0
-        });
-      }
 
       return options;
     }

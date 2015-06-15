@@ -6,6 +6,7 @@
 
 define([
 
+  'actions/BrandActions',
   'dispatcher/AppDispatcher',
   'lib/MicroEvent/microevent',
   'constants/ActionTypes',
@@ -13,16 +14,22 @@ define([
 
 ], function(
 
+  BrandActions,
   AppDispatcher,
   MicroEvent,
   ActionTypes
 
 ) {
 
-  var _items = [];
+  var _items;
 
   var BrandsStore = {
     getItems: function() {
+      if (!_items) {
+        BrandActions.fetch();
+        return [];
+      }
+
       return _items;
     },
 

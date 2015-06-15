@@ -4,7 +4,17 @@
  *
  * React wrapper around standard HTML <select> tag
  */
-define(['lib/react/react'], function(React) {
+define([
+
+  'lib/react/react',
+  'utils/joinClasses'
+
+], function(
+
+  React,
+  joinClasses
+
+) {
 
   return React.createClass({
     displayName: 'Select',
@@ -28,6 +38,12 @@ define(['lib/react/react'], function(React) {
       };
     },
 
+    getInitialState: function() {
+      return {
+        value: this.props.defaultValue
+      };
+    },
+
     render: function() {
       var options = this.props.options.map(function(option, idx) {
         // If we have a standard set of options, render a flat list
@@ -43,16 +59,22 @@ define(['lib/react/react'], function(React) {
         );
       }.bind(this));
 
-      // Add a default label as the first option
-      if (this.props.defaultLabel) {
+      // Add a default option if there's no pre-selected option. Note that
+      // we're explicitly doing a null-check here, since `0` could be a valid
+      // default value.
+      if (this.props.defaultValue == null) {
         options.unshift(this._renderOption({
           label: this.props.defaultLabel,
-          value: 0
+          value: -1
         }, -1));
       }
 
       return (
-        <select {...this.props} selected={this.props.defaultValue}>
+        <select
+          {...this.props}
+          className={joinClasses('form-control', this.props.className)}
+          onChange={this._onChange}
+          value={this.state.value}>
           {options}
         </select>
       );
@@ -67,7 +89,13 @@ define(['lib/react/react'], function(React) {
           {option.label}
         </option>
       );
+    },
+
+    _onChange: function(/*object*/ evt) {
+      this.setState({value: evt.target.value});
+      this.props.onChange && this.props.onChange(evt);
     }
+
   });
 
 });
