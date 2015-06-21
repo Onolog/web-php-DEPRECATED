@@ -87,6 +87,18 @@ a.btn-default {
   color: #bbb;
 }
 
+.form-control .constrainedTextInput {
+  background-color: transparent;
+  border: 0;
+  border-radius: 2px;
+  text-align: center;
+  width: 18px;
+}
+.form-control .constrainedTextInput:focus {
+  background-color: #e5e5e5;
+  outline: none;
+}
+
 
 /* Modal */
 .modal-header,

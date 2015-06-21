@@ -1,24 +1,20 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!components/Datepicker/DatePickerCalendarPopover.react',
+  'lib/react/jsx!components/Datepicker/DateInputCalendarPopover.react',
   'lib/react/jsx!components/Glyph/Glyph.react',
-  'lib/react/jsx!components/Forms/HiddenInput.react',
   'utils/cloneDate',
   'utils/cx',
-  'utils/DateTimeUtils',
-  'utils/dateToUnixTime'
+  'utils/DateTimeUtils'
 
 ], function(
 
   React,
-  DatePickerCalendarPopover,
+  DateInputCalendarPopover,
   Glyph,
-  HiddenInput,
   cloneDate,
   cx,
-  DateTimeUtils,
-  dateToUnixTime
+  DateTimeUtils
 
 ) {
 
@@ -56,15 +52,15 @@ define([
       var date = this._getDate();
 
       return (
-        <div className="DatePicker">
+        <div className="DateInput">
           <div
-            className="DatePickerInput form-control"
+            className="form-control"
             onClick={this._showCalendar}>
-            <div className="DatePickerDisplay">
+            <div className="DateInputDisplay">
               {DateTimeUtils.formatDate(date, 'M/D/YYYY')}
             </div>
             <Glyph
-              className="DatePickerCalendarIcon"
+              className="DateInputCalendarIcon"
               icon="calendar"
               onClick={this._showCalendar}
             />

@@ -1,7 +1,7 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!components/Datepicker/DatepickerCalendar.react',
+  'lib/react/jsx!components/Datepicker/DateInputCalendar.react',
   'lib/react/jsx!components/Glyph/Glyph.react',
   'lib/react/jsx!components/Link/Link.react',
   'utils/cloneDate',
@@ -11,7 +11,7 @@ define([
 ], function(
 
   React,
-  DatePickerCalendar,
+  DateInputCalendar,
   Glyph,
   Link,
   cloneDate,
@@ -59,10 +59,10 @@ define([
             'popover': true, 
             'fade': true,
             'bottom': true,
-            'in': true
+            'in': this.props.show
           })}>
           <div className="arrow"></div>
-          <div className="popover-header">
+          <div className="popover-header DateInputCalendarControls">
             <Link
               className="monthArrow arrowLeft"
               href="javascript:;"
@@ -78,7 +78,7 @@ define([
             </Link>
           </div>
           <div className="popover-content">
-            <DatePickerCalendar
+            <DateInputCalendar
               calendarDate={this.state.calendarDate}
               onChange={this.props.onChange}
               date={this.props.date}
