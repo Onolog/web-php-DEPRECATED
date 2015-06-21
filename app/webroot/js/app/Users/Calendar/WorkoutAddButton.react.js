@@ -22,6 +22,7 @@ define([
 
   'utils/cakePHP',
   'utils/DateTimeUtils',
+  'utils/dateToUnixTime',
   'lib/jquery/jquery.min'
 
 ], function(
@@ -42,7 +43,8 @@ define([
   WorkoutStore,
 
   cakePHP,
-  DateTimeUtils
+  DateTimeUtils,
+  dateToUnixTime
 
 ) {
 
@@ -180,7 +182,7 @@ define([
       return {
         // TODO: Make sure this doesn't conflict with datepicker in
         // workout fields.
-        date: this.props.dateObject.getTime() / 1000,
+        date: dateToUnixTime(this.props.dateObject),
         id: NEW_ID
       };
     }
