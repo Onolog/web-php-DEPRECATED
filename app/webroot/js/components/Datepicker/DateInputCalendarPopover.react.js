@@ -21,7 +21,7 @@ define([
 ) {
 
   /**
-   * DatePickerCalendarPopover.react.js
+   * DateInputCalendarPopover.react.js
    * @jsx React.DOM
    *
    * Renders a popover displaying a single-month calendar and controls for
@@ -29,7 +29,7 @@ define([
    * externally.
    */
   return React.createClass({
-    displayName: 'DatePickerCalendarPopover',
+    displayName: 'DateInputCalendarPopover',
 
     propTypes: {
       date: React.PropTypes.instanceOf(Date).isRequired,

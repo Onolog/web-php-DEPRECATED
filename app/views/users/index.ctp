@@ -7,7 +7,7 @@ $this->Include->css(array(
   'app/UserCalendar',
   'app/Workout',
   'components/Calendar',
-  'components/Datepicker',
+  'components/DateTimePicker',
   'components/Facepile',
   'components/FBFriendTokenizer',
   'components/Topline',

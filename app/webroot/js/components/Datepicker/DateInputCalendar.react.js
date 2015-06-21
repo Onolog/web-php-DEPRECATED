@@ -1,6 +1,3 @@
-/**
- * DatePickerCalendar.react.js
- */
 define([
 
   'lib/react/react',
@@ -27,6 +24,10 @@ define([
 
 ) {
 
+  /**
+   * DateInputCalendar.react.js
+   * @jsx React.DOM
+   */
   return React.createClass({
     displayName: 'DatePickerCalendar',
 

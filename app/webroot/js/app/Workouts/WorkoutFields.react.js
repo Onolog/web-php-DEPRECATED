@@ -8,7 +8,7 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!app/Workouts/ShoeSelector.react',
-  'lib/react/jsx!components/Datepicker/Datepicker.react',
+  'lib/react/jsx!components/Datepicker/DateTimePicker.react',
   'lib/react/jsx!components/Forms/FormGroup.react',
   'lib/react/jsx!components/Forms/HiddenInput.react',
   'lib/react/jsx!components/Forms/Textarea.react',
@@ -29,7 +29,7 @@ define([
 
   React,
   ShoeSelector,
-  Datepicker,
+  DateTimePicker,
   FormGroup,
   HiddenInput,
   Textarea,
@@ -78,6 +78,7 @@ define([
 
     componentWillMount: function() {
       // Initialize the workout data in the store
+      // FIXME: This defaults the time for new workouts to be 12:00AM
       var workout = this.props.workout;
       if (!workout.date && this.props.date) {
         workout.date = this.props.date;
@@ -129,7 +130,7 @@ define([
         	</FormGroup>
 
           <FormGroup label="Date">
-            <Datepicker
+            <DateTimePicker
               initialDate={unixTimeToDate(date)}
               name={cakePHP.encodeFormFieldName('date', FORM_NAME)}
               onChange={this._onDateUpdate}

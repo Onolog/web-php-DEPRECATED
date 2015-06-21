@@ -6,7 +6,7 @@
  */
 $this->Include->css(array(
   'app/Workout',
-  'components/Datepicker',
+  'components/DateTimePicker',
   'components/FBFriendTokenizer',
 ));
 $this->set('page_classes', array(

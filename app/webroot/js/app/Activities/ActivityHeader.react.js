@@ -13,7 +13,8 @@ define([
   'lib/react/jsx!components/LeftRight/LeftRight.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Middot.react',
-  'utils/DateTimeUtils'
+  'utils/DateTimeUtils',
+  'utils/unixTimeToDate'
 
 ], function(
 
@@ -25,7 +26,8 @@ define([
   LeftRight,
   Link,
   Middot,
-  DateTimeUtils
+  DateTimeUtils,
+  unixTimeToDate
 
 ) {
 
@@ -47,11 +49,9 @@ define([
     render: function() {
       var props = this.props;
 
-      // TODO: Add localized time ('LT') to the date format when we have a more
-      // accurate timekeeping method.
       var activityDate = DateTimeUtils.formatDate(
-        props.activityDate * 1000,
-        'dddd, MMMM Do, YYYY'
+        unixTimeToDate(props.activityDate),
+        'dddd, MMMM Do, YYYY LT'
       );
 
       return (

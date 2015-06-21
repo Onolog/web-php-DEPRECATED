@@ -65,7 +65,7 @@ define([
               onClick={this._showCalendar}
             />
           </div>
-          <DatePickerCalendarPopover
+          <DateInputCalendarPopover
             date={date}
             onChange={this._onChange}
             show={this.state.showCalendar}
