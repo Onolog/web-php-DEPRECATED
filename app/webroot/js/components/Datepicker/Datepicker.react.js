@@ -152,19 +152,14 @@ define([
       this.setState({date: date});
     },
 
-    _onChange: function(selectedDate) {
+    _onChange: function(/*Date*/ selectedDate) {
       this.setState({
         date: cloneDate(selectedDate),
         selectedDate: selectedDate,
         show: false
       });
 
-      this.props.onChange && this.props.onChange({
-        target: {
-          name: this.props.name,
-          value: dateToUnixTime(selectedDate)
-        }
-      });
+      this.props.onChange && this.props.onChange(selectedDate);
     },
 
     _showCalendar: function() {

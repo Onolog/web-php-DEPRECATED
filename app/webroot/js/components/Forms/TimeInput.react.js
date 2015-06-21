@@ -11,8 +11,7 @@ define([
   'lib/react/jsx!components/Forms/HiddenInput.react',
   'lib/react/jsx!components/Forms/TextInput.react',
   'utils/cakePHP',
-  'lib/Moment/Moment',
-  'lib/jquery/jquery.min'
+  'lib/Moment/Moment'
 
 ], function(
 

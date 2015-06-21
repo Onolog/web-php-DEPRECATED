@@ -22,6 +22,7 @@ define([
   'stores/WorkoutStore',
   'utils/cakePHP',
   'utils/calculatePace',
+  'utils/dateToUnixTime',
   'utils/unixTimeToDate'
 
 ], function(
@@ -41,6 +42,7 @@ define([
   WorkoutStore,
   cakePHP,
   calculatePace,
+  dateToUnixTime,
   unixTimeToDate
 
 ) {
@@ -130,7 +132,7 @@ define([
             <Datepicker
               initialDate={unixTimeToDate(date)}
               name={cakePHP.encodeFormFieldName('date', FORM_NAME)}
-              onChange={this._onUpdate}
+              onChange={this._onDateUpdate}
             />
           </FormGroup>
 
@@ -138,7 +140,7 @@ define([
             <TextInput
               className="distance"
               defaultValue={workout.avg_hr}
-              maxLength="3"
+              maxLength={3}
               name={cakePHP.encodeFormFieldName('avg_hr', FORM_NAME)}
               onChange={this._onUpdate}
             />
@@ -183,6 +185,15 @@ define([
       WorkoutActions.update(field, value);
 
       this.setState({ pace: this._getPace() });
+    },
+
+    _onDateUpdate: function(/*Date*/ date) {
+      this._onUpdate({
+        target: {
+          name: cakePHP.encodeFormFieldName('date', FORM_NAME),
+          value: dateToUnixTime(date)
+        }
+      });
     },
 
     _getPace: function() /*string*/ {
