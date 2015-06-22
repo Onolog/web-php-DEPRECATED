@@ -1,19 +1,13 @@
-/**
- * WorkoutFields.react
- * @jsx React.DOM
- *
- * Displays a form with inputs for adding or editing a workout
- */
 define([
 
   'lib/react/react',
   'lib/react/jsx!app/Workouts/ShoeSelector.react',
   'lib/react/jsx!components/DateTimePicker/DateTimePicker.react',
+  'lib/react/jsx!components/Forms/DurationInput.react',
   'lib/react/jsx!components/Forms/FormGroup.react',
   'lib/react/jsx!components/Forms/HiddenInput.react',
   'lib/react/jsx!components/Forms/Textarea.react',
   'lib/react/jsx!components/Forms/TextInput.react',
-  'lib/react/jsx!components/Forms/TimeInput.react',
   'lib/react/jsx!components/Facebook/FBFriendTokenizer.react',
 
   'actions/WorkoutActions',
@@ -30,11 +24,11 @@ define([
   React,
   ShoeSelector,
   DateTimePicker,
+  DurationInput,
   FormGroup,
   HiddenInput,
   Textarea,
   TextInput,
-  TimeInput,
   FBFriendTokenizer,
   WorkoutActions,
   ActionTypes,
@@ -49,6 +43,12 @@ define([
 
   var FORM_NAME = WorkoutConstants.FORM_NAME;
 
+  /**
+   * WorkoutFields.react
+   * @jsx React.DOM
+   *
+   * Displays a form with inputs for adding or editing a workout
+   */
   return React.createClass({
     displayName: 'WorkoutFields',
 
@@ -57,10 +57,6 @@ define([
        * Unix timestamp (seconds)
        */
       date: React.PropTypes.number,
-      /**
-       * Whether or not to validate the data
-       */
-      validate: React.PropTypes.bool,
       /**
        * Existing workout object.
        *
@@ -107,7 +103,7 @@ define([
           />
           <FormGroup label="Distance">
             <TextInput
-              className="distance"
+              className="distanceInput"
               defaultValue={workout.distance}
               name={cakePHP.encodeFormFieldName('distance', FORM_NAME)}
               onChange={this._onUpdate}
@@ -117,16 +113,15 @@ define([
           </FormGroup>
 
           <FormGroup label="Time" className="time">
-            <div className="time">
-              <TimeInput
-                duration={workout.time}
-                formName={FORM_NAME}
-                onChange={this._onUpdate}
-              />
-          		<span id="pace" className="colon">
-          		  <span>{this.state.pace}</span> per mile
-          		</span>
-        		</div>
+            <TimeInput
+              className="timeInput"
+              duration={workout.time}
+              name={cakePHP.encodeFormFieldName('time', FORM_NAME)}
+              onChange={this._onUpdate}
+            />
+        		<span className="colon">
+        		  {this.state.pace} per mile
+        		</span>
         	</FormGroup>
 
           <FormGroup label="Date">
@@ -139,7 +134,7 @@ define([
 
           <FormGroup label="Avg. Heart Rate">
             <TextInput
-              className="distance"
+              className="heartRateInput"
               defaultValue={workout.avg_hr}
               maxLength={3}
               name={cakePHP.encodeFormFieldName('avg_hr', FORM_NAME)}
@@ -203,25 +198,6 @@ define([
         (workout && workout.distance) || 0,
         (workout && workout.time) || 0
       );
-    },
-
-    // TODO: Finish this. Should each individual form field have its own validation?
-    _validateForm: function() {
-      var error;
-      var workout = WorkoutStore.getWorkout();
-
-      if (!workout.distance && !workout.time) {
-        error = 'The distance and time fields can\'t both be blank.';
-      }
-
-      // Validate this onBlur?
-      if (isNAN(workout.distance)) {
-        error = 'Please enter a valid distance.';
-      }
-
-      if (isNAN(workout.time)) {
-        error = 'Please enter a valid time.'
-      }
     }
 
   });

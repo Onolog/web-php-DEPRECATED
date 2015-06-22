@@ -41,19 +41,22 @@
   background-color: #fafafa;
 }
 
-.distance {
-  width: 75px;
+.distanceInput,
+.timeInput,
+.heartRateInput {
+  width: 90px;
 }
 
-.time input {
-  text-align: center;
-  width: 50px;
+.timeInput {
+  display: inline-block;
 }
-
-.time input:-moz-placeholder {
+.timeInput input {
   text-align: center;
 }
-.time input::-webkit-input-placeholder {
+.timeInput input:-moz-placeholder {
+  text-align: center;
+}
+.timeInput input::-webkit-input-placeholder {
   text-align: center;
 }
 
@@ -61,52 +64,4 @@
   color: #aaa;
   font-size: 12px;
   margin: 0 5px;
-}
-
-.workoutView .leftCol {
-  float: left;
-  width: 65px;
-}
-
-.workoutView .rightCol {
-  margin-left: 65px;
-}
-
-.workoutView .profilePhotoLink {
-  display: inline-block;
-}
-
-.workoutView .profilePhotoLink + .profilePhotoLink {
-  margin-left: 1px;
-}
-
-.workoutView .workoutViewNotes {
-  font-size: 15px;
-  white-space: pre-wrap;
-}
-
-
-/**
- * Workout Section
- */
-.workoutSection {
-  margin-bottom: 15px;
-}
-
-.workoutSection:last-child {
-  margin-bottom: 0;
-}
-
-.workoutSectionBorder {
-  border-top: 1px solid #e5e5e5;
-  padding-top: 15px
-}
-
-/* Should match labeledStatLabel from Topline.css */
-.workoutSectionTitle {
-  color: #aaa;
-  font-size: 10px;
-  font-weight: normal;
-  margin-bottom: 3px;
-  text-transform: uppercase;
 }

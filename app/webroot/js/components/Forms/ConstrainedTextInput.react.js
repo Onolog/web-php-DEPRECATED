@@ -107,10 +107,15 @@ define([
           className={joinClasses('constrainedTextInput', this.props.className)}
           onBlur={this._onBlur}
           onChange={this._onKeyboardEntry}
+          size={this.props.maxLength}
           type="text"
           value={value}
         />
       );
+    },
+
+    getValue: function() {
+      return this.getDOMNode().value;
     },
 
     _getIndex: function(value) {

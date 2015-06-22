@@ -7,7 +7,8 @@ define([
   'utils/cloneDate',
   'utils/cx',
   'utils/dateToUnixTime',
-  'utils/pad'
+  'utils/pad',
+  'utils/range'
 
 ], function(
 
@@ -18,7 +19,8 @@ define([
   cloneDate,
   cx,
   dateToUnixTime,
-  pad
+  pad,
+  range
 
 ) {
 
@@ -29,14 +31,6 @@ define([
 
   function formatter(value) {
     return pad(value, 2);
-  }
-
-  function range(start, end) {
-    var range = [];
-    for (var ii=start; ii<=end; ii++) {
-      range.push(ii);
-    }
-    return range;
   }
 
   /**
@@ -103,7 +97,7 @@ define([
 
     _onHoursChange: function(/*number|string*/ hours) {
       var date = this._getDate();
-      var meridiem = this.refs.meridiem.getDOMNode().value;
+      var meridiem = this.refs.meridiem.getValue();
 
       // Display is 12-hour, but Date() is 24-hour. Adjust accordingly.
       if (meridiem === MERIDIEM.PM && hours < 12) {
