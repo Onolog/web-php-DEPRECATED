@@ -113,7 +113,7 @@ define([
           </FormGroup>
 
           <FormGroup label="Time" className="time">
-            <TimeInput
+            <DurationInput
               className="timeInput"
               duration={workout.time}
               name={cakePHP.encodeFormFieldName('time', FORM_NAME)}

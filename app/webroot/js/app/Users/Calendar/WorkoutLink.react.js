@@ -161,7 +161,7 @@ define([
             alert={this.state.alert}
             shown={this.state.shown}
             onRequestClose={this._toggleModal}
-            title="Edit Workout"
+            title="Edit Activity"
             footer={
               <LeftRight>
                 <Button
@@ -169,7 +169,7 @@ define([
                   glyph="trash"
                   onClick={this._onDeleteClick}
                   tooltip={{
-                    title: 'Delete workout'
+                    title: 'Delete Activity'
                   }}
                 />
                 <div>
@@ -181,7 +181,7 @@ define([
                   <Button
                     use="primary"
                     disabled={isLoading}
-                    label="Update Workout"
+                    label="Update Activity"
                     onClick={this._onUpdateClick}
                   />
                 </div>
@@ -204,7 +204,7 @@ define([
                 glyph="pencil"
                 onClick={this._onEditClick}
                 tooltip={{
-                  title: 'Edit workout'
+                  title: 'Edit Activity'
                 }}
               />
               <Button
@@ -212,7 +212,7 @@ define([
                 glyph="trash"
                 onClick={this._onDeleteClick}
                 tooltip={{
-                  title: 'Delete workout'
+                  title: 'Delete Activity'
                 }}
               />
               <Button

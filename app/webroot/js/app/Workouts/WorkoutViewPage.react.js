@@ -48,25 +48,6 @@ define([
     _renderButtonGroup: function() {
       var workout = this.props.workout;
 
-      // TODO: Make these work better, ideally as a dialog 
-      var addButton =
-        <Button
-          glyph="plus"
-          href="/workouts/add/"
-          tooltip={{
-            title: 'New Workout'
-          }}
-        />;
-
-      var editButton =
-        <Button
-          glyph="pencil"
-          href={'/workouts/edit/' + workout.id}
-          tooltip={{
-            title: 'Edit Workout'
-          }}
-        />;
-
       if (this.props.viewer === workout.user_id) {
         return (
           <ButtonGroup>
@@ -75,14 +56,14 @@ define([
               href={'/workouts/edit/' + this.props.workout.id}
               onClick={this._onWorkoutEdit}
               tooltip={{
-                title: 'Edit Workout'
+                title: 'Edit Activity'
               }}
             />
             <Button
               glyph="trash"
               onClick={this._onWorkoutDelete}
               tooltip={{
-                title: 'Delete Workout'
+                title: 'Delete Activity'
               }}
             />
           </ButtonGroup>

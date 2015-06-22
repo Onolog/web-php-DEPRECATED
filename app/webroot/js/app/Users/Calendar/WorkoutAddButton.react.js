@@ -138,7 +138,7 @@ define([
                 onClick={this._onCancel}
               />
               <Button
-                label="Add Workout"
+                label="Add Activity"
                 use="primary"
                 disabled={this.state.isLoading}
                 onClick={this._onAddWorkoutClick}
