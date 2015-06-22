@@ -8,7 +8,7 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!app/Workouts/ShoeSelector.react',
-  'lib/react/jsx!components/Datepicker/DateTimePicker.react',
+  'lib/react/jsx!components/DateTimePicker/DateTimePicker.react',
   'lib/react/jsx!components/Forms/FormGroup.react',
   'lib/react/jsx!components/Forms/HiddenInput.react',
   'lib/react/jsx!components/Forms/Textarea.react',

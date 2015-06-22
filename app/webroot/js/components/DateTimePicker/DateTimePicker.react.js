@@ -7,8 +7,8 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!components/Datepicker/DateInput.react',
-  'lib/react/jsx!components/Datepicker/TimeInput.react',
+  'lib/react/jsx!components/DateTimePicker/DateInput.react',
+  'lib/react/jsx!components/DateTimePicker/TimeInput.react',
   'lib/react/jsx!components/Forms/HiddenInput.react',
   'utils/cx',
   'utils/dateToUnixTime'

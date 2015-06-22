@@ -29,7 +29,7 @@ define([
    * @jsx React.DOM
    */
   return React.createClass({
-    displayName: 'DatePickerCalendar',
+    displayName: 'DateInputCalendar',
 
     propTypes: {
       /**

@@ -1,7 +1,7 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!components/Datepicker/DateInputCalendarPopover.react',
+  'lib/react/jsx!components/DateTimePicker/DateInputCalendarPopover.react',
   'lib/react/jsx!components/Glyph/Glyph.react',
   'utils/cloneDate',
   'utils/cx',

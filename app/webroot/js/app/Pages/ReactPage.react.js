@@ -17,7 +17,7 @@ define([
   'lib/react/jsx!components/Button/DropdownButton.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Calendar/Calendar.react',
-  'lib/react/jsx!components/Datepicker/DateTimePicker.react',
+  'lib/react/jsx!components/DateTimePicker/DateTimePicker.react',
   'lib/react/jsx!components/Facebook/FBFriendTokenizer.react',
   'lib/react/jsx!components/Glyph/Glyph.react',
   'lib/react/jsx!components/Graph/BarGraph/BarGraph.react',
