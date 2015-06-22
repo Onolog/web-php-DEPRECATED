@@ -17,7 +17,7 @@ define([
   'lib/react/jsx!components/Button/DropdownButton.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Calendar/Calendar.react',
-  'lib/react/jsx!components/Datepicker/Datepicker.react',
+  'lib/react/jsx!components/Datepicker/DateTimePicker.react',
   'lib/react/jsx!components/Facebook/FBFriendTokenizer.react',
   'lib/react/jsx!components/Glyph/Glyph.react',
   'lib/react/jsx!components/Graph/BarGraph/BarGraph.react',
@@ -48,7 +48,7 @@ define([
   DropdownButton,
   ButtonGroup,
   Calendar,
-  Datepicker,
+  DateTimePicker,
   FBFriendTokenizer,
   Glyph,
   Graph,
@@ -72,6 +72,7 @@ define([
     getInitialState: function() {
       return {
         calendarDate: new Date(),
+        datePickerDate: new Date(),
         workouts: DATA.WORKOUTS
       };
     },
@@ -140,8 +141,16 @@ define([
             <Glyph icon="triangle-left" />
             <Glyph icon="triangle-right" />
           </Panel>
-          <Panel title="Date Picker">
-            <Datepicker />
+          <Panel title="Date & Time Picker">
+            <DateTimePicker
+              initialDate={this.state.datePickerDate}
+              onChange={function(date) {
+                this.setState({datePickerDate: date});
+              }.bind(this)}
+            />
+            <div style={{marginTop: '10px'}}>
+              {this.state.datePickerDate.toISOString()}
+            </div>
           </Panel>
           <Panel title="Dropdown Button">
             <DropdownButton
