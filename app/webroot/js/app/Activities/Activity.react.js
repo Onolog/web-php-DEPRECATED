@@ -18,6 +18,8 @@ define([
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Navigation/TabbedSection.react',
   'lib/Autolinker.min',
+  'constants/ActionTypes',
+  'stores/AllShoesStore',
   'utils/cx',
   'lib/jquery/jquery.min',
 
@@ -34,6 +36,8 @@ define([
   Link,
   TabbedSection,
   Autolinker,
+  ActionTypes,
+  AllShoesStore,
   cx
 
 ) {
@@ -47,8 +51,14 @@ define([
 
     getInitialState: function() {
       return {
-        isHorizontal: true
+        isHorizontal: true,
+        shoes: []
       };
+    },
+
+    componentWillMount: function() {
+      // Load all shoes into the store.
+      AllShoesStore.getCollection();
     },
 
     componentDidMount: function() {
@@ -57,6 +67,16 @@ define([
         // Update the component if it's resized for some reason
         this._setOrientation();
       }.bind(this));
+
+      AllShoesStore.bind(ActionTypes.CHANGE, this._setShoes);
+    },
+
+    componentWillUnmount: function() {
+      AllShoesStore.unbind(ActionTypes.CHANGE, this._setShoes);
+    },
+
+    _setShoes: function() {
+      this.setState({shoes: AllShoesStore.getCollection()});
     },
 
     render: function() {
@@ -82,7 +102,7 @@ define([
                   <ActivityStats activity={activity} />
                 </ActivitySection>
                 {this._renderActivityNotes(activity.notes)}
-                {this._renderActivityShoes(activity.shoes)}
+                {this._renderActivityShoes(activity.shoe_id)}
                 {this._renderActivityFriends(activity.friends)}
                 {this._renderDeviceInfo(activity.device)}
               </div>
@@ -116,11 +136,12 @@ define([
       }
     },
 
-    _renderActivityShoes: function(/*object*/ shoes) {
-      if (shoes.name) {
+    _renderActivityShoes: function(/*number*/ shoeID) {
+      if (shoeID) {
+        var shoe = AllShoesStore.getItem(shoeID);
         return (
           <ActivitySection title="Shoes" border={true}>
-            {shoes.name}
+            {shoe.name}
           </ActivitySection>
         );
       }
