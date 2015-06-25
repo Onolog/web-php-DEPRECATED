@@ -32,9 +32,8 @@
 
 .labeledStatData {
   color: #333;
-  font-family: Helvetica, Arial, sans-serif;
   font-size: 28px;
-  font-weight: lighter;
+  font-weight: 200;
   line-height: 1em;
 }
 

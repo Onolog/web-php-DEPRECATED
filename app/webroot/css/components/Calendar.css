@@ -17,7 +17,6 @@
 }
 
 .calendar h3 {
-  font-family: Helvetica, Arial, sans-serif;
   font-size: 13px;
   color: #808080;
   margin: 0 0 5px;
@@ -62,21 +61,6 @@
   background-color: #cfe6fa;
   color: #6a8cae;
 }
-
-/* Hover
-.calendar td:hover {
-  background-color: #e7f4ff;
-}
-.calendar td:hover h3,
-.calendar td:hover .total {
-  color: #7d9cb6;
-}
-.calendar td:hover .workout {
-  background-color: #cfe6fa;
-  color: #6a8cae;
-}
-*/
-
 
 .calendar .wrapper {
   height: 100%;
@@ -142,7 +126,6 @@
 }
 
 .calendar .total .distance {
-  font-family: Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 13px;
 }
