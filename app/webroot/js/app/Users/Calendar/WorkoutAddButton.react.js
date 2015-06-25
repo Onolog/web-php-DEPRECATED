@@ -22,8 +22,7 @@ define([
 
   'utils/cakePHP',
   'utils/DateTimeUtils',
-  'utils/dateToUnixTime',
-  'lib/jquery/jquery.min'
+  'utils/dateToUnixTime'
 
 ], function(
 

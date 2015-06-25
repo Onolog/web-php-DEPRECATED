@@ -7,8 +7,7 @@
 define([
 
   'lib/react/react',
-  'utils/cx',
-  'lib/jquery/jquery.min'
+  'utils/cx'
 
 ], function(React, cx) {
 
