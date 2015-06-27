@@ -10,13 +10,14 @@
   padding: 0;
 }
 
-.topline li {
-  float: left;
-  margin-left: 30px;
+.toplineItem  {
+  display: table-cell;
+  text-align: center;
+  width: 1%;
 }
 
-.topline li:first-child {
-  margin-left: 0;
+.toplineItem + .toplineItem {
+  border-left: 1px solid #f5f5f5;
 }
 
 .labeledStat {

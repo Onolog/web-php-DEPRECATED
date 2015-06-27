@@ -15,20 +15,15 @@ define([
     displayName: 'Topline',
 
     render: function() {
-      var classNames = joinClasses(
-        'topline clearfix',
-        this.props.className
-      );
-
       return (
-        <ul className={classNames}>
+        <ul className={joinClasses('topline', this.props.className)}>
           {React.Children.map(this.props.children, this._renderChild)}
         </ul>
       );
     },
 
     _renderChild: function(child, idx) {
-      return <li key={idx}>{child}</li>;
+      return <li className="toplineItem" key={idx}>{child}</li>;
     }
   });
 
