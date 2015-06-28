@@ -46,10 +46,7 @@ define([
     render: function() {
       var options = this.props.options.map(this._renderOptions);
 
-      // Add a default option if there's no pre-selected option. Note that
-      // we're explicitly doing a null-check here, since `0` could be a valid
-      // default value.
-      if (this.props.defaultValue == null) {
+      if (this.props.defaultLabel) {
         options.unshift(this._renderOption({
           label: this.props.defaultLabel,
           value: -1

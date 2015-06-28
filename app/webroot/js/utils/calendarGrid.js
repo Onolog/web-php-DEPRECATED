@@ -7,7 +7,15 @@
 define(['utils/isInt'], function(isInt) {
 
   function getDate(year, month, day) {
-    return new Date(year, month, day);
+    var now = new Date();
+    return new Date(
+      year,
+      month,
+      day,
+      now.getHours(),
+      now.getMinutes(),
+      now.getSeconds()
+    );
   }
 
   var DAYS_IN_WEEK = 7;
@@ -18,10 +26,10 @@ define(['utils/isInt'], function(isInt) {
     }
 
     // Number of days in the given month
-    var daysInMonth = getDate(year, month + 1, 0).getUTCDate();
+    var daysInMonth = getDate(year, month + 1, 0).getDate();
 
     // Numeric representation of the day of the week
-    var monthStartDay = getDate(year, month, 1).getUTCDay();
+    var monthStartDay = getDate(year, month, 1).getDay();
 
     var day;
     var monthArr = [];

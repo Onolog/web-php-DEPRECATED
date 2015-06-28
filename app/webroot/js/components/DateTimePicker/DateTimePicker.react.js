@@ -28,19 +28,19 @@ define([
     displayName: 'DateTimePicker',
 
     propTypes: {
-      initialDate: React.PropTypes.instanceOf(Date),
+      defaultValue: React.PropTypes.instanceOf(Date),
       onChange: React.PropTypes.func
     },
 
     getDefaultProps: function() {
       return {
-        initialDate: new Date()
+        defaultValue: new Date()
       };
     },
 
     getInitialState: function() {
       return {
-        date: this.props.initialDate
+        date: this.props.defaultValue
       };
     },
 

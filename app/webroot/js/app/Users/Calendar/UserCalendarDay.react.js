@@ -45,6 +45,7 @@ define([
 
     render: function() {
       var dateObject = this.props.date;
+
       return (
         <BaseCalendarDay
           date={dateObject}
@@ -52,7 +53,7 @@ define([
           <div className="wrapper">
             <CalendarDate date={dateObject} />
             {this._renderWorkouts()}
-            <WorkoutAddButton dateObject={dateObject} />
+            <WorkoutAddButton date={dateObject} />
             {this._renderWeeklyTotal(dateObject)}
           </div>
         </BaseCalendarDay>
@@ -76,16 +77,15 @@ define([
     },
 
     _renderWeeklyTotal: function(dateObject) {
-      if (dateObject.getUTCDay() !== LAST_DAY_OF_WEEK) {
-        return null;
+      if (dateObject.getDay() === LAST_DAY_OF_WEEK) {
+        return (
+          <div className="total">
+            <span className="distance">
+              {formatDistance(this.props.weeklyMileage)}
+            </span> mi
+          </div>
+        );
       }
-      return (
-        <div className="total">
-          <span className="distance">
-            {formatDistance(this.props.weeklyMileage)}
-          </span> mi
-        </div>
-      );
     }
   });
 

@@ -100,10 +100,7 @@ define([
     },
 
     _onChange: function(/*Date*/ date) {
-      this.setState({
-        // date: date,
-        showCalendar: false
-      });
+      this.setState({showCalendar: false});
       this.props.onChange && this.props.onChange(date);
     }
   });

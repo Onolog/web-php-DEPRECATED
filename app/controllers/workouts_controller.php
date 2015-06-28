@@ -122,11 +122,11 @@ class WorkoutsController extends AppController {
           'action' => 'view',
           $this->Workout->id
         ));
-			} else {
-				$this->Session->setFlash(
-          __('Your workout could not be added. Please try again.', 1)
-        );
 			}
+
+			$this->Session->setFlash(
+        __('Your workout could not be added. Please try again.', 1)
+      );
 		}
 	}
 
@@ -135,28 +135,18 @@ class WorkoutsController extends AppController {
    * 
    * @param   int   $date   unix timestamp of the workout date
    */
-	public function ajax_add($date=null) {
+	public function ajax_add() {
     $this->setIsAjax();
     $response = new Response();
 
     $user = $this->requireLoggedInUser();
 
-    // If there's no date selected, default to today.
-    if (!$date) {
-      $date = time();
-    }
-
     // On form submission
 		if (!empty($this->data)) {
-		  // Add the user id and date to the data
-      $this->data['Workout']['date'] = $date;
-
       // Unset the placeholder ID
       unset($this->data['Workout']['id']);
-
       $this->formatWorkoutDataForWrite();
 
-      // Create the new workout and attempt to write to the DB
 			$this->Workout->create();
       if ($this->Workout->save($this->data)) {
 			  // Return the newly added workout in the response.

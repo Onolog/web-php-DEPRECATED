@@ -52,14 +52,17 @@ define([
     },
   
     render: function() {
+      if (!this.props.show) {
+        return <span />;
+      }
+
       return (
         <div
           className={cx({
-            'hidden': !this.props.show,
             'popover': true, 
             'fade': true,
             'bottom': true,
-            'in': this.props.show
+            'in': true
           })}>
           <div className="arrow"></div>
           <div className="popover-header DateInputCalendarControls">

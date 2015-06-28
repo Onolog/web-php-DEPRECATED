@@ -5,66 +5,48 @@
 define([
 
   'lib/react/react',
-
   'lib/react/jsx!app/Activities/Activity.react',  
   'lib/react/jsx!app/Workouts/WorkoutFields.react',
-  
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/LeftRight/LeftRight.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Modal/Modal.react',
-
   'actions/WorkoutActions',
-
   'constants/ActionTypes',
   'constants/Components',
   'constants/Workouts',
-
   'mixins/LayerMixin.react',
   'mixins/StoreMixin.react',
-
   'stores/AlertStore',
   'stores/WorkoutsStore',
-  'stores/WorkoutStore',
-
   'utils/DateTimeUtils',
-  'utils/formatDistance',
-  'utils/cakePHP'
+  'utils/formatDistance'
 
 ], function(
 
   React,
-
   Activity,
   WorkoutFields,
-
   Button,
   ButtonGroup,
   LeftRight,
   Link,
   Modal,
-
   WorkoutActions,
-
   ActionTypes,
   Components,
   Workouts,
-
   LayerMixin,
   StoreMixin,
-
   AlertStore,
   WorkoutsStore,
-  WorkoutStore,
   DateTimeUtils,
-  formatDistance,
-  cakePHP
+  formatDistance
 
 ) {
 
   var ALERT = Components.ALERT;
-  var ENDPOINT = Workouts.ENDPOINT;
 
   return React.createClass({
     displayName: 'WorkoutLink',
@@ -88,8 +70,7 @@ define([
     componentWillMount: function() {
       this.stores = [
         this.setStoreInfo(AlertStore, this._alertChanged),
-        this.setStoreInfo(WorkoutsStore, this._workoutsChanged),
-        this.setStoreInfo(WorkoutStore, this._workoutChanged)
+        this.setStoreInfo(WorkoutsStore, this._workoutsChanged)
       ];
     },
 
@@ -103,23 +84,6 @@ define([
         isEditing: AlertStore.getAlertTypeIsDanger(),
         isLoading: false
       });
-    },
-
-    /**
-     * When in a temporary state (adding or editing), use the workout store
-     */
-    _workoutChanged: function() {
-      var workout = WorkoutStore.getWorkout();
-      if (workout && workout.id === this.props.workout.id) {
-        this.setState({
-          isLoading: false,
-          workout: workout
-        });
-      } else {
-        this.setState({
-          workout: this.props.workout          
-        });
-      }
     },
 
     /**
@@ -187,7 +151,10 @@ define([
                 </div>
               </LeftRight>
             }>
-            <WorkoutFields workout={this.state.workout} />
+            <WorkoutFields
+              onChange={this._onChange}
+              workout={this.state.workout}
+            />
           </Modal>
         );
       }
@@ -256,6 +223,10 @@ define([
         isLoading: false,
         alert: null
       });
+    },
+
+    _onChange: function(workout) {
+      this.setState({workout: workout});
     },
 
     _onViewClick: function() {

@@ -14,9 +14,6 @@ define([
   'lib/react/jsx!components/Loader/Loader.react',
   'lib/react/jsx!components/Page/PageHeader.react',
   'lib/react/jsx!components/Panel/Panel.react',
-  'actions/WorkoutActions',
-  'constants/ActionTypes',
-  'stores/WorkoutStore',
   'utils/cx',
   'utils/dateToUnixTime'
 
@@ -29,9 +26,6 @@ define([
   Loader,
   PageHeader,
   Panel,
-  WorkoutActions,
-  ActionTypes,
-  WorkoutStore,
   cx,
   dateToUnixTime
 
@@ -55,42 +49,18 @@ define([
     },
 
     getInitialState: function() {
-      var workout = this.props.workout;
-      var date = (workout && workout.date) || dateToUnixTime(new Date());
-
       return {
-        isSaving: false,
-        workout: workout || {date: date}
+        isSaving: false
       };
     },
 
-    componentDidMount: function() {
-      WorkoutStore.bind(ActionTypes.CHANGE, this._workoutChanged);
-    },
-
-    componentWillUnmount: function() {
-      WorkoutStore.unbind(ActionTypes.CHANGE, this._workoutChanged);
-    },
-
-    _workoutChanged: function() {
-      var workout = WorkoutStore.getWorkout();
-      this.setState({
-        workout: workout
-      });
-    },
-
     render: function() {
-      var date = this.state.workout.date;
-
       return (
         <div>
           <PageHeader title={this._getTitle()} />
           <Panel footer={this._renderFooter()}>
             <form action={this._getFormAction()} method="POST" ref="form">
-              <WorkoutFields
-                date={date}
-                workout={this.state.workout}
-              />
+              <WorkoutFields workout={this.props.workout} />
             </form>
             <Loader
               background={true}
@@ -106,11 +76,11 @@ define([
 
     _getFormAction: function() {
       var isEditing = this.props.isEditing;
-      var workout = this.state.workout;
+      var workout = this.props.workout;
       return [
         '/workouts',
         isEditing ? 'edit' : 'add',
-        isEditing ? workout.id : workout.date
+        isEditing ? workout.id : ''
       ].join('/');
     },
 
@@ -147,7 +117,7 @@ define([
     _onSubmit: function() {
       this.setState({isSaving: true});
 
-      // Submit the form via /workouts/add
+      // Submit the form via normal /add or /edit endpoints.
       this.refs.form.getDOMNode().submit();
     }
 

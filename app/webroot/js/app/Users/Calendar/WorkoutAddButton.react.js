@@ -8,21 +8,16 @@ define([
   'lib/react/jsx!app/Workouts/WorkoutFields.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Modal/Modal.react',
-
   'actions/WorkoutActions',
-  'constants/ActionTypes',
   'constants/Workouts',
-
   'mixins/LayerMixin.react',
   'mixins/StoreMixin.react',
-
   'stores/AlertStore',
   'stores/DialogStore',
-  'stores/WorkoutStore',
-
   'utils/cakePHP',
   'utils/DateTimeUtils',
-  'utils/dateToUnixTime'
+  'utils/dateToUnixTime',
+  'lib/underscore/underscore'
 
 ], function(
 
@@ -31,23 +26,18 @@ define([
   Button,
   Modal,
   WorkoutActions,
-  ActionTypes,
-  Workouts,
-
+  WORKOUTS,
   LayerMixin,
   StoreMixin,
-
   AlertStore,
   DialogStore,
-  WorkoutStore,
-
   cakePHP,
   DateTimeUtils,
   dateToUnixTime
 
 ) {
 
-  var NEW_ID = Workouts.NEW_ID;
+  var NEW_ID = WORKOUTS.NEW_ID;
 
   return React.createClass({
     displayName: 'WorkoutAddButton',
@@ -58,7 +48,7 @@ define([
       /**
        * Date object for the given day
        */
-      dateObject: React.PropTypes.instanceOf(Date).isRequired,
+      date: React.PropTypes.instanceOf(Date).isRequired,
     },
 
     getInitialState: function() {
@@ -66,15 +56,14 @@ define([
         isLoading: false,
         alert: null,
         shown: false,
-        workoutData: this._getNewWorkout()
+        workout: this._getNewWorkout()
       };
     },
 
     componentWillMount: function() {
       this.stores = [
         this.setStoreInfo(AlertStore, this._alertChanged),
-        this.setStoreInfo(DialogStore, this._dialogChanged),
-        this.setStoreInfo(WorkoutStore, this._workoutChanged)
+        this.setStoreInfo(DialogStore, this._dialogChanged)
       ];
     },
 
@@ -89,20 +78,7 @@ define([
     },
 
     _dialogChanged: function() {
-      // TODO: Find some way to check which dialog this is, since we're
-      // in global scope here.
-      this.setState({
-        shown: DialogStore.getIsShown()
-      });
-    },
-
-    _workoutChanged: function() {
-      var workout = WorkoutStore.getWorkout();
-      if (workout && workout.id === NEW_ID) {
-        this.setState({
-          workoutData: workout
-        });
-      }
+      this.setState({shown: DialogStore.getIsShown()});
     },
 
     render: function() {
@@ -144,7 +120,10 @@ define([
               />
             </div>
           }>
-          <WorkoutFields workout={this.state.workoutData} />
+          <WorkoutFields
+            onChange={this._onChange}
+            workout={this._getNewWorkout()}
+          />
         </Modal>
       );
     },
@@ -154,34 +133,45 @@ define([
         alert: null,
         shown: !this.state.shown,
         isLoading: false,
-        workoutData: this._getNewWorkout()
+        workout: this._getNewWorkout()
       });
     },
 
     _onAddWorkoutClick: function(event) {
       this.setState({ isLoading: true });
-      WorkoutActions.add(this.state.workoutData);
+      WorkoutActions.add(this.state.workout);
     },
 
     _onCancel: function() {
-      var hasEdits = WorkoutStore.getHasEdits();
-      if (
-        !hasEdits ||
-        (hasEdits && confirm(
-          'Are you sure you want to close the dialog? Your workout will not ' +
-          'be saved'
-        ))
-      ) {
+      var hasEdits = _.isEqual(this._getNewWorkout(), this.state.workout);
+      var confirmed = confirm(
+        'Are you sure you want to close the dialog? Your changes will not ' +
+        'be saved.'
+      );
+
+      if (!hasEdits || (hasEdits && confirmed)) {
         this._toggleModal();
         WorkoutActions.cancel();
       }
     },
 
+    _onChange: function(/*object*/ workout) {
+      this.setState({workout: workout});
+    },
+
     _getNewWorkout: function() {
+      var date = this.props.date;
+      var now = new Date();
+
+      // Set time to match the current time.
+      date.setHours(
+        now.getHours(),
+        now.getMinutes(),
+        now.getSeconds()
+      );
+
       return {
-        // TODO: Make sure this doesn't conflict with datepicker in
-        // workout fields.
-        date: dateToUnixTime(this.props.dateObject),
+        date: dateToUnixTime(this.props.date),
         id: NEW_ID
       };
     }
