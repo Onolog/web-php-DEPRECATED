@@ -137,8 +137,8 @@ define([
     },
 
     _renderActivityShoes: function(/*number*/ shoeID) {
-      if (shoeID) {
-        var shoe = AllShoesStore.getItem(shoeID);
+      var shoe = AllShoesStore.getItem(shoeID);
+      if (shoe) {
         return (
           <ActivitySection title="Shoes" border={true}>
             {shoe.name}
