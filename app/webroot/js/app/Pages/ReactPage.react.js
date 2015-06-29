@@ -336,7 +336,7 @@ define([
 
     onLastMonthClick: function() {
       var date = cloneDate(this.state.calendarDate);
-      date.setUTCMonth(date.getUTCMonth() - 1);
+      date.setMonth(date.getMonth() - 1);
       this.setState({calendarDate: date});
     },
 
@@ -346,7 +346,7 @@ define([
 
     onNextMonthClick: function() {
       var date = cloneDate(this.state.calendarDate);
-      date.setUTCMonth(date.getUTCMonth() + 1);
+      date.setMonth(date.getMonth() + 1);
       this.setState({calendarDate: date});
     },
 
