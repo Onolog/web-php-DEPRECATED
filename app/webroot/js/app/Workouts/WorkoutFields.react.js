@@ -113,7 +113,7 @@ define([
             <DateTimePicker
               defaultValue={date}
               name={encodeName('date')}
-              onChange={this._onDateUpdate}
+              onChange={this._onDateChange}
             />
             <HiddenInput
               name={encodeName('start_date')}
@@ -188,8 +188,8 @@ define([
       this.props.onChange && this.props.onChange(workout);
     },
 
-    _onDateUpdate: function(/*Date*/ date) {
-      this._onUpdate({
+    _onDateChange: function(/*Date*/ date) {
+      this._onChange({
         target: {
           name: encodeName('date'),
           value: dateToUnixTime(date)
