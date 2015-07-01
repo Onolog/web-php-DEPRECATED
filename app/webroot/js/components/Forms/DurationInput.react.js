@@ -6,8 +6,8 @@ define([
   'lib/react/jsx!components/Forms/TextInput.react',
   'utils/joinClasses',
   'utils/pad',
-  'utils/range',
-  'lib/Moment/Moment'
+  'lib/Moment/Moment',
+  'lib/underscore/underscore'
 
 ], function(
 
@@ -17,7 +17,6 @@ define([
   TextInput,
   joinClasses,
   pad,
-  range,
   moment
 
 ) {
@@ -66,7 +65,7 @@ define([
             onChange={this._onChange}
             placeholder="hh"
             ref="hours"
-            values={range(0, 99)}
+            values={_.range(0, 100)}
           />
           :
           <ConstrainedTextInput
@@ -76,7 +75,7 @@ define([
             onChange={this._onChange}
             placeholder="mm"
             ref="minutes"
-            values={range(0, 59)}
+            values={_.range(0, 60)}
           />
           :
           <ConstrainedTextInput
@@ -86,7 +85,7 @@ define([
             onChange={this._onChange}
             placeholder="ss"
             ref="seconds"
-            values={range(0, 59)}
+            values={_.range(0, 60)}
           />
           <HiddenInput
             name={this.props.name}

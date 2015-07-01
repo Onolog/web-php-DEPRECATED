@@ -8,7 +8,7 @@ define([
   'utils/cx',
   'utils/dateToUnixTime',
   'utils/pad',
-  'utils/range'
+  'lib/underscore/underscore'
 
 ], function(
 
@@ -19,8 +19,7 @@ define([
   cloneDate,
   cx,
   dateToUnixTime,
-  pad,
-  range
+  pad
 
 ) {
 
@@ -66,7 +65,7 @@ define([
               format={formatter}
               maxLength={2}
               onChange={this._onHoursChange}
-              values={range(1, 12)}
+              values={_.range(1, 13)}
             />
             {':'}
             <ConstrainedTextInput
@@ -74,7 +73,7 @@ define([
               format={formatter}
               maxLength={2}
               onChange={this._onMinutesChange}
-              values={range(0, 59)}
+              values={_.range(0, 60)}
             />
             <ConstrainedTextInput
               className="meridiem"
