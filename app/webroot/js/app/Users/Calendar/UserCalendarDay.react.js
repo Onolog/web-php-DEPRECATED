@@ -5,8 +5,9 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!app/Users/Calendar/WorkoutAddButton.react',
+  'lib/react/jsx!app/Users/Calendar/WorkoutAddDialog.react',
   'lib/react/jsx!app/Users/Calendar/WorkoutLink.react',
+  'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Calendar/BaseCalendarDay.react',
   'lib/react/jsx!components/Calendar/CalendarDate.react',
   'utils/formatDistance'
@@ -14,8 +15,9 @@ define([
 ], function(
 
   React,
-  WorkoutAddButton,
+  WorkoutAddDialog,
   WorkoutLink,
+  Button,
   BaseCalendarDay,
   CalendarDate,
   formatDistance
@@ -53,7 +55,21 @@ define([
           <div className="wrapper">
             <CalendarDate date={dateObject} />
             {this._renderWorkouts()}
-            <WorkoutAddButton date={dateObject} />
+            <WorkoutAddDialog
+              date={dateObject}
+              trigger={
+                <Button
+                  glyph="plus"
+                  className="add"
+                  use="default"
+                  size="xsmall"
+                  tooltip={{
+                    title: 'Add workout',
+                    placement: 'right'
+                  }}
+                />
+              }
+            />
             {this._renderWeeklyTotal(dateObject)}
           </div>
         </BaseCalendarDay>

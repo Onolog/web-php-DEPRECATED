@@ -8,6 +8,7 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!app/Users/Calendar/UserCalendar.react',
+  'lib/react/jsx!app/Users/Calendar/WorkoutAddDialog.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Loader/Loader.react',
@@ -25,6 +26,7 @@ define([
 
   React,
   UserCalendar,
+  WorkoutAddDialog,
   Button,
   ButtonGroup,
   Loader,
@@ -111,31 +113,43 @@ define([
 
     _renderButtonGroup: function() {
       return (
-        <ButtonGroup>
-          <Button
-            className="monthArrow"
-            glyph="triangle-left"
-            tooltip={{
-              title: 'Last month'
-            }}
-            onClick={this._onLastMonthClick}
+        <div>
+          <WorkoutAddDialog
+            date={new Date()}
+            trigger={
+              <Button
+                glyph="plus"
+                label="New Activity"
+                use="primary"
+              />
+            }
           />
-          <Button
-            glyph="stop"
-            tooltip={{
-              title: 'This month'
-            }}
-            onClick={this._onThisMonthClick}
-          />
-          <Button
-            className="monthArrow"
-            glyph="triangle-right"
-            tooltip={{
-              title: 'Next month'
-            }}
-            onClick={this._onNextMonthClick}
-          />
-        </ButtonGroup>
+          <ButtonGroup>
+            <Button
+              className="monthArrow"
+              glyph="triangle-left"
+              tooltip={{
+                title: 'Last month'
+              }}
+              onClick={this._onLastMonthClick}
+            />
+            <Button
+              glyph="stop"
+              tooltip={{
+                title: 'This month'
+              }}
+              onClick={this._onThisMonthClick}
+            />
+            <Button
+              className="monthArrow"
+              glyph="triangle-right"
+              tooltip={{
+                title: 'Next month'
+              }}
+              onClick={this._onNextMonthClick}
+            />
+          </ButtonGroup>
+        </div>
       );
     },
 

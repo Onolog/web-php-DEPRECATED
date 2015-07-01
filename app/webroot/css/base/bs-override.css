@@ -46,7 +46,10 @@ h3 {
   border-radius: 3px 3px 0 0;
 }
 
-.btn + .btn {
+.btn + .btn,
+.btn + .btn-group,
+.btn-group + .btn,
+.btn-group + .btn-group {
   margin-left: 5px;
 }
 

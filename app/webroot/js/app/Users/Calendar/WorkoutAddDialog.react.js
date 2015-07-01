@@ -1,7 +1,3 @@
-/**
- * WorkoutAddButton.react
- * @jsx React.DOM
- */
 define([
 
   'lib/react/react',
@@ -39,8 +35,15 @@ define([
 
   var NEW_ID = WORKOUTS.NEW_ID;
 
+  /**
+   * WorkoutAddDialog.react
+   * @jsx React.DOM
+   *
+   * Takes a trigger prop and renders a dialog for adding workouts when that
+   * trigger is clicked.
+   */
   return React.createClass({
-    displayName: 'WorkoutAddButton',
+    displayName: 'WorkoutAddDialog',
 
     mixins: [LayerMixin, StoreMixin],
 
@@ -48,7 +51,8 @@ define([
       /**
        * Date object for the given day
        */
-      date: React.PropTypes.instanceOf(Date).isRequired
+      date: React.PropTypes.instanceOf(Date).isRequired,
+      trigger: React.PropTypes.object.isRequired
     },
 
     getInitialState: function() {
@@ -83,17 +87,9 @@ define([
 
     render: function() {
       return (
-        <Button
-          glyph="plus"
-          className="add"
-          use="default"
-          size="xsmall"
-          tooltip={{
-            title: 'Add workout',
-            placement: 'right'
-          }}
-          onClick={this._toggleModal}
-        />
+        React.addons.cloneWithProps(this.props.trigger, {
+          onClick: this._toggleModal
+        })
       );
     },
 
