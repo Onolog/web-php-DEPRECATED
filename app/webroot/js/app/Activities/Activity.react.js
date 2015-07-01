@@ -19,7 +19,7 @@ define([
   'lib/react/jsx!components/Navigation/TabbedSection.react',
   'lib/Autolinker.min',
   'constants/ActionTypes',
-  'stores/AllShoesStore',
+  'stores/ShoeStore',
   'utils/cx',
   'lib/jquery/jquery.min',
 
@@ -37,7 +37,7 @@ define([
   TabbedSection,
   Autolinker,
   ActionTypes,
-  AllShoesStore,
+  ShoeStore,
   cx
 
 ) {
@@ -58,7 +58,7 @@ define([
 
     componentWillMount: function() {
       // Load all shoes into the store.
-      AllShoesStore.getCollection();
+      ShoeStore.getCollection();
     },
 
     componentDidMount: function() {
@@ -68,15 +68,15 @@ define([
         this._setOrientation();
       }.bind(this));
 
-      AllShoesStore.bind(ActionTypes.CHANGE, this._setShoes);
+      ShoeStore.bind(ActionTypes.CHANGE, this._setShoes);
     },
 
     componentWillUnmount: function() {
-      AllShoesStore.unbind(ActionTypes.CHANGE, this._setShoes);
+      ShoeStore.unbind(ActionTypes.CHANGE, this._setShoes);
     },
 
     _setShoes: function() {
-      this.setState({shoes: AllShoesStore.getCollection()});
+      this.setState({shoes: ShoeStore.getCollection()});
     },
 
     render: function() {
@@ -137,7 +137,7 @@ define([
     },
 
     _renderActivityShoes: function(/*number*/ shoeID) {
-      var shoe = AllShoesStore.getItem(shoeID);
+      var shoe = ShoeStore.getItem(shoeID);
       if (shoe) {
         return (
           <ActivitySection title="Shoes" border={true}>

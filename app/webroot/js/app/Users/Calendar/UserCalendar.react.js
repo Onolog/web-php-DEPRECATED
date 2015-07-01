@@ -5,14 +5,9 @@
 define([
 
   'lib/react/react',
-
   'lib/react/jsx!app/Users/Calendar/UserCalendarDay.react',
   'lib/react/jsx!components/Calendar/BaseCalendar.react',
   'lib/react/jsx!components/Calendar/BaseCalendarWeek.react',
-
-  'stores/AlertStore',
-  'stores/WorkoutsStore',
-
   'utils/calendarGrid',
   'utils/isSameDay',
   'utils/unixTimeToDate'
@@ -20,14 +15,9 @@ define([
 ], function(
 
   React,
-
   UserCalendarDay,
   BaseCalendar,
   BaseCalendarWeek,
-
-  AlertStore,
-  WorkoutsStore,
-
   calendarGrid,
   isSameDay,
   unixTimeToDate

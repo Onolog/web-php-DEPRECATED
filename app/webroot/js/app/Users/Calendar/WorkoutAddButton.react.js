@@ -143,15 +143,14 @@ define([
     },
 
     _onCancel: function() {
-      var hasEdits = _.isEqual(this._getNewWorkout(), this.state.workout);
-      var confirmed = confirm(
+      var hasEdits = !_.isEqual(this._getNewWorkout(), this.state.workout);
+      var confirmed = hasEdits && confirm(
         'Are you sure you want to close the dialog? Your changes will not ' +
         'be saved.'
       );
 
-      if (!hasEdits || (hasEdits && confirmed)) {
+      if (!hasEdits || confirmed) {
         this._toggleModal();
-        WorkoutActions.cancel();
       }
     },
 

@@ -1,50 +1,52 @@
-/**
- * WorkoutStore
- *
- * Keeps track of a single workout. Used when adding or editing a workout,
- * for example.
- *
- * NOTE: Not to be confused with WorkoutsStore (plural).
- */
-
 define([
 
-  'constants/ActionTypes',
   'dispatcher/AppDispatcher',
   'lib/MicroEvent/microevent',
-  'lib/jquery/jquery.min'
+  'constants/ActionTypes',
+  'lib/underscore/underscore'
 
 ], function(
 
-  ActionTypes,
   AppDispatcher,
-  MicroEvent
+  MicroEvent,
+  ActionTypes
 
 ) {
 
-  var _workout;
-  var _initialWorkout;
+  var _collection = [];
+  var _cache = [];
 
-  function _resetData() {
-    _workout = null;
-    _initialWorkout = null;
-  }
-
-  function _copy(obj) {
-    return $.extend(true, {}, obj);
-  }
-  _resetData();
-
+  /**
+   * WorkoutStore
+   *
+   * Keeps track of all workouts loaded for a particular view.
+   *
+   * NOTE: We're currently loading the workouts into the store from the view.
+   * It may be better to do this from the store directly.
+   */
   var WorkoutStore = {
-    /**
-     * Check whether or not the workout has been modified
-     */
-    getHasEdits: function() {
-      return JSON.stringify(_workout) !== JSON.stringify(_initialWorkout);
+
+    getCollection: function() {
+      return _collection;
     },
 
-    getWorkout: function() {
-      return _workout;
+    getItem: function(/*number*/ itemId) {
+      var item = _.find(_collection, function(item) {
+        return item.id === itemId;
+      });
+
+      if (!item) {
+        WorkoutActions.view(itemID);
+      }
+      return item;
+    },
+
+    /**
+     * Checks whether all the workout data has already been fetched from the
+     * server and stored.
+     */
+    getIsCached: function(/*number*/ itemId) /*bool*/ {
+      return _.indexOf(_cache, itemId) !== -1;
     }
   };
 
@@ -52,30 +54,30 @@ define([
 
   AppDispatcher.register(function(payload) {
     switch(payload.eventName) {
-      case ActionTypes.WORKOUT_INIT:
-        _workout = _copy(payload.workout);
-        _initialWorkout = _copy(payload.workout);
-        break;
-
-      case ActionTypes.WORKOUT_UPDATE:
-        var field = payload.field;
-        var value = payload.value;
-
-        _workout[field] = value;
-        if (!value || ($.isArray(value) && !value.length)) {
-          // Remove null values
-          delete _workout[field];
-        }
+      case ActionTypes.WORKOUTS_FETCH:
+        _collection = payload.data;
         WorkoutStore.trigger(ActionTypes.CHANGE);
         break;
 
       case ActionTypes.WORKOUT_ADD:
-      case ActionTypes.WORKOUT_CANCEL:
-      case ActionTypes.WORKOUT_EDIT:
+        _collection.push(payload.data);
+        WorkoutStore.trigger(ActionTypes.CHANGE);
+        break;
+
       case ActionTypes.WORKOUT_DELETE:
-        // Whenever a successful action has been taken, or the action was
-        // cancelled, reset the data.
-        _resetData();
+        _collection = _collection.filter(function(item) {
+          return item.id !== payload.data;
+        });
+        WorkoutStore.trigger(ActionTypes.CHANGE);
+        break;
+
+      case ActionTypes.WORKOUT_UPDATE:
+      case ActionTypes.WORKOUT_VIEW:
+        var itemId = payload.data.id;
+        _collection = _collection.map(function(item) {
+          return item.id === itemId ? payload.data : item;
+        });
+        _cache.push(itemId);
         WorkoutStore.trigger(ActionTypes.CHANGE);
         break;
     }

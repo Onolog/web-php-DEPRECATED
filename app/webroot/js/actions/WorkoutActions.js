@@ -27,13 +27,6 @@ define([
 
   return {
 
-    initWorkout: function(workoutData) {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUT_INIT,
-        workout: workoutData
-      });
-    },
-
     add: function(workout) {
       // Add the new workout to the DB
       $.ajax({
@@ -55,12 +48,6 @@ define([
 
     onAddError: function(response) {
       ActionUtils.onError(response, ActionTypes.WORKOUT_ADD_ERROR);
-    },
-
-    cancel: function() {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUT_CANCEL
-      });
     },
 
     delete: function(workoutID) {
@@ -85,24 +72,6 @@ define([
       ActionUtils.onError(response, ActionTypes.WORKOUT_DELETE_ERROR);
     },
 
-    startEditWorkout: function(workoutData) {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUT_INIT,
-        workoutData: workoutData
-      });
-    },
-
-    /**
-     * Updates the temporary state of a workout, whie editing or adding.
-     */
-    update: function(/*string*/ field, /*?any*/ value) {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.WORKOUT_UPDATE,
-        field: field,
-        value: value
-      });
-    },
-
     /**
      * Save an edited workout to the DB
      */
@@ -119,13 +88,13 @@ define([
     onSaveSuccess: function(/*string*/ response) {
       ActionUtils.onSuccess(
         response,
-        ActionTypes.WORKOUT_EDIT,
-        ActionTypes.WORKOUT_EDIT_ERROR
+        ActionTypes.WORKOUT_UPDATE,
+        ActionTypes.WORKOUT_UPDATE_ERROR
       );
     },
 
     onSaveError: function(/*string|object*/ response) {
-      ActionUtils.onError(response, ActionTypes.WORKOUT_EDIT_ERROR);
+      ActionUtils.onError(response, ActionTypes.WORKOUT_UPDATE_ERROR);
     },
 
     view: function(workoutID) {

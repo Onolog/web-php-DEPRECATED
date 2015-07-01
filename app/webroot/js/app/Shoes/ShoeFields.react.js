@@ -10,11 +10,9 @@ define([
   'lib/react/jsx!app/Shoes/BrandSelector.react',
   'lib/react/jsx!components/Forms/FormGroup.react',
   'lib/react/jsx!components/Forms/TextInput.react',
+  'utils/cakePHP',
 
-  'actions/ShoeActions',
-  'constants/Shoes',
-  'stores/ShoeStore',
-  'utils/cakePHP'
+  'lib/underscore/underscore'
 
 ], function(
 
@@ -22,16 +20,16 @@ define([
   BrandSelector,
   FormGroup,
   TextInput,
-
-  ShoeActions,
-  SHOES,
-  ShoeStore,
   cakePHP
 
 ) {
 
-  var FORM_NAME = SHOES.FORM_NAME;
   var FIELD_INACTIVE = 'inactive';
+  var FORM_NAME = 'Shoe';
+
+  function encodeName(name) {
+    return cakePHP.encodeFormFieldName(name, FORM_NAME);
+  }
 
   return React.createClass({
     displayName: 'ShoeFields',
@@ -48,26 +46,33 @@ define([
 
     getDefaultProps: function() {
       return {
-        shoe: null
+        shoe: {}
+      };
+    },
+
+    getInitialState: function() {
+      return {
+        shoe: this.props.shoe
       };
     },
 
     render: function() {
-      var shoe = this.props.shoe;
+      var shoe = this.state.shoe;
+
       return (
         <div className="form-horizontal workoutForm">
           <FormGroup label="Brand" className="time">
             <BrandSelector
-              defaultValue={shoe && shoe.brand_id}
-              name={cakePHP.encodeFormFieldName('brand_id', FORM_NAME)}
-              onChange={this._onUpdate}
+              defaultValue={shoe.brand_id}
+              name={encodeName('brand_id')}
+              onChange={this._onChange}
             />
           </FormGroup>
           <FormGroup label="Model">
             <TextInput
-              defaultValue={shoe && shoe.model}
-              name={cakePHP.encodeFormFieldName('model', FORM_NAME)}
-              onChange={this._onUpdate}
+              defaultValue={shoe.model}
+              name={encodeName('model')}
+              onChange={this._onChange}
               ref="distance"
             />
           </FormGroup>
@@ -76,21 +81,20 @@ define([
       );
     },
 
-    /**
-     * Don't render this input when creating a new shoe, since we'll assume
-     * that all newly created shoes are active.
-     */
     _renderInactiveCheckbox: function() {
-      var shoe = this.props.shoe;
-      if (shoe) {
+      // Don't render this input when creating a new shoe, since we assume
+      // that all newly created shoes are active. Check props, which is the
+      // initial state, rather than state.
+      var shoe = this.props.shoe
+      if (!_.isEmpty(shoe)) {
         return (
           <FormGroup>
             <div className="checkbox">
               <label>
                 <input
                   defaultChecked={!!shoe.inactive}
-                  name={cakePHP.encodeFormFieldName(FIELD_INACTIVE, FORM_NAME)}
-                  onChange={this._onUpdate}
+                  name={encodeName(FIELD_INACTIVE)}
+                  onChange={this._onChange}
                   type="checkbox"
                 />
                 Inactive
@@ -101,12 +105,7 @@ define([
       }
     },
 
-    _onCheckboxUpdate: function() {
-
-      this._onUpdate();
-    },
-
-    _onUpdate: function(event) {
+    _onChange: function(event) {
       var field = cakePHP.decodeFormFieldName(event.target.name);
       var value = event.target.value;
 
@@ -114,9 +113,12 @@ define([
         value = +event.target.checked;
       }
 
-      ShoeActions.update(field, value);
-    }
+      var shoe = _.extend({}, this.state.shoe);
+      shoe[field] = value;
 
+      this.setState({shoe: shoe});
+      this.props.onChange && this.props.onChange(shoe);
+    }
   });
 
 });

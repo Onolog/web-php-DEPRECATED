@@ -37,8 +37,10 @@ define([
 
 ) {
 
+  var FORM_NAME = 'Workout';
+
   function encodeName(name) {
-    return cakePHP.encodeFormFieldName(name, 'Workout');
+    return cakePHP.encodeFormFieldName(name, FORM_NAME);
   }
 
   /**
@@ -89,7 +91,7 @@ define([
               className="distanceInput"
               defaultValue={workout.distance}
               name={encodeName('distance')}
-              onChange={this._onUpdate}
+              onChange={this._onChange}
               ref="distance"
             />
             <span className="colon">miles</span>
@@ -100,7 +102,7 @@ define([
               className="timeInput"
               duration={workout.time}
               name={encodeName('time')}
-              onChange={this._onUpdate}
+              onChange={this._onChange}
             />
         		<span className="colon">
         		  {this.state.pace} per mile
@@ -129,7 +131,7 @@ define([
               defaultValue={workout.avg_hr}
               maxLength={3}
               name={encodeName('avg_hr')}
-              onChange={this._onUpdate}
+              onChange={this._onChange}
             />
             <span className="colon">bpm</span>
           </FormGroup>
@@ -138,7 +140,7 @@ define([
             <ShoeSelector
               defaultValue={workout.shoe_id}
               name={encodeName('shoe_id')}
-              onChange={this._onUpdate}
+              onChange={this._onChange}
             />
           </FormGroup>
 
@@ -146,7 +148,7 @@ define([
             <FBFriendTokenizer
               friends={workout.friends}
               name={encodeName('friends')}
-              onChange={this._onUpdate}
+              onChange={this._onChange}
             />
           </FormGroup>
 
@@ -155,7 +157,7 @@ define([
               className="notes"
               defaultValue={workout.notes}
               name={encodeName('notes')}
-              onChange={this._onUpdate}
+              onChange={this._onChange}
               placeholder="Add some details about your activity..."
               rows="6"
             />
@@ -164,7 +166,7 @@ define([
       );
     },
 
-    _onUpdate: function(event) {
+    _onChange: function(event) {
       var field = cakePHP.decodeFormFieldName(event.target.name);
       var value = event.target.value;
 

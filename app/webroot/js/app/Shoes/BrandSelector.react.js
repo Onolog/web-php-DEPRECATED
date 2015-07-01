@@ -10,7 +10,7 @@ define([
   'lib/react/jsx!components/Forms/TextInput.react',
   'lib/react/jsx!components/Select/Select.react',
   'mixins/StoreMixin.react',
-  'stores/BrandsStore'
+  'stores/BrandStore'
 
 ], function(
 
@@ -18,7 +18,7 @@ define([
   TextInput,
   Select,
   StoreMixin,
-  BrandsStore
+  BrandStore
 
 ) {
 
@@ -29,14 +29,14 @@ define([
 
     componentWillMount: function() {
       this.stores = [
-        this.setStoreInfo(BrandsStore, this._setBrands)
+        this.setStoreInfo(BrandStore, this._setBrands)
       ];
 
       this._setBrands();
     },
 
     _setBrands: function() {
-      this.setState({brands: BrandsStore.getItems()});
+      this.setState({brands: BrandStore.getCollection()});
     },
 
     render: function() {

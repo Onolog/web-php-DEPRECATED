@@ -39,14 +39,14 @@ define([
     switch(payload.eventName) {
       case ActionTypes.WORKOUT_ADD:
       case ActionTypes.WORKOUT_DELETE:
-      case ActionTypes.WORKOUT_EDIT:
+      case ActionTypes.WORKOUT_UPDATE:
         _alertType = ALERT.SUCCESS;
         AlertStore.trigger(ActionTypes.CHANGE);
         break;
 
       case ActionTypes.WORKOUT_ADD_ERROR:
       case ActionTypes.WORKOUT_DELETE_ERROR:
-      case ActionTypes.WORKOUT_EDIT_ERROR:
+      case ActionTypes.WORKOUT_UPDATE_ERROR:
       case ActionTypes.WORKOUT_VIEW_ERROR:
         _alertType = ALERT.DANGER;
         AlertStore.trigger(ActionTypes.CHANGE);

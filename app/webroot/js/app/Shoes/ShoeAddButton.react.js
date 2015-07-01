@@ -11,16 +11,12 @@ define([
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Modal/Modal.react',
-
   'mixins/LayerMixin.react',
   'mixins/StoreMixin.react',
-
   'actions/ShoeActions',
-  'constants/Shoes',
-  'stores/AllShoesStore',
-  'stores/ShoeStore',
-
-  'utils/cx'
+  'stores/DialogStore',
+  'utils/cx',
+  'lib/underscore/underscore'
 
 ], function(
 
@@ -29,15 +25,10 @@ define([
   Button,
   Link,
   Modal,
-
   LayerMixin,
   StoreMixin,
-
   ShoeActions,
-  SHOES,
-  AllShoesStore,
-  ShoeStore,
-
+  DialogStore,
   cx
 
 ) {
@@ -50,39 +41,20 @@ define([
     getInitialState: function() {
       return {
         isLoading: false,
-        shoe: null,
+        shoe: {},
         shown: false
       };
     },
 
     componentWillMount: function() {
       this.stores = [
-        this.setStoreInfo(ShoeStore, this._shoeChanged)
+        this.setStoreInfo(DialogStore, this._onDialogChange)
       ];
     },
 
-    _shoeChanged: function() {
-      var shoe = ShoeStore.getData();
-
-      // Since Stores are in the global space, the update may have come from
-      // another component, probably in the `edit` state. Therefore, check to
-      // make sure the update is coming from this component. If the shoe already
-      // has an ID, then by definition it isn't new, and we should ignore it.
-      if (shoe && !shoe.id) {
-        // When data in the ShoeStore gets reset, it means an action was
-        // taken that calls for closing the dialog.
-        var closeDialog = (
-          this.state.shoe &&
-          !!Object.keys(this.state.shoe).length &&
-          shoe &&
-          !Object.keys(shoe).length
-        );
-
-        if (closeDialog) {
-          this._toggleModal();
-        } else {
-          this.setState({shoe: shoe});
-        }
+    _onDialogChange: function() {
+      if (!DialogStore.getIsShown()) {
+        this.setState(this.getInitialState());
       }
     },
 
@@ -90,7 +62,7 @@ define([
       return (
         <Button
           glyph="plus"
-          onClick={this._toggleModal}
+          onClick={this._openModal}
           label="New Shoe"
         />
       );
@@ -100,7 +72,7 @@ define([
       return (
         <Modal
           alert={this.state.alert}
-          onRequestClose={this._onCancel}
+          onRequestClose={this._closeModal}
           isLoading={this.state.isLoading}
           shown={this.state.shown}
           size="small"
@@ -110,7 +82,7 @@ define([
               <Button
                 label="Cancel"
                 disabled={this.state.isLoading}
-                onClick={this._onCancel}
+                onClick={this._closeModal}
               />
               <Button
                 label="Add Shoe"
@@ -120,22 +92,29 @@ define([
               />
             </div>
           }>
-          <ShoeFields />
+          <ShoeFields onChange={this._onChange} />
         </Modal>
       );
     },
 
-    _toggleModal: function() {
+    _openModal: function() {
+      this.setState({shown: true});
+    },
+
+    _closeModal: function() {
       if (!this.isMounted()) {
-        // Deleting the shoe unmounts the component
         return;
       }
 
-      this.setState({
-        isLoading: false,
-        shoe: null,
-        shown: !this.state.shown
-      });
+      var hasEdits = !_.isEqual({}, this.state.shoe);
+      var confirmed = hasEdits && confirm(
+        'Are you sure you want to close the dialog? Your changes will not ' +
+        'be saved'
+      );
+
+      if (!hasEdits || confirmed) {
+        this.setState(this.getInitialState());
+      }
     },
 
     _onAddShoeClick: function(event) {
@@ -143,18 +122,8 @@ define([
       ShoeActions.add(this.state.shoe);
     },
 
-    _onCancel: function() {
-      var hasEdits = ShoeStore.getHasEdits();
-      if (
-        !hasEdits ||
-        (hasEdits && confirm(
-          'Are you sure you want to close the dialog? Your workout will not ' +
-          'be saved'
-        ))
-      ) {
-        this._toggleModal();
-        ShoeActions.cancel();
-      }
+    _onChange: function(shoe) {
+      this.setState({shoe: shoe});
     }
   });
 

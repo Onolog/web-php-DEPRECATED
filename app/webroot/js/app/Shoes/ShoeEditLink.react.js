@@ -12,13 +12,10 @@ define([
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Modal/Modal.react',
-
   'mixins/LayerMixin.react',
   'mixins/StoreMixin.react',
-
   'actions/ShoeActions',
-  'stores/ShoeStore',
-
+  'stores/DialogStore',
   'utils/cx'
 
 ], function(
@@ -29,13 +26,10 @@ define([
   Button,
   Link,
   Modal,
-
   LayerMixin,
   StoreMixin,
-
   ShoeActions,
-  ShoeStore,
-
+  DialogStore,
   cx
 
 ) {
@@ -59,24 +53,13 @@ define([
 
     componentWillMount: function() {
       this.stores = [
-        this.setStoreInfo(ShoeStore, this._shoeChanged)
+        this.setStoreInfo(DialogStore, this._onDialogChange)
       ];
     },
 
-    _shoeChanged: function() {
-      var shoe = ShoeStore.getData();
-      if (shoe && shoe.id === this.props.initialShoe.id) {
-        this.setState({
-          isLoading: false,
-          shoe: shoe
-        });
-      } else if (shoe && !shoe.id) {
-        // There was either a cancel or successful edit action
-        this.setState({
-          isLoading: false,
-          shoe: this.props.initialShoe,
-          shown: false
-        });
+    _onDialogChange: function() {
+      if (!DialogStore.getIsShown()) {
+        this._closeModal();
       }
     },
 
@@ -96,14 +79,14 @@ define([
           isLoading={this.state.isLoading}
           shown={this.state.shown}
           size="small"
-          onRequestClose={this._toggleModal}
+          onRequestClose={this._closeModal}
           title={shoe.name}
           footer={
             <div>
               <Button
                 label="Cancel"
                 disabled={this.state.isLoading}
-                onClick={this._onCancel}
+                onClick={this._closeModal}
               />
               <Button
                 label="Update Shoe"
@@ -113,45 +96,41 @@ define([
               />
             </div>
           }>
-          <ShoeFields shoe={shoe} />
+          <ShoeFields
+            onChange={this._onChange}
+            shoe={shoe}
+          />
         </Modal>
       );
     },
 
-    _toggleModal: function() {
+    _closeModal: function() {
       if (!this.isMounted()) {
-        // Deleting the shoe unmounts the component
         return;
       }
 
-      this.setState({
-        isLoading: false,
-        shown: !this.state.shown
-      });
+      var hasEdits = !_.isEqual(this.props.initialShoe, this.state.shoe);
+      var confirmed = hasEdits && confirm(
+        'Are you sure you want to close the dialog? Your changes will not ' +
+        'be saved'
+      );
+
+      if (!hasEdits || confirmed) {
+        this.setState(this.getInitialState());
+      }
     },
 
     _onEdit: function() {
-      this._toggleModal();
-      ShoeStore.setData(this.state.shoe);
+      this.setState({shown: true});
     },
 
     _onSave: function() {
-      this.setState({ isLoading: true });
+      this.setState({isLoading: true});
       ShoeActions.save(this.state.shoe);
     },
 
-    _onCancel: function() {
-      var hasEdits = ShoeStore.getHasEdits();
-      if (
-        !hasEdits ||
-        (hasEdits && confirm(
-          'Are you sure you want to close the dialog? Your workout will not ' +
-          'be saved'
-        ))
-      ) {
-        this._toggleModal();
-        ShoeActions.cancel();
-      }
+    _onChange: function(shoe) {
+      this.setState({shoe: shoe});
     }
   });
 

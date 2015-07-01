@@ -16,7 +16,7 @@ define([
 
   'actions/CalendarActions',
   'constants/ActionTypes',
-  'stores/WorkoutsStore',
+  'stores/WorkoutStore',
   'utils/cloneDate',
   'utils/cx',
   'utils/DateTimeUtils'
@@ -33,7 +33,7 @@ define([
 
   CalendarActions,
   ActionTypes,
-  WorkoutsStore,
+  WorkoutStore,
   cloneDate,
   cx,
   DateTimeUtils
@@ -72,16 +72,16 @@ define([
     },
 
     componentDidMount: function() {
-      WorkoutsStore.bind(ActionTypes.CHANGE, this._workoutsChanged);
+      WorkoutStore.bind(ActionTypes.CHANGE, this._workoutsChanged);
     },
 
     componentWillUnmount: function() {
-      WorkoutsStore.unbind(ActionTypes.CHANGE, this._workoutsChanged);
+      WorkoutStore.unbind(ActionTypes.CHANGE, this._workoutsChanged);
     },
 
     _workoutsChanged: function() {
       this.setState({
-        workouts: WorkoutsStore.getWorkouts()
+        workouts: WorkoutStore.getCollection()
       });
     },
 

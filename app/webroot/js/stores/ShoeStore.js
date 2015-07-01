@@ -1,53 +1,44 @@
-/**
- * ShoeStore.js
- *
- * Keeps track of data for a single shoe. Used when adding, deleting, editing,
- * or viewing a particular shoe.
- */
-
 define([
 
+  'actions/ShoeActions',
   'constants/ActionTypes',
   'dispatcher/AppDispatcher',
   'lib/MicroEvent/microevent',
-  'lib/jquery/jquery.min'
+  'lib/underscore/underscore'
 
 ], function(
 
+  ShoeActions,
   ActionTypes,
   AppDispatcher,
   MicroEvent
 
 ) {
 
-  var _item;
-  var _initialItem;
+  var _collection;
 
-  function _resetItem() {
-    _item = {};
-    _initialItem = {};
-  }
-
-  function _copy(obj) {
-    return $.extend(true, {}, obj);
-  }
-  _resetItem();
-
+  /**
+   * ShoeStore
+   */
   var ShoeStore = {
-    /**
-     * Check whether or not the shoe has been modified
-     */
-    getHasEdits: function() {
-      return JSON.stringify(_item) !== JSON.stringify(_initialItem);
+
+    getCollection: function() {
+      if (!_collection) {
+        ShoeActions.fetch();
+        return [];
+      }
+      return _collection;
     },
 
-    getData: function() {
-      return _item;
-    },
+    getItem: function(/*number*/ itemID) {
+      var item = _.find(_collection, function(item) {
+        return item.id === itemID;
+      });
 
-    setData: function(item) {
-      _item = _copy(item);
-      _initialItem = _copy(item);
+      if (!item) {
+        ShoeActions.view(itemID);
+      }
+      return item;
     }
   };
 
@@ -55,30 +46,30 @@ define([
 
   AppDispatcher.register(function(payload) {
     switch(payload.eventName) {
-      case ActionTypes.SHOE_VIEW:
-        _item = _copy(payload.data);
-        _initialItem = _copy(payload.data);
-        ShoeStore.trigger(ActionTypes.CHANGE);
-        break;
 
-      case ActionTypes.SHOE_UPDATE:
-        var field = payload.field;
-        var value = payload.value;
-
-        _item[field] = value;
-        if (value == null || ($.isArray(value) && !value.length)) {
-          // Remove null values
-          delete _item[field];
-        }
+      case ActionTypes.ALL_SHOES_FETCH:
+        _collection = payload.data;
         ShoeStore.trigger(ActionTypes.CHANGE);
         break;
 
       case ActionTypes.SHOE_ADD:
-      case ActionTypes.SHOE_CANCEL:
-      case ActionTypes.SHOE_EDIT:
+        _collection.push(payload.data);
+        ShoeStore.trigger(ActionTypes.CHANGE);
+        break;
+
       case ActionTypes.SHOE_DELETE:
-        // Reset data when adding/deleting an item, or cancelling an action
-        _resetItem();
+        _collection = _collection.filter(function(item) {
+          return item.id !== payload.data;
+        });
+        ShoeStore.trigger(ActionTypes.CHANGE);
+        break;
+
+      case ActionTypes.SHOE_UPDATE:
+      case ActionTypes.SHOE_VIEW:
+        var itemID = payload.data.id;
+        _collection = _collection.map(function(item) {
+          return item.id === itemID ? payload.data : item;
+        });
         ShoeStore.trigger(ActionTypes.CHANGE);
         break;
     }

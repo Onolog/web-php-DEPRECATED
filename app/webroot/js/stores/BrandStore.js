@@ -1,16 +1,9 @@
-/**
- * BrandsStore
- *
- * Stores the different brands of shoes
- */
-
 define([
 
   'actions/BrandActions',
   'dispatcher/AppDispatcher',
   'lib/MicroEvent/microevent',
-  'constants/ActionTypes',
-  'lib/jquery/jquery.min'
+  'constants/ActionTypes'
 
 ], function(
 
@@ -23,8 +16,13 @@ define([
 
   var _items;
 
-  var BrandsStore = {
-    getItems: function() {
+  /**
+   * BrandStore
+   *
+   * Stores the different brands of shoes
+   */
+  var BrandStore = {
+    getCollection: function() {
       if (!_items) {
         BrandActions.fetch();
         return [];
@@ -33,25 +31,25 @@ define([
       return _items;
     },
 
-    getItemByID: function(/*number*/ itemID) {
+    getItem: function(/*number*/ itemID) {
       return _items.filter(function(item) {
         return +item.id === +itemID
       })[0];
     }
   };
 
-  MicroEvent.mixin(BrandsStore);
+  MicroEvent.mixin(BrandStore);
 
   AppDispatcher.register(function(payload) {
     switch(payload.eventName) {
       case ActionTypes.BRANDS_FETCH:
         _items = payload.data;
-        BrandsStore.trigger(ActionTypes.CHANGE);
+        BrandStore.trigger(ActionTypes.CHANGE);
         break;
     }
     return true;
   });
 
-  return BrandsStore;
+  return BrandStore;
 
 });

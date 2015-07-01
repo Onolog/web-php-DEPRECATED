@@ -17,10 +17,6 @@ define({
   WORKOUT_ADD: 'workout-add',
   WORKOUT_ADD_ERROR: 'workout-add-error',
 
-  // Canceling an action
-  SHOE_CANCEL: 'shoe-cancel',
-  WORKOUT_CANCEL: 'workout-cancel',
-
   // Deleting an item
   SHOE_DELETE: 'shoe-delete',
   SHOE_DELETE_ERROR: 'shoe-delete-error',
@@ -28,18 +24,10 @@ define({
   WORKOUT_DELETE_ERROR: 'workout-delete-error',
 
   // Editing an item
-  SHOE_EDIT: 'shoe-edit',
-  SHOE_EDIT_ERROR: 'shoe-edit-error',
-  WORKOUT_EDIT: 'workout-edit',
-  WORKOUT_EDIT_ERROR: 'workout-edit-error',
-
-  // TODO: Is there a better way to handle this action?
-  SHOE_INIT: 'shoe-init',
-  WORKOUT_INIT: 'workout-init',
-
-  // Updating the store's local state of an item
   SHOE_UPDATE: 'shoe-update',
+  SHOE_UPDATE_ERROR: 'shoe-update-error',
   WORKOUT_UPDATE: 'workout-update',
+  WORKOUT_UPDATE_ERROR: 'workout-update-error',
 
   // Fetching the data for a single item
   SHOE_VIEW: 'shoe-view',

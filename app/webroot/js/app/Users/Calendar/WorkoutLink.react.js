@@ -19,9 +19,10 @@ define([
   'mixins/LayerMixin.react',
   'mixins/StoreMixin.react',
   'stores/AlertStore',
-  'stores/WorkoutsStore',
+  'stores/WorkoutStore',
   'utils/DateTimeUtils',
-  'utils/formatDistance'
+  'utils/formatDistance',
+  'lib/underscore/underscore'
 
 ], function(
 
@@ -40,7 +41,7 @@ define([
   LayerMixin,
   StoreMixin,
   AlertStore,
-  WorkoutsStore,
+  WorkoutStore,
   DateTimeUtils,
   formatDistance
 
@@ -63,14 +64,14 @@ define([
         isEditing: false,
         isLoading: false,
         shown: false,
-        workout: this.props.workout
+        workout: WorkoutStore.getItem(this.props.workout.id)
       };
     },
 
     componentWillMount: function() {
       this.stores = [
         this.setStoreInfo(AlertStore, this._alertChanged),
-        this.setStoreInfo(WorkoutsStore, this._workoutsChanged)
+        this.setStoreInfo(WorkoutStore, this._workoutsChanged)
       ];
     },
 
@@ -86,17 +87,12 @@ define([
       });
     },
 
-    /**
-     * When fetching or writing data, use WorkoutsStore, which holds all the
-     * workouts for the view.
-     */
     _workoutsChanged: function() {
       // After the workout is deleted, this callback will fire.
       if (this.isMounted()) {
-        var workout = WorkoutsStore.getWorkoutByID(this.props.workout.id);
         this.setState({
           isLoading: false,
-          workout: workout
+          workout: WorkoutStore.getItem(this.props.workout.id)
         });
       }
     },
@@ -124,7 +120,7 @@ define([
             isLoading={isLoading}
             alert={this.state.alert}
             shown={this.state.shown}
-            onRequestClose={this._toggleModal}
+            onRequestClose={this._closeModal}
             title="Edit Activity"
             footer={
               <LeftRight>
@@ -158,71 +154,70 @@ define([
           </Modal>
         );
       }
-
-      var workoutView;
-      var footer;
-      if (this._isCached()) {
-        workoutView = <Activity activity={this.props.workout} />;
-        footer =
-          <LeftRight>
-            <ButtonGroup>
-              <Button
-                disabled={isLoading}
-                glyph="pencil"
-                onClick={this._onEditClick}
-                tooltip={{
-                  title: 'Edit Activity'
-                }}
-              />
-              <Button
-                disabled={isLoading}
-                glyph="trash"
-                onClick={this._onDeleteClick}
-                tooltip={{
-                  title: 'Delete Activity'
-                }}
-              />
-              <Button
-                disabled={isLoading}
-                glyph="link"
-                onClick={this._onPermalinkClick}
-                tooltip={{
-                  title: 'View Permalink'
-                }}
-              />
-            </ButtonGroup>
-            <Button
-              disabled={isLoading}
-              label="Close"
-              onClick={this._toggleModal}
-            />
-          </LeftRight>;
-      }
       
       return (
         <Modal
           isLoading={isLoading}
           alert={this.state.alert}
           shown={this.state.shown}
-          onRequestClose={this._toggleModal}
-          footer={footer}>
-          {workoutView}
+          onRequestClose={this._closeModal}
+          footer={
+            <LeftRight>
+              <ButtonGroup>
+                <Button
+                  disabled={isLoading}
+                  glyph="pencil"
+                  onClick={this._onEditClick}
+                  tooltip={{
+                    title: 'Edit Activity'
+                  }}
+                />
+                <Button
+                  disabled={isLoading}
+                  glyph="trash"
+                  onClick={this._onDeleteClick}
+                  tooltip={{
+                    title: 'Delete Activity'
+                  }}
+                />
+                <Button
+                  disabled={isLoading}
+                  glyph="link"
+                  onClick={this._onPermalinkClick}
+                  tooltip={{
+                    title: 'View Permalink'
+                  }}
+                />
+              </ButtonGroup>
+              <Button
+                disabled={isLoading}
+                label="Close"
+                onClick={this._closeModal}
+              />
+            </LeftRight>
+          }>
+          <Activity activity={this.state.workout} />
         </Modal>
       );
     },
 
-    _toggleModal: function() {
+    _closeModal: function() {
       if (!this.isMounted()) {
-        // Deleting the workout unmounts the component
         return;
       }
 
-      this.setState({
-        shown: !this.state.shown,
-        isEditing: false,
-        isLoading: false,
-        alert: null
-      });
+      var hasEdits = !_.isEqual(
+        WorkoutStore.getItem(this.props.workout.id),
+        this.state.workout
+      );
+      var confirmed = hasEdits && confirm(
+        'Are you sure you want to close the dialog? Your changes will not ' +
+        'be saved.'
+      );
+
+      if (!hasEdits || confirmed) {
+        this.setState(this.getInitialState());
+      }
     },
 
     _onChange: function(workout) {
@@ -230,11 +225,11 @@ define([
     },
 
     _onViewClick: function() {
-      this._toggleModal();
-      if (!this._isCached()) {
+      this.setState({shown: true});
+
+      if (!WorkoutStore.getItem(this.props.workout.id)) {
         // Fetch the full set of data if we don't already have it
         this.setState({ isLoading: true });
-        WorkoutActions.view(this.props.workout.id);
       }
     },
 
@@ -250,12 +245,10 @@ define([
         alert: null,
         isEditing: true
       });
-      WorkoutActions.startEditWorkout(this.state.workout);
     },
 
     _onCancelEdit: function() {
-      this._toggleModal();
-      WorkoutActions.cancel();
+      this._closeModal();
     },
 
     _onUpdateClick: function() {
@@ -268,7 +261,7 @@ define([
     },
 
     _isCached: function() {
-      return WorkoutsStore.getIsCached(this.props.workout.id);
+      return WorkoutStore.getIsCached(this.props.workout.id);
     }
   });
 

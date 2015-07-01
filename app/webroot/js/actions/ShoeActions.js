@@ -47,12 +47,6 @@ define([
       ActionUtils.onError(response, ActionTypes.SHOE_ADD_ERROR);
     },
 
-    cancel: function() {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.SHOE_CANCEL
-      });
-    },
-
     delete: function(id) {
       $.ajax({
         url: ENDPOINT.DELETE + id,
@@ -96,7 +90,7 @@ define([
       ActionUtils.onError(response, ActionTypes.ALL_SHOES_FETCH_ERROR);
     },
 
-    save: function(data) {
+    save: function(/*object*/ data) {
       $.ajax({
         url: ENDPOINT.EDIT + data.id,
         type: 'POST',
@@ -109,24 +103,13 @@ define([
     onSaveSuccess: function(/*string*/ response) {
       ActionUtils.onSuccess(
         response,
-        ActionTypes.SHOE_EDIT,
-        ActionTypes.SHOE_EDIT_ERROR
+        ActionTypes.SHOE_UPDATE,
+        ActionTypes.SHOE_UPDATE_ERROR
       );
     },
 
     onSaveError: function(/*string|object*/ response) {
-      ActionUtils.onError(response, ActionTypes.SHOE_EDIT_ERROR);
-    },
-
-    /**
-     * Updates the temporary state of a workout, whie editing or adding.
-     */
-    update: function(/*string*/ field, /*?any*/ value) {
-      AppDispatcher.dispatch({
-        eventName: ActionTypes.SHOE_UPDATE,
-        field: field,
-        value: value
-      });
+      ActionUtils.onError(response, ActionTypes.SHOE_UPDATE_ERROR);
     },
 
     /**

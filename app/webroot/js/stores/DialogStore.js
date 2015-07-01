@@ -11,16 +11,17 @@ define([
   'lib/MicroEvent/microevent',
   'constants/ActionTypes'
 
-], function(AppDispatcher, MicroEvent, ActionTypes) {
+], function(
 
-  var _isEditing = false;
+  AppDispatcher,
+  MicroEvent,
+  ActionTypes
+
+) {
+
   var _isShown = false;
 
   var DialogStore = {
-    getIsEditing: function() {
-      return _isEditing;
-    },
-
     getIsShown: function() {
       return _isShown;
     }
@@ -30,14 +31,13 @@ define([
 
   AppDispatcher.register(function(payload) {
     switch(payload.eventName) {
+      case ActionTypes.SHOE_ADD:
+      case ActionTypes.SHOE_DELETE:
+      case ActionTypes.SHOE_UPDATE:
       case ActionTypes.WORKOUT_ADD:
       case ActionTypes.WORKOUT_DELETE:
+      case ActionTypes.WORKOUT_UPDATE:
         _isShown = false;
-        DialogStore.trigger(ActionTypes.CHANGE);
-        break;
-
-      case ActionTypes.WORKOUT_EDIT:
-        _isEditing = false;
         DialogStore.trigger(ActionTypes.CHANGE);
         break;
     }

@@ -13,24 +13,21 @@ define([
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Loader/Loader.react',
   'lib/react/jsx!components/Page/PageHeader.react',
-
   'actions/ShoeActions',
   'constants/ActionTypes',
-  'stores/AllShoesStore'
+  'stores/ShoeStore'
 
 ], function(
 
   React,
-
   AllShoesView,
   ShoeAddButton,
   Button,
   Loader,
   PageHeader,
-
   ShoeActions,
   ActionTypes,
-  AllShoesStore
+  ShoeStore
 
 ) {
 
@@ -48,15 +45,15 @@ define([
     },
 
     componentDidMount: function() {
-      AllShoesStore.bind(ActionTypes.CHANGE, this._shoesChanged);
+      ShoeStore.bind(ActionTypes.CHANGE, this._shoesChanged);
     },
 
     componentWillUnmount: function() {
-      AllShoesStore.unbind(ActionTypes.CHANGE, this._shoesChanged);
+      ShoeStore.unbind(ActionTypes.CHANGE, this._shoesChanged);
     },
 
     _shoesChanged: function() {
-      this.setState({shoes: AllShoesStore.getCollection()});
+      this.setState({shoes: ShoeStore.getCollection()});
     },
 
     render: function() {

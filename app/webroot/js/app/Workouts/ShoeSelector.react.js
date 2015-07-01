@@ -9,7 +9,7 @@ define([
   'lib/react/react',
   'lib/react/jsx!components/Select/Select.react',
   'constants/ActionTypes',
-  'stores/AllShoesStore',
+  'stores/ShoeStore',
   'utils/ShoeUtils'
 
 ], function(
@@ -17,7 +17,7 @@ define([
   React,
   Select,
   ActionTypes,
-  AllShoesStore,
+  ShoeStore,
   ShoeUtils
 
 ) {
@@ -45,15 +45,15 @@ define([
     },
 
     componentDidMount: function() {
-      AllShoesStore.bind(ActionTypes.CHANGE, this._setShoes);
+      ShoeStore.bind(ActionTypes.CHANGE, this._setShoes);
     },
 
     componentWillUnmount: function() {
-      AllShoesStore.unbind(ActionTypes.CHANGE, this._setShoes);
+      ShoeStore.unbind(ActionTypes.CHANGE, this._setShoes);
     },
 
     _setShoes: function() {
-      this.setState({shoes: AllShoesStore.getCollection()});
+      this.setState({shoes: ShoeStore.getCollection()});
     },
 
     render: function() {
