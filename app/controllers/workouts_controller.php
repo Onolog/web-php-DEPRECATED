@@ -325,6 +325,22 @@ class WorkoutsController extends AppController {
     return $response->send();
 	}
 
+  public function migrate_dates() {
+    $user = $this->requireLoggedInUser();
+    $workouts = $this->Workout->find('all');
+
+    foreach ($workouts as $workout) {
+      $date = $workout['Workout']['date'];
+
+      $workout['Workout']['start_date'] = gmdate('Y-m-d\TH:i:s.000\Z', $date);
+      $workout['Workout']['start_date_local'] = date('Y-m-d\TH:i:s.000O', $date);
+
+      debug($workout);
+
+      // $this->Workout->save($workout);
+    }
+  }
+
   protected function populateWorkoutForView($workout) {
     // Shoe info
     $shoes = $this->Workout->Shoe->read(
