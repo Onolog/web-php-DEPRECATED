@@ -44,10 +44,18 @@ a.logo {
 
 #header .navbar-toggle {
   border-color: #e0780b;
+  border-radius: 0;
+  border-width: 0 1px 0 0;
+  float: left;
+  margin: 0;
+  padding: 17px 15px 18px;
 }
 #header .navbar-toggle:hover,
 #header .navbar-toggle:focus {
   background-color: #f88912;
+}
+#header .navbar-toggle .icon-bar {
+  border-radius: 0;
 }
 
 #header li.menuItem {
