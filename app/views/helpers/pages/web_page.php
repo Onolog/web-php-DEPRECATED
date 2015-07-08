@@ -46,7 +46,8 @@ class WebPageHelper extends PageHelper {
       $this->Html->css('/css/base/base') .
       $this->Html->css('/css/base/util') .
       $this->Html->css('/css/base/bs-override') .
-      $this->Html->css('/css/base/layout');
+      $this->Html->css('/css/base/layout') .
+      $this->Html->css('/css/base/fonts');
   }
 
   public function hideHeader() {
