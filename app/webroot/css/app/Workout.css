@@ -44,20 +44,14 @@
 .distanceInput,
 .timeInput,
 .heartRateInput {
-  width: 90px;
+  width: 98px;
 }
 
 .timeInput {
   display: inline-block;
 }
-.timeInput input {
-  text-align: center;
-}
-.timeInput input:-moz-placeholder {
-  text-align: center;
-}
-.timeInput input::-webkit-input-placeholder {
-  text-align: center;
+.timeInput input.constrainedTextInput {
+  text-align: right;
 }
 
 .colon {
