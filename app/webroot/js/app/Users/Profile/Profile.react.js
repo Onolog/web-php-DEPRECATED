@@ -115,7 +115,10 @@ define([
         return (
           <ProfileYearPanel
             key={idx}
+            miles={section.miles}
             months={workoutData[year].months}
+            runs={section.run_count}
+            time={section.time}
             title={section.year}
             weeks={workoutDataByWeek[year].weeks}
           />

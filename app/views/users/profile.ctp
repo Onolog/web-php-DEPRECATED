@@ -1,6 +1,7 @@
 <?php
 
 $this->Include->css(array(
+  'app/Activity',
   'app/Profile',
   'components/Graph',
   'components/Topline'

@@ -5,7 +5,9 @@
 define([
 
   'lib/react/react',
+  'lib/Moment/Moment',
 
+  'lib/react/jsx!app/Activities/ActivitySection.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Chart/Chart.react',
@@ -19,7 +21,9 @@ define([
 ], function(
 
   React,
+  moment,
 
+  ActivitySection,
   Button,
   ButtonGroup,
   Chart,
@@ -83,11 +87,43 @@ define([
         <Panel
           actions={this._renderActions()}
           className="profileYear"
+          noPadding={true}
           title={this.props.title}>
-          {this._renderDailyGraph()}
-          {this._renderWeeklyGraph()}
-          {this._renderMonthlyGraph()}
+          <ActivitySection>
+            {this._renderDailyGraph()}
+            {this._renderWeeklyGraph()}
+            {this._renderMonthlyGraph()}
+          </ActivitySection>
+          {this._renderToplineStats()}
         </Panel>
+      );
+    },
+
+    _renderToplineStats: function() {
+      var duration = moment.duration(this.props.time, 'seconds');
+      var durationString =
+        duration.days() + 'd ' +
+        duration.hours() + 'h ' +
+        duration.minutes() + 'm ' +
+        duration.seconds() + 's';
+
+      return (
+        <ActivitySection border={true}>
+          <Topline>
+            <LabeledStat
+              label="Miles"
+              stat={this.props.miles}
+            />
+            <LabeledStat
+              label="Runs"
+              stat={this.props.runs}
+            />
+            <LabeledStat
+              label="Time"
+              stat={durationString}
+            />
+          </Topline>
+        </ActivitySection>
       );
     },
 
