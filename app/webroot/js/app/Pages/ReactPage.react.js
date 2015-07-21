@@ -24,6 +24,7 @@ define([
   'lib/react/jsx!components/LeftRight/LeftRight.react',
   'lib/react/jsx!components/Menu/Menu.react',
   'lib/react/jsx!components/Menu/MenuDivider.react',
+  'lib/react/jsx!components/Menu/MenuHeader.react',
   'lib/react/jsx!components/Menu/MenuItem.react',
   'lib/react/jsx!components/Modal/Modal.react',
   'lib/react/jsx!components/Page/PageHeader.react',
@@ -55,6 +56,7 @@ define([
   LeftRight,
   Menu,
   MenuDivider,
+  MenuHeader,
   MenuItem,
   Modal,
   PageHeader,
@@ -141,7 +143,7 @@ define([
             <Glyph icon="triangle-left" />
             <Glyph icon="triangle-right" />
           </Panel>
-          <Panel title="Date & Time Picker">
+          <Panel title="Date and Time Picker">
             <DateTimePicker
               initialDate={this.state.datePickerDate}
               onChange={function(date) {
@@ -173,9 +175,11 @@ define([
               label="Split Button"
               menu={
                 <Menu align="right">
+                  <MenuHeader label="First Header" />
                   <MenuItem label="Item 1" />
                   <MenuItem label="Item 2" />
                   <MenuDivider />
+                  <MenuHeader label="Second Header" />
                   <MenuItem label="Item 3" />
                 </Menu>
               }
