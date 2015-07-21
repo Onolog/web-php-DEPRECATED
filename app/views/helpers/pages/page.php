@@ -1,5 +1,4 @@
 <?php
-App::import('Lib', 'Useragent');
 
 /**
  * Renders a basic HTML page.
@@ -21,15 +20,13 @@ class PageHelper extends AppHelper {
 
   // Helpers/Components
   // These are protected so subclasses can access them
-  protected
-    $View;
+  protected $View;
 
   public function __construct($scripts='', $classes=null) {
     parent::__construct();
 
     $this->generateScripts($scripts);
     $this->addClass($classes);
-    $this->setUserAgentClass();
 
     // Set Helpers & Components
     $this->Html = new HtmlHelper();
@@ -171,43 +168,8 @@ class PageHelper extends AppHelper {
   }
 
   protected function getBaseCSS() {
-    return Configure::read('debug') > 0 ? $this->Html->css('/css/debug') : '';
-  }
-
-  /**
-   * Adds a corresponding class to the HTML <body> based on the useragent
-   *
-   * Supported Browsers:
-   *    - ie6
-   *    - ie7
-   *    - Firefox 2
-   *    - Firefox 3
-   *    - Safari 2
-   *    - Safari 3
-   *    - Opera
-   *
-   * TODO: Add support for Chrome and Safari 4
-   */
-  protected function setUserAgentClass() {
-    $useragent = Net_UserAgent_Detect::singleton();
-    // debug($_SERVER['HTTP_USER_AGENT'], 1);
-
-    if ($useragent->isBrowser('belowie7')) {
-      $this->addClass('ie6');
-    } else if ($useragent->isBrowser('ie7')) {
-      $this->addClass('ie7');
-    } else if ($useragent->isBrowser('firefox2.x')) {
-      $this->addClass('ff2');
-    } else if ($useragent->isBrowser('firefox3.x')) {
-      $this->addClass('ff3');
-    } else if ($useragent->isBrowser('safari2')) {
-      $this->addClass('safari2');
-    } else if ($useragent->isBrowser('safari3')) {
-      $this->addClass('safari3');
-    } else if ($useragent->isBrowser('opera')) {
-      $this->addClass('opera');
-    }
-    return $this;
+    return Configure::read('debug') > 0 ?
+      $this->Html->css('/css/base/debug') : '';
   }
   
   /**
