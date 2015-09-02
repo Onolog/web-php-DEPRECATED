@@ -11,7 +11,6 @@ define([
   'lib/react/jsx!app/Activities/Activity.react',
   'lib/react/jsx!app/Workouts/WorkoutFields.react',
 
-
   'lib/react/jsx!components/Alert/Alert.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Button/DropdownButton.react',
@@ -22,6 +21,8 @@ define([
   'lib/react/jsx!components/Glyph/Glyph.react',
   'lib/react/jsx!components/Graph/BarGraph/BarGraph.react',
   'lib/react/jsx!components/LeftRight/LeftRight.react',
+  'lib/react/jsx!components/ListGroup/ListGroup.react',
+  'lib/react/jsx!components/ListGroup/ListGroupItem.react',
   'lib/react/jsx!components/Menu/Menu.react',
   'lib/react/jsx!components/Menu/MenuDivider.react',
   'lib/react/jsx!components/Menu/MenuHeader.react',
@@ -54,6 +55,8 @@ define([
   Glyph,
   Graph,
   LeftRight,
+  ListGroup,
+  ListGroupItem,
   Menu,
   MenuDivider,
   MenuHeader,
@@ -326,7 +329,25 @@ define([
               <strong>Sweeeeeeet!</strong> You can dismiss this alert by pressing the button over here ---->
             </Alert>
           </Panel>
-
+          <Panel title="ListGroup">
+            <ListGroup>
+              <ListGroupItem>Standard List Item</ListGroupItem>
+              <ListGroupItem href="#">Linked List Item</ListGroupItem>
+              <ListGroupItem onClick={function() { alert('Clicked!')}}>
+                List Item with onClick
+              </ListGroupItem>
+            </ListGroup>
+            <ListGroup>
+              <ListGroupItem type="success">Success</ListGroupItem>
+              <ListGroupItem type="info">Info</ListGroupItem>
+              <ListGroupItem type="warning">Warning</ListGroupItem>
+              <ListGroupItem type="danger">Danger</ListGroupItem>
+            </ListGroup>
+            <ListGroup>
+              <ListGroupItem active>Active</ListGroupItem>
+              <ListGroupItem disabled>Disabled</ListGroupItem>
+            </ListGroup>
+          </Panel>
           <Panel title="Graph">
             Need to add
           </Panel>
