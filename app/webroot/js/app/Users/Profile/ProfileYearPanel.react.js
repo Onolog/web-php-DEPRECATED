@@ -78,7 +78,7 @@ define([
 
     getInitialState: function() {
       return {
-        selectedGraph: DAILY
+        selectedGraph: WEEKLY
       };
     },
 
@@ -128,7 +128,7 @@ define([
     },
 
     _renderActions: function() {
-      return null;
+      return;
 
       var selectedGraph = this.state.selectedGraph;
       return (
