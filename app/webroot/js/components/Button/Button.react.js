@@ -7,61 +7,53 @@ define([
   'lib/react/react',
   'lib/react/jsx!components/Button/AbstractButton.react',
   'utils/cx',
-  'utils/joinClasses'
+  'utils/joinClasses',
+  'constants/Bootstrap',
+  'lib/underscore/underscore'
 
 ], function(
 
   React,
   AbstractButton,
   cx,
-  joinClasses
+  joinClasses,
+  BOOTSTRAP
 
 ) {
+
+  var SIZE = BOOTSTRAP.SIZE;
+  var USE = BOOTSTRAP.USE;
+
+  USE.LINK = 'link'; // Extra use type for buttons.
 
   return React.createClass({
     displayName: 'Button',
 
     propTypes: {
-      use: React.PropTypes.oneOf([
-        'default',
-        'primary',
-        'success',
-        'info',
-        'warning',
-        'danger',
-        'link'
-      ]),
-      size: React.PropTypes.oneOf([
-        'large',
-        'default',
-        'small',
-        'xsmall'
-      ]),
+      use: React.PropTypes.oneOf(_.values(USE)),
+      size: React.PropTypes.oneOf(_.values(SIZE)),
       suppressed: React.PropTypes.bool
     },
   
     render: function() {
-      var use = this.props.use || 'default';
-      var size = this.props.size || 'default';
+      var use = this.props.use || USE.DEFAULT;
+      var size = this.props.size || SIZE.DEFAULT;
       var classNames = cx({
         'btn': true,
 
         // Use
-        'btn-default': use === 'default',
-        'btn-primary': use === 'primary',
-        'btn-success': use === 'success',
-        'btn-info': use === 'info',
-        'btn-warning': use === 'warning',
-        'btn-danger': use === 'danger',
-        'btn-link': use === 'link',
+        'btn-default': use === USE.DEFAULT,
+        'btn-primary': use === USE.PRIMARY,
+        'btn-success': use === USE.SUCCESS,
+        'btn-info': use === USE.INFO,
+        'btn-warning': use === USE.WARNING,
+        'btn-danger': use === USE.DANGER,
+        'btn-link': use === USE.LINK,
 
         // Size
-        'btn-lg': size === 'large',
-        'btn-sm': size === 'small',
-        'btn-xs': size === 'xsmall',
-
-        //'btn-suppressed': this.props.suppressed,
-        'selected': use !== 'default'
+        'btn-lg': size === SIZE.LARGE,
+        'btn-sm': size === SIZE.SMALL,
+        'btn-xs': size === SIZE.XSMALL
       });
   
       return (

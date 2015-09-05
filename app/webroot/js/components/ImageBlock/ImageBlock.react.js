@@ -20,7 +20,7 @@ define([
 ) {
 
   return React.createClass({
-    displayName: 'GarminDeviceInfo',
+    displayName: 'ImageBlock',
 
     propTypes: {
       align: React.PropTypes.oneOf(['top', 'middle', 'bottom']),
