@@ -14,7 +14,6 @@ define([
   'lib/react/jsx!components/Modal/Modal.react',
   'actions/WorkoutActions',
   'constants/ActionTypes',
-  'constants/Components',
   'constants/Workouts',
   'mixins/LayerMixin.react',
   'mixins/StoreMixin.react',
@@ -36,7 +35,6 @@ define([
   Modal,
   WorkoutActions,
   ActionTypes,
-  Components,
   Workouts,
   LayerMixin,
   StoreMixin,
@@ -46,8 +44,6 @@ define([
   formatDistance
 
 ) {
-
-  var ALERT = Components.ALERT;
 
   return React.createClass({
     displayName: 'WorkoutLink',

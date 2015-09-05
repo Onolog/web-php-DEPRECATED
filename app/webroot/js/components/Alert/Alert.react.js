@@ -8,12 +8,12 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!components/Button/CloseButton.react',
-  'constants/Components',
+  'constants/Bootstrap',
   'utils/cx'
 
-], function(React, CloseButton, Components, cx) {
+], function(React, CloseButton, BOOTSTRAP, cx) {
 
-  var ALERT = Components.ALERT;
+  var USE = BOOTSTRAP.USE;
 
   return React.createClass({
     displayName: 'Alert',
@@ -21,17 +21,17 @@ define([
     propTypes: {
       dismissible: React.PropTypes.bool,
       type: React.PropTypes.oneOf([
-        ALERT.DANGER,
-        ALERT.INFO,
-        ALERT.SUCCESS,
-        ALERT.WARNING
+        USE.DANGER,
+        USE.INFO,
+        USE.SUCCESS,
+        USE.WARNING
       ])
     },
 
     getDefaultProps: function() {
       return {
         dismissible: false,
-        type: ALERT.INFO
+        type: USE.INFO
       };
     },
 
@@ -46,16 +46,16 @@ define([
         return <span />;
       }
 
-      var props = this.props;
+      var type = this.props.type;
       return (
         <div
           className={cx({
             'alert': true,
-            'alert-success': props.type === ALERT.SUCCESS,
-            'alert-info': props.type === ALERT.INFO,
-            'alert-warning': props.type === ALERT.WARNING,
-            'alert-danger': props.type === ALERT.DANGER,
-            'alert-dismissible': props.dismissible
+            'alert-success': type === USE.SUCCESS,
+            'alert-info': type === USE.INFO,
+            'alert-warning': type === USE.WARNING,
+            'alert-danger': type === USE.DANGER,
+            'alert-dismissible': this.props.dismissible
           })}
           role="alert">
           {this._renderCloseButton()}

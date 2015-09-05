@@ -9,11 +9,11 @@ define([
   'dispatcher/AppDispatcher',
   'lib/MicroEvent/microevent',
   'constants/ActionTypes',
-  'constants/Components'
+  'constants/Bootstrap'
 
-], function(AppDispatcher, MicroEvent, ActionTypes, Components) {
+], function(AppDispatcher, MicroEvent, ActionTypes, BOOTSTRAP) {
 
-  var ALERT = Components.ALERT;
+  var USE = BOOTSTRAP.USE;
   var _alertMessage;
   var _alertType;
 
@@ -27,7 +27,7 @@ define([
     },
 
     getAlertTypeIsDanger: function() {
-      return _alertType === ALERT.DANGER;
+      return _alertType === USE.DANGER;
     }
   };
 
@@ -40,7 +40,7 @@ define([
       case ActionTypes.WORKOUT_ADD:
       case ActionTypes.WORKOUT_DELETE:
       case ActionTypes.WORKOUT_UPDATE:
-        _alertType = ALERT.SUCCESS;
+        _alertType = USE.SUCCESS;
         AlertStore.trigger(ActionTypes.CHANGE);
         break;
 
@@ -48,7 +48,7 @@ define([
       case ActionTypes.WORKOUT_DELETE_ERROR:
       case ActionTypes.WORKOUT_UPDATE_ERROR:
       case ActionTypes.WORKOUT_VIEW_ERROR:
-        _alertType = ALERT.DANGER;
+        _alertType = USE.DANGER;
         AlertStore.trigger(ActionTypes.CHANGE);
         break;
     }
