@@ -14,6 +14,7 @@ define([
   'lib/react/jsx!components/Button/DropdownButton.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Glyph/Glyph.react',
+  'lib/react/jsx!components/Label/Label.react',
   'lib/react/jsx!components/ListGroup/ListGroup.react',
   'lib/react/jsx!components/ListGroup/ListGroupItem.react',
   'lib/react/jsx!components/Menu/Menu.react',
@@ -22,7 +23,10 @@ define([
   'lib/react/jsx!components/Menu/MenuItem.react',
   'lib/react/jsx!components/Modal/Modal.react',
   'lib/react/jsx!components/Page/PageHeader.react',
-  'lib/react/jsx!components/Panel/Panel.react'
+  'lib/react/jsx!components/Panel/Panel.react',
+
+  'constants/Bootstrap',
+  'lib/underscore/underscore'
 
 ], function(
 
@@ -34,6 +38,7 @@ define([
   DropdownButton,
   ButtonGroup,
   Glyph,
+  Label,
   ListGroup,
   ListGroupItem,
   Menu,
@@ -42,30 +47,21 @@ define([
   MenuItem,
   Modal,
   PageHeader,
-  Panel
+  Panel,
+
+  BOOTSTRAP
 
 ) {
+
+  var SIZE = BOOTSTRAP.SIZE; 
+  var USE = BOOTSTRAP.USE;
 
   return React.createClass({
     displayName: 'BootstrapPage',
 
     render: function() {
-      var uses = [
-        'default',
-        'primary',
-        'success',
-        'info',
-        'warning',
-        'danger',
-        'link'
-      ];
-
-      var sizes = [
-        'large',
-        'default',
-        'small',
-        'xsmall'
-      ];
+      var uses = _.values(USE);
+      var sizes = _.values(SIZE);
 
       var buttonUses = uses.map(function(use) {
         return (
@@ -202,6 +198,22 @@ define([
             <Glyph icon="heart" />
             <Glyph icon="triangle-left" />
             <Glyph icon="triangle-right" />
+          </Panel>
+
+          <Panel title="Label">
+            <h1>Example Heading <Label>New</Label></h1>
+            <h2>Example Heading <Label>New</Label></h2>
+            <h3>Example Heading <Label>New</Label></h3>
+            <h4>Example Heading <Label>New</Label></h4>
+            <h5>Example Heading <Label>New</Label></h5>
+            <h6>Example Heading <Label>New</Label></h6>
+
+            <Label use="default">Default</Label>
+            <Label use="primary">Primary</Label>
+            <Label use="success">Success</Label>
+            <Label use="info">Info</Label>
+            <Label use="warning">Warning</Label>
+            <Label use="danger">Danger</Label>
           </Panel>
 
           <Panel title="ListGroup">
