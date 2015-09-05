@@ -24,6 +24,7 @@ define([
   'lib/react/jsx!components/Modal/Modal.react',
   'lib/react/jsx!components/Page/PageHeader.react',
   'lib/react/jsx!components/Panel/Panel.react',
+  'lib/react/jsx!components/Table/Table.react',
 
   'constants/Bootstrap',
   'lib/underscore/underscore'
@@ -48,6 +49,7 @@ define([
   Modal,
   PageHeader,
   Panel,
+  Table,
 
   BOOTSTRAP
 
@@ -242,7 +244,89 @@ define([
             </Panel>
           </Panel>
 
+          <Panel title="Table">
+            <Table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              {this._renderTableBody()}
+            </Table>
+            <Table striped>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              {this._renderTableBody()}
+            </Table>
+            <Table border>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              {this._renderTableBody()}
+            </Table>
+            <Table condensed>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              {this._renderTableBody()}
+            </Table>
+            <Table hover>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              {this._renderTableBody()}
+            </Table>
+          </Panel>
+
         </div>
+      );
+    },
+
+    _renderTableBody: function() {
+      return (
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td colSpan="2">Larry the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
       );
     }
   });
