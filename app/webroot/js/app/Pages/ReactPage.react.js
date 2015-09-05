@@ -12,6 +12,7 @@ define([
   'lib/react/jsx!app/Workouts/WorkoutFields.react',
 
   'lib/react/jsx!components/Alert/Alert.react',
+  'lib/react/jsx!components/Badge/Badge.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Button/DropdownButton.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
@@ -46,6 +47,7 @@ define([
 
   // Components
   Alert,
+  Badge,
   Button,
   DropdownButton,
   ButtonGroup,
@@ -141,6 +143,9 @@ define([
       return (
         <div>
           <PageHeader title="React Component Examples" />
+          <Panel title="Badge">
+            <Badge>101</Badge>
+          </Panel>
           <Panel title="Glyph">
             <Glyph icon="heart" />
             <Glyph icon="triangle-left" />
