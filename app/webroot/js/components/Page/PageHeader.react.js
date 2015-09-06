@@ -18,13 +18,12 @@ define([
 
     render: function() {
       return (
-        <LeftRight id="pageHeader">
+        <LeftRight className="pageHeader">
           <h2>{this.props.title}</h2>
           {this.props.children}
         </LeftRight>
       );
     }
-
   });
 
 });

@@ -37,10 +37,8 @@ class NavigationHelper extends AppHelper {
 
   public function render() {
     return
-      '<header ' .
-        'id="headerWrapper" ' .
-        'class="navbar navbar-inverse navbar-fixed-top">' .
-        '<div id="header" class="container clearfix">' .
+      '<header class="header navbar navbar-inverse navbar-fixed-top">' .
+        '<div class="container clearfix">' .
 
           '<div class="navbar-header">' .
             '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">' .

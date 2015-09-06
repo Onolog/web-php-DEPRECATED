@@ -43,11 +43,10 @@ class WebPageHelper extends PageHelper {
     return
       parent::getBaseCSS() .
       $this->Html->css('/css/base/bootstrap') .
-      $this->Html->css('/css/base/base') .
-      $this->Html->css('/css/base/util') .
       $this->Html->css('/css/base/bs-override') .
-      $this->Html->css('/css/base/layout') .
-      $this->Html->css('/css/base/fonts');
+      $this->Html->css('/css/base/app') .
+      $this->Html->css('/css/base/fonts') .
+      $this->Html->css('/css/base/util');
   }
 
   public function hideHeader() {
@@ -92,8 +91,8 @@ class WebPageHelper extends PageHelper {
       $header .
   
       // Main Content
-      '<div id="mainWrapper">' .
-        '<div id="main" class="clearfix' . $class . '">' .
+      '<div class="main">' .
+        '<div class="clearfix' . $class . '">' .
           $this->renderPageHeader() .
           $this->Session->flash() .
           $this->Session->flash('auth') .
@@ -107,9 +106,9 @@ class WebPageHelper extends PageHelper {
       '</div>' .
 
       // Footer
-      '<div id="footerWrapper">' .
-        '<div id="footer" class="container clearfix">' .
-          '<div class="copyright pull-left">' .
+      '<footer class="footer">' .
+        '<div class="container clearfix">' .
+          '<div class="pull-left">' .
             'Copyright &copy; ' . date('Y') . ' Onolog' .
           '</div>' .
           '<div class="pull-right">' .
@@ -124,7 +123,7 @@ class WebPageHelper extends PageHelper {
             ) .
           '</div>' .
         '</div>' .
-      '</div>';
+      '</footer>';
   }
 
   /**
@@ -144,7 +143,7 @@ class WebPageHelper extends PageHelper {
       return '';
     }
     return
-      '<div id="pageHeader" class="clearfix">' .
+      '<div class="pageHeader clearfix">' .
         $this->getPageHeader() .
       '</div>';
   }

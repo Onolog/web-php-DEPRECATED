@@ -10,23 +10,22 @@
   background-size: cover;
 }
 
-.report #mainWrapper {
+.report .main {
   background-color: transparent;
   padding: 40px 0 20px;
 }
 
-.report #footer {
+.report .footer {
   color: rgba(255, 255, 255, 0.3);
   display: none;
 }
 
 .report #pageHeader,
-.report #footer {
+.report .footer {
   text-align: center;
 }
 
-.report #pageHeader h2,
-.report #footer .copyright {
+.report #pageHeader h2 {
   float: none;
 }
 

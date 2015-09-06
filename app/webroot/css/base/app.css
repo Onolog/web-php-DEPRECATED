@@ -1,9 +1,37 @@
 /**
- * Layout CSS
+ * Base CSS for Onolog
  */
 
+body {
+  background: #f5f5f5;
+  color: #333;
+  font-family: 'BentonSans', sans-serif;
+}
+
+h1, h2, h3, h4, h5 {
+  text-shadow: #fff 0 1px 0;
+}
+
+::selection,
+::-moz-selection {
+  background: #ffe7cd;
+}
+
+/* Links */
+a,
+a:link,
+a:visited {
+  color: #1f8dd6;
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+a img {
+  border: none;
+}
+
 /* Header */
-#headerWrapper {
+.header {
   background: #f48711;
   background: -webkit-gradient(linear, 0 0, 0 100%, from(#f48711), to(#e97f10));
   background: -moz-linear-gradient(top, #f48711, #e97f10);
@@ -12,7 +40,7 @@
   z-index: 1000;
 }
 
-#header .navbar-collapse {
+.header .navbar-collapse {
   border-color: #e0780b;
 }
 
@@ -32,8 +60,8 @@ a.logo {
   width: 141px;
 }
 
-#header .nav,
-#header .account {
+.header .nav,
+.header .account {
   border-left: 1px solid #e0780b;
 }
 
@@ -42,7 +70,7 @@ a.logo {
   margin-left: -15px;
 }
 
-#header .navbar-toggle {
+.header .navbar-toggle {
   border-color: #e0780b;
   border-radius: 0;
   border-width: 0 1px 0 0;
@@ -50,36 +78,36 @@ a.logo {
   margin: 0;
   padding: 17px 15px 18px;
 }
-#header .navbar-toggle:hover,
-#header .navbar-toggle:focus {
+.header .navbar-toggle:hover,
+.header .navbar-toggle:focus {
   background-color: #f88912;
 }
-#header .navbar-toggle .icon-bar {
+.header .navbar-toggle .icon-bar {
   border-radius: 0;
 }
 
-#header li.menuItem {
+.header li.menuItem {
   border-right: 1px solid #e0780b;
 }
 
-#header li.menuItem > a,
-#header a.logo {
+.header li.menuItem > a,
+.header a.logo {
   color: #fff;
   text-shadow: rgba(186, 105, 20, 0.5) 0 -1px 0;
 }
-#header li.menuItem > a:hover,
-#header a.logo:hover {
+.header li.menuItem > a:hover,
+.header a.logo:hover {
   background-color: #f88912;
 }
-#header li.menuItem > a:active,
-#header a.logo:active,
-#header li.open > a,
-#header li.open > a:hover {
+.header li.menuItem > a:active,
+.header a.logo:active,
+.header li.open > a,
+.header li.open > a:hover {
   background-color: #e97f10;
   box-shadow: inset 0 0 2px rgba(100, 100, 100, 0.15);
 }
 
-#header .userInfo {
+.header .userInfo {
   padding-left: 45px;
 }
 
@@ -102,7 +130,7 @@ a.logo {
   max-width: 150px
 }
 
-#header .caret {
+.header .caret {
   border-top-color: #fff;
   border-bottom-color: #fff;
   margin-left: 4px;
@@ -110,22 +138,20 @@ a.logo {
 
 
 /* Main Content */
-#mainWrapper {
+.main {
   background-color: #fafafa;
   padding: 80px 0 30px;
 }
 
-#pageHeader {
+.pageHeader {
 	margin-bottom: 15px;
 }
-
-#pageHeader h2 {
+.pageHeader h2 {
   float: left;
   font-weight: 200;
   margin: 0;
 }
-
-#pageHeader .auxContent {
+.pageHeader .auxContent {
   float: right;
 }
 
@@ -153,50 +179,91 @@ fieldset {
   padding: 20px;
 }
 
-.narrow-page #main.container {
+.narrow-page .main.container {
   max-width: 600px;
 }
 
 /* Footer */
-#footerWrapper {
+.footer {
   border-top: 1px solid #f0f0f0;
+  color: #aaa;
   padding: 30px 0;
 }
-#footer {
-  clear: both;
+.footer a,
+.footer a:visited {
   color: #aaa;
+  text-decoration: none;
+}
+.footer a:hover {
+  color: #444;
 }
 
-#footer .copyright { float: left; }
-#footer ul { font-size: 12px; line-height: 1em; float: right; }
-#footer ul li { display: block; float: left; margin: 0 0 0 15px; }
-#footer a,
-#footer a:visited { color: #999; text-decoration: none; }
-#footer a:hover { color: #444; }
+
+/**
+ * Notices and Errors
+ *
+ * TODO: Get rid of these.
+ */
+div.message {
+  background-color: #e4f4cb;
+  border: 1px solid #a3cf77;
+  border-radius: 3px;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+div.error-message,
+p.error {
+  background-color: #ffcccc;
+  border-bottom: 1px solid #cc0000;
+  border-radius: 3px;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+p.error em {
+  color: #000;
+  font-family: Courier, monospace;
+  font-weight: normal;
+}
+
+/* Yellow message */
+.notice {
+  background: #ffcc00;
+  color: #000;
+  display: block;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.success {
+  background: green;
+  color: #fff;
+}
 
 
 /* MOBILE */
 @media (max-width: 767px) {
 
-  #header .navbar-header {
+  .header .navbar-header {
     /* Needed for correct positioning of logo */
     position: relative;
   }
 
-  #header .dropdown-menu a {
+  .header .dropdown-menu a {
     color: #fff;
     text-shadow: #c26a0e 0 -1px 0;
   }
 
-  #header .dropdown-menu a:hover {
+  .header .dropdown-menu a:hover {
     background-color: #f88912;
   }
 
-  #header .dropdown-menu .divider {
+  .header .dropdown-menu .divider {
     background-color: #e0780b;
   }
 
-  #pageHeader h2 {
+  .pageHeader h2 {
     font-size: 24px;
   }
 
@@ -214,13 +281,12 @@ fieldset {
     width: 100%;
   }
 
-  #content,
   .panel {
     margin: 0 -16px;
     border-radius: 0;
   }
 
-  #footer {
+  .footer {
     padding-left: 20px;
     padding-right: 20px;
   }
