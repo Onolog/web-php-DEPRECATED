@@ -60,6 +60,10 @@ a img {
   width: 141px;
 }
 
+.header .navbar-right:last-child {
+  margin-right: 0;
+}
+
 .header .nav,
 .header .account {
   border-left: 1px solid #e0780b;
@@ -251,16 +255,19 @@ p.error em {
     position: relative;
   }
 
-  .header .dropdown-menu a {
+  .header .navbar-right:last-child {
+    margin-right: -16px;
+  }
+
+  .header .navbar-nav .open .dropdown-menu > li > a {
     color: #fff;
     text-shadow: #c26a0e 0 -1px 0;
   }
-
-  .header .dropdown-menu a:hover {
+  .header .navbar-nav .open .dropdown-menu > li > a:hover {
     background-color: #f88912;
   }
 
-  .header .dropdown-menu .divider {
+  .header .navbar-nav .open .dropdown-menu .divider {
     background-color: #e0780b;
   }
 

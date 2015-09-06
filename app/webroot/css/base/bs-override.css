@@ -4,12 +4,6 @@
  * These override the base styles in bootstrap.css
  */
 
-/* Nav */
-.navbar-nav.navbar-right:last-child {
-  margin-right: 0;
-}
-
-
 /* Buttons */
 .btn {
   border: 0;
