@@ -22,6 +22,7 @@ define([
   'lib/react/jsx!components/Menu/MenuHeader.react',
   'lib/react/jsx!components/Menu/MenuItem.react',
   'lib/react/jsx!components/Modal/Modal.react',
+  'lib/react/jsx!components/Page/AppPage.react',
   'lib/react/jsx!components/Page/PageHeader.react',
   'lib/react/jsx!components/Panel/Panel.react',
   'lib/react/jsx!components/Table/Table.react',
@@ -47,6 +48,7 @@ define([
   MenuHeader,
   MenuItem,
   Modal,
+  AppPage,
   PageHeader,
   Panel,
   Table,
@@ -97,7 +99,7 @@ define([
       });
 
       return (
-        <div>
+        <AppPage>
           <PageHeader title="Bootstrap Components" />
 
           <Panel title="Alerts">
@@ -302,7 +304,7 @@ define([
             </Table>
           </Panel>
 
-        </div>
+        </AppPage>
       );
     },
 

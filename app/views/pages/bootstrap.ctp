@@ -1,4 +1,6 @@
 <?php
+$this->layout = 'react';
+
 echo $this->element('loader', array(
   'id' => 'reactRoot'
 ));
