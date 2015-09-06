@@ -52,7 +52,7 @@ class NavigationHelper extends AppHelper {
             $this->Html->link(
               __('Onolog', 1),
               date(CALENDAR_URI_FORMAT),
-              array('class' => 'logo')
+              array('class' => 'navbar-brand')
             ) .
           '</div>' .
 
@@ -225,7 +225,11 @@ class NavigationHelper extends AppHelper {
       idx($item, 'params')
     );
 
-    return '<li class="menuItem">' . $link . $submenu . '</li>';
+    return
+      '<li class="nav-item">' .
+        $link .
+        $submenu .
+      '</li>';
   }
 
   protected function renderSubMenu($submenu=null) {
