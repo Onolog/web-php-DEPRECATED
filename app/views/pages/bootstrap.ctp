@@ -1,5 +1,5 @@
 <?php
-$this->layout = 'react';
+$this->layout = 'basic';
 
 echo $this->element('loader', array(
   'id' => 'reactRoot'

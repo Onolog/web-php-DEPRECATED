@@ -2,19 +2,10 @@
 App::import('Helper', 'pages/Page');
 
 /**
- * Renders a web page with site chrome
+ * Renders a blank page, with all the app JS & CSS. Especially useful for
+ * rendering the page client-side.
  */
-class ReactPageHelper extends PageHelper {
-
-  private $userID = null;
-
-  public function __construct($scripts='', $classes=null) {
-    parent::__construct($scripts, $classes);
-
-    if ($this->Session->read('Auth.User')) {
-      $this->userID = $this->Session->read('Auth.User.id');
-    }
-  }
+class AppPageHelper extends PageHelper {
 
   protected function getBaseJS() {
     return
@@ -32,13 +23,6 @@ class ReactPageHelper extends PageHelper {
       $this->Html->css('/css/base/app') .
       $this->Html->css('/css/base/fonts') .
       $this->Html->css('/css/base/util');
-  }
-
-  /**
-   * Everything is rendered in the view itself.
-   */
-  protected function renderPageContent() {
-    return $this->getView();
   }
 
   /**

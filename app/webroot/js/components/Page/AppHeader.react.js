@@ -40,7 +40,6 @@ define([
       return (
         <header className="header navbar navbar-inverse navbar-fixed-top">
           <div className="container clearfix">
-
             <div className="navbar-header">
               <button
                 className="navbar-toggle"
@@ -52,7 +51,7 @@ define([
                 <span className="icon-bar" />
                 <span className="icon-bar" />
               </button>
-              <Link className="logo" href="#">
+              <Link className="navbar-brand" href="#">
                 Onolog
               </Link>
             </div>
@@ -84,7 +83,7 @@ define([
 
       return (
         <ul className="nav navbar-nav navbar-right account">
-          <li className="menuItem">
+          <li className="nav-item">
             <Link href="#">
               <span className="accountName ellipses hidden-phone">
                 {user.name}
@@ -104,17 +103,17 @@ define([
 
       return (
         <ul className="nav navbar-nav navbar-left">
-          <li className="menuItem">
+          <li className="nav-item">
             <Link href="/">
               Calendar
             </Link>
           </li>
-          <li className="menuItem">
+          <li className="nav-item">
             <Link href="/users/profile/">
               Profile
             </Link>
           </li>
-          <li className="menuItem">
+          <li className="nav-item">
             <Link href="/users/shoes">
               Shoes
             </Link>
@@ -135,7 +134,7 @@ define([
 
       return (
         <ul className="nav navbar-nav navbar-right">
-          <li className="menuItem">
+          <li className="nav-item">
             <Link href="#">
               Sign In
             </Link>
