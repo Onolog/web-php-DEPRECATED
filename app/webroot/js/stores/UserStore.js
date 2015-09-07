@@ -17,9 +17,7 @@ define([
 
 ) {
 
-  var _authToken;
-  var _isLoggedIn;
-  var _user = {};
+  var _user;
 
   /**
    * UserStore
@@ -27,19 +25,11 @@ define([
    * Keeps track of the user's info and login state.
    */
   var UserStore = {
-
     getUser: function() {
-      if (_isLoggedIn && _.isEmpty(_user)) {
-        UserActions.getUser();
+      if (!_user) {
+        UserActions.getSession();
       }
       return _user;
-    },
-
-    getIsLoggedIn: function() {
-      if (_isLoggedIn != null) {
-        return _isLoggedIn;
-      }
-      UserActions.getLoginStatus();
     }
   };
 
@@ -48,18 +38,13 @@ define([
   AppDispatcher.register(function(payload) {
     switch(payload.eventName) {
       case ActionTypes.USER_LOGIN:
-        debugger;
+        // TODO: Figure out why this action doesn't get heard.
         break;
-      case ActionTypes.USER_STATUS:
-        _isLoggedIn = payload.data.status === 'connected';
-        break;
-      case ActionTypes.USER_FETCH:
-        _user = payload.data;
+      case ActionTypes.USER_SESSION:
+        _user = payload.data || {};
         break;
       case ActionTypes.USER_LOGOUT:
-        _authToken = null;
-        _isLoggedIn = null;
-        _user = {};
+        _user = null;
         break;
     }
     UserStore.trigger(ActionTypes.CHANGE);

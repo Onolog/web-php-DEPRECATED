@@ -9,11 +9,12 @@ define(['lib/Facebook/fb'], function() {
 
   setInterval(function() {
     FB.getLoginStatus(function(response) {
-      if (
-        response.status !== 'connected' &&
-        confirm('You have been logged out. Please log back in.')
-      ) {
-        document.location = '/login';
+      if (response.status !== 'connected') {
+        // Stop checking for login state if the user is logged out.
+        clearInterval();
+        if (confirm('You have been logged out. Please log back in.')) {
+          document.location = '/login';
+        }
       }
     });
   }, INTERVAL);

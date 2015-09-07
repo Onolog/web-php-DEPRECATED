@@ -47,8 +47,6 @@ define({
 
   // User-related actions
   USER_LOGIN: 'user-login',
-  USER_STATUS: 'user-status',
-  USER_FETCH: 'user-fetch',
-  USER_FETCH_ERROR: 'user-fetch-error',
+  USER_SESSION: 'user-session',
   USER_LOGOUT: 'user-logout'
 });

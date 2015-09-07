@@ -20,8 +20,7 @@ define([
 
 ) {
 
-  var _accessToken;
-  var _permissions = {
+  var PERMISSIONS = {
     scope: [
       'email',
       'public_profile',
@@ -30,61 +29,89 @@ define([
     ].join(',')
   };
 
-  function onSuccess(response) {
-    var response = new ResponseHandler(response);
-    if (response.getWasSuccessful()) {
-      // If successful, redirect to the calendar view for the current month.
-      document.location = homeUrl();
-      return;
-    }
-
-    alert('There was a problem logging in. Please try again later.');
+  function isConnected(status) {
+    return status === 'connected';
   }
 
   var UserActions = {
 
     login: function() {
-      FB.login(function(response) {
-        if (response.status === 'connected') {
-          var accessToken = response.authResponse.accessToken;
-          FB.api('/me', function(response) {
-            // Send info to server
-            response.accessToken = accessToken;
-            $.ajax({
-              url: '/ajax/users/login',
-              type: 'POST',
-              data: response,
-              success: onSuccess
-            });
-          });
-        }
-      }, _permissions);
-    },
-
-    getLoginStatus: function() {
       FB.getLoginStatus(function(response) {
-        AppDispatcher.dispatch({
+        if (isConnected(response.status)) {
+          // The user is connected to Facebook but not Onolog. Create a new
+          // session to log them in.
+          UserActions.getFBUser(response.authResponse.accessToken);
+        } else {
+          // The user isn't connected to FB. Log them in.
+          FB.login(function(response) {
+            if (isConnected(response.status)) {
+              UserActions.getFBUser(response.authResponse.accessToken);
+            } else {
+              // If we're here it means the user canceled the FB login flow.
+            }
+          }, PERMISSIONS);
+        }
+      });
+    },
+
+    getFBUser: function(accessToken) {
+      FB.api('/me', function(response) {
+        // Send info to server
+        response.accessToken = accessToken;
+        $.ajax({
+          url: '/ajax/users/login',
+          type: 'POST',
           data: response,
-          eventName: ActionTypes.USER_STATUS
+          success: UserActions.onLoginSuccess
         });
       });
     },
 
-    getUser: function() {
-      FB.api('/me', function(response) {
-        AppDispatcher.dispatch({
-          data: response,
-          eventName: ActionTypes.USER_FETCH
-        });
+    onLoginSuccess: function(response) {
+      var response = new ResponseHandler(response);
+      if (response.getWasSuccessful()) {
+        // TODO: Why don't dispatcher actions work here?
+        document.location.reload();
+      } else {
+        alert('There was a problem logging in. Please try again later.');
+      }
+    },
+
+    /**
+     * Get the user's session from the server.
+     */
+    getSession: function() {
+      $.ajax({
+        url: '/ajax/users/session',
+        type: 'GET',
+        success: UserActions.onSessionSuccess
       });
+    },
+
+    onSessionSuccess: function(response) {
+      var response = new ResponseHandler(response);
+      if (response.getWasSuccessful()) {
+        AppDispatcher.dispatch({
+          data: response.getPayload(),
+          eventName: ActionTypes.USER_SESSION
+        });
+      } else {
+        alert('Something went wrong. Please try again');  
+      }
     },
 
     logout: function() {
-      FB.logout(function(response) {
-        AppDispatcher.dispatch({
-          data: response,
-          eventName: ActionTypes.USER_LOGOUT
-        });
+      $.ajax({
+        url: '/ajax/users/logout',
+        type: 'POST',
+        success: UserActions.onLogoutSuccess
+      });
+    },
+
+    onLogoutSuccess: function(response) {
+      document.location = '/login';
+      AppDispatcher.dispatch({
+        eventName: ActionTypes.USER_LOGOUT
       });
     }
   };

@@ -68,6 +68,7 @@ define([
 
       if (!this.props.disabled) {
         props.href = this.props.href;
+        props.onClick = this.props.onClick;
       }
 
       if (this.props.menu) {

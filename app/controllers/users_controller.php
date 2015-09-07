@@ -24,7 +24,7 @@ class UsersController extends AppController {
    * - If not, create a new User in the DB with the FB data
    * - Once the new User is created, send them on to the site
    */
-  function login() {
+  public function login() {
     $this->layout = 'marketing';
     $this->set('title_for_layout', 'Welcome');
 
@@ -109,11 +109,40 @@ class UsersController extends AppController {
   }
 
   /**
+   * Get the user's session data if they are logged in, otherwise return null.
+   * Note that they can be logged out of the site while still being logged into
+   * Facebook.
+   */
+  public function ajax_session() {
+    $this->setIsAjax();
+
+    $user = $this->Auth->user();
+    if (isset($user)) {
+      $user = $user['User'];
+    }
+
+    return id(new Response())
+      ->setSuccess(true)
+      ->setPayload($user)
+      ->send();
+  }
+
+  /**
    * Log the User out of Onolog and Facebook
    */
-  function logout() {
+  public function logout() {
     $this->Session->destroy();
     $this->redirect($this->Auth->logout());
+  }
+
+  public function ajax_logout() {
+    $this->setIsAjax();
+    $this->Session->destroy();
+
+    $response = new Response();
+    return $response
+      ->setSuccess(true)
+      ->send();
   }
 
   /**

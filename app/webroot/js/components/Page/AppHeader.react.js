@@ -14,7 +14,8 @@ define([
   'mixins/StoreMixin.react',
   'stores/UserStore',
   'utils/homeUrl',
-  'utils/pad'
+  'utils/pad',
+  'lib/underscore/underscore'
 
 ], function(
 
@@ -47,20 +48,21 @@ define([
 
     getInitialState: function() {
       return {
-        user: {}
+        isLoading: true,
+        user: UserStore.getUser()
       };
     },
 
     componentWillMount: function() {
       this.stores = [this.setStoreInfo(UserStore, this._onUserStoreUpdate)];
-
-      if (UserStore.getIsLoggedIn()) {
-        this.setState({user: UserStore.getUser()});
-      }
     },
 
     _onUserStoreUpdate: function() {
-      this.setState({user: UserStore.getUser()});
+      var user = UserStore.getUser();
+      this.setState({
+        isLoading: !user,
+        user: user
+      });
     },
 
     render: function() {
@@ -80,37 +82,38 @@ define([
     },
 
     _renderAccountMenu: function(user) {
-      if (!user.id) {
-        return;
-      }
-
-      var menu =
-        <Menu>
-          <MenuItem href={'/users/profile/' + user.id} label="Profile" />
-          <MenuItem href="/users/settings" label="Settings" />
-          <MenuDivider />
-          <MenuItem href="/users/logout" label="Sign Out" />
-        </Menu>;
-
-      return (
-        <Nav right>
-          <NavItem className="account-menu" menu={menu}>
-            <FBImage
-              className="accountImg"
-              fbid={user.id}
-              height={24}
-              width={24}
+      if (user && user.id) {
+        var menu =
+          <Menu>
+            <MenuItem href={'/users/profile/' + user.id} label="Profile" />
+            <MenuItem href="/users/settings" label="Settings" />
+            <MenuDivider />
+            <MenuItem
+              label="Sign Out"
+              onClick={UserActions.logout}
             />
-            <span className="accountName ellipses hidden-phone">
-              {user.name}
-            </span>
-          </NavItem>
-        </Nav>
-      );
+          </Menu>;
+
+        return (
+          <Nav right>
+            <NavItem className="account-menu" menu={menu}>
+              <FBImage
+                className="accountImg"
+                fbid={user.id}
+                height={24}
+                width={24}
+              />
+              <span className="accountName ellipses hidden-phone">
+                {user.name}
+              </span>
+            </NavItem>
+          </Nav>
+        );
+      }
     },
 
     _renderMainMenu: function(user) {
-      if (user.id) {
+      if (user && user.id) {
         return (
           <Nav>
             <NavItem href={homeUrl()}>
@@ -128,14 +131,14 @@ define([
     },
 
     /**
-     * If there's no user info, it means the user isn't logged in. Propmt them
+     * If there's no user info, it means the user isn't logged in. Prompt them
      * to do so.
      */
     _renderLoginLink: function(user) {
-      if (!user.id) {
+      if (!(user && user.id) && !this.state.isLoading) {
         return (
           <Nav right>
-            <NavItem href="/users/login">
+            <NavItem onClick={UserActions.login}>
               Sign In
             </NavItem>
           </Nav>
