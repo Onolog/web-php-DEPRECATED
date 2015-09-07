@@ -50,13 +50,11 @@ define([
     componentDidMount: function() {
       // Collapse the dropdown if the user clicks somewhere other than the
       // trigger button.
-      window.addEventListener('click', function(evt) {
-        var target = evt.target;
-        var triggerNode = this.refs.trigger.getDOMNode();
-        if (!(triggerNode.contains(target) || target === triggerNode)) {
-          this.setState({open: false})
-        }
-      }.bind(this));
+      window.addEventListener('click', this._onWindowClick);
+    },
+
+    componentWillUnmount: function() {
+      window.removeEventListener('click', this._onWindowClick);
     },
 
     render: function() {
@@ -115,6 +113,14 @@ define([
 
     _toggleMenu: function() {
       this.setState({open: !this.state.open});
+    },
+
+    _onWindowClick: function(evt) {
+      var target = evt.target;
+      var triggerNode = this.refs.trigger.getDOMNode();
+      if (!(triggerNode.contains(target) || target === triggerNode)) {
+        this.setState({open: false})
+      }
     }
   });
 

@@ -219,10 +219,13 @@ class NavigationHelper extends AppHelper {
       $item['params']['data-toggle'] = 'dropdown';
     }
 
+    $params = idx($item, 'params');
+    $params['class'] = $params['class'] . ' nav-item-link';
+
     $link = $this->Html->link(
       $item['content'],
       $item['href'],
-      idx($item, 'params')
+      $params
     );
 
     return

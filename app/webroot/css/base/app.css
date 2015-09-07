@@ -64,8 +64,7 @@ a img {
   margin-right: 0;
 }
 
-.header .nav,
-.header .account {
+.header .nav {
   border-left: 1px solid #e0780b;
 }
 
@@ -90,24 +89,24 @@ a img {
   border-radius: 0;
 }
 
-.header li.nav-item {
+.header .nav-item {
   border-right: 1px solid #e0780b;
 }
 
-.header li.nav-item > a,
+.header .nav-item > .nav-item-link,
 .header a.navbar-brand {
   color: #fff;
   text-shadow: rgba(186, 105, 20, 0.5) 0 -1px 0;
 }
-.header li.nav-item > a:hover,
+.header .nav-item > .nav-item-link:hover,
 .header a.navbar-brand:hover {
   background-color: #f88912;
 }
-.header li.nav-item > a:active,
+.header .nav-item > .nav-item-link:active,
 .header a.navbar-brand:active,
-.header .navbar-nav > .open > a,
-.header .navbar-nav > .open > a:focus,
-.header .navbar-nav > .open > a:hover {
+.header .navbar-nav > .open > .nav-item-link,
+.header .navbar-nav > .open > .nav-item-link:focus,
+.header .navbar-nav > .open > .nav-item-link:hover {
   background-color: #e97f10;
   box-shadow: inset 0 0 2px rgba(100, 100, 100, 0.15);
 }
