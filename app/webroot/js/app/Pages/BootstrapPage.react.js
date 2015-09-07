@@ -24,6 +24,7 @@ define([
   'lib/react/jsx!components/Modal/Modal.react',
   'lib/react/jsx!components/Nav/Nav.react',
   'lib/react/jsx!components/Nav/NavItem.react',
+  'lib/react/jsx!components/Navbar/Navbar.react',
   'lib/react/jsx!components/Page/AppPage.react',
   'lib/react/jsx!components/Page/PageHeader.react',
   'lib/react/jsx!components/Panel/Panel.react',
@@ -52,6 +53,7 @@ define([
   Modal,
   Nav,
   NavItem,
+  Navbar,
   AppPage,
   PageHeader,
   Panel,
@@ -266,6 +268,28 @@ define([
               <NavItem menu={menu}>Item 2</NavItem>
               <NavItem disabled>Item 3</NavItem>
             </Nav>
+          </Panel>
+
+          <Panel title="Navbar">
+            <Navbar brand="Brand" fluid>
+              <Nav>
+                <NavItem active>Item 1</NavItem>
+                <NavItem menu={menu}>Item 2</NavItem>
+                <NavItem disabled>Item 3</NavItem>
+              </Nav>
+            </Navbar>
+            <Navbar brand="Brand" fluid inverse>
+              <Nav>
+                <NavItem active>Item 1</NavItem>
+                <NavItem>Item 2</NavItem>
+                <NavItem disabled>Item 3</NavItem>
+              </Nav>
+              <Nav right>
+                <NavItem active>Item 1</NavItem>
+                <NavItem>Item 2</NavItem>
+                <NavItem disabled>Item 3</NavItem>
+              </Nav>
+            </Navbar>
           </Panel>
 
           <Panel title="Panel">
