@@ -5,8 +5,8 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!app/Users/Calendar/WorkoutAddDialog.react',
-  'lib/react/jsx!app/Users/Calendar/WorkoutLink.react',
+  'lib/react/jsx!app/Users/Home/WorkoutAddDialog.react',
+  'lib/react/jsx!app/Users/Home/WorkoutLink.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/Calendar/BaseCalendarDay.react',
   'lib/react/jsx!components/Calendar/CalendarDate.react',

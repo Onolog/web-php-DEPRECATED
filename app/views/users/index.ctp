@@ -2,6 +2,7 @@
 /**
  * Displays the calendar view of all a user's workouts
  */
+$this->layout = 'basic';
 $this->Include->css(array(
   'app/Activity',
   'app/UserCalendar',
@@ -22,10 +23,10 @@ $this->Html->scriptStart(array('inline' => false));
 echo "
   require([
     'utils/reactRender',
-    'lib/react/jsx!app/Users/Calendar/UserCalendarPage.react'
-  ], function(reactRender, UserCalendarPage) {
+    'lib/react/jsx!app/Users/Home/Home.react'
+  ], function(reactRender, Home) {
     reactRender(
-      UserCalendarPage, {
+      Home, {
         month: $month-1,
         year: $year
       }, 'reactRoot'

@@ -5,7 +5,7 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!app/Users/Calendar/UserCalendarDay.react',
+  'lib/react/jsx!app/Users/Home/UserCalendarDay.react',
   'lib/react/jsx!components/Calendar/BaseCalendar.react',
   'lib/react/jsx!components/Calendar/BaseCalendarWeek.react',
   'utils/calendarGrid',

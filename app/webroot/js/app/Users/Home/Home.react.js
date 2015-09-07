@@ -7,11 +7,12 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!app/Users/Calendar/UserCalendar.react',
-  'lib/react/jsx!app/Users/Calendar/WorkoutAddDialog.react',
+  'lib/react/jsx!app/Users/Home/UserCalendar.react',
+  'lib/react/jsx!app/Users/Home/WorkoutAddDialog.react',
   'lib/react/jsx!components/Button/Button.react',
   'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
   'lib/react/jsx!components/Loader/Loader.react',
+  'lib/react/jsx!components/Page/AppPage.react',
   'lib/react/jsx!components/Page/PageHeader.react',
   'lib/react/jsx!components/Panel/Panel.react',
 
@@ -30,6 +31,7 @@ define([
   Button,
   ButtonGroup,
   Loader,
+  AppPage,
   PageHeader,
   Panel,
 
@@ -90,7 +92,7 @@ define([
     render: function() {
       var date = this.state.date;
       return (
-        <div>
+        <AppPage>
           <PageHeader title={DateTimeUtils.formatDate(date, 'MMMM YYYY')}>
             {this._renderButtonGroup()}
           </PageHeader>
@@ -107,7 +109,7 @@ define([
               workouts={this.state.workouts}
             />
           </Panel>
-        </div>
+        </AppPage>
       );
     },
 
@@ -120,7 +122,7 @@ define([
               <Button
                 glyph="plus"
                 label="New Activity"
-                use="primary"
+                use="success"
               />
             }
           />
