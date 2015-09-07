@@ -7,71 +7,15 @@ define([
 
   'lib/react/react',
   'lib/react/jsx!components/Facebook/FBLoginButton.react',
-  'utils/pad',
-  'utils/ResponseHandler',
-  'lib/jquery/jquery.min',
-  'facebook'
+  'actions/UserActions'
 
 ], function(
 
   React,
   FBLoginButton,
-  pad,
-  ResponseHandler
+  UserActions
 
 ) {
-
-  // Set permission scope here  
-  var permissions = {
-    scope: [
-      'email',
-      'public_profile',
-      'user_friends',
-      'user_location'
-    ].join(',')
-  };
-
-  function onSuccess(response) {
-    var response = new ResponseHandler(response);
-    if (response.getWasSuccessful()) {
-      var date = new Date();
-      var year = date.getFullYear();
-      var month = pad(date.getMonth() + 1, 2);
-
-      // If successful, redirect to the calendar view for the current month.
-      document.location = '/' + year + '/' + month;
-      return;
-    }
-
-    alert('There was a problem logging in. Please try again later.');
-  }
-
-  function _fbConnect() {
-    var e = document.createElement('script');
-    e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
-    e.async = true;
-    document.getElementById('fb-root').appendChild(e);
-  };
-
-  function _fbLogin() {
-    FB.login(function(response) {
-      if (response.status === 'connected') {
-        var accessToken = response.authResponse.accessToken;
-        FB.api('/me', function(response) {
-          // Send info to server
-          response.accessToken = accessToken;
-          $.ajax({
-            url: '/ajax/users/login',
-            type: 'POST',
-            data: response,
-            success: onSuccess
-          });
-        });
-      } else {
-        // user hit cancel button
-      }
-    }, permissions);
-  };
 
   return React.createClass({
     getInitialState: function() {
@@ -96,7 +40,7 @@ define([
             <p className="lead">
               Running is better with friends.
             </p>
-            <p><FBLoginButton onClick={this._onLogin} /></p>
+            <p><FBLoginButton onClick={UserActions.login} /></p>
           </div>
           <div className="bgImage"></div>
         </div>
@@ -115,10 +59,6 @@ define([
 
     _getWindowHeight: function() {
       return $(window).height();
-    },
-
-    _onLogin: function() {
-      _fbLogin(_fbConnect());
     }
   });
 
