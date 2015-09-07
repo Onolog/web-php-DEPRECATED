@@ -22,6 +22,8 @@ define([
   'lib/react/jsx!components/Menu/MenuHeader.react',
   'lib/react/jsx!components/Menu/MenuItem.react',
   'lib/react/jsx!components/Modal/Modal.react',
+  'lib/react/jsx!components/Nav/Nav.react',
+  'lib/react/jsx!components/Nav/NavItem.react',
   'lib/react/jsx!components/Page/AppPage.react',
   'lib/react/jsx!components/Page/PageHeader.react',
   'lib/react/jsx!components/Panel/Panel.react',
@@ -48,6 +50,8 @@ define([
   MenuHeader,
   MenuItem,
   Modal,
+  Nav,
+  NavItem,
   AppPage,
   PageHeader,
   Panel,
@@ -98,6 +102,19 @@ define([
         );
       });
 
+      var menu =
+        <Menu align="right">
+          <MenuHeader label="First Header" />
+          <MenuItem
+            label="Item 1 (Click me!)"
+            onClick={function() {alert('You clicked the menu item!');}}
+          />
+          <MenuItem label="Item 2" />
+          <MenuDivider />
+          <MenuHeader label="Second Header" />
+          <MenuItem label="Item 3" />
+        </Menu>;
+
       return (
         <AppPage>
           <PageHeader title="Bootstrap Components" />
@@ -125,40 +142,40 @@ define([
           </Panel>
 
           <Panel title="Button">
-            <h4>Button Uses</h4>
+            <h5>Button Uses</h5>
             <div style={{margin: '5px 0 15px'}}>
               {buttonUses}
             </div>
-            <h4>Button Sizes</h4>
+            <h5>Button Sizes</h5>
             <div style={{margin: '5px 0 15px'}}>
               {buttonSizes}
             </div>
-            <h4>Button Glyphs</h4>
+            <h5>Button Glyphs</h5>
             <div style={{margin: '5px 0 0 0'}}>
               {buttonGlyphs}
             </div>
           </Panel>
 
           <Panel title="Button Group">
-            <h4 style={{margin: '0 0 5px'}}>
+            <h5 style={{margin: '0 0 5px'}}>
               Standard Button Group
-            </h4>
+            </h5>
             <ButtonGroup size="large">
               <Button label="Left" />
               <Button label="Middle" />
               <Button label="Right" />
             </ButtonGroup>
-            <h4 style={{margin: '15px 0 5px'}}>
+            <h5 style={{margin: '15px 0 5px'}}>
               Justified Button Group
-            </h4>
+            </h5>
             <ButtonGroup justified={true}>
               <Button href="#" label="Left" />
               <Button href="#" label="Middle" />
               <Button href="#" label="Right" />
             </ButtonGroup>
-            <h4 style={{margin: '15px 0 5px'}}>
+            <h5 style={{margin: '15px 0 5px'}}>
               Vertical Button Group
-            </h4>
+            </h5>
             <ButtonGroup layout="vertical">
               <Button label="Left" />
               <Button label="Middle" />
@@ -169,30 +186,11 @@ define([
           <Panel title="Dropdown Button">
             <DropdownButton
               label="Open Me!"
-              menu={
-                <Menu>
-                  <MenuItem
-                    label="Alert"
-                    onClick={function() {alert('You clicked the menu item!');}}
-                  />
-                  <MenuItem label="Item 2" />
-                  <MenuDivider />
-                  <MenuItem label="Item 3" />
-                </Menu>
-              }
+              menu={menu}
             />
             <DropdownButton
               label="Split Button"
-              menu={
-                <Menu align="right">
-                  <MenuHeader label="First Header" />
-                  <MenuItem label="Item 1" />
-                  <MenuItem label="Item 2" />
-                  <MenuDivider />
-                  <MenuHeader label="Second Header" />
-                  <MenuItem label="Item 3" />
-                </Menu>
-              }
+              menu={menu}
               split={true}
               use="danger"
             />
@@ -238,6 +236,36 @@ define([
               <ListGroupItem active>Active</ListGroupItem>
               <ListGroupItem disabled>Disabled</ListGroupItem>
             </ListGroup>
+          </Panel>
+
+          <Panel title="Nav">
+            <h5 style={{margin: '0 0 10px 0'}}>Tabbed Nav</h5>
+            <Nav>
+              <NavItem active>Item 1</NavItem>
+              <NavItem menu={menu}>Item 2</NavItem>
+              <NavItem disabled>Item 3</NavItem>
+            </Nav>
+
+            <h5 style={{margin: '20px 0 10px 0'}}>Justified Tabbed Nav</h5>
+            <Nav justified>
+              <NavItem active>Item 1</NavItem>
+              <NavItem menu={menu}>Item 2</NavItem>
+              <NavItem disabled>Item 3</NavItem>
+            </Nav>
+
+            <h5 style={{margin: '20px 0 10px 0'}}>Pill Nav</h5>
+            <Nav type="pills">
+              <NavItem active>Item 1</NavItem>
+              <NavItem menu={menu}>Item 2</NavItem>
+              <NavItem disabled>Item 3</NavItem>
+            </Nav>
+
+            <h5 style={{margin: '20px 0 10px 0'}}>Stacked Nav</h5>
+            <Nav type="pills" stacked>
+              <NavItem active>Item 1</NavItem>
+              <NavItem menu={menu}>Item 2</NavItem>
+              <NavItem disabled>Item 3</NavItem>
+            </Nav>
           </Panel>
 
           <Panel title="Panel">
