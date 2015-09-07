@@ -43,5 +43,12 @@ define({
   BRANDS_FETCH: 'brands-fetch',
   BRANDS_FETCH_ERROR: 'brands-fetch-error',
   WORKOUTS_FETCH: 'workouts-fetch',
-  WORKOUTS_FETCH_ERROR: 'workouts-fetch-error'
+  WORKOUTS_FETCH_ERROR: 'workouts-fetch-error',
+
+  // User-related actions
+  USER_LOGIN: 'user-login',
+  USER_STATUS: 'user-status',
+  USER_FETCH: 'user-fetch',
+  USER_FETCH_ERROR: 'user-fetch-error',
+  USER_LOGOUT: 'user-logout'
 });
