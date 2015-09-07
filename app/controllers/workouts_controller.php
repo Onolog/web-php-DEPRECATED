@@ -162,10 +162,6 @@ class WorkoutsController extends AppController {
     return $response->send();
 	}
 
-  public function sms_add($date=null) {
-    $this->set('title_for_layout', 'SMS');
-  }
-
   /**
    * Allows the user to edit the selected workout.
    * 
