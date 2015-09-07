@@ -49,12 +49,12 @@ define([
     render: function() {
       return (
         <li
-          className={cx({
+          className={joinClasses(cx({
             'nav-item': true,
             'active': this.props.active,
             'disabled': this.props.disabled,
             'open': this.state.menuOpen
-          })}
+          }), this.props.className)}
           role="presentation">
           {this._renderLink()}
           {this._renderMenu()}

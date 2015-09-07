@@ -1,6 +1,7 @@
 define([
 
   'lib/react/react',
+  'lib/react/jsx!components/Facebook/FBImage.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Menu/Menu.react',
   'lib/react/jsx!components/Menu/MenuDivider.react',
@@ -8,11 +9,17 @@ define([
   'lib/react/jsx!components/Nav/Nav.react',
   'lib/react/jsx!components/Nav/NavItem.react',
   'lib/react/jsx!components/Navbar/Navbar.react',
+
+  'actions/UserActions',
+  'mixins/StoreMixin.react',
+  'stores/UserStore',
+  'utils/homeUrl',
   'utils/pad'
 
 ], function(
 
   React,
+  FBImage,
   Link,
   Menu,
   MenuDivider,
@@ -20,14 +27,14 @@ define([
   Nav,
   NavItem,
   Navbar,
+
+  UserActions,
+  StoreMixin,
+  UserStore,
+  homeUrl,
   pad
 
 ) {
-
-  function getHomeUrl() {
-    var now = new Date();
-    return '/' + now.getFullYear() + '/' + pad(now.getMonth() + 1, 2);
-  }
 
   /**
    * AppHeader.react
@@ -36,39 +43,44 @@ define([
   return React.createClass({
     displayName: 'AppHeader',
 
-    propTypes: {
-      user: React.PropTypes.shape({
-        id: React.PropTypes.number,
-        name: React.PropTypes.string,
-      })
-    },
+    mixins: [StoreMixin],
 
-    getDefaultProps: function() {
+    getInitialState: function() {
       return {
-        user: {
-          id: 517820043,
-          name: 'Eric Giovanola'
-        }
+        user: {}
       };
     },
 
+    componentWillMount: function() {
+      this.stores = [this.setStoreInfo(UserStore, this._onUserStoreUpdate)];
+
+      if (UserStore.getIsLoggedIn()) {
+        this.setState({user: UserStore.getUser()});
+      }
+    },
+
+    _onUserStoreUpdate: function() {
+      this.setState({user: UserStore.getUser()});
+    },
+
     render: function() {
+      var user = this.state.user;
+
       return (
         <Navbar
-          brand={<Link href={getHomeUrl()}>Onolog</Link>}
+          brand={<Link href={homeUrl()}>Onolog</Link>}
           className="header"
           fixed="top"
           inverse>
-          {this._renderMainMenu()}
-          {this._renderAccountMenu()}
-          {this._renderLoginLink()}
+          {this._renderMainMenu(user)}
+          {this._renderAccountMenu(user)}
+          {this._renderLoginLink(user)}
         </Navbar>
       );
     },
 
-    _renderAccountMenu: function() {
-      var user = this.props.user;
-      if (!user || !user.id) {
+    _renderAccountMenu: function(user) {
+      if (!user.id) {
         return;
       }
 
@@ -82,7 +94,13 @@ define([
 
       return (
         <Nav right>
-          <NavItem menu={menu}>
+          <NavItem className="account-menu" menu={menu}>
+            <FBImage
+              className="accountImg"
+              fbid={user.id}
+              height={24}
+              width={24}
+            />
             <span className="accountName ellipses hidden-phone">
               {user.name}
             </span>
@@ -91,12 +109,11 @@ define([
       );
     },
 
-    _renderMainMenu: function() {
-      var user = this.props.user;
-      if (user && user.id) {
+    _renderMainMenu: function(user) {
+      if (user.id) {
         return (
           <Nav>
-            <NavItem href={getHomeUrl()}>
+            <NavItem href={homeUrl()}>
               Calendar
             </NavItem>
             <NavItem href={'/users/profile/' + user.id}>
@@ -114,12 +131,11 @@ define([
      * If there's no user info, it means the user isn't logged in. Propmt them
      * to do so.
      */
-    _renderLoginLink: function() {
-      var user = this.props.user;
-      if (!user || !user.id) {
+    _renderLoginLink: function(user) {
+      if (!user.id) {
         return (
           <Nav right>
-            <NavItem href="#">
+            <NavItem href="/users/login">
               Sign In
             </NavItem>
           </Nav>
