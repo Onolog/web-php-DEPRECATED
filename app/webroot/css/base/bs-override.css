@@ -72,6 +72,10 @@ a.btn-default {
   padding-top: 15px;
 }
 
+.caret {
+  margin-left: 4px;
+}
+
 
 /* Forms */
 .form-control::-moz-placeholder {

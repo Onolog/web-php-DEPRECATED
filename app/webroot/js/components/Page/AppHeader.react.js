@@ -1,26 +1,33 @@
 define([
 
   'lib/react/react',
-  'lib/react/jsx!components/Button/DropdownButton.react',
-  'lib/react/jsx!components/LeftRight/LeftRight.react',
   'lib/react/jsx!components/Link/Link.react',
   'lib/react/jsx!components/Menu/Menu.react',
   'lib/react/jsx!components/Menu/MenuDivider.react',
   'lib/react/jsx!components/Menu/MenuItem.react',
-  'lib/react/jsx!components/Middot.react'
+  'lib/react/jsx!components/Nav/Nav.react',
+  'lib/react/jsx!components/Nav/NavItem.react',
+  'lib/react/jsx!components/Navbar/Navbar.react',
+  'utils/pad'
 
 ], function(
 
   React,
-  DropdownButton,
-  LeftRight,
   Link,
   Menu,
   MenuDivider,
   MenuItem,
-  Middot
+  Nav,
+  NavItem,
+  Navbar,
+  pad
 
 ) {
+
+  function getHomeUrl() {
+    var now = new Date();
+    return '/' + now.getFullYear() + '/' + pad(now.getMonth() + 1, 2);
+  }
 
   /**
    * AppHeader.react
@@ -36,34 +43,26 @@ define([
       })
     },
 
+    getDefaultProps: function() {
+      return {
+        user: {
+          id: 517820043,
+          name: 'Eric Giovanola'
+        }
+      };
+    },
+
     render: function() {
       return (
-        <header className="header navbar navbar-inverse navbar-fixed-top">
-          <div className="container clearfix">
-            <div className="navbar-header">
-              <button
-                className="navbar-toggle"
-                data-toggle="collapse"
-                data-target="#bs-example-navbar-collapse-1"
-                type="button">
-                <span className="sr-only">Toggle navigation</span>
-                <span className="icon-bar" />
-                <span className="icon-bar" />
-                <span className="icon-bar" />
-              </button>
-              <Link className="navbar-brand" href="#">
-                Onolog
-              </Link>
-            </div>
-            <div
-              className="collapse navbar-collapse"
-              id="bs-example-navbar-collapse-1">
-              {this._renderMainMenu()}
-              {this._renderAccountMenu()}
-              {this._renderLoginLink()}
-            </div>
-          </div>
-        </header>
+        <Navbar
+          brand={<Link href={getHomeUrl()}>Onolog</Link>}
+          className="header"
+          fixed="top"
+          inverse>
+          {this._renderMainMenu()}
+          {this._renderAccountMenu()}
+          {this._renderLoginLink()}
+        </Navbar>
       );
     },
 
@@ -75,51 +74,40 @@ define([
 
       var menu =
         <Menu>
-          <MenuItem label="Profile" />
-          <MenuItem label="Settings" />
+          <MenuItem href={'/users/profile/' + user.id} label="Profile" />
+          <MenuItem href="/users/settings" label="Settings" />
           <MenuDivider />
-          <MenuItem label="Sign Out" />
+          <MenuItem href="/users/logout" label="Sign Out" />
         </Menu>;
 
       return (
-        <ul className="nav navbar-nav navbar-right account">
-          <li className="nav-item">
-            <Link href="#">
-              <span className="accountName ellipses hidden-phone">
-                {user.name}
-              </span>
-              <i className="caret" />
-            </Link>
-          </li>
-        </ul>
+        <Nav right>
+          <NavItem menu={menu}>
+            <span className="accountName ellipses hidden-phone">
+              {user.name}
+            </span>
+          </NavItem>
+        </Nav>
       );
     },
 
     _renderMainMenu: function() {
       var user = this.props.user;
-      if (!user || !user.id) {
-        return;
-      }
-
-      return (
-        <ul className="nav navbar-nav navbar-left">
-          <li className="nav-item">
-            <Link href="/">
+      if (user && user.id) {
+        return (
+          <Nav>
+            <NavItem href={getHomeUrl()}>
               Calendar
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/users/profile/">
+            </NavItem>
+            <NavItem href={'/users/profile/' + user.id}>
               Profile
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link href="/users/shoes">
+            </NavItem>
+            <NavItem href="/users/shoes">
               Shoes
-            </Link>
-          </li>
-        </ul>
-      );
+            </NavItem>
+          </Nav>
+        );
+      }
     },
 
     /**
@@ -128,19 +116,15 @@ define([
      */
     _renderLoginLink: function() {
       var user = this.props.user;
-      if (user && user.id) {
-        return;
-      }
-
-      return (
-        <ul className="nav navbar-nav navbar-right">
-          <li className="nav-item">
-            <Link href="#">
+      if (!user || !user.id) {
+        return (
+          <Nav right>
+            <NavItem href="#">
               Sign In
-            </Link>
-          </li>
-        </ul>
-      );
+            </NavItem>
+          </Nav>
+        );
+      }
     }
   });
 
