@@ -123,19 +123,24 @@ define([
 
           <Panel title="Alerts">
             <Alert type="success">
-              <strong>Well done!</strong> You successfully read this important alert message.
+              <strong>Well done!</strong> You successfully read this important
+              alert message.
             </Alert>
             <Alert type="info">
-              <strong>Heads up!</strong> This alert needs your attention, but it{"'"}s not super important.
+              <strong>Heads up!</strong> This alert needs your attention, but
+              it{"'"}s not super important.
             </Alert>
             <Alert type="warning">
-              <strong>Warning!</strong> Better check yourself, you{"'"}re not looking too good.
+              <strong>Warning!</strong> Better check yourself, you{"'"}re not
+              looking too good.
             </Alert>
             <Alert type="danger">
-              <strong>Oh snap!</strong> Change a few things up and try submitting again.
+              <strong>Oh snap!</strong> Change a few things up and try
+              submitting again.
             </Alert>
             <Alert type="info" dismissible={true}>
-              <strong>Sweeeeeeet!</strong> You can dismiss this alert by pressing the button over here ---->
+              <strong>Sweeeeeeet!</strong> You can dismiss this alert by
+              pressing the button over here ---->
             </Alert>
           </Panel>
 
@@ -213,10 +218,15 @@ define([
             <h6>Example Heading <Label>New</Label></h6>
 
             <Label use="default">Default</Label>
+            {' '}
             <Label use="primary">Primary</Label>
+            {' '}
             <Label use="success">Success</Label>
+            {' '}
             <Label use="info">Info</Label>
+            {' '}
             <Label use="warning">Warning</Label>
+            {' '}
             <Label use="danger">Danger</Label>
           </Panel>
 
@@ -226,6 +236,9 @@ define([
               <ListGroupItem href="#">Linked List Item</ListGroupItem>
               <ListGroupItem onClick={function() { alert('Clicked!')}}>
                 List Item with onClick
+              </ListGroupItem>
+              <ListGroupItem>
+                List Item with Badge <Badge>12</Badge>
               </ListGroupItem>
             </ListGroup>
             <ListGroup>

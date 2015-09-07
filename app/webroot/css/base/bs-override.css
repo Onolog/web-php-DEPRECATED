@@ -4,13 +4,6 @@
  * These override the base styles in bootstrap.css
  */
 
-/* Buttons */
-.btn {
-  border: 0;
-  /* box-shadow: 0 1px 1px rgba(100, 100, 100, 0.15); */
-  /* text-shadow: rgba(0, 0, 0, 0.1) 0 -1px 0; */
-}
-
 /* Headers */
 h1:first-child,
 h2:first-child,
@@ -19,8 +12,11 @@ h4:first-child,
 h5:first-child {
   margin-top: 0;
 }
-h3 {
-  font-size: 18px;
+
+.label {
+  font-weight: normal;
+  padding-bottom: 0.2em;
+  text-shadow: none;
 }
 
 /* Reduce border-radius */
@@ -40,6 +36,11 @@ h3 {
   border-radius: 3px 3px 0 0;
 }
 
+
+/* Buttons */
+.btn {
+  border: 0;
+}
 .btn + .btn,
 .btn + .btn-group,
 .btn-group + .btn,
@@ -47,9 +48,11 @@ h3 {
   margin-left: 5px;
 }
 
+a.btn-default,
 .btn-default {
   background-color: #fff;
   border: 1px solid #e7e7e7;
+  color: #666;
   text-shadow: #fff 0 1px 0;
 }
 
@@ -57,10 +60,6 @@ h3 {
 .glyphChild + .btnLabel,
 .btnLabel + .glyphChild {
   margin-left: 5px;
-}
-
-a.btn-default {
-  color: #666;
 }
 
 .close {
@@ -76,6 +75,24 @@ a.btn-default {
   margin-left: 4px;
 }
 
+
+/* Use consistent coloring for active/hover/primary states */
+.btn-primary,
+.label-primary,
+.list-group-item.active,
+.list-group-item.active:hover,
+.list-group-item.active:focus,
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+  background-color: #1f8dd6;
+}
+
+
+/* Alerts */
+.alert {
+  border-width: 0 0 0 5px;
+}
 
 /* Forms */
 .form-control::-moz-placeholder {
