@@ -1,6 +1,7 @@
 <?php
 App::import('Helper', 'pages/AppPage');
 App::import('Helper', 'Navigation');
+App::import('Helper', 'Session');
 
 /**
  * Renders a web page with site chrome
@@ -21,6 +22,7 @@ class WebPageHelper extends AppPageHelper {
 
     // Set Helpers
     $this->Navigation = new NavigationHelper();
+    $this->Session = new SessionHelper();
 
     if ($this->Session->read('Auth.User')) {
       $this->userID = $this->Session->read('Auth.User.id');

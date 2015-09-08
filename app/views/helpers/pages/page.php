@@ -8,7 +8,7 @@
  */
 class PageHelper extends AppHelper {
 
-  var $helpers = array('Html', 'Session', 'Include');
+  var $helpers = array('Html');
 
   private
     $pageTitle = '',
@@ -30,7 +30,6 @@ class PageHelper extends AppHelper {
 
     // Set Helpers & Components
     $this->Html = new HtmlHelper();
-    $this->Session = new SessionHelper();
 
     // TODO: Is there a better way to reference the View than this?
     $this->View =& ClassRegistry::getObject('view');
@@ -209,4 +208,4 @@ class PageHelper extends AppHelper {
     return $html;
   }
 
-} // End Page Class
+}
