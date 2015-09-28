@@ -8,6 +8,6 @@ echo $this->element('react_page', array(
     'app/Shoe',
     'components/Topline'
   ),
-  'path' => '/build/AllShoes',
+  'page' => 'AllShoes',
   'title' => 'Shoes',
 ));

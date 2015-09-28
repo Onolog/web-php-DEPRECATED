@@ -14,6 +14,6 @@ echo $this->element('react_page', array(
     'isEditing' => true,
     'workout' => $this->data['Workout']
   ),
-  'path' => '/build/WorkoutAddEdit',
+  'page' => 'WorkoutAddEdit',
   'title' => 'Edit Activity',
 ));

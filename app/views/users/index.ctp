@@ -17,6 +17,6 @@ echo $this->element('react_page', array(
     'month' => $month,
     'year' => $year
   ),
-  'path' => '/build/Home',
+  'page' => 'Home',
   'title' => $title,
 ));

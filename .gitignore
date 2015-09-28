@@ -20,6 +20,7 @@ app/webroot/js/constants/Facebook.js
 
 .bashrc
 
-# JS
+# Node + Webpack
+app/webroot/__dev__/*
 node_modules/*
-
+npm-debug.log

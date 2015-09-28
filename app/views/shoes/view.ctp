@@ -10,5 +10,5 @@ echo $this->element('react_page', array(
     'canEdit' => $can_edit,
     'shoe' => $shoe
   ),
-  'path' => '/build/Shoe',
+  'page' => 'Shoe',
 ));

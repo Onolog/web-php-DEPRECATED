@@ -1,5 +1,5 @@
 <?php
 echo $this->element('react_page', array(
-  'path' => '/build/Daniels',
+  'page' => 'Daniels',
   'title' => 'Daniels VDOT Resources',
 ));

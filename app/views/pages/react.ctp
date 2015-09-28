@@ -9,6 +9,6 @@ echo $this->element('react_page', array(
     'components/FBFriendTokenizer',
     'components/Topline',
   ),
-  'path' => '/build/React',
+  'page' => 'React',
   'title' => 'React Components',
 ));

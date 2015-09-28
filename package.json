@@ -26,7 +26,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack -w --progress --colors",
-    "build": "webpack -p --progress --colors"
+    "deploy": "NODE_ENV=production webpack -p --progress --colors --config webpack.production.config.js"
   },
   "repository": {
     "type": "git",

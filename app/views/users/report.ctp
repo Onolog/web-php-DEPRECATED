@@ -16,5 +16,5 @@ echo $this->element('react_page', array(
     'workoutData' => $workoutData,
     'workoutDataByWeek' => $workoutDataByWeek
   ),
-  'path' => '/build/Report',
+  'page' => 'Report',
 ));

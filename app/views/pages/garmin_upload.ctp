@@ -6,6 +6,6 @@ echo $this->element('react_page', array(
     'components/Facepile',
     'components/Topline'
   ),
-  'path' => '/build/Garmin',
+  'page' => 'Garmin',
   'title' => 'Garmin File Uploader',
 ));

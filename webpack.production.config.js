@@ -12,7 +12,7 @@ WEBPACK.ENTRY_PAGES.forEach(function(page) {
 module.exports = {
   entry: entryPages,
   output: {
-    path: WEBROOT + '/__dev__',
+    path: WEBROOT + '/dist',
     filename: '[name].js',
     publicPath: 'http://www.onolog.com/'
   },

@@ -30,6 +30,6 @@ echo $this->element('react_page', array(
     'viewer' => $viewer,
     'workout' => $workout['Workout']
   ),
-  'path' => '/build/Workout',
+  'page' => 'Workout',
   'title' => $date,
 ));

@@ -14,6 +14,6 @@ echo $this->element('react_page', array(
     'workoutData' => $workout_data,
     'workoutDataByWeek' => $workout_data_by_week
   ),
-  'path' => '/build/Profile',
+  'page' => 'Profile',
   'title' => $user['User']['name'],
 ));

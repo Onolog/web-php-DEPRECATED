@@ -17,7 +17,9 @@ if (isset($title)) {
 // Render the root element on the page
 echo $this->element('loader', array('id' => 'root'));
 
-$this->Html->script($path, array('inline' => false));
+// Prepend the correct path to root JS files depending on the environment.
+$path = CAKE_ENV === 'development' ? '/__dev__/' : '/dist/';
+$this->Html->script($path . $page, array('inline' => false));
 
 // Set data for window
 if (isset($data)) {

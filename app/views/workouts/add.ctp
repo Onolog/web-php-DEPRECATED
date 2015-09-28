@@ -8,6 +8,6 @@ echo $this->element('react_page', array(
     'components/DateTimePicker',
     'components/FBFriendTokenizer',
   ),
-  'path' => '/build/WorkoutAddEdit',
+  'page' => 'WorkoutAddEdit',
   'title' => 'Add Activity',
 ));
