@@ -4,6 +4,8 @@ var Tokenizer = require('../Tokenizer/Tokenizer.react');
 
 var FBLoader = require('../../lib/Facebook/fb');
 
+require('./FBFriendTokenizer.css');
+
 /**
  * FriendTokenizer.react
  * @jsx React.DOM

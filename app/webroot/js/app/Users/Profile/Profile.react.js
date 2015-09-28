@@ -10,6 +10,8 @@ var Topline = require('../../../components/Data/Topline.react');
 var DATE_FORMAT = 'MMMM Do';
 var GRAPH_HEIGHT = 200;
 
+require('../../../../css/app/Profile.css');
+
 /**
  * Profile.react
  * @jsx React.DOM

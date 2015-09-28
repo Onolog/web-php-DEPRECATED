@@ -1,11 +1,5 @@
 <?php
 echo $this->element('react_page', array(
-  'css' => array(
-    'app/Activity',
-    'app/Profile',
-    'components/Graph',
-    'components/Topline'
-  ),
   'data' => array(
     'shoeCount' => $shoe_count,
     'totalMiles' => $total_miles,

@@ -1,6 +1,8 @@
 var React = require('react');
 var cx = require('classnames');
 
+require('./ActivitySection.css');
+
 /**
  * ActivitySection.react
  * @jsx React.DOM

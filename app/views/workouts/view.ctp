@@ -20,12 +20,7 @@ $this->Meta->og('onolog:time', $time);
 $this->Meta->og('fb:app_id', FB_APP_ID);
 
 echo $this->element('react_page', array(
-  'css' => array(
-    'app/Activity',
-    'app/Workout',
-    'components/Facepile',
-    'components/Topline'
-  ),
+  'css' => array('app/Workout'),
   'data' => array(
     'viewer' => $viewer,
     'workout' => $workout['Workout']

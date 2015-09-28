@@ -4,14 +4,9 @@
  */
 echo $this->element('react_page', array(
   'css' => array(
-    'app/Activity',
     'app/UserCalendar',
     'app/Workout',
     'components/Calendar',
-    'components/DateTimePicker',
-    'components/Facepile',
-    'components/FBFriendTokenizer',
-    'components/Topline',
   ),
   'data' => array(
     'month' => $month,

@@ -1,6 +1,7 @@
 var React = require('react');
-
 var cx = require('classnames');
+
+require('./Loader.css');
 
 /**
  * Loader.react

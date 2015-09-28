@@ -37,7 +37,7 @@ var GarminUploader = React.createClass({
     }
 
     return (
-      <AppPage>
+      <AppPage className="narrow-page">
         <PageHeader title="" />
         <Panel title="Choose a .tcx file">
           <FileInput onChange={this._onChange} />

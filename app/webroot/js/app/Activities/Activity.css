@@ -1,7 +1,6 @@
 /**
  * Activity.css
  */
-
 .activityContainer {
   border-radius: 3px;
   overflow: hidden;
@@ -131,26 +130,6 @@
 .activityDeviceVersion {
   color: #bbb;
   font-size: 12px;
-}
-
-
-/* Activity Section */
-.activitySection {
-  padding: 15px;
-}
-
-.activitySectionBorder,
-.activitySection + .activitySection {
-  border-top: 1px solid #f5f5f5;
-}
-
-/* Should match labeledStatLabel from Topline.css */
-.activitySectionTitle {
-  color: #aaa;
-  font-size: 10px;
-  font-weight: normal;
-  margin-bottom: 5px;
-  text-transform: uppercase;
 }
 
 

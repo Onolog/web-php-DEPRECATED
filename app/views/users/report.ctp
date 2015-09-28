@@ -1,10 +1,6 @@
 <?php
 echo $this->element('react_page', array(
-  'css' => array(
-    'app/Report',
-    'components/Graph',
-    'components/Topline',
-  ),
+  'css' => array('app/Report'),
   'data' => array(
     'runExtremes' => $extremes,
     'shoeCount' => $shoe_count,

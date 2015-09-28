@@ -7,6 +7,8 @@ var HiddenInput = require('../Forms/HiddenInput.react');
 var cx = require('classnames');
 var dateToUnixTime = require('../../utils/dateToUnixTime');
 
+require('./DateTimePicker.css');
+
 /**
  * DateTimePicker.react
  * @jsx React.DOM

@@ -5,11 +5,7 @@
  * Path: /views/workouts/edit.ctp
  */
 echo $this->element('react_page', array(
-  'css' => array(
-    'app/Workout',
-    'components/DateTimePicker',
-    'components/FBFriendTokenizer',
-  ),
+  'css' => array('app/Workout'),
   'data' => array(
     'isEditing' => true,
     'workout' => $this->data['Workout']

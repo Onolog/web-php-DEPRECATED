@@ -17,6 +17,8 @@ var ShoeStore = require('../../stores/ShoeStore');
 
 var cx = require('classnames');
 
+require('./Activity.css');
+
 /**
  * Activity.react
  * @jsx React.DOM

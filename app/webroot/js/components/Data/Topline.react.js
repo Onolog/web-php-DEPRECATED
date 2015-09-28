@@ -1,6 +1,8 @@
 var React = require('react');
 var cx = require('classnames');
 
+require('./Topline.css');
+
 /**
  * Topline.react
  * @jsx React.DOM

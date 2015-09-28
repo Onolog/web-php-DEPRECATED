@@ -1,5 +1,7 @@
 var React = require('react');
 
+require('./BarGraph.css');
+
 /**
  * Graph.react
  * @jsx React.DOM

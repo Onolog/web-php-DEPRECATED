@@ -6,6 +6,8 @@ var Loader = require('../Loader/Loader.react');
 
 var FBLoader = require('../../lib/Facebook/fb');
 
+require('./FBFacepile.css');
+
 /**
  * FBFacepile.react
  * @jsx React.DOM
