@@ -22,7 +22,7 @@ var ENTRY_PAGES = [
   'Home',
   'Login',
   'Profile',
-  //'Report',
+  'Report',
   'Settings',
 
   // Workouts

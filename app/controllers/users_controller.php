@@ -249,9 +249,7 @@ class UsersController extends AppController {
       'order'  => 'Workout.date ASC'
     ));
 
-    $json_friends = json_encode(
-      $this->getTopFriends($workouts)
-    );
+    $friends = $this->getTopFriends($workouts);
 
     // Format and sort the data
     $workouts = $this->User->Workout->groupWorkouts($workouts);
@@ -260,17 +258,15 @@ class UsersController extends AppController {
     $total_runs = $workouts['grouped'][$year]['run_count'];
     $total_time = $workouts['grouped'][$year]['time'];
 
-    $json_workoutData = json_encode($workouts['grouped'][$year]);
-    $json_workoutDataByWeek = json_encode($workouts['week'][$year]);
+    $workoutData = $workouts['grouped'][$year];
+    $workoutDataByWeek = $workouts['week'][$year];
 
     // Shoe Data
-    $shoes = $this->User->Shoe->find(
-      'all', array(
-        'conditions' => array(
-          'Shoe.user_id' => $id,
-        ),
-      )
-    );
+    $shoes = $this->User->Shoe->find('all', array(
+      'conditions' => array(
+        'Shoe.user_id' => $id,
+      ),
+    ));
 
     $shoes = $this->User->Shoe->getActiveShoesForDateRange(
       $shoes,
@@ -279,7 +275,7 @@ class UsersController extends AppController {
     );
 
     $shoe_count = count($shoes);
-    $top_brand = json_encode($this->User->Shoe->getTopBrandData($shoes));
+    $top_brand = $this->User->Shoe->getTopBrandData($shoes);
 
     $extremes = array();
     if ($workouts['grouped'][$year]['run_count'] >= 2) {
@@ -312,10 +308,10 @@ class UsersController extends AppController {
     $this->set('title_for_layout', $year . ' In Miles');
 		$this->set(compact(
 		  'end_date',
-		  'json_extremes',
-		  'json_friends',
-		  'json_workoutData',
-		  'json_workoutDataByWeek',
+		  'extremes',
+		  'friends',
+		  'workoutData',
+		  'workoutDataByWeek',
 		  'shoe_count',
 		  'start_date',
 		  'top_brand',
