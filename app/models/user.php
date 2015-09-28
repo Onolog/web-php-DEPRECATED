@@ -60,11 +60,6 @@ class User extends AppModel {
 			'foreignKey' => 'user_id',
 			'dependent' => false,
 		),
-		'RunDetail' => array(
-			'className' => 'RunDetail',
-			'foreignKey' => 'user_id',
-			'dependent' => false,
-		)
 	);
 
   function afterFind($results) {

@@ -1,7 +1,4 @@
 <?php
-// Use the basic layout where we're just rendering the React UI into a DOM node.
-$this->layout = isset($layout) ? $layout : 'basic';
-
 // Set any page-level classes.
 if (isset($classes)) {
   $this->set('page_classes', $classes);

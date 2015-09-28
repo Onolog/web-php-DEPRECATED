@@ -1,10 +1,7 @@
 <?php
 
 /**
- * Renders a basic HTML page.
- *
- * This class should generally not be modified. Instead, extend it and
- * customize as needed.
+ * Renders an HTML page with some basic pieces.
  */
 class PageHelper extends AppHelper {
 
@@ -59,7 +56,7 @@ class PageHelper extends AppHelper {
           $this->getPageCSS() .
         '</head>' .
         '<body class="' . implode(' ', $this->getClasses()) . '">' .
-          $this->renderPageContent() .
+          $this->view .
           $this->renderDevConsole() .
           // Always put JS at the bottom so it doesn't stop the page from loading!
           $this->renderPageJS() .
@@ -78,10 +75,6 @@ class PageHelper extends AppHelper {
     return $this;
   }
 
-  protected function getPageTitle() {
-    return $this->pageTitle;
-  }
-
   /**
    * Sets the view to be rendered
    * @param str
@@ -89,10 +82,6 @@ class PageHelper extends AppHelper {
   public function setView($view) {
     $this->view = $view;
     return $this;
-  }
-
-  protected function getView() {
-    return $this->view;
   }
 
   /**
@@ -110,15 +99,6 @@ class PageHelper extends AppHelper {
       }
     }
     return $this;
-  }
-
-  // Removes a single classname, if it exists
-  public function removeClass($class) {
-    $key = array_search($class, $this->pageClasses);
-    if ($key === false) {
-      return;
-    }
-    unset($this->pageClasses[$key]);
   }
 
   protected function getClasses() {
@@ -167,8 +147,18 @@ class PageHelper extends AppHelper {
   }
 
   protected function getBaseCSS() {
-    return Configure::read('debug') > 0 ?
-      $this->Html->css('/css/base/debug') : '';
+    $debugCSS = '';
+    if (Configure::read('debug') > 0) {
+      $debugCSS = $this->Html->css('/css/base/debug');
+    }
+
+    return
+      $this->Html->css('/css/base/bootstrap') .
+      $this->Html->css('/css/base/bs-override') .
+      $this->Html->css('/css/base/app') .
+      $this->Html->css('/css/base/fonts') .
+      $this->Html->css('/css/base/util') .
+      $debugCSS;
   }
   
   /**
@@ -176,20 +166,38 @@ class PageHelper extends AppHelper {
    * here, but can be extended to add other things, like the site name.
    */
   protected function renderPageTitle() {
-    return $this->getPageTitle();
-  }
-
-  /**
-   * Renders the visible portion of the page, including all header, content and
-   * footer elements. This is a basic version of the method; more complex or
-   * customized version can be added in child classes.
-   */
-  protected function renderPageContent() {
-    return $this->getView();
+    return __('Onolog &middot; ', true) . $this->pageTitle;
   }
 
   protected function renderPageJS() {
-    return $this->getPageJS();
+    return
+      $this->getPageJS() .
+      $this->renderGoogleAnalyticsJS();
+  }
+
+  /**
+   * Renders the JS needed for Google analytics. This is pretty much global
+   * code, except for the individual site id. This id is stored as a constant
+   * in init.php and can be changed on a per-site basis.
+   */
+  protected function renderGoogleAnalyticsJS() {
+    if (!GOOGLE_ANALYTICS_CODE) {
+      return '';
+    }
+
+    $google =
+      '<script type="text/javascript">' . "\n" .
+        'var _gaq = _gaq || [];' . "\n" .
+        '_gaq.push(["_setAccount", "' . GOOGLE_ANALYTICS_CODE . '"]);' . "\n" .
+        '_gaq.push(["_trackPageview"]);' . "\n" .
+        '(function() {' . "\n" .
+          'var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;' . "\n" .
+          'ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";' . "\n" .
+          'var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);' . "\n" .
+        '})();' . "\n" .
+      '</script>' . "\n";
+
+    return $google;
   }
 
   /**

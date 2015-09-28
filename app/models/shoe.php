@@ -57,21 +57,6 @@ class Shoe extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		/*
-		'WorkoutDetail' => array(
-			'className' => 'WorkoutDetail',
-			'foreignKey' => 'shoe_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => 'Workout.date DESC',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
-		*/
 	);
 
   function afterFind($results) {

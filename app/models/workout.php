@@ -45,16 +45,6 @@ class Workout extends AppModel {
 		),
 	);
 
-/*
-  var $hasMany = array(
-		'RunDetail' => array(
-			'className' => 'Workout',
-			'foreignKey' => 'user_id',
-			'dependent' => false,
-		)
-	);
-*/
-
 	var $belongsTo = array(
 		'User' => array(
 			'className' => 'User',
@@ -116,35 +106,6 @@ class Workout extends AppModel {
    * Convert the data before saving
    */
   function beforeSave($data) {
-    /*
-    if ($this->layout !== 'ajax') {
-      // Take hh:mm:ss and convert to seconds
-      $this->data['Workout']['time'] = time_to_sec(array(
-        $this->data['Workout']['hh'],
-        $this->data['Workout']['mm'],
-        $this->data['Workout']['ss']
-      ));
-  
-      // Unset the hh:mm:ss data
-      unset($this->data['Workout']['hh']);
-      unset($this->data['Workout']['mm']);
-      unset($this->data['Workout']['ss']);
-    }
-
-    // Convert friends to a string if they're in array form
-    $friends = idx($this->data['Workout'], 'friends', array());
-    if (is_array($friends) && !empty($friends)) {
-      $f = array();
-      foreach ($friends as $friend) {
-        $f[] = $friend['id'];
-      }
-      $this->data['Workout']['friends'] = implode($f, ',');
-    }
-
-    // Be sure to escape notes entries
-	  $this->data['Workout']['notes'] =
-      htmlspecialchars(idx($this->data['Workout'], 'notes'), ENT_QUOTES);
-    */
     return true;
   }
 

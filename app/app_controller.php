@@ -41,7 +41,6 @@ class AppController extends Controller {
   );
 
   var $helpers = array(
-    'Button',
     'Html',
     'Form',
     'Session',
