@@ -1,4 +1,7 @@
+'use strict';
+
 var path = require('path');
+var webpack = require('webpack');
 
 var WEBROOT = path.join(__dirname, 'app/webroot');
 var WEBPACK = require(WEBROOT + '/js/constants/WebpackConstants');
@@ -9,7 +12,7 @@ WEBPACK.ENTRY_PAGES.forEach(function(page) {
   entryPages[page] = path.join(WEBROOT, 'js', '__entry__', page + '.js');
 });
 
-module.exports = {
+var config = {
   entry: entryPages,
   output: {
     path: WEBROOT + '/__dev__',
@@ -18,7 +21,7 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'babel-loader' },
+      { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/ },
       { test: /\.css$/, loader: 'style-loader!css-loader' },
       // Fonts
       { test: /\.(eot|svg|ttf|woff|woff2)$/, loader: 'file-loader'},
@@ -26,8 +29,16 @@ module.exports = {
       { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' }
     ]
   },
+  plugins: [
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development')
+    })
+  ],
   resolve: {
     // Allows you to require('file') instead of require('file.js')
     extensions: ['', '.js', '.json']
   }
 };
+
+module.exports = config;

@@ -9,18 +9,12 @@ app/config/facebook.php
 
 vendors/*
 
-# Ignore certain JS libs
-# Local versions are unminified
-app/webroot/js/lib/react/react.js
-app/webroot/js/lib/react/react.min.js
-app/webroot/js/lib/moment/Moment.js
-app/webroot/js/lib/moment/Moment.min.js
-
+# JS
 app/webroot/js/constants/Facebook.js
-
-.bashrc
 
 # Node + Webpack
 app/webroot/__dev__/*
 node_modules/*
 npm-debug.log
+
+.bashrc

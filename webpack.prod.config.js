@@ -1,33 +1,24 @@
-var path = require('path');
+'use strict';
+
+var baseConfig = require('./webpack.config.js');
+var webpack = require('webpack');
 
 var WEBROOT = path.join(__dirname, 'app/webroot');
-var WEBPACK = require(WEBROOT + '/js/constants/WebpackConstants');
 
-var entryPages = {};
-WEBPACK.ENTRY_PAGES.forEach(function(page) {
-  // /app/webroot/js/__entry__/filename.js
-  entryPages[page] = path.join(WEBROOT, 'js', '__entry__', page + '.js');
-});
+var config = Object.create(baseConfig);
 
-module.exports = {
-  entry: entryPages,
-  output: {
-    path: WEBROOT + '/dist',
-    filename: '[name].js',
-    publicPath: 'http://www.onolog.com/'
-  },
-  module: {
-    loaders: [
-      { test: /\.js$/, loader: 'babel-loader' },
-      { test: /\.css$/, loader: 'style-loader!css-loader' },
-      // Fonts
-      { test: /\.(eot|svg|ttf|woff|woff2)$/, loader: 'file-loader'},
-      // Inline base64 URLs for <=8k images, direct URLs for the rest
-      { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' }
-    ]
-  },
-  resolve: {
-    // Allows you to require('file') instead of require('file.js')
-    extensions: ['', '.js', '.json']
-  }
-};
+config.output.path = __dirname + '/app/webroot/dist';
+config.plugins = [
+  new webpack.optimize.OccurenceOrderPlugin(),
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('production')
+  }),
+  new webpack.optimize.UglifyJsPlugin({
+    compressor: {
+      screw_ie8: true,
+      warnings: false
+    }
+  })
+];
+
+module.exports = config;
