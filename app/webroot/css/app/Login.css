@@ -1,19 +1,8 @@
 /* 
  * login.css
  */
-
-.login .navbar-toggle {
-  /* No menu in logged-out state */
-  visibility: hidden;
-}
-
-.login .main {
+.login {
   background-color: #000;
-  padding: 0;
-}
-
-.login .footer {
-  display: none;
 }
 
 .login .jumbotronContainer {
@@ -78,7 +67,7 @@
 }
 
 .fbIcon {
-  background: url('/img/fb_logo_inverted@2x.png') no-repeat;
+  background: url(/img/fb_logo_inverted@2x.png) no-repeat;
   background-size: 30px;
   border-radius: 2px;
   display: inline-block;

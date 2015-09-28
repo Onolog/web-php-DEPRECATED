@@ -1,20 +1,6 @@
 <?php
-$this->set('page_classes', array(
-  'narrow-page'
+echo $this->element('react_page', array(
+  'classes' => array('narrow-page'),
+  'path' => '/build/Terms',
+  'title' => 'Terms & Conditions',
 ));
-
-echo $this->element('loader', array(
-  'id' => 'reactRoot'
-));
-
-$this->Html->scriptStart(array('inline' => false));
-echo "
-  require([
-    'utils/reactRender',
-    'lib/react/jsx!app/Pages/TermsPage.react',
-    'lib/bootstrap.min'
-  ], function(reactRender, TermsPage) {
-    reactRender(TermsPage, {}, 'reactRoot');
-  });
-";
-$this->Html->scriptEnd();

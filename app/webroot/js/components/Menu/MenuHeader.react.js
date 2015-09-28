@@ -1,25 +1,25 @@
+var React = require('react');
+
 /**
  * MenuHeader.react
  * @jsx React.DOM
  *
  * Header used in a dropdown menu.
  */
-define(['lib/react/react'], function(React) {
+var MenuHeader = React.createClass({
+  displayName: 'MenuHeader',
 
-  return React.createClass({
-    displayName: 'MenuHeader',
+  propTypes: {
+    label: React.PropTypes.string.isRequired
+  },
 
-    propTypes: {
-      label: React.PropTypes.string.isRequired
-    },
-
-    render: function() {
-      return (
-        <li className="dropdown-header">
-          {this.props.label}
-        </li>
-      );
-    }
-  });
-
+  render: function() {
+    return (
+      <li className="dropdown-header">
+        {this.props.label}
+      </li>
+    );
+  }
 });
+
+module.exports = MenuHeader;

@@ -1,164 +1,140 @@
+var React = require('react');
+
+var Activity = require('../Activities/Activity.react');
+var AppPage = require('../../components/Page/AppPage.react');
+var Button = require('../../components/Button/Button.react');
+var ButtonGroup = require('../../components/ButtonGroup/ButtonGroup.react');
+var Calendar = require('../../components/Calendar/Calendar.react');
+var DateTimePicker = require('../../components/DateTimePicker/DateTimePicker.react');
+var FBFriendTokenizer = require('../../components/Facebook/FBFriendTokenizer.react');
+var BarGraph = require('../../components/Graph/BarGraph/BarGraph.react');
+var LeftRight = require('../../components/LeftRight/LeftRight.react');
+var PageHeader = require('../../components/Page/PageHeader.react');
+var Panel = require('../../components/Panel/Panel.react');
+var WorkoutFields = require('../Workouts/WorkoutFields.react');
+
+var cloneDate = require('../../utils/cloneDate');
+var DateTimeUtils = require('../../utils/DateTimeUtils');
+
+var DATA = require('../../constants/TestData');
+
 /**
  * ReactPage.react
  * @jsx React.DOM
  *
  * Displays React components
  */
-define([
+var ReactPage = React.createClass({
+  displayName: 'ReactPage',
 
-  'lib/react/react',
+  getInitialState: function() {
+    return {
+      calendarDate: new Date(),
+      datePickerDate: new Date(),
+      workouts: DATA.WORKOUTS
+    };
+  },
 
-  'lib/react/jsx!app/Activities/Activity.react',
-  'lib/react/jsx!app/Workouts/WorkoutFields.react',
+  render: function() {
 
-  'lib/react/jsx!components/Button/Button.react',
-  'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
-  'lib/react/jsx!components/Calendar/Calendar.react',
-  'lib/react/jsx!components/DateTimePicker/DateTimePicker.react',
-  'lib/react/jsx!components/Facebook/FBFriendTokenizer.react',
-  'lib/react/jsx!components/Graph/BarGraph/BarGraph.react',
-  'lib/react/jsx!components/LeftRight/LeftRight.react',
-  'lib/react/jsx!components/Page/PageHeader.react',
-  'lib/react/jsx!components/Panel/Panel.react',
+    return (
+      <AppPage>
+        <PageHeader title="React Component Examples" />
 
-  'constants/TestData',
-  'utils/cloneDate',
-  'utils/DateTimeUtils'
+        <Panel title="Date and Time Picker">
+          <DateTimePicker
+            initialDate={this.state.datePickerDate}
+            onChange={function(date) {
+              this.setState({datePickerDate: date});
+            }.bind(this)}
+          />
+          <div style={{marginTop: '10px'}}>
+            {this.state.datePickerDate.toISOString()}
+          </div>
+        </Panel>
 
-], function(
+        <Panel title="Calendar">
+          <LeftRight style={{'marginBottom': '10px'}}>
+            <h3>
+              {DateTimeUtils.formatDate(
+                this.state.calendarDate,
+                'MMMM YYYY'
+              )}
+            </h3>
+            <ButtonGroup>
+              <Button
+          	    glyph="triangle-left"
+                tooltip={{
+                  title: 'Last month'
+                }}
+                onClick={this.onLastMonthClick}
+              />
+              <Button
+          	    glyph="stop"
+                tooltip={{
+                  title: 'This month'
+                }}
+                onClick={this.onThisMonthClick}
+              />
+              <Button
+          	    glyph="triangle-right"
+                tooltip={{
+                  title: 'Next month'
+                }}
+                onClick={this.onNextMonthClick}
+              />
+            </ButtonGroup>
+          </LeftRight>
+          <Calendar date={this.state.calendarDate} />
+        </Panel>
 
-  React,
+        <Panel title="Friend Typeahead">
+          <h4 style={{margin: '0 0 5px'}}>Initially Empty</h4>
+          <FBFriendTokenizer />
+          <h4 style={{margin: '15px 0 5px'}}>Pre-Populated</h4>
+          <FBFriendTokenizer
+            prePopulate={DATA.FRIENDS}
+          />
+        </Panel>
 
-  Activity,
-  WorkoutFields,
+        <Panel title="Workout Fields">
+          <WorkoutFields
+            action="add"
+            shoes={DATA.SHOES}
+            workout={DATA.WORKOUTS['2014']['10']['21'][1]}
+          />
+        </Panel>
 
-  Button,
-  ButtonGroup,
-  Calendar,
-  DateTimePicker,
-  FBFriendTokenizer,
-  Graph,
-  LeftRight,
-  PageHeader,
-  Panel,
+        <Panel title="Activity">
+          <Activity activity={DATA.WORKOUTS['2014']['10']['21'][1]} />
+        </Panel>
 
-  DATA,
-  cloneDate,
-  DateTimeUtils
+        <Panel title="Graph">
+          Need to add
+        </Panel>
+      </AppPage>
+    );
+  },
 
-) {
+  onLastMonthClick: function() {
+    var date = cloneDate(this.state.calendarDate);
+    date.setMonth(date.getMonth() - 1);
+    this.setState({calendarDate: date});
+  },
 
-  return React.createClass({
-    displayName: 'ReactPage',
+  onThisMonthClick: function() {
+    this.setState({calendarDate: new Date()});
+  },
 
-    getInitialState: function() {
-      return {
-        calendarDate: new Date(),
-        datePickerDate: new Date(),
-        workouts: DATA.WORKOUTS
-      };
-    },
+  onNextMonthClick: function() {
+    var date = cloneDate(this.state.calendarDate);
+    date.setMonth(date.getMonth() + 1);
+    this.setState({calendarDate: date});
+  },
 
-    render: function() {
-
-      return (
-        <div>
-          <PageHeader title="React Component Examples" />
-
-          <Panel title="Date and Time Picker">
-            <DateTimePicker
-              initialDate={this.state.datePickerDate}
-              onChange={function(date) {
-                this.setState({datePickerDate: date});
-              }.bind(this)}
-            />
-            <div style={{marginTop: '10px'}}>
-              {this.state.datePickerDate.toISOString()}
-            </div>
-          </Panel>
-
-          <Panel title="Calendar">
-            <LeftRight style={{'marginBottom': '10px'}}>
-              <h3>
-                {DateTimeUtils.formatDate(
-                  this.state.calendarDate,
-                  'MMMM YYYY'
-                )}
-              </h3>
-              <ButtonGroup>
-                <Button
-            	    glyph="triangle-left"
-                  tooltip={{
-                    title: 'Last month'
-                  }}
-                  onClick={this.onLastMonthClick}
-                />
-                <Button
-            	    glyph="stop"
-                  tooltip={{
-                    title: 'This month'
-                  }}
-                  onClick={this.onThisMonthClick}
-                />
-                <Button
-            	    glyph="triangle-right"
-                  tooltip={{
-                    title: 'Next month'
-                  }}
-                  onClick={this.onNextMonthClick}
-                />
-              </ButtonGroup>
-            </LeftRight>
-            <Calendar date={this.state.calendarDate} />
-          </Panel>
-
-          <Panel title="Friend Typeahead">
-            <h4 style={{margin: '0 0 5px'}}>Initially Empty</h4>
-            <FBFriendTokenizer />
-            <h4 style={{margin: '15px 0 5px'}}>Pre-Populated</h4>
-            <FBFriendTokenizer
-              prePopulate={DATA.FRIENDS}
-            />
-          </Panel>
-
-          <Panel title="Workout Fields">
-            <WorkoutFields
-              action="add"
-              shoes={DATA.SHOES}
-              workout={DATA.WORKOUTS['2014']['10']['21'][1]}
-            />
-          </Panel>
-
-          <Panel title="Activity">
-            <Activity activity={DATA.WORKOUTS['2014']['10']['21'][1]} />
-          </Panel>
-
-          <Panel title="Graph">
-            Need to add
-          </Panel>
-        </div>
-      );
-    },
-
-    onLastMonthClick: function() {
-      var date = cloneDate(this.state.calendarDate);
-      date.setMonth(date.getMonth() - 1);
-      this.setState({calendarDate: date});
-    },
-
-    onThisMonthClick: function() {
-      this.setState({calendarDate: new Date()});
-    },
-
-    onNextMonthClick: function() {
-      var date = cloneDate(this.state.calendarDate);
-      date.setMonth(date.getMonth() + 1);
-      this.setState({calendarDate: date});
-    },
-
-    _onWorkoutsUpdate: function(workouts) {
-      this.setState({ workouts: workouts });
-    }
-  });
-
+  _onWorkoutsUpdate: function(workouts) {
+    this.setState({ workouts: workouts });
+  }
 });
+
+module.exports = ReactPage;

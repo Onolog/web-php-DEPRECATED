@@ -1,55 +1,44 @@
+var React = require('react');
+
+var Image = require('../../components/Image/Image.react');
+var ImageBlock = require('../../components/ImageBlock/ImageBlock.react');
+var Link = require('../../components/Link/Link.react');
+
+var GarminDeviceUtils = require('../../utils/GarminDeviceUtils');
+
 /**
  * ActivityDeviceInfo.react
  * @jsx React.DOM
  *
  * Displays the the name and software version for a given device.
  */
+var ActivityDeviceInfo = React.createClass({
+  displayName: 'ActivityDeviceInfo',
 
-define([
+  propTypes: {
+    deviceName: React.PropTypes.string.isRequired,
+    softwareVersion: React.PropTypes.string.isRequired
+  },
 
-  'lib/react/react',
-  'lib/react/jsx!components/Image/Image.react',
-  'lib/react/jsx!components/ImageBlock/ImageBlock.react',
-  'lib/react/jsx!components/Link/Link.react',
-  'utils/GarminDeviceUtils'
+  render: function() {
+    var deviceName = this.props.deviceName;
+    var src = GarminDeviceUtils.getDeviceImageSrc(deviceName);
 
-], function(
-
-  React,
-  Image,
-  ImageBlock,
-  Link,
-  GarminDeviceUtils
-
-) {
-
-  return React.createClass({
-    displayName: 'ActivityDeviceInfo',
-
-    propTypes: {
-      deviceName: React.PropTypes.string.isRequired,
-      softwareVersion: React.PropTypes.string.isRequired
-    },
-  
-    render: function() {
-      var deviceName = this.props.deviceName;
-      var src = GarminDeviceUtils.getDeviceImageSrc(deviceName);
-
-      return(
-        <ImageBlock
-          align="middle"
-          image={<Image className="activityDeviceImage" src={src} />}>
-          <h5 className="activityDeviceName">
-            <Link href={GarminDeviceUtils.getDeviceProductPageURL()}>
-              {deviceName}
-            </Link>
-          </h5>
-          <div className="activityDeviceVersion">
-            {'Software Version: ' + this.props.softwareVersion}
-          </div>
-        </ImageBlock>
-      );
-    }
-  });
-
+    return(
+      <ImageBlock
+        align="middle"
+        image={<Image className="activityDeviceImage" src={src} />}>
+        <h5 className="activityDeviceName">
+          <Link href={GarminDeviceUtils.getDeviceProductPageURL()}>
+            {deviceName}
+          </Link>
+        </h5>
+        <div className="activityDeviceVersion">
+          {'Software Version: ' + this.props.softwareVersion}
+        </div>
+      </ImageBlock>
+    );
+  }
 });
+
+module.exports = ActivityDeviceInfo;

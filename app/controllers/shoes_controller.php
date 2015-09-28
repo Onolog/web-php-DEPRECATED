@@ -36,7 +36,6 @@ class ShoesController extends AppController {
 
     // Does the shoe belong to the person viewing it?
 		$can_edit = $shoe['user_id'] === $this->Auth->User('id');
-    $shoe = json_encode($shoe);
 
 		$this->set(compact(
       'can_edit',

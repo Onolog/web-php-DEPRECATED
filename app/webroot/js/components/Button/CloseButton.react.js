@@ -1,31 +1,29 @@
+var React = require('react');
+
+var TooltipMixin = require('../../mixins/TooltipMixin.react');
+
+var cx = require('classnames');
+
 /**
  * CloseButton.react
  * @jsx React.DOM
  */
-define([
+var CloseButton = React.createClass({
+  displayName: 'CloseButton',
 
-  'lib/react/react',
-  'lib/react/jsx!mixins/TooltipMixin.react',
-  'utils/joinClasses'
+  mixins: [TooltipMixin],
 
-], function(React, TooltipMixin, joinClasses) {
-
-  return React.createClass({
-    displayName: 'CloseButton',
-
-    mixins: [TooltipMixin],
-
-    render: function() {
-      return (
-        <button
-          {...this.props}
-          className={joinClasses(this.props.className, 'close')}
-          type="button">
-          <span aria-hidden="true">&times;</span>
-          <span className="sr-only">Close</span>
-        </button>
-      );
-    }
-  });
-
+  render: function() {
+    return (
+      <button
+        {...this.props}
+        className={cx(this.props.className, 'close')}
+        type="button">
+        <span aria-hidden="true">&times;</span>
+        <span className="sr-only">Close</span>
+      </button>
+    );
+  }
 });
+
+module.exports = CloseButton;

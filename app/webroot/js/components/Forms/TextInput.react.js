@@ -1,47 +1,38 @@
+var React = require('react');
+var cx = require('classnames');
+
 /**
  * TextInput.react
  * @jsx React.DOM
  *
  * React wrapper around a standard text input.
  */
-define([
+var TextInput = React.createClass({
+  displayName: 'TextInput',
 
-  'lib/react/react',
-  'utils/joinClasses'
+  render: function() {
+    return (
+      <input
+        {...this.props}
+        className={cx(this.props.className, 'form-control')}
+        type="text"
+      />
+    );
+  },
 
-], function(
+  blur: function() {
+    this.getDOMNode().blur();
+    return this;
+  },
 
-  React,
-  joinClasses
+  focus: function() {
+    this.getDOMNode().focus();
+    return this;
+  },
 
-) {
-
-  return React.createClass({
-    displayName: 'TextInput',
-
-    render: function() {
-      return (
-        <input
-          {...this.props}
-          className={joinClasses(this.props.className, 'form-control')}
-          type="text"
-        />
-      );
-    },
-
-    blur: function() {
-      this.getDOMNode().blur();
-      return this;
-    },
-
-    focus: function() {
-      this.getDOMNode().focus();
-      return this;
-    },
-
-    getValue: function() {
-      return this.getDOMNode().value;
-    }
-  });
-
+  getValue: function() {
+    return this.getDOMNode().value;
+  }
 });
+
+module.exports = TextInput;

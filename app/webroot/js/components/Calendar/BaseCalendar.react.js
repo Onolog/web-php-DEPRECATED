@@ -1,91 +1,73 @@
+var React = require('react');
+var moment = require('moment');
+
 /**
  * BaseCalendar.react
  * @jsx React.DOM
  */
-define([
+var DAYS_IN_WEEK = 7;
+var ISO_DAY_OF_WEEK = 'E';
 
-  'lib/react/react',
-  'lib/Moment/Moment',
-  'utils/cx',
-  'utils/joinClasses'
+var BaseCalendar = React.createClass({
+  displayName: 'BaseCalendar',
 
-], function(
+  propTypes: {
+    borders: React.PropTypes.bool,
+    headerFormat: React.PropTypes.oneOf([
+      'd',    // M, T, W...
+      'dd',   // Mo, Tu, We...
+      'ddd',  // Mon, Tue, Wed...
+      'dddd'  // Monday, Tuesday, Wednesday...
+    ])
+  },
 
-  React,
-  moment,
-  cx,
-  joinClasses
+  getDefaultProps: function() {
+    return {
+      borders: true,
+      headerFormat: 'ddd'
+    };
+  },
 
-) {
+  render: function() {
+    return (
+      <table className={this.props.className}>
+        {this._renderHeaderRow()}
+        <tbody>
+          {this.props.children}
+        </tbody>
+      </table>
+    );
+  },
 
-  var DAYS_IN_WEEK = 7;
-  var ISO_DAY_OF_WEEK = 'E';
-
-  return React.createClass({
-    displayName: 'BaseCalendar',
-
-    propTypes: {
-      borders: React.PropTypes.bool,
-      headerFormat: React.PropTypes.oneOf([
-        'd',    // M, T, W...
-        'dd',   // Mo, Tu, We...
-        'ddd',  // Mon, Tue, Wed...
-        'dddd'  // Monday, Tuesday, Wednesday...
-      ])
-    },
-
-    getDefaultProps: function() {
-      return {
-        borders: true,
-        headerFormat: 'ddd'
-      };
-    },
-
-    render: function() {
-      var classes = cx({
-        'calendar': true,
-        'noBorders': !this.props.borders
-      });
-
-      return (
-        <table className={this.props.className}>
-          {this._renderHeaderRow()}
-          <tbody>
-            {this.props.children}
-          </tbody>
-        </table>
+  /**
+   * Renders the days of the week in the header cells ('Sun', 'Mon', etc.).
+   *
+   * TODO: Allow for different week start days. Currently Sunday.
+   */
+  _renderHeaderRow: function() {
+    var headerCells = [];
+    for (var ii=0; ii < DAYS_IN_WEEK; ii++) {
+      headerCells.push(
+        <th key={ii}>{this._formatDayOfWeek(ii)}</th>
       );
-    },
-
-    /**
-     * Renders the days of the week in the header cells ('Sun', 'Mon', etc.).
-     *
-     * TODO: Allow for different week start days. Currently Sunday.
-     */
-    _renderHeaderRow: function() {
-      var headerCells = [];
-      for (var ii=0; ii < DAYS_IN_WEEK; ii++) {
-        headerCells.push(
-          <th key={ii}>{this._formatDayOfWeek(ii)}</th>
-        );
-      }
-      return <thead><tr>{headerCells}</tr></thead>;
-    },
-
-    _formatDayOfWeek: function(day) {
-      var format = this.props.headerFormat;
-      var substr = false;
-
-      // Moment doesn't support formatting days as a single letter,
-      // so just do it manually.
-      if (format === 'd') {
-        format = 'dd';
-        substr = true;
-      }
-
-      var formatted = moment(day, ISO_DAY_OF_WEEK).format(format);
-      return substr ? formatted.substr(0, 1) : formatted;
     }
-  });
+    return <thead><tr>{headerCells}</tr></thead>;
+  },
 
+  _formatDayOfWeek: function(day) {
+    var format = this.props.headerFormat;
+    var substr = false;
+
+    // Moment doesn't support formatting days as a single letter,
+    // so just do it manually.
+    if (format === 'd') {
+      format = 'dd';
+      substr = true;
+    }
+
+    var formatted = moment(day, ISO_DAY_OF_WEEK).format(format);
+    return substr ? formatted.substr(0, 1) : formatted;
+  }
 });
+
+module.exports = BaseCalendar;

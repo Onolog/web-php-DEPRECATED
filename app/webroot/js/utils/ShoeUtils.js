@@ -1,29 +1,25 @@
 /**
  * ShoeUtils.js
  */
-define(function() {
+module.exports = {
+  /**
+   * Group the user's shoes into active and inactive sets.
+   */
+  groupByActivity: function(/*array*/ shoes) /*array*/ {
+    var activeShoes = [];
+    var inactiveShoes = [];
 
-  return {
-    /**
-     * Group the user's shoes into active and inactive sets.
-     */
-    groupByActivity: function(/*array*/ shoes) /*array*/ {
-      var activeShoes = [];
-      var inactiveShoes = [];
+    shoes.forEach(function(shoe) {
+      if (shoe.inactive) {
+        inactiveShoes.push(shoe);
+      } else {
+        activeShoes.push(shoe);
+      }
+    });
 
-      shoes.forEach(function(shoe) {
-        if (shoe.inactive) {
-          inactiveShoes.push(shoe);
-        } else {
-          activeShoes.push(shoe);
-        }
-      });
-
-      return {
-        active: activeShoes,
-        inactive: inactiveShoes
-      };
-    }
-  };
-
-});
+    return {
+      active: activeShoes,
+      inactive: inactiveShoes
+    };
+  }
+};

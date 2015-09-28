@@ -1,32 +1,23 @@
+var React = require('react');
+var cx = require('classnames');
+
 /**
  * Textarea.react
  * @jsx React.DOM
  *
  * React wrapper around a standard textarea.
  */
-define([
+var Textarea = React.createClass({
+  displayName: 'Textarea',
 
-  'lib/react/react',
-  'utils/joinClasses'
-
-], function(
-
-  React,
-  joinClasses
-
-) {
-
-  return React.createClass({
-    displayName: 'Textarea',
-
-    render: function() {
-      return (
-        <textarea
-          {...this.props}
-          className={joinClasses(this.props.className, 'form-control')}
-        />
-      );
-    }
-  });
-
+  render: function() {
+    return (
+      <textarea
+        {...this.props}
+        className={cx(this.props.className, 'form-control')}
+      />
+    );
+  }
 });
+
+module.exports = Textarea;

@@ -1,31 +1,13 @@
 <?php
 /**
- * Add a workout
- *
- * Path: /views/workouts/add.ctp
+ * Server-side endpoint for activity creation.
  */
-$this->Include->css(array(
-  'app/Workout',
-  'components/DateTimePicker',
-  'components/FBFriendTokenizer',
+echo $this->element('react_page', array(
+  'css' => array(
+    'app/Workout',
+    'components/DateTimePicker',
+    'components/FBFriendTokenizer',
+  ),
+  'path' => '/build/WorkoutAddEdit',
+  'title' => 'Add Activity',
 ));
-
-$this->set('title_for_layout', __('Add Activity', 1));
-$this->set('page_classes', array(
-  'narrow-page'
-));
-
-echo $this->element('loader', array(
-  'id' => 'reactRoot',
-));
-
-$this->Html->scriptStart(array('inline' => false));
-echo "
-  require([
-    'utils/reactRender',
-    'lib/react/jsx!app/Workouts/WorkoutAddEditPage.react'
-  ], function(reactRender, WorkoutAddEditPage) {
-    reactRender(WorkoutAddEditPage, {}, 'reactRoot');
-  });
-";
-$this->Html->scriptEnd();

@@ -1,25 +1,14 @@
 <?php
-$this->Include->css(array(
-  'app/Activity',
-  'app/Shoe',
-  'components/Topline'
+echo $this->element('react_page', array(
+  'classes' => array('narrow-page'),
+  'css' => array(
+    'app/Activity',
+    'app/Shoe',
+    'components/Topline'
+  ),
+  'data' => array(
+    'canEdit' => $can_edit,
+    'shoe' => $shoe
+  ),
+  'path' => '/build/Shoe',
 ));
-$this->set('page_classes', array('narrow-page'));
-
-echo $this->element('loader', array(
-  'id' => 'reactRoot'
-));
-
-$this->Html->scriptStart(array('inline' => false));
-echo "
-  require([
-    'utils/reactRender',
-    'lib/react/jsx!app/Shoes/ShoeViewPage.react'
-  ], function(reactRender, ShoeViewPage) {
-    reactRender(ShoeViewPage, {
-      canEdit: $can_edit,
-      shoe: $shoe
-    }, 'reactRoot');
-  });
-";
-$this->Html->scriptEnd();

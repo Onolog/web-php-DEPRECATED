@@ -3,17 +3,15 @@
  *
  * Convenience wrapper for instantiating and rendering React components.
  */
-define(['lib/react/react'], function(React) {
+var React = require('react');
 
-  return function(
-    /*object*/ component,
-    /*object*/ options,
-    /*string*/ id
-  ) {
-    React.render(
-      React.createElement(component, options),
-      document.getElementById(id)
-    );
-  };
+function reactRender(/*object*/ Component, /*object*/ props) {
+  props = props || {};
 
-});
+  React.render(
+    <Component {...props} />,
+    document.getElementById('root')
+  );
+};
+
+module.exports = reactRender;

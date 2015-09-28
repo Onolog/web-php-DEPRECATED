@@ -1,67 +1,54 @@
+var React = require('react');
+
+var BaseCalendar = require('./BaseCalendar.react');
+var BaseCalendarDay = require('./BaseCalendarDay.react');
+var BaseCalendarWeek = require('./BaseCalendarWeek.react');
+var CalendarDate = require('./CalendarDate.react');
+
+var calendarGrid = require('../../utils/calendarGrid');
+
 /**
  * Renders a calendar view for a single month
  */
-define([
+var Calendar = React.createClass({
+  displayName: 'Calendar',
 
-  'lib/react/react',
-  'lib/react/jsx!components/Calendar/BaseCalendar.react',
-  'lib/react/jsx!components/Calendar/BaseCalendarDay.react',
-  'lib/react/jsx!components/Calendar/BaseCalendarWeek.react',
-  'lib/react/jsx!components/Calendar/CalendarDate.react',
-  'utils/calendarGrid'
+  propTypes: {
+    date: React.PropTypes.instanceOf(Date).isRequired
+  },
 
-], function(
+  render: function() {
+    var grid = calendarGrid(
+      this.props.date.getMonth(),
+      this.props.date.getFullYear()
+    );
 
-  React,
+    return (
+      <BaseCalendar className="calendar">
+        {grid.map(this._renderWeek)}
+      </BaseCalendar>
+    );
+  },
 
-  BaseCalendar,
-  BaseCalendarDay,
-  BaseCalendarWeek,
-  CalendarDate,
+  _renderWeek: function(week, idx) {
+    return (
+      <BaseCalendarWeek key={idx}>
+        {week.map(this._renderDay)}
+      </BaseCalendarWeek>
+    );
+  },
 
-  calendarGrid
-
-) {
-
-  return React.createClass({
-    displayName: 'Calendar',
-
-    propTypes: {
-      date: React.PropTypes.instanceOf(Date).isRequired
-    },
-  
-    render: function() {
-      var grid = calendarGrid(
-        this.props.date.getMonth(),
-        this.props.date.getFullYear()
-      );
-
-      return (
-        <BaseCalendar className="calendar">
-          {grid.map(this._renderWeek)}
-        </BaseCalendar>
-      );
-    },
-
-    _renderWeek: function(week, idx) {
-      return (
-        <BaseCalendarWeek key={idx}>
-          {week.map(this._renderDay)}
-        </BaseCalendarWeek>
-      );
-    },
-
-    _renderDay: function(day, idx) {
-      var date = day.date;
-      return (
-        <BaseCalendarDay
-          date={date}
-          key={idx}
-          month={this.props.date.getMonth()}>
-          <CalendarDate date={date} />
-        </BaseCalendarDay>
-      );
-    }
-  });
-
+  _renderDay: function(day, idx) {
+    var date = day.date;
+    return (
+      <BaseCalendarDay
+        date={date}
+        key={idx}
+        month={this.props.date.getMonth()}>
+        <CalendarDate date={date} />
+      </BaseCalendarDay>
+    );
+  }
 });
+
+module.exports = Calendar;

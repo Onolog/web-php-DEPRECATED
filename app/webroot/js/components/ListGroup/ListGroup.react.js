@@ -1,28 +1,21 @@
+var React = require('react');
+
+var cx = require('classnames');
+
 /**
  * ListGroup.react
  * @jsx React.DOM
  */
-define([
+var ListGroup = React.createClass({
+  displayName: 'ListGroup',
 
-  'lib/react/react',
-  'utils/joinClasses'
-
-], function(
-
-  React,
-  joinClasses
-
-) {
-  return React.createClass({
-    displayName: 'ListGroup',
-
-    render: function() {
-      return (
-        <div className={joinClasses('list-group', this.props.className)}>
-          {this.props.children}
-        </div>
-      );
-    }
-
-  });
+  render: function() {
+    return (
+      <div className={cx('list-group', this.props.className)}>
+        {this.props.children}
+      </div>
+    );
+  }
 });
+
+module.exports = ListGroup;

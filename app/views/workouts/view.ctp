@@ -4,18 +4,7 @@
  *
  * File: /app/views/workouts/view.ctp
  */
-
-$this->Include->css(array(
-  'app/Activity',
-  'app/Workout',
-  'components/Facepile',
-  'components/Topline'
-));
-$this->set('page_classes', array(
-  'narrow-page',
-));
-
-$page_url = 'http://www.onolog.com/workouts/view/'.$workout['Workout']['id'];
+$page_url = 'http://www.onolog.com/workouts/view/' . $workout['Workout']['id'];
 $date = date('F jS, Y', $workout['Workout']['date']);
 $time = format_time($workout['Workout']['time']);
 $distance = number_format($workout['Workout']['distance'], 2);
@@ -30,22 +19,17 @@ $this->Meta->og('onolog:distance', $distance);
 $this->Meta->og('onolog:time', $time);
 $this->Meta->og('fb:app_id', FB_APP_ID);
 
-echo $this->element('loader', array(
-  'id' => 'reactRoot',
+echo $this->element('react_page', array(
+  'css' => array(
+    'app/Activity',
+    'app/Workout',
+    'components/Facepile',
+    'components/Topline'
+  ),
+  'data' => array(
+    'viewer' => $viewer,
+    'workout' => $workout['Workout']
+  ),
+  'path' => '/build/Workout',
+  'title' => $date,
 ));
-
-// Set JS for the page
-$json_workout = json_encode($workout['Workout'], JSON_NUMERIC_CHECK);
-$this->Html->scriptStart(array('inline' => false));
-echo "
-  require([
-    'utils/reactRender',
-    'lib/react/jsx!app/Workouts/WorkoutViewPage.react'
-  ], function(reactRender, WorkoutViewPage) {
-    reactRender(WorkoutViewPage, {
-      viewer: $viewer,
-      workout: $json_workout
-    }, 'reactRoot');
-  });
-";
-$this->Html->scriptEnd();

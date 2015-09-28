@@ -1,64 +1,55 @@
+var _ = require('underscore');
+var React = require('react');
+
+var cx = require('classnames');
+
+var SIZE = require('../../constants/Bootstrap').SIZE;
+var LAYOUT = {
+  horizontal: 'horizontal',
+  vertical: 'vertical'
+};
+
 /**
  * ButtonGroup.react
  * @jsx React.DOM
  */
-define([
+var ButtonGroup = React.createClass({
+  displayName: 'ButtonGroup',
 
-  'lib/react/react',
-  'utils/cx',
-  'utils/joinClasses'
+  propTypes: {
+    justified: React.PropTypes.bool,
+    layout: React.PropTypes.oneOf(Object.keys(LAYOUT)),
+    size: React.PropTypes.oneOf(_.values(SIZE)),
+  },
 
-], function(React, cx, joinClasses) {
+  getDefaultProps: function() {
+    return {
+      justified: false,
+      layout: 'horizontal',
+      size: SIZE.default,
+    };
+  },
 
-  var SIZE = {
-    large: 'large',
-    default: 'default',
-    small: 'small',
-    xsmall: 'xsmall'
-  };
+  render: function() {
+    var size = this.props.size;
+    var isVerticalLayout = this.props.layout === LAYOUT.vertical;
+    var className = cx({
+      'btn-group': !isVerticalLayout,
+      'btn-group-lg': size === SIZE.LARGE,
+      'btn-group-sm': size === SIZE.SMALL,
+      'btn-group-xs': size === SIZE.XSMALL,
+      'btn-group-justified': !!this.props.justified,
+      'btn-group-vertical': isVerticalLayout,
+    }, this.props.className);
 
-  var LAYOUT = {
-    horizontal: 'horizontal',
-    vertical: 'vertical'
-  };
-
-  return React.createClass({
-    displayName: 'ButtonGroup',
-
-    propTypes: {
-      justified: React.PropTypes.bool,
-      layout: React.PropTypes.oneOf(Object.keys(LAYOUT)),
-      size: React.PropTypes.oneOf(Object.keys(SIZE))
-    },
-
-    getDefaultProps: function() {
-      return {
-        justified: false,
-        layout: 'horizontal',
-        size: SIZE.default,
-      };
-    },
-  
-    render: function() {
-      var size = this.props.size;
-      var isVerticalLayout = this.props.layout === LAYOUT.vertical;
-      var className = joinClasses(cx({
-        'btn-group': !isVerticalLayout,
-        'btn-group-lg': size === SIZE.large,
-        'btn-group-sm': size === SIZE.small,
-        'btn-group-xs': size === SIZE.xsmall,
-        'btn-group-justified': !!this.props.justified,
-        'btn-group-vertical': isVerticalLayout,
-      }), this.props.className);
-
-      // TODO: Validate children to make sure they're buttons
-      return (
-        <div className={className} role="group">
-          {this.props.children}
-        </div>
-      );
-    }
-
-  });
+    // TODO: Validate children to make sure they're buttons
+    return (
+      <div className={className} role="group">
+        {this.props.children}
+      </div>
+    );
+  }
 
 });
+
+module.exports = ButtonGroup;

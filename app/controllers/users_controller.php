@@ -25,9 +25,6 @@ class UsersController extends AppController {
    * - Once the new User is created, send them on to the site
    */
   public function login() {
-    $this->layout = 'marketing';
-    $this->set('title_for_layout', 'Welcome');
-
     // Redirect to Home if the user is logged in
     if ($this->Auth->User('id')) {
       // Save the latest login date for the user
@@ -148,7 +145,7 @@ class UsersController extends AppController {
   /**
    * Default "Home" view. User must be logged in to see this page.
    */
-	function index() {
+	public function index() {
     $user = $this->requireLoggedInUser();
 
     $year = idx($this->params, 'year', 0);
@@ -156,7 +153,7 @@ class UsersController extends AppController {
 
     if (!$year || !$month) {
       $year = date('Y');
-      $month = date('m');
+      $month = date('n');
     }
 
     $shoes = $this->User->Shoe->find('all', array(
@@ -165,42 +162,14 @@ class UsersController extends AppController {
       ),
     ));
 
-    $this->set(
-      'title_for_layout',
-      $this->Auth->User('name')
-    );
+    $title = $this->Auth->User('name');
 
     $this->set(compact(
       'year',
-      'month'
+      'month',
+      'title'
     ));
 	}
-
-  /**
-   * Test view of index using Runs + RunDetails
-   */
-	function runs() {
-    $user = $this->requireLoggedInUser();
-
-    $this->set(
-      'title_for_layout',
-      $this->Auth->User('name')
-    );
-
-    $this->helpers[] = 'Calendar';
-
-    // Retrieve the Run and RunDetail data
-    $this->User->RunDetail->bindModel(array('belongsTo' => array('Run')));
-    $runs = $this->User->RunDetail->find('all', array(
-      'conditions'=>array(
-        'RunDetail.user_id' => $user
-      )
-    ));
-    debug($runs, 1);
-
-    $this->set('runs', $runs);
-	}
-
 
   /**
    * Default view for users, like a profile
@@ -221,15 +190,12 @@ class UsersController extends AppController {
 		  'conditions' => array('Workout.user_id' => $id),
     ));
 
-    $workoutData = $this->User->Workout->groupWorkoutsByYearMonthDay($workouts);
-    $workoutDataByWeek = $this->User->Workout->groupWorkoutsByWeek($workouts);
-
-    $json_workoutData = json_encode($workoutData);
-    $json_workoutDataByWeek = json_encode($workoutDataByWeek);
+    $workout_data = $this->User->Workout->groupWorkoutsByYearMonthDay($workouts);
+    $workout_data_by_week = $this->User->Workout->groupWorkoutsByWeek($workouts);
 
     $total_runs = 0;
     $total_miles = 0;
-    foreach ($workoutData as $years) {
+    foreach ($workout_data as $years) {
       $total_runs += $years['run_count'];
       $total_miles += $years['miles'];
     }
@@ -241,12 +207,12 @@ class UsersController extends AppController {
 
     $this->set('title_for_layout', $user['User']['name']);
 		$this->set(compact(
-		  'json_workoutData',
-		  'json_workoutDataByWeek',
       'shoe_count',
       'total_miles',
       'total_runs',
-      'user'
+      'user',
+      'workout_data',
+      'workout_data_by_week'
 		));
 	}
 
@@ -391,7 +357,7 @@ class UsersController extends AppController {
 			$this->data = $this->User->read(null, $user);
 		}
 
-    $this->set('json_user', json_encode($this->data['User']));
+    $this->set('user', $this->data['User']);
 	}
 
   /**
@@ -416,7 +382,6 @@ class UsersController extends AppController {
    */
   public function friends() {
     $user = $this->requireLoggedInUser();
-    $this->set('title_for_layout', 'Friends');
 
     $friends = array();
 
@@ -431,7 +396,6 @@ class UsersController extends AppController {
    */
   public function shoes() {
     $user = $this->requireLoggedInUser();
-    $this->set('title_for_layout', 'Shoes');
   }
 
   /**

@@ -1,37 +1,34 @@
+var $ = require('jquery');
+var React = require('react');
+
+var BaseAppPage = require('../../../components/Page/BaseAppPage.react');
+var FBLoginButton = require('../../../components/Facebook/FBLoginButton.react');
+
+var UserActions = require('../../../actions/UserActions');
+
+require('../../../../css/app/Login.css');
+
 /**
- * LoginController.react.js
- *
- * 
+ * Login.react.js
  */
-define([
+var Login = React.createClass({
+  displayName: 'Login',
 
-  'lib/react/react',
-  'lib/react/jsx!components/Facebook/FBLoginButton.react',
-  'actions/UserActions'
+  getInitialState: function() {
+    return {
+      windowHeight: this._getWindowHeight()
+    };
+  },
 
-], function(
+  componentDidMount: function() {
+    $(window).resize(function() {
+      this.setState({ windowHeight: this._getWindowHeight() });
+    }.bind(this));
+  },
 
-  React,
-  FBLoginButton,
-  UserActions
-
-) {
-
-  return React.createClass({
-    getInitialState: function() {
-      return {
-        windowHeight: this._getWindowHeight()
-      };
-    },
-
-    componentDidMount: function() {
-      $(window).resize(function() {
-        this.setState({ windowHeight: this._getWindowHeight() });
-      }.bind(this));
-    },
-
-    render: function() {
-      return (
+  render: function() {
+    return (
+      <BaseAppPage className="login">
         <div
           className="jumbotronContainer"
           style={{height: this.state.windowHeight + 'px'}}>
@@ -44,22 +41,23 @@ define([
           </div>
           <div className="bgImage"></div>
         </div>
-      ); 
-    },
+      </BaseAppPage>
+    ); 
+  },
 
-    _renderMarketingSection: function(title) {
-      return (
-        <div className="marketingSection">
-          <div className="container">
-            <h2>{title}</h2>
-          </div>
+  _renderMarketingSection: function(title) {
+    return (
+      <div className="marketingSection">
+        <div className="container">
+          <h2>{title}</h2>
         </div>
-      );
-    },
+      </div>
+    );
+  },
 
-    _getWindowHeight: function() {
-      return $(window).height();
-    }
-  });
-
+  _getWindowHeight: function() {
+    return $(window).height();
+  }
 });
+
+module.exports = Login;

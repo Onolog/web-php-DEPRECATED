@@ -1,83 +1,69 @@
+var React = require('react');
+
+var AppPage = require('../../../components/Page/AppPage.react');
+var Button = require('../../../components/Button/Button.react');
+var ImageBlock = require('../../../components/Facebook/FBImage.react');
+var ImageBlock = require('../../../components/ImageBlock/ImageBlock.react');
+var Link = require('../../../components/Link/Link.react');
+var Loader = require('../../../components/Loader/Loader.react');
+var PageHeader = require('../../../components/Page/PageHeader.react');
+var Panel = require('../../../components/Panel/Panel.react');
+
 /**
  * Friends.react
  * @jsx React.DOM
  */
-define([
+var Friends = React.createClass({
+  displayName: 'Friends',
 
-  'lib/react/react',
-  'lib/react/jsx!components/Button/Button.react',
-  'lib/react/jsx!components/Facebook/FBImage.react',
-  'lib/react/jsx!components/ImageBlock/ImageBlock.react',
-  'lib/react/jsx!components/Link/Link.react',
-  'lib/react/jsx!components/Loader/Loader.react',
-  'lib/react/jsx!components/Page/PageHeader.react',
-  'lib/react/jsx!components/Panel/Panel.react',
-  'facebook'
+  getInitialState: function() {
+    return {
+      friends: null
+    };
+  },
 
-], function(
-
-  React,
-  Button,
-  FBImage,
-  ImageBlock,
-  Link,
-  Loader,
-  PageHeader,
-  Panel
-
-) {
-
-  return React.createClass({
-    displayName: 'Friends',
-
-    getInitialState: function() {
-      return {
-        friends: null
-      };
-    },
-
-    componentWillMount: function() {
-      // Get all friends who are in the system
-      FB.getLoginStatus(function(response) {
-        FB.api('/me/friends', function(response) {
-          this.setState({friends: response.data});
-        }.bind(this));
+  componentDidMount: function() {
+    // Get all friends who are in the system
+    FB.getLoginStatus(function(response) {
+      FB.api('/me/friends', function(response) {
+        this.setState({friends: response.data});
       }.bind(this));
-    },
+    }.bind(this));
+  },
 
-    render: function() {
+  render: function() {
+    return (
+      <AppPage className="narrow-page">
+        <PageHeader title="Friends" />
+        <Panel>
+          {this._renderContent()}
+        </Panel>
+      </AppPage>
+    );
+  },
+
+  _renderContent: function() {
+    return this.state.friends ? this._renderFriendList() : <Loader />;
+  },
+
+  _renderFriendList: function() {
+    return this.state.friends.map(function(friend, idx) {
       return (
-        <div>
-          <PageHeader title="Friends" />
-          <Panel>
-            {this._renderContent()}
-          </Panel>
-        </div>
+        <ImageBlock
+          align="middle"
+          image={
+            <Link
+              className="innerBorder"
+              href={'/users/profile/' + friend.id}>
+              <FBImage fbid={friend.id} />
+            </Link>
+          }
+          key={idx}>
+          <h4>{friend.name}</h4>
+        </ImageBlock>
       );
-    },
-
-    _renderContent: function() {
-      return this.state.friends ? this._renderFriendList() : <Loader />;
-    },
-
-    _renderFriendList: function() {
-      return this.state.friends.map(function(friend, idx) {
-        return (
-          <ImageBlock
-            align="middle"
-            image={
-              <Link
-                className="innerBorder"
-                href={'/users/profile/' + friend.id}>
-                <FBImage fbid={friend.id} />
-              </Link>
-            }
-            key={idx}>
-            <h4>{friend.name}</h4>
-          </ImageBlock>
-        );
-      }); 
-    }
-  });
-
+    }); 
+  }
 });
+
+module.exports = Friends;

@@ -1,108 +1,97 @@
-define([
+var React = require('react');
 
-  'lib/react/react',
-  'lib/react/jsx!components/DateTimePicker/DateInputCalendarPopover.react',
-  'lib/react/jsx!components/Glyph/Glyph.react',
-  'utils/cloneDate',
-  'utils/cx',
-  'utils/DateTimeUtils'
+var DateInputCalendarPopover = require('./DateInputCalendarPopover.react');
+var Glyph = require('../Glyph/Glyph.react');
 
-], function(
+var cloneDate = require('../../utils/cloneDate');
+var cx = require('classnames');
+var DateTimeUtils = require('../../utils/DateTimeUtils');
 
-  React,
-  DateInputCalendarPopover,
-  Glyph,
-  cloneDate,
-  cx,
-  DateTimeUtils
+/**
+ * DateInput.react
+ * @jsx React.DOM
+ *
+ * Structured input for selecting a date via a calendar picker.
+ */
+var DateInput = React.createClass({
+  displayName: 'DateInput',
 
-) {
+  propTypes: {
+    defaultValue: React.PropTypes.instanceOf(Date),
+    onChange: React.PropTypes.func,
+    value: React.PropTypes.instanceOf(Date)
+  },
 
-  /**
-   * DateInput.react
-   * @jsx React.DOM
-   *
-   * Structured input for selecting a date via a calendar picker.
-   */
-  return React.createClass({
-    displayName: 'DateInput',
+  getInitialState: function() {
+    return {
+      date: this.props.defaultValue || new Date(),
+      showCalendar: false
+    };
+  },
 
-    propTypes: {
-      defaultValue: React.PropTypes.instanceOf(Date),
-      onChange: React.PropTypes.func,
-      value: React.PropTypes.instanceOf(Date)
-    },
+  componentDidMount: function() {
+    window.addEventListener('click', this._closeOnBlur);
+  },
 
-    getInitialState: function() {
-      return {
-        date: this.props.defaultValue || new Date(),
-        showCalendar: false
-      };
-    },
+  componentWillUnmount: function() {
+    window.removeEventListener('click', this._closeOnBlur);
+  },
 
-    componentDidMount: function() {
-      window.addEventListener('click', this._closeOnBlur);
-    },
+  render: function() {
+    var date = this._getDate();
 
-    componentWillUnmount: function() {
-      window.removeEventListener('click', this._closeOnBlur);
-    },
-
-    render: function() {
-      var date = this._getDate();
-
-      return (
-        <div className="DateInput">
-          <div
-            className="form-control"
-            onClick={this._showCalendar}>
-            <div className="DateInputDisplay">
-              {DateTimeUtils.formatDate(date, 'M/D/YYYY')}
-            </div>
-            <Glyph
-              className="DateInputCalendarIcon"
-              icon="calendar"
-              onClick={this._showCalendar}
-            />
+    return (
+      <div className="DateInput">
+        <div
+          className="form-control"
+          onClick={this._showCalendar}>
+          <div className="DateInputDisplay">
+            {DateTimeUtils.formatDate(date, 'M/D/YYYY')}
           </div>
-          <DateInputCalendarPopover
-            date={date}
-            onChange={this._onChange}
-            show={this.state.showCalendar}
+          <Glyph
+            className="DateInputCalendarIcon"
+            icon="calendar"
+            onClick={this._showCalendar}
           />
         </div>
-      );
-    },
+        <DateInputCalendarPopover
+          date={date}
+          onChange={this._onChange}
+          show={this.state.showCalendar}
+        />
+      </div>
+    );
+  },
 
-    /**
-     * Hide the flyout if the user clicks somewhere other than the
-     * trigger element or the flyout.
-     */
-    _closeOnBlur: function(evt) {
-      var target = evt.target;
-      var parent = this.getDOMNode();
-      if (!(parent.contains(target) || target === parent)) {
-        this.setState({
-          // Resets the calendar date
-          date: this._getDate(),
-          showCalendar: false
-        })
-      }
-    },
-
-    _getDate: function() /*Date*/ {
-      var date = this.props.value || this.state.date;
-      return cloneDate(date);
-    },
-
-    _showCalendar: function() {
-      this.setState({showCalendar: true});
-    },
-
-    _onChange: function(/*Date*/ date) {
-      this.setState({showCalendar: false});
-      this.props.onChange && this.props.onChange(date);
+  /**
+   * Hide the flyout if the user clicks somewhere other than the
+   * trigger element or the flyout.
+   */
+  _closeOnBlur: function(evt) {
+    var target = evt.target;
+    var parent = this.getDOMNode();
+    if (!(parent.contains(target) || target === parent)) {
+      this.setState({
+        // Resets the calendar date
+        date: this._getDate(),
+        showCalendar: false
+      })
     }
-  });
+  },
 
+  _getDate: function() /*Date*/ {
+    var date = this.props.value || this.state.date;
+    return cloneDate(date);
+  },
+
+  _showCalendar: function() {
+    this.setState({showCalendar: true});
+  },
+
+  _onChange: function(/*Date*/ date) {
+    this.setState({showCalendar: false});
+    this.props.onChange && this.props.onChange(date);
+  }
 });
+
+module.exports = DateInput;

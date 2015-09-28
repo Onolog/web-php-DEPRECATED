@@ -29,6 +29,13 @@ class WebPageHelper extends AppPageHelper {
     }
   }
 
+  protected function getBaseJS() {
+    return
+      $this->Html->script('/js/lib/require/require.js', array(
+        'data-main' => '/js/main.js'
+      ));
+  }
+
   public function hideHeader() {
     $this->hideHeader = true;
     return $this;

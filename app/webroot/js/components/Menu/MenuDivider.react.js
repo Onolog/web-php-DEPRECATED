@@ -1,17 +1,17 @@
+var React = require('react');
+
 /**
  * MenuDivider.react
  * @jsx React.DOM
  *
  * Divider used in a dropdown menu.
  */
-define(['lib/react/react'], function(React) {
+var MenuDivider = React.createClass({
+  displayName: 'MenuDivider',
 
-  return React.createClass({
-    displayName: 'MenuDivider',
-
-    render: function() {
-      return <li className="divider"></li>;
-    }
-  });
-
+  render: function() {
+    return <li className="divider"></li>;
+  }
 });
+
+module.exports = MenuDivider;

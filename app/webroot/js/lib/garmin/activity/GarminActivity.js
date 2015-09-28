@@ -17,6 +17,37 @@
  *
  * @version 1.9
  */
+var GarminSample = require('./GarminSample');
+var GarminSeries = require('./GarminSeries');
+
+var ATTRIBUTE_KEYS = {
+	activityName: "activityName",
+	activitySport: "activitySport",
+	creatorName: "creatorName",
+	creatorUnitId: "creatorUnitId",
+	creatorProdId: "creatorProductId",
+	creatorVersion: "creatorVersion",
+	dom: "documentObjectModel"
+};
+
+var SUMMARY_KEYS = {
+	avgHeartRate: "averageHeartRate",
+	calories: "calories",
+	endTime: "endTime",
+	intensity: "intensity",
+	maxHeartRate: "maximumHeartRate",
+	maxSpeed: "maximumSpeed",
+	startTime: "startTime",
+	totalDistance: "totalDistance",
+	totalTime: "totalTime"
+};
+
+var SECTION_KEYS = {
+	gpsSignals: "gpsSignal",
+	heartRateSignals:	"heartRateSignal",	
+	laps: "laps",
+	tracks: "tracks"
+};
 
 /**
  * A data structure for storing data commonly found in various
@@ -26,224 +57,181 @@
  * @class GarminActivity
  * @constructor 
  */
-define([
+var GarminActivity = function() {
+  this.attributes = {};
+  this.laps = [];
+  this.summary = new GarminSample();
+  this.series = [];
+};
 
-  'lib/garmin/activity/GarminSample',
-  'lib/garmin/activity/GarminSeries'
+GarminActivity.prototype = {
+	getAttributes: function() {
+		return this.attributes;
+	},
+	
+	getAttribute: function(aKey) {
+		return this.attributes[aKey];
+	},
+	
+	setAttribute: function(aKey, aValue) {
+		this.attributes[aKey] = aValue;
+	},
 
-], function(
+  addLap: function(lap) {
+    this.laps.push(lap);
+  },
 
-  GarminSample,
-  GarminSeries
+  getLaps: function() {
+    return this.laps;
+  },
+	
+	getSeries: function() {
+		return this.series;
+	},
+	
+	getHistorySeries: function() {
+		for (var i = 0; i < this.series.length; i++) {
+			if (this.series[i].getSeriesType() == GarminSeries.TYPES.history) {
+				return this.series[i];
+			}
+		}
+		return null;
+	},
+	
+	addSeries: function(series) {
+		this.series.push(series);
+	},
+	
+	getSingleSeries: function(index) {
+		var targetSeries = null;
+		if (index >= 0 && index < this.series.length) {
+			targetSeries = this.series[index];
+		}
+		return targetSeries;
+	},
+	
+	getSummary: function() {
+		return this.summary;
+	},
+	
+	getSummaryValue: function(sKey) {
+		return this.summary.getMeasurement(sKey);
+	},
+	
+	setSummaryValue: function(sKey, sValue, sContext) {
+		this.summary.setMeasurement(sKey, sValue, sContext);
+	},
 
-) {
+  getDeviceName: function() {
+    return this.getAttribute(ATTRIBUTE_KEYS.creatorName);
+  },
 
-  var ATTRIBUTE_KEYS = {
-  	activityName:		"activityName",
-  	activitySport:		"activitySport",
-  	creatorName:		"creatorName",
-  	creatorUnitId:		"creatorUnitId",
-  	creatorProdId:		"creatorProductId",
-  	creatorVersion:		"creatorVersion",
-  	dom:				"documentObjectModel"
-  };
+  getDeviceProductID: function() {
+    return this.getAttribute(ATTRIBUTE_KEYS.creatorProdId);
+  },
 
-  var SUMMARY_KEYS = {
-  	avgHeartRate:		"averageHeartRate",
-  	calories:			"calories",
-  	endTime:			"endTime",
-  	intensity:			"intensity",
-  	maxHeartRate:		"maximumHeartRate",
-  	maxSpeed:			"maximumSpeed",
-  	startTime:			"startTime",
-  	totalDistance:		"totalDistance",
-  	totalTime:			"totalTime"
-  };
+  getSoftwareVersionString: function() {
+    var v = this.getAttribute(ATTRIBUTE_KEYS.creatorVersion);
+    return [
+      v.versionMajor,
+      v.versionMinor,
+      v.buildMajor,
+      v.buildMinor
+    ].join('.');
+  },
 
-  var SECTION_KEYS = {
-  	gpsSignals:			"gpsSignal",
-  	heartRateSignals:	"heartRateSignal",	
-  	laps:				"laps",
-  	tracks:				"tracks"
-  };
+  getActivityType: function() {
+    return this.getAttribute(ATTRIBUTE_KEYS.activitySport);
+  },
 
-  var GarminActivity = function() {
-    this.attributes = {};
-    this.laps = [];
-    this.summary = new GarminSample();
-    this.series = [];
-  };
+  getAvgHeartRate: function() /*number*/ {
+    return this._getValue(SUMMARY_KEYS.avgHeartRate);
+  },
 
-  GarminActivity.prototype = {
-  	getAttributes: function() {
-  		return this.attributes;
-  	},
-  	
-  	getAttribute: function(aKey) {
-  		return this.attributes[aKey];
-  	},
-  	
-  	setAttribute: function(aKey, aValue) {
-  		this.attributes[aKey] = aValue;
-  	},
+  getCalories: function() /*number*/ {
+    return this._getValue(SUMMARY_KEYS.calories);
+  },
 
-    addLap: function(lap) {
-      this.laps.push(lap);
-    },
+  /**
+   * Returns a string with the total duration formatted as "hh:mm:ss"
+   */
+  getDuration: function() /*string*/ {
+    return this.getStartTime().getDurationTo(this.getEndTime());
+  },
 
-    getLaps: function() {
-      return this.laps;
-    },
-  	
-  	getSeries: function() {
-  		return this.series;
-  	},
-  	
-  	getHistorySeries: function() {
-  		for (var i = 0; i < this.series.length; i++) {
-  			if (this.series[i].getSeriesType() == GarminSeries.TYPES.history) {
-  				return this.series[i];
-  			}
-  		}
-  		return null;
-  	},
-  	
-  	addSeries: function(series) {
-  		this.series.push(series);
-  	},
-  	
-  	getSingleSeries: function(index) {
-  		var targetSeries = null;
-  		if (index >= 0 && index < this.series.length) {
-  			targetSeries = this.series[index];
-  		}
-  		return targetSeries;
-  	},
-  	
-  	getSummary: function() {
-  		return this.summary;
-  	},
-  	
-  	getSummaryValue: function(sKey) {
-  		return this.summary.getMeasurement(sKey);
-  	},
-  	
-  	setSummaryValue: function(sKey, sValue, sContext) {
-  		this.summary.setMeasurement(sKey, sValue, sContext);
-  	},
+  getElevationGain: function() /*number*/ {
+    return this._getValue(SUMMARY_KEYS.elevationGain);
+  },
 
-    getDeviceName: function() {
-      return this.getAttribute(ATTRIBUTE_KEYS.creatorName);
-    },
+	getEndTime: function() {
+		return this._getValue(SUMMARY_KEYS.endTime);
+	},
 
-    getDeviceProductID: function() {
-      return this.getAttribute(ATTRIBUTE_KEYS.creatorProdId);
-    },
+	getIntensity: function() {
+		return this._getValue(SUMMARY_KEYS.intensity);
+	},
 
-    getSoftwareVersionString: function() {
-      var v = this.getAttribute(ATTRIBUTE_KEYS.creatorVersion);
-      return [
-        v.versionMajor,
-        v.versionMinor,
-        v.buildMajor,
-        v.buildMinor
-      ].join('.');
-    },
+	getMaxHeartRate: function() {
+		return this._getValue(SUMMARY_KEYS.maxHeartRate);
+	},
 
-    getActivityType: function() {
-      return this.getAttribute(ATTRIBUTE_KEYS.activitySport);
-    },
+	getMaxSpeed: function() {
+		return this._getValue(SUMMARY_KEYS.maxSpeed);
+	},
 
-    getAvgHeartRate: function() /*number*/ {
-      return this._getValue(SUMMARY_KEYS.avgHeartRate);
-    },
+	getActivityName: function() {
+    return this.getAttribute(ATTRIBUTE_KEYS.activityName)
+	},
+	
+	getStartTime: function() {
+		return this._getValue(SUMMARY_KEYS.startTime);
+	},
 
-    getCalories: function() /*number*/ {
-      return this._getValue(SUMMARY_KEYS.calories);
-    },
+	getTotalDistance: function() {
+		return this._getValue(SUMMARY_KEYS.totalDistance);
+	},
 
-    /**
-     * Returns a string with the total duration formatted as "hh:mm:ss"
-     */
-    getDuration: function() /*string*/ {
-      return this.getStartTime().getDurationTo(this.getEndTime());
-    },
+  /**
+   * Returns the total time for the activity in seconds
+   */
+  getTotalTime: function() /*number*/ {
+    var startTime = this.getStartTime().getDate().getTime();
+    var endTime = this.getEndTime().getDate().getTime();
+    return (endTime - startTime) / 1000;
+  },
 
-    getElevationGain: function() /*number*/ {
-      return this._getValue(SUMMARY_KEYS.elevationGain);
-    },
+  _getValue: function(/*string*/ key) /*?any*/ {
+    return this.getSummaryValue(key).getValue();
+  },
 
-  	getEndTime: function() {
-  		return this._getValue(SUMMARY_KEYS.endTime);
-  	},
+	printMe: function(tabs) {
+		var output = "";
+		output += tabs + "\n\n[Activity]\n";
+		
+		output += tabs + "  attributes:\n";
+		var attKeys = Object.keys(this.attributes);
+		for (var i = 0; i < attKeys.length; i++) {
+			output += tabs + "    " + attKeys[i] + ": " + this.attributes[attKeys[i]] + "\n"; 
+		}
+		
+		output += tabs + "  summary:\n";
+		output += this.summary.printMe(tabs + "  ");
 
-  	getIntensity: function() {
-  		return this._getValue(SUMMARY_KEYS.intensity);
-  	},
+		output += tabs + "  series:\n";		
+		for (var i = 0; i < this.series.length; i++) {
+			output += this.series[i].printMe(tabs + "  ");
+		}
+		
+		return output;
+	},
+	
+	toString: function() {
+		return "[GarminActivity]"
+	}
+};
 
-  	getMaxHeartRate: function() {
-  		return this._getValue(SUMMARY_KEYS.maxHeartRate);
-  	},
+GarminActivity.ATTRIBUTE_KEYS = ATTRIBUTE_KEYS;
+GarminActivity.SECTION_KEYS = SECTION_KEYS;
+GarminActivity.SUMMARY_KEYS = SUMMARY_KEYS;
 
-  	getMaxSpeed: function() {
-  		return this._getValue(SUMMARY_KEYS.maxSpeed);
-  	},
-
-  	getActivityName: function() {
-      return this.getAttribute(ATTRIBUTE_KEYS.activityName)
-  	},
-  	
-  	getStartTime: function() {
-  		return this._getValue(SUMMARY_KEYS.startTime);
-  	},
-
-  	getTotalDistance: function() {
-  		return this._getValue(SUMMARY_KEYS.totalDistance);
-  	},
-
-    /**
-     * Returns the total time for the activity in seconds
-     */
-    getTotalTime: function() /*number*/ {
-      var startTime = this.getStartTime().getDate().getTime();
-      var endTime = this.getEndTime().getDate().getTime();
-      return (endTime - startTime) / 1000;
-    },
-
-    _getValue: function(/*string*/ key) /*?any*/ {
-      return this.getSummaryValue(key).getValue();
-    },
-
-  	printMe: function(tabs) {
-  		var output = "";
-  		output += tabs + "\n\n[Activity]\n";
-  		
-  		output += tabs + "  attributes:\n";
-  		var attKeys = Object.keys(this.attributes);
-  		for (var i = 0; i < attKeys.length; i++) {
-  			output += tabs + "    " + attKeys[i] + ": " + this.attributes[attKeys[i]] + "\n"; 
-  		}
-  		
-  		output += tabs + "  summary:\n";
-  		output += this.summary.printMe(tabs + "  ");
-  
-  		output += tabs + "  series:\n";		
-  		for (var i = 0; i < this.series.length; i++) {
-  			output += this.series[i].printMe(tabs + "  ");
-  		}
-  		
-  		return output;
-  	},
-  	
-  	toString: function() {
-  		return "[GarminActivity]"
-  	}
-  };
-  
-  GarminActivity.ATTRIBUTE_KEYS = ATTRIBUTE_KEYS;
-  GarminActivity.SECTION_KEYS = SECTION_KEYS;
-  GarminActivity.SUMMARY_KEYS = SUMMARY_KEYS;
-
-  return GarminActivity;
-
-});
+module.exports = GarminActivity;

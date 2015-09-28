@@ -18,3 +18,8 @@ app/webroot/js/lib/moment/Moment.min.js
 
 app/webroot/js/constants/Facebook.js
 
+.bashrc
+
+# JS
+node_modules/*
+

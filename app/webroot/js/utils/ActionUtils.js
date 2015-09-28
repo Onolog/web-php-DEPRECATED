@@ -1,39 +1,30 @@
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var ResponseHandler = require('./ResponseHandler');
+
 /**
  * ActionUtils.js
  */
-define([
+var ActionUtils = {
+  onError: function(response, onErrorEvent) {
+    var handler = new ResponseHandler(response);
+    AppDispatcher.dispatch({
+      eventName: onErrorEvent,
+      alertMessage: handler.getMessage()
+    });
+  },
 
-  'dispatcher/AppDispatcher',
-  'utils/ResponseHandler'
-
-], function(
-
-  AppDispatcher,
-  ResponseHandler
-
-) {
-
-  return {
-    onError: function(response, onErrorEvent) {
-      var handler = new ResponseHandler(response);
+  onSuccess: function(response, onSuccessEvent, onErrorEvent) {
+    var handler = new ResponseHandler(response);
+    if (handler.getWasSuccessful()) {
       AppDispatcher.dispatch({
-        eventName: onErrorEvent,
+        data: handler.getPayload(),
+        eventName: onSuccessEvent,
         alertMessage: handler.getMessage()
       });
-    },
-
-    onSuccess: function(response, onSuccessEvent, onErrorEvent) {
-      var handler = new ResponseHandler(response);
-      if (handler.getWasSuccessful()) {
-        AppDispatcher.dispatch({
-          data: handler.getPayload(),
-          eventName: onSuccessEvent,
-          alertMessage: handler.getMessage()
-        });
-      } else {
-        this.onError(response, onErrorEvent);
-      }
+    } else {
+      this.onError(response, onErrorEvent);
     }
-  };
+  }
+};
 
-});
+module.exports = ActionUtils;

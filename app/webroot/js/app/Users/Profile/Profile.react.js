@@ -1,131 +1,109 @@
+var React = require('react');
+
+var AppPage = require('../../../components/Page/AppPage.react');
+var LabeledStat = require('../../../components/Data/LabeledStat.react');
+var PageHeader = require('../../../components/Page/PageHeader.react');
+var Panel = require('../../../components/Panel/Panel.react');
+var ProfileYearPanel = require('./ProfileYearPanel.react');
+var Topline = require('../../../components/Data/Topline.react');
+
+var DATE_FORMAT = 'MMMM Do';
+var GRAPH_HEIGHT = 200;
+
 /**
  * Profile.react
  * @jsx React.DOM
  */
-define([
+var Profile = React.createClass({
+  displayName: 'Profile',
 
-  'lib/Moment/Moment',
-  'lib/react/react',
+  componentWillMount: function() {
+    var {
+      shoeCount,
+      totalMiles,
+      totalRuns,
+      user,
+      workoutData,
+      workoutDataByWeek
+    } = window.app;
 
-  'lib/react/jsx!app/Users/Profile/ProfileYearPanel.react',
+    this.setState({
+      shoeCount: shoeCount,
+      totalMiles: totalMiles,
+      totalRuns: totalRuns,
+      user: user,
+      workoutData: workoutData,
+      workoutDataByWeek: workoutDataByWeek
+    });
+  },
 
-  'lib/react/jsx!components/Button/Button.react',
-  'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
-  'lib/react/jsx!components/Chart/Chart.react',
-  'lib/react/jsx!components/Data/LabeledStat.react',
-  'lib/react/jsx!components/Data/Topline.react',
-  'lib/react/jsx!components/Facebook/FBImage.react',
-  'lib/react/jsx!components/Link/Link.react',
-  'lib/react/jsx!components/Panel/Panel.react',
+  render: function() {
+    var workoutData = this.state.workoutData;
 
-  'utils/DateTimeUtils',
-  'utils/formatDistance'
-
-], function(
-
-  moment,
-  React,
-
-  ProfileYearPanel,
-
-  Button,
-  ButtonGroup,
-  Chart,
-  LabeledStat,
-  Topline,
-  FBImage,
-  Link,
-  Panel,
-
-  DateTimeUtils,
-  formatDistance
-
-) {
-
-  var DATE_FORMAT = 'MMMM Do';
-  var GRAPH_HEIGHT = 200;
-
-  return React.createClass({
-    displayName: 'Profile',
-
-    propTypes: {
-      /**
-       * Total number of shoes used
-       */
-      shoeCount: React.PropTypes.number,
-      totalMiles: React.PropTypes.number,
-      totalRuns: React.PropTypes.number,
-
-      workoutData: React.PropTypes.object.isRequired,
-      workoutDataByWeek: React.PropTypes.object.isRequired
-    },
-
-    render: function() {
-      var workoutData = this.props.workoutData;
-
-      // Render an empty state when there's no data
-      /*
-      if (!workoutData.run_count) {
-        return (
-          <Panel className="clearfix">
-            <div className="emptyState">
-              No runs this year. Get back out there!
-            </div>
-          </Panel>
-        );
-      }
-      */
-
+    // Render an empty state when there's no data
+    /*
+    if (!workoutData.run_count) {
       return (
-        <div>
-          {this._renderToplineStats()}
-          {this._renderAnnualData()}
-        </div>
-      );
-    },
-
-    _renderToplineStats: function() {
-      return (
-        <Panel title="Lifetime Stats">
-          <Topline>
-            <LabeledStat
-              label="Miles"
-              stat={this.props.totalMiles.toLocaleString()}
-            />
-            <LabeledStat
-              label="Runs"
-              stat={this.props.totalRuns.toLocaleString()}
-            />
-            <LabeledStat
-              label="Shoes"
-              stat={this.props.shoeCount}
-            />
-          </Topline>
+        <Panel className="clearfix">
+          <div className="emptyState">
+            No runs this year. Get back out there!
+          </div>
         </Panel>
       );
-    },
-
-    _renderAnnualData: function() {
-      var workoutData = this.props.workoutData;
-      var workoutDataByWeek = this.props.workoutDataByWeek;
-      var years = Object.keys(workoutData).reverse();
-
-      return years.map(function(year, idx) {
-        var section = workoutData[year];
-        return (
-          <ProfileYearPanel
-            key={idx}
-            miles={section.miles}
-            months={workoutData[year].months}
-            runs={section.run_count}
-            time={section.time}
-            title={section.year}
-            weeks={workoutDataByWeek[year].weeks}
-          />
-        );
-      }.bind(this));
     }
+    */
 
-  });
+    return (
+      <AppPage className="profile">
+        <PageHeader title={this.state.user.name} />
+        {this._renderToplineStats()}
+        {this._renderAnnualData()}
+      </AppPage>
+    );
+  },
+
+  _renderToplineStats: function() {
+    return (
+      <Panel title="Lifetime Stats">
+        <Topline>
+          <LabeledStat
+            label="Miles"
+            stat={this.state.totalMiles.toLocaleString()}
+          />
+          <LabeledStat
+            label="Runs"
+            stat={this.state.totalRuns.toLocaleString()}
+          />
+          <LabeledStat
+            label="Shoes"
+            stat={this.state.shoeCount}
+          />
+        </Topline>
+      </Panel>
+    );
+  },
+
+  _renderAnnualData: function() {
+    var workoutData = this.state.workoutData;
+    var workoutDataByWeek = this.state.workoutDataByWeek;
+    var years = Object.keys(workoutData).reverse();
+
+    return years.map(function(year, idx) {
+      var section = workoutData[year];
+      return (
+        <ProfileYearPanel
+          key={idx}
+          miles={section.miles}
+          months={workoutData[year].months}
+          runs={section.run_count}
+          time={section.time}
+          title={section.year}
+          weeks={workoutDataByWeek[year].weeks}
+        />
+      );
+    }.bind(this));
+  }
 
 });
+
+module.exports = Profile;

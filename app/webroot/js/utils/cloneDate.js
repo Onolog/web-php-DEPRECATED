@@ -3,10 +3,6 @@
  *
  * Simple util function for cloning a date object.
  */
-define(function() {
-
-  return function(/*Date*/ date) {
-    return new Date(date.valueOf());
-  };
-
-});
+module.exports = function(/*Date*/ date) {
+  return new Date(date.valueOf());
+};

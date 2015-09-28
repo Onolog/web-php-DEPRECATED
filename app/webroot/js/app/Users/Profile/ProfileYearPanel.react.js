@@ -1,249 +1,230 @@
+var moment = require('moment');
+var React = require('react');
+
+var ActivitySection = require('../../Activities/ActivitySection.react');
+var Button = require('../../../components/Button/Button.react');
+var ButtonGroup = require('../../../components/ButtonGroup/ButtonGroup.react');
+var Chart = require('../../../components/Chart/Chart.react');
+var LabeledStat = require('../../../components/Data/LabeledStat.react');
+var Panel = require('../../../components/Panel/Panel.react');
+var Topline = require('../../../components/Data/Topline.react');
+
+var DateTimeUtils = require('../../../utils/DateTimeUtils');
+var formatDistance = require('../../../utils/formatDistance');
+
+function _getOptions(year, interval) {
+  return {
+    plotOptions: {
+      series: {
+        pointStart: Date.UTC(year, 0, 1),
+        pointInterval: interval
+      }
+    },
+    xAxis: {
+      type: 'datetime',
+      dateTimeLabelFormats: {
+        month: '%b'
+      },
+    }
+  }
+}
+
+var DAY_IN_MS = 24 * 60 * 60 * 1000;
+var WEEK_IN_MS = 7 * DAY_IN_MS;
+var MONTH_IN_MS = (DAY_IN_MS * 365) / 12;
+
+var GRAPH_HEIGHT = 200;
+var GRAPH_TYPE = 'column';
+
+var DAILY = 'daily';
+var MONTHLY = 'monthly';
+var WEEKLY = 'weekly';
+
 /**
  * ProfileYearPanel.react
  * @jsx React.DOM
  */
-define([
+var ProfileYearPanel = React.createClass({
+  displayName: 'ProfileYearPanel',
 
-  'lib/react/react',
-  'lib/Moment/Moment',
+  propTypes: {
+    months: React.PropTypes.object,
+    title: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.string
+    ]),
+    weeks: React.PropTypes.object
+  },
 
-  'lib/react/jsx!app/Activities/ActivitySection.react',
-  'lib/react/jsx!components/Button/Button.react',
-  'lib/react/jsx!components/ButtonGroup/ButtonGroup.react',
-  'lib/react/jsx!components/Chart/Chart.react',
-  'lib/react/jsx!components/Data/LabeledStat.react',
-  'lib/react/jsx!components/Data/Topline.react',
-  'lib/react/jsx!components/Panel/Panel.react',
-
-  'utils/DateTimeUtils',
-  'utils/formatDistance'
-
-], function(
-
-  React,
-  moment,
-
-  ActivitySection,
-  Button,
-  ButtonGroup,
-  Chart,
-  LabeledStat,
-  Topline,
-  Panel,
-
-  DateTimeUtils,
-  formatDistance
-
-) {
-
-  function _getOptions(year, interval) {
+  getInitialState: function() {
     return {
-      plotOptions: {
-        series: {
-          pointStart: Date.UTC(year, 0, 1),
-          pointInterval: interval
-        }
-      },
-      xAxis: {
-        type: 'datetime',
-        dateTimeLabelFormats: {
-          month: '%b'
-        },
-      }
+      selectedGraph: WEEKLY
+    };
+  },
+
+  render: function() {
+    return (
+      <Panel
+        actions={this._renderActions()}
+        className="profileYear"
+        noPadding={true}
+        title={this.props.title}>
+        <ActivitySection>
+          {this._renderDailyGraph()}
+          {this._renderWeeklyGraph()}
+          {this._renderMonthlyGraph()}
+        </ActivitySection>
+        {this._renderToplineStats()}
+      </Panel>
+    );
+  },
+
+  _renderToplineStats: function() {
+    var duration = moment.duration(this.props.time, 'seconds');
+    var durationString =
+      duration.days() + 'd ' +
+      duration.hours() + 'h ' +
+      duration.minutes() + 'm ' +
+      duration.seconds() + 's';
+
+    return (
+      <ActivitySection border={true}>
+        <Topline>
+          <LabeledStat
+            label="Miles"
+            stat={this.props.miles}
+          />
+          <LabeledStat
+            label="Runs"
+            stat={this.props.runs}
+          />
+          <LabeledStat
+            label="Time"
+            stat={durationString}
+          />
+        </Topline>
+      </ActivitySection>
+    );
+  },
+
+  _renderActions: function() {
+    return;
+
+    var selectedGraph = this.state.selectedGraph;
+    return (
+      <ButtonGroup size="small">
+        <Button
+          depressed={selectedGraph === DAILY}
+          label="Daily"
+          onClick={this._onClick}
+        />
+        <Button
+          depressed={selectedGraph === WEEKLY}
+          label="Weekly"
+          onClick={this._onClick}
+        />
+        <Button
+          depressed={selectedGraph === MONTHLY}
+          label="Monthly"
+          onClick={this._onClick}
+        />
+      </ButtonGroup>
+    );
+  },
+
+  _renderDailyGraph: function() {
+    if (this.state.selectedGraph !== DAILY) {
+      return null;      
     }
+
+    var monthData = this.props.months;
+    var monthKeys = Object.keys(monthData);
+    var data = [];
+    var year;
+
+    monthKeys.forEach(function(monthKey) {
+      var month = monthData[monthKey];
+      year = month.year;
+
+      var dayKeys = Object.keys(month.days);
+      var days = month.days;
+      dayKeys.forEach(function(dayKey) {
+        var day = days[dayKey];
+        data.push(day.miles);
+      });
+    });
+
+    return (
+      <Chart
+        key={GRAPH_TYPE}
+        height={GRAPH_HEIGHT}
+        series={[{data: data}]}
+        type={GRAPH_TYPE}
+        options={_getOptions(year, DAY_IN_MS)}
+      />
+    );
+  },
+
+  _renderWeeklyGraph: function() {
+    if (this.state.selectedGraph !== WEEKLY) {
+      return null;      
+    }
+
+    var weekData = this.props.weeks;
+    var keys = Object.keys(weekData).sort();
+    var data = [];
+    var year;
+
+    keys.forEach(function(key) {
+      var week = weekData[key];
+      year = week.year;
+      data.push(week.miles);
+    });
+
+    return (
+      <Chart
+        key={GRAPH_TYPE}
+        height={GRAPH_HEIGHT}
+        series={[{data: data}]}
+        type={GRAPH_TYPE}
+        options={_getOptions(year, WEEK_IN_MS)}
+      />
+    );
+  },
+
+  _renderMonthlyGraph: function() {
+    if (this.state.selectedGraph !== MONTHLY) {
+      return null;      
+    }
+
+    var monthData = this.props.months;
+    var keys = Object.keys(monthData);
+    var data = [];
+    var year;
+
+    keys.forEach(function(key) {
+      var month = monthData[key];
+      year = month.year;
+      data.push(month.miles);
+    });
+
+    return (
+      <Chart
+        key={GRAPH_TYPE}
+        height={GRAPH_HEIGHT}
+        series={[{data: data}]}
+        type={GRAPH_TYPE}
+        options={_getOptions(year, MONTH_IN_MS)}
+      />
+    );
+  },
+
+  _onClick: function(event) {
+    this.setState({
+      selectedGraph: event.target.innerText.toLowerCase()
+    });
   }
 
-  var DAY_IN_MS = 24 * 60 * 60 * 1000;
-  var WEEK_IN_MS = 7 * DAY_IN_MS;
-  var MONTH_IN_MS = (DAY_IN_MS * 365) / 12;
-
-  var GRAPH_HEIGHT = 200;
-  var GRAPH_TYPE = 'column';
-
-  var DAILY = 'daily';
-  var MONTHLY = 'monthly';
-  var WEEKLY = 'weekly';
-
-  return React.createClass({
-    displayName: 'ProfileYearPanel',
-
-    propTypes: {
-      months: React.PropTypes.object,
-      title: React.PropTypes.oneOfType([
-        React.PropTypes.number,
-        React.PropTypes.string
-      ]),
-      weeks: React.PropTypes.object
-    },
-
-    getInitialState: function() {
-      return {
-        selectedGraph: WEEKLY
-      };
-    },
-
-    render: function() {
-      return (
-        <Panel
-          actions={this._renderActions()}
-          className="profileYear"
-          noPadding={true}
-          title={this.props.title}>
-          <ActivitySection>
-            {this._renderDailyGraph()}
-            {this._renderWeeklyGraph()}
-            {this._renderMonthlyGraph()}
-          </ActivitySection>
-          {this._renderToplineStats()}
-        </Panel>
-      );
-    },
-
-    _renderToplineStats: function() {
-      var duration = moment.duration(this.props.time, 'seconds');
-      var durationString =
-        duration.days() + 'd ' +
-        duration.hours() + 'h ' +
-        duration.minutes() + 'm ' +
-        duration.seconds() + 's';
-
-      return (
-        <ActivitySection border={true}>
-          <Topline>
-            <LabeledStat
-              label="Miles"
-              stat={this.props.miles}
-            />
-            <LabeledStat
-              label="Runs"
-              stat={this.props.runs}
-            />
-            <LabeledStat
-              label="Time"
-              stat={durationString}
-            />
-          </Topline>
-        </ActivitySection>
-      );
-    },
-
-    _renderActions: function() {
-      return;
-
-      var selectedGraph = this.state.selectedGraph;
-      return (
-        <ButtonGroup size="small">
-          <Button
-            depressed={selectedGraph === DAILY}
-            label="Daily"
-            onClick={this._onClick}
-          />
-          <Button
-            depressed={selectedGraph === WEEKLY}
-            label="Weekly"
-            onClick={this._onClick}
-          />
-          <Button
-            depressed={selectedGraph === MONTHLY}
-            label="Monthly"
-            onClick={this._onClick}
-          />
-        </ButtonGroup>
-      );
-    },
-
-    _renderDailyGraph: function() {
-      if (this.state.selectedGraph !== DAILY) {
-        return null;      
-      }
-
-      var monthData = this.props.months;
-      var monthKeys = Object.keys(monthData);
-      var data = [];
-      var year;
-
-      monthKeys.forEach(function(monthKey) {
-        var month = monthData[monthKey];
-        year = month.year;
-
-        var dayKeys = Object.keys(month.days);
-        var days = month.days;
-        dayKeys.forEach(function(dayKey) {
-          var day = days[dayKey];
-          data.push(day.miles);
-        });
-      });
-
-      return (
-        <Chart
-          key={GRAPH_TYPE}
-          height={GRAPH_HEIGHT}
-          series={[{data: data}]}
-          type={GRAPH_TYPE}
-          options={_getOptions(year, DAY_IN_MS)}
-        />
-      );
-    },
-
-    _renderWeeklyGraph: function() {
-      if (this.state.selectedGraph !== WEEKLY) {
-        return null;      
-      }
-
-      var weekData = this.props.weeks;
-      var keys = Object.keys(weekData).sort();
-      var data = [];
-      var year;
-
-      keys.forEach(function(key) {
-        var week = weekData[key];
-        year = week.year;
-        data.push(week.miles);
-      });
-
-      return (
-        <Chart
-          key={GRAPH_TYPE}
-          height={GRAPH_HEIGHT}
-          series={[{data: data}]}
-          type={GRAPH_TYPE}
-          options={_getOptions(year, WEEK_IN_MS)}
-        />
-      );
-    },
-
-    _renderMonthlyGraph: function() {
-      if (this.state.selectedGraph !== MONTHLY) {
-        return null;      
-      }
-
-      var monthData = this.props.months;
-      var keys = Object.keys(monthData);
-      var data = [];
-
-      keys.forEach(function(key) {
-        var month = monthData[key];
-        year = month.year;
-        data.push(month.miles);
-      });
-
-      return (
-        <Chart
-          key={GRAPH_TYPE}
-          height={GRAPH_HEIGHT}
-          series={[{data: data}]}
-          type={GRAPH_TYPE}
-          options={_getOptions(year, MONTH_IN_MS)}
-        />
-      );
-    },
-
-    _onClick: function(event) {
-      this.setState({
-        selectedGraph: event.target.innerText.toLowerCase()
-      });
-    }
-
-  });
-
 });
+
+module.exports = ProfileYearPanel;

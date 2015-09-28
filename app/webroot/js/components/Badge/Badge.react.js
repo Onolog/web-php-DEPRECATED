@@ -1,29 +1,21 @@
+var React = require('react');
+
+var cx = require('classnames');
+
 /**
  * Badge.react
  * @jsx React.DOM
  */
-define([
+var Badge = React.createClass({
+  displayName: 'Badge',
 
-  'lib/react/react',
-  'utils/joinClasses'
-
-], function(
-
-  React,
-  joinClasses
-
-) {
-
-  return React.createClass({
-    displayName: 'Badge',
-
-    render: function() {
-      return (
-        <span className={joinClasses('badge', this.props.className)}>
-          {this.props.children}
-        </span>
-      );
-    }
-  });
-
+  render: function() {
+    return (
+      <span className={cx('badge', this.props.className)}>
+        {this.props.children}
+      </span>
+    );
+  }
 });
+
+module.exports = Badge;

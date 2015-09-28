@@ -1,41 +1,45 @@
-define([
+var React = require('react');
 
-  'lib/react/react',
-  'lib/react/jsx!components/Middot.react',
-  'lib/react/jsx!components/Page/AppFooter.react',
-  'lib/react/jsx!components/Page/AppHeader.react'
+var AppFooter = require('./AppFooter.react');
+var AppHeader = require('./AppHeader.react');
+var BaseAppPage = require('./BaseAppPage.react');
 
-], function(
+var cx = require('classnames');
 
-  React,
-  Middot,
-  AppFooter,
-  AppHeader
+/**
+ * AppPage.react
+ * @jsx React.DOM
+ */
+var AppPage = React.createClass({
+  displayName: 'AppPage',
 
-) {
+  propTypes: {
+    narrow: React.PropTypes.bool
+  },
 
-  /**
-   * AppPage.react
-   * @jsx React.DOM
-   */
-  return React.createClass({
-    displayName: 'AppPage',
+  getDefaultProps: function() {
+    return {
+      narrow: false
+    };
+  },
 
-    render: function() {
-      return (
-        <div className="app">
-          <AppHeader />
-          <div className="main">
-            <div className="clearfix container">
-              <div id="mainCol">
-                {this.props.children}
-              </div>
+  render: function() {
+    var {children, className, narrow} = this.props;
+
+    return (
+      <BaseAppPage className={cx({'narrow-page': narrow}, className)}>
+        <AppHeader />
+        <div className="main">
+          <div className="clearfix container">
+            <div id="mainCol">
+              {children}
             </div>
           </div>
-          <AppFooter />
         </div>
-      );
-    }
-  });
-
+        <AppFooter />
+      </BaseAppPage>
+    );
+  }
 });
+
+module.exports = AppPage;

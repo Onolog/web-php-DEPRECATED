@@ -1,51 +1,48 @@
+var React = require('react');
+
+var CloseButton = require('../Button/CloseButton.react');
+
 /**
  * ModalHeader.react
  * @jsx React.DOM
  *
  * Header portion of a modal dialog
  */
-define([
+var ModalHeader = React.createClass({
+  displayName: 'ModalHeader',
 
-  'lib/react/react',
-  'lib/react/jsx!components/Button/CloseButton.react'
+  propTypes: {
+    title: React.PropTypes.string.isRequired,
+    onClose: React.PropTypes.func,
+    useCloseButton: React.PropTypes.bool
+  },
 
-], function(React, CloseButton) {
+  getDefaultProps: function() {
+    return {
+      useCloseButton: true
+    };
+  },
 
-  return React.createClass({
-    displayName: 'ModalHeader',
+  render: function() {
+    return (
+      <div className="modal-header">
+        {this._renderCloseButton()}
+        <h4 className="modal-title">
+          {this.props.title}
+        </h4>
+      </div>
+    );
+  },
 
-    propTypes: {
-      title: React.PropTypes.string.isRequired,
-      onClose: React.PropTypes.func,
-      useCloseButton: React.PropTypes.bool
-    },
-
-    getDefaultProps: function() {
-      return {
-        useCloseButton: true
-      };
-    },
-
-    render: function() {
-      return (
-        <div className="modal-header">
-          {this._renderCloseButton()}
-          <h4 className="modal-title">
-            {this.props.title}
-          </h4>
-        </div>
-      );
-    },
-
-    _renderCloseButton: function() {
-      if (this.props.useCloseButton) {
-        return <CloseButton onClick={this._onClose} />;
-      }
-    },
-
-    _onClose: function(/*object*/ event) {
-      this.props.onClose && this.props.onClose(event);
+  _renderCloseButton: function() {
+    if (this.props.useCloseButton) {
+      return <CloseButton onClick={this._onClose} />;
     }
-  });
+  },
 
+  _onClose: function(/*object*/ event) {
+    this.props.onClose && this.props.onClose(event);
+  }
 });
+
+module.exports = ModalHeader;

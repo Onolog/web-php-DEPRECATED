@@ -1,25 +1,20 @@
+var React = require('react');
+var TooltipMixin = require('../../mixins/TooltipMixin.react');
+
 /**
  * Link.react
  * @jsx React.DOM
  *
  * React wrapper around standard HTML <a> tag
  */
-define([
+var Link = React.createClass({
+  displayName: 'Link',
 
-  'lib/react/react',
-  'lib/react/jsx!mixins/TooltipMixin.react',
+  mixins: [TooltipMixin],
 
-], function(React, TooltipMixin) {
-
-  return React.createClass({
-    displayName: 'Link',
-
-    mixins: [TooltipMixin],
-
-    render: function() {
-      return <a {...this.props}>{this.props.children}</a>;
-    }
-
-  });
-
+  render: function() {
+    return <a {...this.props}>{this.props.children}</a>;
+  }
 });
+
+module.exports = Link;

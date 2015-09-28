@@ -1,30 +1,26 @@
+var React = require('react');
+var cx = require('classnames');
+
 /**
  * Topline.react
  * @jsx React.DOM
  *
  * Renders a series of labeled stats
  */
-define([
+var Topline = React.createClass({
+  displayName: 'Topline',
 
-  'lib/react/react',
-  'utils/joinClasses'
+  render: function() {
+    return (
+      <ul className={cx('topline', this.props.className)}>
+        {React.Children.map(this.props.children, this._renderChild)}
+      </ul>
+    );
+  },
 
-], function(React, joinClasses) {
-
-  return React.createClass({
-    displayName: 'Topline',
-
-    render: function() {
-      return (
-        <ul className={joinClasses('topline', this.props.className)}>
-          {React.Children.map(this.props.children, this._renderChild)}
-        </ul>
-      );
-    },
-
-    _renderChild: function(child, idx) {
-      return <li className="toplineItem" key={idx}>{child}</li>;
-    }
-  });
-
+  _renderChild: function(child, idx) {
+    return <li className="toplineItem" key={idx}>{child}</li>;
+  }
 });
+
+module.exports = Topline;

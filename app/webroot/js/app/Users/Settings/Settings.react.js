@@ -1,48 +1,41 @@
+var React = require('react');
+
+var AppPage = require('../../../components/Page/AppPage.react');
+var Button = require('../../../components/Button/Button.react');
+var FormGroup = require('../../../components/Forms/FormGroup.react');
+var HiddenInput = require('../../../components/Forms/HiddenInput.react');
+var TextInput = require('../../../components/Forms/TextInput.react');
+var PageHeader = require('../../../components/Page/PageHeader.react');
+var Panel = require('../../../components/Panel/Panel.react');
+var Select = require('../../../components/Select/Select.react');
+
+var UserStore = require('../../../stores/UserStore');
+
+var cakePHP = require('../../../utils/cakePHP');
+
+var FORM_NAME = 'User';
+
+// CSS
+require('../../../../css/app/Settings.css');
+
 /**
  * Settings.react
  * @jsx React.DOM
  */
-define([
+var Settings = React.createClass({
+  displayName: 'Settings',
 
-  'lib/react/react',
+  getInitialState: function() {
+    return {
+      user: UserStore.getUser()
+    };
+  },
 
-  'lib/react/jsx!components/Button/Button.react',
-  'lib/react/jsx!components/Forms/FormGroup.react',
-  'lib/react/jsx!components/Forms/HiddenInput.react',
-  'lib/react/jsx!components/Forms/TextInput.react',
-  'lib/react/jsx!components/Panel/Panel.react',
-  'lib/react/jsx!components/Select/Select.react',
-
-  'utils/cakePHP',
-
-], function(
-
-  React,
-  Button,
-  FormGroup,
-  HiddenInput,
-  TextInput,
-  Panel,
-  Select,
-  cakePHP
-
-) {
-
-  var FORM_NAME = 'User';
-
-  return React.createClass({
-    displayName: 'Settings',
-
-    propTypes: {
-      /**
-       * The logged-in user's account info
-       */
-      user: React.PropTypes.object.isRequired
-    },
-
-    render: function() {
-      var user = this.props.user;
-      return (
+  render: function() {
+    var user = this.state.user;
+    return (
+      <AppPage className="settings" narrow>
+        <PageHeader title="Settings" />
         <Panel className="form-horizontal">
           <form action={'/users/settings/'} method="post">
             <FormGroup label="First Name">
@@ -75,9 +68,10 @@ define([
             />
           </form>
         </Panel>
-      );
-    }
-
-  });
+      </AppPage>
+    );
+  }
 
 });
+
+module.exports = Settings;

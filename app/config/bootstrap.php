@@ -36,6 +36,12 @@ define('CALENDAR_TYPE', 0);
 define('CALENDAR_URI_FORMAT', '/Y/m/');
 
 /**
+ * Facebook API
+ */
+define('FB_APP_ID', '192729344110082');
+define('FB_APP_SECRET', '756380338bb32d062402d8aea5b1a352');
+
+/**
  * Google Analytics ID
  */
 define('GOOGLE_ANALYTICS_CODE', 'UA-5839822-1');

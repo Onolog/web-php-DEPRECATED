@@ -1,39 +1,30 @@
+var React = require('react');
+
+var cx = require('classnames');
+
 /**
  * Glyph.react
  * @jsx React.DOM
  */
-define([
+var Glyph = React.createClass({
+  displayName: 'Glyph',
 
-  'lib/react/react',
-  'utils/cx',
-  'utils/joinClasses'
+  propTypes: {
+    /**
+     * Must be one of the icon names found at:
+     *
+     * http://getbootstrap.com/components/#glyphicons-glyphs
+     */
+    icon: React.PropTypes.string.isRequired
+  },
 
-], function(
+  render: function() {
+    var {icon, className} = this.props;
 
-  React,
-  cx,
-  joinClasses
-
-) {
-
-  return React.createClass({
-    displayName: 'Glyph',
-
-    propTypes: {
-      /**
-       * Must be one of the icon names found at:
-       *
-       * http://getbootstrap.com/components/#glyphicons-glyphs
-       */
-      icon: React.PropTypes.string.isRequired
-    },
-
-    render: function() {
-      var glyphClasses = 'glyphicon glyphicon-' + this.props.icon;
-      return (
-        <span className={joinClasses(glyphClasses, this.props.className)} />
-      );
-    }
-  });
-
+    return (
+      <span className={cx('glyphicon', 'glyphicon-' + icon, className)} />
+    );
+  }
 });
+
+module.exports = Glyph;

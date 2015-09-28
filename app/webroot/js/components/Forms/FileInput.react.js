@@ -1,22 +1,22 @@
+var React = require('react');
+
 /**
  * FileInput.react
  * @jsx React.DOM
  *
  * React wrapper around a standard file input.
  */
-define(['lib/react/react'], function(React) {
+var FileInput = React.createClass({
+  displayName: 'FileInput',
 
-  return React.createClass({
-    displayName: 'FileInput',
-
-    render: function() {
-      return (
-        <input
-          {...this.props}
-          type="file"
-        />
-      );
-    }
-  });
-
+  render: function() {
+    return (
+      <input
+        {...this.props}
+        type="file"
+      />
+    );
+  }
 });
+
+module.exports = FileInput;

@@ -7,13 +7,6 @@ App::import('Helper', 'pages/Page');
  */
 class AppPageHelper extends PageHelper {
 
-  protected function getBaseJS() {
-    return
-      $this->Html->script('/js/lib/require/require.js', array(
-        'data-main' => '/js/main.js'
-      ));
-  }
-
   protected function getBaseCSS() {
     // TODO: It shouldn't be necessary to prepend "/css/" to all of these...
     return
@@ -34,14 +27,8 @@ class AppPageHelper extends PageHelper {
 
   protected function renderPageJS() {
     return
-      $this->getBaseJS() .
       $this->getPageJS() .
-      $this->renderFBRoot() .
       $this->renderGoogleAnalyticsJS();
-  }
-
-  protected function renderFBRoot() {
-    return '<div id="fb-root" class="fb_reset"></div>';
   }
 
   /**

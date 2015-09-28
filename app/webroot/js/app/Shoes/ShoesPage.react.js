@@ -1,79 +1,62 @@
+var React = require('react');
+
+var AllShoesView = require('./AllShoesView.react');
+var AppPage = require('../../components/Page/AppPage.react');
+var Button = require('../../components/Button/Button.react');
+var Loader = require('../../components/Loader/Loader.react');
+var PageHeader = require('../../components/Page/PageHeader.react');
+var ShoeAddButton = require('./ShoeAddButton.react');
+
+var ActionTypes = require('../../constants/ActionTypes');
+var ShoeActions = require('../../actions/ShoeActions');
+var ShoeStore = require('../../stores/ShoeStore');
+
 /**
  * ShoesPage.react
  * @jsx React.DOM
  *
  * View controller for displaying all of a user's shoes
  */
-define([
+var ShoesPage = React.createClass({
+  displayName: 'ShoesPage',
 
-  'lib/react/react',
+  getInitialState: function() {
+    return {
+      shoes: null
+    };
+  },
 
-  'lib/react/jsx!app/Shoes/AllShoesView.react',
-  'lib/react/jsx!app/Shoes/ShoeAddButton.react',
-  'lib/react/jsx!components/Button/Button.react',
-  'lib/react/jsx!components/Loader/Loader.react',
-  'lib/react/jsx!components/Page/PageHeader.react',
-  'actions/ShoeActions',
-  'constants/ActionTypes',
-  'stores/ShoeStore'
+  componentWillMount: function() {
+    ShoeActions.fetch();
+  },
 
-], function(
+  componentDidMount: function() {
+    ShoeStore.bind(ActionTypes.CHANGE, this._shoesChanged);
+  },
 
-  React,
-  AllShoesView,
-  ShoeAddButton,
-  Button,
-  Loader,
-  PageHeader,
-  ShoeActions,
-  ActionTypes,
-  ShoeStore
+  componentWillUnmount: function() {
+    ShoeStore.unbind(ActionTypes.CHANGE, this._shoesChanged);
+  },
 
-) {
+  _shoesChanged: function() {
+    this.setState({shoes: ShoeStore.getCollection()});
+  },
 
-  return React.createClass({
-    displayName: 'ShoesPage',
+  render: function() {
+    return (
+      <AppPage narrow>
+        <PageHeader title="Shoes">
+          <ShoeAddButton />
+        </PageHeader>
+        {this._renderContent()}
+      </AppPage>
+    );
+  },
 
-    getInitialState: function() {
-      return {
-        shoes: null
-      };
-    },
-
-    componentWillMount: function() {
-      ShoeActions.fetch();
-    },
-
-    componentDidMount: function() {
-      ShoeStore.bind(ActionTypes.CHANGE, this._shoesChanged);
-    },
-
-    componentWillUnmount: function() {
-      ShoeStore.unbind(ActionTypes.CHANGE, this._shoesChanged);
-    },
-
-    _shoesChanged: function() {
-      this.setState({shoes: ShoeStore.getCollection()});
-    },
-
-    render: function() {
-      return (
-        <div>
-          <PageHeader title="Shoes">
-            <ShoeAddButton />
-          </PageHeader>
-          {this._renderContent()}
-        </div>
-      );
-    },
-
-    _renderContent: function() {
-      var shoes = this.state.shoes;
-      if (!shoes) {
-        return <Loader />;
-      }
-      return <AllShoesView shoes={shoes} />;
-    }
-  });
-
+  _renderContent: function() {
+    var shoes = this.state.shoes;
+    return shoes ? <AllShoesView shoes={shoes} /> : <Loader />;
+  }
 });
+
+module.exports = ShoesPage;

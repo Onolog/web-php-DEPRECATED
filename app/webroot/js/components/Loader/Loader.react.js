@@ -1,3 +1,7 @@
+var React = require('react');
+
+var cx = require('classnames');
+
 /**
  * Loader.react
  *
@@ -5,57 +9,40 @@
  *
  * @jsx React.DOM
  */
-define([
+var Loader = React.createClass({
+  displayName: 'Loader',
 
-  'lib/react/react',
-  'utils/cx',
-  'utils/joinClasses'
+  propTypes: {
+    background: React.PropTypes.bool,
+    full: React.PropTypes.bool,
+    size: React.PropTypes.oneOf([
+      'large',
+      'small'
+    ])
+  },
 
-], function(
+  getDefaultProps: function() {
+    return {
+      background: false,
+      full: false,
+      size: 'large'
+    };
+  },
 
-  React,
-  cx,
-  joinClasses
+  render: function() {
+    var {background, size, full, className} = this.props;
 
-) {
-
-  return React.createClass({
-    displayName: 'Loader',
-
-    propTypes: {
-      background: React.PropTypes.bool,
-      full: React.PropTypes.bool,
-      size: React.PropTypes.oneOf([
-        'large',
-        'small'
-      ])
-    },
-
-    getDefaultProps: function() {
-      return {
-        background: false,
-        full: false,
-        size: 'large'
-      };
-    },
-
-    render: function() {
-      var classes = cx({
-        'loader': true,
-        'loader-bg': this.props.background,
-        'loader-lg': this.props.size === 'large',
-        'loader-full': this.props.full,
-      });
-
-      return (
-        <div
-          className={joinClasses(
-            this.props.className,
-            classes
-          )}
-        />
-      );
-    }
-  });
-
+    return (
+      <div
+        className={cx({
+          'loader': true,
+          'loader-bg': background,
+          'loader-lg': size === 'large',
+          'loader-full': full,
+        }, className)}
+      />
+    );
+  }
 });
+
+module.exports = Loader;

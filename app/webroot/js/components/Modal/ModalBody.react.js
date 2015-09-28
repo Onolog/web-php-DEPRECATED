@@ -1,21 +1,21 @@
+var React = require('react');
+
 /**
  * ModalBody.react
  * @jsx React.DOM
  *
  * Main body of a modal dialog
  */
-define(['lib/react/react'], function(React) {
+var ModalBody = React.createClass({
+  displayName: 'ModalBody',
 
-  return React.createClass({
-    displayName: 'ModalBody',
-
-    render: function() {
-      return (
-        <div className="modal-body">
-          {this.props.children}
-        </div>
-      );
-    }
-  });
-
+  render: function() {
+    return (
+      <div className="modal-body">
+        {this.props.children}
+      </div>
+    );
+  }
 });
+
+module.exports = ModalBody;

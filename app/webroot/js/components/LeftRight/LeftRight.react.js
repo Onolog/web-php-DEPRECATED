@@ -1,73 +1,64 @@
+var React = require('react');
+var cx = require('classnames');
+
+var DIRECTION = {
+  left: 'left',
+  right: 'right',
+  both: 'both'
+};
+
 /**
  * LeftRight.react.js
  *
  * Simple left right positioning tool.
  */
-define([
+var LeftRight = React.createClass({
+  displayName: 'LeftRight',
 
-  'lib/react/react',
-  'utils/joinClasses'
+  propTypes: {
+    direction: React.PropTypes.oneOf(Object.keys(DIRECTION))
+  },
 
-], function(
+  getDefaultProps: function() {
+    return {
+      direction: DIRECTION.both
+    };
+  },
 
-  React,
-  joinClasses
+  render: function() {
+    var children = [];
+    React.Children.forEach(this.props.children, function(child) {
+      children.push(child);
+    }, this);
 
-) {
+    var dir = this.props.direction || DIRECTION.both;
+    var both = (dir === DIRECTION.both);
 
-  var DIRECTION = {
-    left: 'left',
-    right: 'right',
-    both: 'both'
-  };
+    var firstClass = both || dir === DIRECTION.left ? 'pull-left' : '';
 
-  return React.createClass({
-    displayName: 'LeftRight',
+    var secondClass = both || dir === DIRECTION.right ? 'pull-right' : '';
 
-    propTypes: {
-      direction: React.PropTypes.oneOf(Object.keys(DIRECTION))
-    },
+    var firstChild =
+      <div key="left" className={firstClass}>
+        {children[0]}
+      </div>;
 
-    getDefaultProps: function() {
-      return {
-        direction: DIRECTION.both
-      };
-    },
+    var secondChild = (children.length < 2) ? null :
+      <div key="right" className={secondClass}>
+        {children[1]}
+      </div>;
 
-    render: function() {
-      var children = [];
-      React.Children.forEach(this.props.children, function(child) {
-        children.push(child);
-      }, this);
-  
-      var dir = this.props.direction || DIRECTION.both;
-      var both = (dir === DIRECTION.both);
-  
-      var firstClass = both || dir === DIRECTION.left ? 'pull-left' : '';
-  
-      var secondClass = both || dir === DIRECTION.right ? 'pull-right' : '';
-  
-      var firstChild =
-        <div key="left" className={firstClass}>
-          {children[0]}
-        </div>;
-  
-      var secondChild = (children.length < 2) ? null :
-        <div key="right" className={secondClass}>
-          {children[1]}
-        </div>;
-  
-      var orderedChildren = (dir === DIRECTION.right && secondChild) ?
-        [secondChild, firstChild] :
-        [firstChild, secondChild];
-  
-      return (
-        <div {...this.props}
-          className={joinClasses(this.props.className, 'clearfix')}>
-          {orderedChildren}
-        </div>
-      );
-    }
-  });
+    var orderedChildren = (dir === DIRECTION.right && secondChild) ?
+      [secondChild, firstChild] :
+      [firstChild, secondChild];
 
+    return (
+      <div {...this.props}
+        className={cx(this.props.className, 'clearfix')}>
+        {orderedChildren}
+      </div>
+    );
+  }
 });
+
+module.exports = LeftRight;

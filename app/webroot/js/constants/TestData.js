@@ -37,10 +37,7 @@ define({
             'http://connect.garmin.com/modern/activity/577839651',
           date: 1405234800,
           time: 4001,
-          friends: [{
-            id: 509191417,
-            name: 'Jessica Shambora'
-          }]
+          friends: '509191417'
         }]
       },
       '10': {
@@ -76,10 +73,7 @@ define({
             'http://connect.garmin.com/modern/activity/577839638',
           date: 1404025200,
           time: 5747,
-          friends: [{
-            id: 4280,
-            name: 'Paul McDonald'
-          }]
+          friends: '4280'
         }, {
           athlete: {
             id: 517820043,
@@ -102,13 +96,7 @@ define({
             'http://connect.garmin.com/modern/activity/612283575',
           date: 1413097200,
           time: 7781,
-          friends: [{
-            id: 4280,
-            name: 'Paul McDonald'
-          }, {
-            id: 11,
-            name: 'Soleio'
-          }]
+          friends: '4280,11'
         }]
       }
     }

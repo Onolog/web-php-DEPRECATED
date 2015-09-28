@@ -1,3 +1,5 @@
+var React = require('react');
+
 /**
  * GraphSection.react
  * @jsx React.DOM
@@ -6,49 +8,43 @@
  * it could represent one month, with sets of data for that month displayed
  * within (multiple bars), or simply high-level data for that month (one bar).
  */
-define([
+var GraphSection = React.createClass({
 
-  'lib/react/react',
+  propTypes: {
+    label: React.PropTypes.string,
+    metadata: React.PropTypes.string
+  },
 
-], function(React, GraphSectionUnit) {
+  render: function() {
+    return (
+      <li className="graphSection">
+        <div className="graphSectionData">
+          {this.props.children}
+        </div>
+        <div className="graphSectionLabel">
+          {this._renderGraphSectionLabel(this.props.label)}
+          {this._renderGraphSectionMetadata(this.props.metadata)}
+        </div>
+      </li>
+    );
+  },
 
-  return React.createClass({
-
-    propTypes: {
-      label: React.PropTypes.string,
-      metadata: React.PropTypes.string
-    },
-
-    render: function() {
-      return (
-        <li className="graphSection">
-          <div className="graphSectionData">
-            {this.props.children}
-          </div>
-          <div className="graphSectionLabel">
-            {this._renderGraphSectionLabel(this.props.label)}
-            {this._renderGraphSectionMetadata(this.props.metadata)}
-          </div>
-        </li>
-      );
-    },
-
-    _renderGraphSectionLabel: function(label) {
-      if (label) {
-        return <h4>{label}</h4>;
-      }
-    },
-
-    _renderGraphSectionMetadata: function(metadata) {
-      if (metadata) {
-        return (
-          <div className="graphSectionMetadata">
-            {metadata}
-          </div>
-        );
-      }
+  _renderGraphSectionLabel: function(label) {
+    if (label) {
+      return <h4>{label}</h4>;
     }
+  },
 
-  });
+  _renderGraphSectionMetadata: function(metadata) {
+    if (metadata) {
+      return (
+        <div className="graphSectionMetadata">
+          {metadata}
+        </div>
+      );
+    }
+  }
 
 });
+
+module.exports = GraphSection;

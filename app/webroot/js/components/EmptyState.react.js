@@ -1,25 +1,25 @@
+var React = require('react');
+
 /**
  * EmptyState.react
  * @jsx React.DOM
  *
  * Standardized component for when there's no data to display.
  */
-define(['lib/react/react'], function(React) {
+var EmptyState = React.createClass({
+  displayName: 'EmptyState',
 
-  return React.createClass({
-    displayName: 'EmptyState',
+  propTypes: {
+    message: React.PropTypes.string.isRequired
+  },
 
-    propTypes: {
-      message: React.PropTypes.string.isRequired
-    },
-
-    render: function() {
-      return (
-        <div className="emptyState">
-          {this.props.message}
-        </div>
-      );
-    }
-  });
-
+  render: function() {
+    return (
+      <div className="emptyState">
+        {this.props.message}
+      </div>
+    );
+  }
 });
+
+module.exports = EmptyState;
