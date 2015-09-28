@@ -20,33 +20,22 @@ var dateToUnixTime = require('../../utils/dateToUnixTime');
 var WorkoutAddEditPage = React.createClass({
   displayName: 'WorkoutAddEditPage',
 
-  propTypes: {
-    isEditing: React.PropTypes.bool,
-    /**
-     * If editing, the existing workout object
-     */
-    workout: React.PropTypes.object
-  },
-
-  getDefaultProps: function() {
-    return {
-      isEditing: false
-    };
-  },
-
   getInitialState: function() {
+    var {isEditing, workout} = window.app ? window.app : {};
     return {
-      isSaving: false
+      isEditing: isEditing,
+      isSaving: false,
+      workout: workout
     };
   },
 
   render: function() {
     return (
-      <div>
+      <AppPage>
         <PageHeader title={this._getTitle()} />
         <Panel footer={this._renderFooter()}>
           <form action={this._getFormAction()} method="POST" ref="form">
-            <WorkoutFields workout={this.props.workout} />
+            <WorkoutFields workout={this.state.workout} />
           </form>
           <Loader
             background={true}
@@ -56,13 +45,12 @@ var WorkoutAddEditPage = React.createClass({
             full={true}
           />
         </Panel>
-      </div>
+      </AppPage>
     );
   },
 
   _getFormAction: function() {
-    var isEditing = this.props.isEditing;
-    var workout = this.props.workout;
+    var {isEditing, workout} = this.state;
     return [
       '/workouts',
       isEditing ? 'edit' : 'add',
@@ -71,12 +59,12 @@ var WorkoutAddEditPage = React.createClass({
   },
 
   _getTitle: function() {
-    return this.props.isEditing ? 'Edit Activity' : 'New Activity';
+    return this.state.isEditing ? 'Edit Activity' : 'New Activity';
   },
 
   _renderFooter: function() {
     var submitLabel =
-      this.props.isEditing ? 'Update Activity' : 'Add Activity';
+      this.state.isEditing ? 'Update Activity' : 'Add Activity';
 
     return (
       <div className="pull-right">

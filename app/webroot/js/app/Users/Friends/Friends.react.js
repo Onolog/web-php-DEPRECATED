@@ -2,12 +2,14 @@ var React = require('react');
 
 var AppPage = require('../../../components/Page/AppPage.react');
 var Button = require('../../../components/Button/Button.react');
-var ImageBlock = require('../../../components/Facebook/FBImage.react');
+var FBImage = require('../../../components/Facebook/FBImage.react');
 var ImageBlock = require('../../../components/ImageBlock/ImageBlock.react');
 var Link = require('../../../components/Link/Link.react');
 var Loader = require('../../../components/Loader/Loader.react');
 var PageHeader = require('../../../components/Page/PageHeader.react');
 var Panel = require('../../../components/Panel/Panel.react');
+
+var FBLoader = require('../../../lib/Facebook/fb');
 
 /**
  * Friends.react
@@ -22,13 +24,9 @@ var Friends = React.createClass({
     };
   },
 
-  componentDidMount: function() {
+  componentWillMount: function() {
     // Get all friends who are in the system
-    FB.getLoginStatus(function(response) {
-      FB.api('/me/friends', function(response) {
-        this.setState({friends: response.data});
-      }.bind(this));
-    }.bind(this));
+    FBLoader(this._getFriends);
   },
 
   render: function() {
@@ -63,6 +61,14 @@ var Friends = React.createClass({
         </ImageBlock>
       );
     }); 
+  },
+
+  _getFriends: function() {
+    FB.getLoginStatus(function(response) {
+      FB.api('/me/friends', function(response) {
+        this.setState({friends: response.data});
+      }.bind(this));
+    }.bind(this));
   }
 });
 
