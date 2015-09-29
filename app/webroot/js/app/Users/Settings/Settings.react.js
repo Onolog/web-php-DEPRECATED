@@ -15,9 +15,6 @@ var cakePHP = require('../../../utils/cakePHP');
 
 var FORM_NAME = 'User';
 
-// CSS
-require('../../../../css/app/Settings.css');
-
 /**
  * Settings.react
  * @jsx React.DOM
