@@ -26,7 +26,7 @@ var ShoeStore = {
     }
 
     var item = _.find(_collection, function(item) {
-      return item.id === itemID;
+      return item.id === +itemID;
     });
 
     if (!item) {
