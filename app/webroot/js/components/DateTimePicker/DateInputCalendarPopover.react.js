@@ -1,12 +1,12 @@
+var moment = require('moment');
 var React = require('react');
 
 var DateInputCalendar = require('./DateInputCalendar.react');
-var Glyph = require('../Glyph/Glyph.react');
+var Glyphicon = require('react-bootstrap/lib/Glyphicon');
 var Link = require('../Link/Link.react');
 
 var cloneDate = require('../../utils/cloneDate');
 var cx = require('classnames');
-var DateTimeUtils = require('../../utils/DateTimeUtils');
 
 /**
  * DateInputCalendarPopover.react.js
@@ -20,14 +20,16 @@ var DateInputCalendarPopover = React.createClass({
   displayName: 'DateInputCalendarPopover',
 
   propTypes: {
-    date: React.PropTypes.instanceOf(Date).isRequired,
+    date: React.PropTypes.number.isRequired,
+    months: React.PropTypes.number.isRequired,
     onChange: React.PropTypes.func.isRequired,
-    show: React.PropTypes.bool.isRequired
+    show: React.PropTypes.bool.isRequired,
+    years: React.PropTypes.number.isRequired
   },
 
   getInitialState: function() {
     return {
-      calendarDate: this.props.date
+      calendarMoment: this._getMoment(this.props)
     };
   },
 
@@ -35,60 +37,62 @@ var DateInputCalendarPopover = React.createClass({
     // When hiding or showing the popover, the date shown by the calendar
     // should be the same as the selected date.
     if (this.props.show !== nextProps.show) {
-      this.setState({calendarDate: nextProps.date});
+      this.setState({calendarMoment: this._getMoment(nextProps)});
     }
   },
 
   render: function() {
     if (!this.props.show) {
-      return <span />;
+      return null;
     }
 
+    var {calendarMoment} = this.state;
     return (
-      <div
-        className={cx({
-          'popover': true, 
-          'fade': true,
-          'bottom': true,
-          'in': true
-        })}>
-        <div className="arrow"></div>
+      <div className={cx('popover', 'fade', 'bottom', 'in')}>
+        <div className="arrow" />
         <div className="popover-header DateInputCalendarControls">
           <Link
             className="monthArrow arrowLeft"
-            href="javascript:;"
+            href="#"
             onClick={this._onPrevMonthClick}>
-            <Glyph icon="triangle-left" />
+            <Glyphicon glyph="triangle-left" />
           </Link>
-          {DateTimeUtils.formatDate(this.state.calendarDate, 'MMMM YYYY')}
+          {calendarMoment.format('MMMM YYYY')}
           <Link
             className="monthArrow arrowRight"
-            href="javascript:;"
+            href="#"
             onClick={this._onNextMonthClick}>
-            <Glyph icon="triangle-right" />
+            <Glyphicon glyph="triangle-right" />
           </Link>
         </div>
         <div className="popover-content">
           <DateInputCalendar
-            calendarDate={this.state.calendarDate}
+            selectedDate={this._getMoment(this.props).toDate()}
+            month={calendarMoment.month()}
             onChange={this.props.onChange}
-            date={this.props.date}
+            year={calendarMoment.year()}
           />
         </div>
       </div>
     );
   },
 
-  _onPrevMonthClick: function() {
-    var date = cloneDate(this.state.calendarDate);
-    date.setMonth(date.getMonth() - 1);
-    this.setState({calendarDate: date});
+  _onPrevMonthClick: function(e) {
+    e.preventDefault();
+    this.setState({
+      calendarMoment: this.state.calendarMoment.subtract(1, 'month')
+    });
   },
 
-  _onNextMonthClick: function() {
-    var date = cloneDate(this.state.calendarDate);
-    date.setMonth(date.getMonth() + 1);
-    this.setState({calendarDate: date});
+  _onNextMonthClick: function(e) {
+    e.preventDefault();
+    this.setState({
+      calendarMoment: this.state.calendarMoment.add(1, 'month')
+    });
+  },
+
+  _getMoment: function({date, months, years}) {
+    return moment().year(years).month(months).date(date);
   }
 });
 

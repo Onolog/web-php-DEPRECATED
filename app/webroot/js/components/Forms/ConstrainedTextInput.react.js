@@ -57,7 +57,8 @@ var ConstrainedTextInput = React.createClass({
     var index = this._getIndex(this.props.defaultValue);
     if (index === -1) {
       throw new Error(
-        'TimeInput: `this.props.defaultValue` must be in `this.props.values`'
+        'TimeInput: `' + this.props.defaultValue + '` must be in `' +
+        this.props.values + '`'
       );
     }
     return {

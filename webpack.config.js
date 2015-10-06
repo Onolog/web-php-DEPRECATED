@@ -22,6 +22,7 @@ var config = {
   module: {
     loaders: [
       { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/ },
+      { test: /\.json$/, loaders: ['json-loader'] },
       { test: /\.css$/, loader: 'style-loader!css-loader' },
       // Fonts
       { test: /\.(eot|svg|ttf|woff|woff2)$/, loader: 'file-loader'},
@@ -33,11 +34,15 @@ var config = {
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')
-    })
+    }),
+    // Don't include every single moment locale
+    new webpack.ContextReplacementPlugin(
+      /moment[\/\\]locale$/, /en|no|hu/
+    ),
   ],
   resolve: {
     // Allows you to require('file') instead of require('file.js')
-    extensions: ['', '.js', '.json']
+    extensions: ['', '.js', '.json', 'jsx']
   }
 };
 

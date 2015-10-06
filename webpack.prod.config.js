@@ -3,8 +3,6 @@
 var baseConfig = require('./webpack.config.js');
 var webpack = require('webpack');
 
-var WEBROOT = path.join(__dirname, 'app/webroot');
-
 var config = Object.create(baseConfig);
 
 config.output.path = __dirname + '/app/webroot/dist';

@@ -1,3 +1,4 @@
+var moment = require('moment-timezone');
 var React = require('react');
 
 var Activity = require('../Activities/Activity.react');
@@ -30,37 +31,38 @@ var ReactPage = React.createClass({
   getInitialState: function() {
     return {
       calendarDate: new Date(),
-      datePickerDate: new Date(),
+      datePickerDate: moment().toDate(),
+      timezone: 'America/Los_Angeles',
       workouts: DATA.WORKOUTS
     };
   },
 
   render: function() {
-
     return (
       <AppPage>
         <PageHeader title="React Component Examples" />
 
-        <Panel title="Date and Time Picker">
+        <Panel title="Date/Time Picker">
           <DateTimePicker
-            initialDate={this.state.datePickerDate}
-            onChange={function(date) {
-              this.setState({datePickerDate: date});
-            }.bind(this)}
+            date={this.state.datePickerDate}
+            onChange={(dateString, timezone) => {
+              this.setState({
+                datePickerDate: dateString,
+                timezone: timezone
+              });
+            }}
           />
           <div style={{marginTop: '10px'}}>
-            {this.state.datePickerDate.toISOString()}
+            {moment.tz(
+              this.state.datePickerDate,
+              this.state.timezone
+            ).format('MM/D/YYYY HH:mm Z')}
           </div>
         </Panel>
 
         <Panel title="Calendar">
           <LeftRight style={{'marginBottom': '10px'}}>
-            <h3>
-              {DateTimeUtils.formatDate(
-                this.state.calendarDate,
-                'MMMM YYYY'
-              )}
-            </h3>
+            <h3>{moment(this.state.calendarDate).format('MMMM YYYY')}</h3>
             <ButtonGroup>
               <Button
           	    glyph="triangle-left"

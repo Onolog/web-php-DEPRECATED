@@ -1,11 +1,11 @@
+var moment = require('moment');
 var React = require('react');
 
 var DateInputCalendarPopover = require('./DateInputCalendarPopover.react');
-var Glyph = require('../Glyph/Glyph.react');
+var Glyphicon = require('react-bootstrap/lib/Glyphicon');
 
 var cloneDate = require('../../utils/cloneDate');
 var cx = require('classnames');
-var DateTimeUtils = require('../../utils/DateTimeUtils');
 
 /**
  * DateInput.react
@@ -17,14 +17,14 @@ var DateInput = React.createClass({
   displayName: 'DateInput',
 
   propTypes: {
-    defaultValue: React.PropTypes.instanceOf(Date),
-    onChange: React.PropTypes.func,
-    value: React.PropTypes.instanceOf(Date)
+    date: React.PropTypes.number.isRequired,
+    months: React.PropTypes.number.isRequired,
+    onChange: React.PropTypes.func.isRequired,
+    years: React.PropTypes.number.isRequired,
   },
 
   getInitialState: function() {
     return {
-      date: this.props.defaultValue || new Date(),
       showCalendar: false
     };
   },
@@ -38,7 +38,12 @@ var DateInput = React.createClass({
   },
 
   render: function() {
-    var date = this._getDate();
+    var {date, months, timezone, years} = this.props;
+    var m = moment({
+      date: date,
+      months: months,
+      years: years
+    });
 
     return (
       <div className="DateInput">
@@ -46,16 +51,15 @@ var DateInput = React.createClass({
           className="form-control"
           onClick={this._showCalendar}>
           <div className="DateInputDisplay">
-            {DateTimeUtils.formatDate(date, 'M/D/YYYY')}
+            {m.format('M/D/YYYY')}
           </div>
-          <Glyph
+          <Glyphicon
             className="DateInputCalendarIcon"
-            icon="calendar"
-            onClick={this._showCalendar}
+            glyph="calendar"
           />
         </div>
         <DateInputCalendarPopover
-          date={date}
+          {...this.props}
           onChange={this._onChange}
           show={this.state.showCalendar}
         />
@@ -71,26 +75,17 @@ var DateInput = React.createClass({
     var target = evt.target;
     var parent = this.getDOMNode();
     if (!(parent.contains(target) || target === parent)) {
-      this.setState({
-        // Resets the calendar date
-        date: this._getDate(),
-        showCalendar: false
-      })
+      this.setState({showCalendar: false});
     }
-  },
-
-  _getDate: function() /*Date*/ {
-    var date = this.props.value || this.state.date;
-    return cloneDate(date);
   },
 
   _showCalendar: function() {
     this.setState({showCalendar: true});
   },
 
-  _onChange: function(/*Date*/ date) {
+  _onChange: function(/*object*/ dateObject) {
     this.setState({showCalendar: false});
-    this.props.onChange && this.props.onChange(date);
+    this.props.onChange(dateObject);
   }
 });
 

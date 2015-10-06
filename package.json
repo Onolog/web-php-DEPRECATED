@@ -6,7 +6,9 @@
   "dependencies": {
     "google-maps": "^3.1.0",
     "highcharts-commonjs": "^4.1.7-1",
+    "jstz": "^1.0.7",
     "moment": "^2.10.6",
+    "moment-timezone": "^0.4.0",
     "redux": "^3.0.2"
   },
   "devDependencies": {
@@ -17,7 +19,6 @@
     "eslint-plugin-react": "^3.5.1",
     "file-loader": "^0.8.4",
     "jquery": "^2.1.4",
-    "moment-timezone": "^0.4.0",
     "react": "^0.13.3",
     "react-bootstrap": "^0.25.2",
     "react-input-autosize": "^0.5.3",

@@ -13,9 +13,8 @@
 
 .DateInput .form-control {
   cursor: pointer;
-  padding-right: 30px;
+  padding-right: 35px;
   position: relative;
-  width: 120px;
 }
 
 .DateInputDisplay {
@@ -150,7 +149,29 @@
   width: 25px;
 }
 
+
+/* Timezone */
+.TimezoneSelector {
+  display: inline-block;
+  margin: 5px 0 0 5px;
+}
+.TimezoneSelector-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  color: #aaa;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 12px;
+}
+.TimezoneSelector-select:focus {
+  outline: none;
+}
+
 .DateInput + .TimeInput {
   margin-left: 5px;
 }
-

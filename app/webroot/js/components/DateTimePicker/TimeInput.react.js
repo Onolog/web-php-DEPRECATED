@@ -29,25 +29,22 @@ var TimeInput = React.createClass({
   displayName: 'TimeInput',
 
   propTypes: {
-    defaultValue: React.PropTypes.instanceOf(Date),
-    onChange: React.PropTypes.func,
-    value: React.PropTypes.instanceOf(Date)
-  },
-
-  getInitialState: function() {
-    return {
-      date: this.props.defaultValue || new Date()
-    };
+    hours: React.PropTypes.number.isRequired,
+    minutes: React.PropTypes.number.isRequired,
+    onChange: React.PropTypes.func.isRequired
   },
 
   render: function() {
-    var date = moment(this._getDate());
+    var m = moment({
+      hours: this.props.hours,
+      minutes: this.props.minutes
+    });
 
     return (
       <div className="TimeInput">
         <div className="form-control">
           <ConstrainedTextInput
-            defaultValue={date.format('hh')}
+            defaultValue={m.format('hh')}
             format={formatter}
             maxLength={2}
             onChange={this._onHoursChange}
@@ -55,7 +52,7 @@ var TimeInput = React.createClass({
           />
           {':'}
           <ConstrainedTextInput
-            defaultValue={date.format('mm')}
+            defaultValue={m.minutes()}
             format={formatter}
             maxLength={2}
             onChange={this._onMinutesChange}
@@ -63,7 +60,7 @@ var TimeInput = React.createClass({
           />
           <ConstrainedTextInput
             className="meridiem"
-            defaultValue={date.format('A')}
+            defaultValue={m.format('A')}
             maxLength={2}
             onChange={this._onMeridiemChange}
             ref="meridiem"
@@ -75,47 +72,34 @@ var TimeInput = React.createClass({
     );
   },
 
-  _getDate: function() /*Date*/ {
-    var date = this.props.value || this.state.date;
-    return cloneDate(date);
-  },
-
-  _onHoursChange: function(/*number|string*/ hours) {
-    var date = this._getDate();
+  _onHoursChange: function(/*number*/ hours) {
     var meridiem = this.refs.meridiem.getValue();
 
-    // Display is 12-hour, but Date() is 24-hour. Adjust accordingly.
+    // Display is 12-hour, time is 24-hour. Adjust accordingly.
     if (meridiem === MERIDIEM.PM && hours < 12) {
       hours = hours + 12;
     } else if (meridiem === MERIDIEM.AM && hours >= 12) {
       hours = hours - 12;
     }
 
-    date.setHours(hours);
-    this._onChange(date);
+    this._onChange(hours, this.props.minutes);
   },
 
-  _onMinutesChange: function(/*number|string*/ minutes) {
-    var date = this._getDate();
-    date.setMinutes(minutes);
-
-    this._onChange(date);
+  _onMinutesChange: function(/*number*/ minutes) {
+    this._onChange(this.props.hours, minutes);
   },
 
   _onMeridiemChange: function(/*string*/ meridiem) {
-    var date = this._getDate();
-    var hours = date.getHours();
-
-    hours = (meridiem === MERIDIEM.PM && hours < 12) ?
-      hours + 12 : hours - 12;
-
-    date.setHours(hours);
-    this._onChange(date);
+    var hours = this.props.hours;
+    hours = (meridiem === MERIDIEM.PM && hours < 12) ? hours + 12 : hours - 12;
+    this._onChange(hours, this.props.minutes);
   },
 
-  _onChange: function(/*Date*/ date) {
-    this.setState({date: date});
-    this.props.onChange && this.props.onChange(date);
+  _onChange: function(/*number*/ hours, /*number*/ minutes) {
+    this.props.onChange({
+      hours: hours,
+      minutes: minutes
+    });
   }
 });
 

@@ -1,3 +1,4 @@
+var moment = require('moment');
 var React = require('react');
 
 var BaseCalendar = require('../Calendar/BaseCalendar.react');
@@ -18,21 +19,21 @@ var DateInputCalendar = React.createClass({
 
   propTypes: {
     /**
-     * The date corresponding to the month/year being displayed by the
-     * calendar.
+     * The month being displayed by the calendar.
      */
-    calendarDate: React.PropTypes.instanceOf(Date).isRequired,
+    month: React.PropTypes.number.isRequired,
     /**
      * The selected date for the DateInput component.
      */
-    date: React.PropTypes.instanceOf(Date)
+    selectedDate: React.PropTypes.instanceOf(Date).isRequired,
+    /**
+     * The year being displayed by the calendar.
+     */
+    year: React.PropTypes.number.isRequired
   },
 
   render: function() {
-    var grid = calendarGrid(
-      this.props.calendarDate.getMonth(),
-      this.props.calendarDate.getFullYear()
-    );
+    var grid = calendarGrid(this.props.month, this.props.year);
 
     return (
       <BaseCalendar
@@ -57,12 +58,12 @@ var DateInputCalendar = React.createClass({
       <BaseCalendarDay
         date={dayDate}
         key={idx}
-        month={this.props.calendarDate.getMonth()}>
+        month={this.props.month}>
         <Link
           className={cx({
-            'selected': this._isSelected(dayDate)
+            'selected': moment(dayDate).isSame(this.props.selectedDate, 'day')
           })}
-          href="javascript:;"
+          href="#"
           onClick={this._onDayClick.bind(this, dayDate)}>
           {dayDate.getDate()}
         </Link>
@@ -70,29 +71,13 @@ var DateInputCalendar = React.createClass({
     );
   },
 
-  _isSelected: function(/*Date*/ date) {
-    var selectedDate = cloneDate(this.props.date);
-    selectedDate.setHours(0,0,0,0);
-
-    date = cloneDate(date);
-    date.setHours(0,0,0,0);
-
-    return date.getTime() === selectedDate.getTime();
-  },
-
-  _onDayClick: function(/*Date*/ newDate) {
-    var date = cloneDate(this.props.date);
-
-    // `newDate` doesn't contain time information (hh:mm:ss) so set the
-    // year/month/date info on a copy of the existing selected date, which
-    // does contain the correct time data.
-    date.setFullYear(
-      newDate.getFullYear(),
-      newDate.getMonth(),
-      newDate.getDate()
-    );
-
-    this.props.onChange && this.props.onChange(date);
+  _onDayClick: function(/*Date*/ selectedDate, evt) {
+    evt.preventDefault();
+    this.props.onChange && this.props.onChange({
+      date: selectedDate.getDate(),
+      months: selectedDate.getMonth(),
+      years: selectedDate.getFullYear()
+    });
   }
 });
 
