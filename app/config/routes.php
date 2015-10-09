@@ -34,8 +34,16 @@
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */
-Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+Router::connect('/pages/*', array(
+  'controller' => 'pages',
+  'action' => 'display'
+));
 
+Router::connect('/vdot', array(
+  'controller' => 'pages',
+  'action' => 'display',
+  'vdot'
+));
 
 /**
  * Home Page Route
@@ -69,10 +77,5 @@ Router::connect('/shoes', array(
 
 Router::connect('/', array(
   'controller' => 'users',
-  'action' => 'index'
-));
-
-Router::connect('/daniels', array(
-  'controller' => 'vdots',
   'action' => 'index'
 ));
