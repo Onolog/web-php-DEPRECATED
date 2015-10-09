@@ -46,6 +46,10 @@ AppDispatcher.register(function(payload) {
       _collection = payload.data;
       ShoeStore.trigger(ActionTypes.CHANGE);
       break;
+    case ActionTypes.ALL_SHOES_FETCH_ERROR:
+      _collection = [];
+      ShoeStore.trigger(ActionTypes.CHANGE);
+      break;
 
     case ActionTypes.SHOE_ADD:
       _collection.push(payload.data);
@@ -59,8 +63,16 @@ AppDispatcher.register(function(payload) {
       ShoeStore.trigger(ActionTypes.CHANGE);
       break;
 
-    case ActionTypes.SHOE_UPDATE:
     case ActionTypes.SHOE_VIEW:
+      var shoe = payload.data;
+      var shoeIds = _.pluck(_collection, 'id');
+      if (!_.contains(shoeIds, shoe.id)) {
+        _collection.push(shoe);
+      }
+      ShoeStore.trigger(ActionTypes.CHANGE);
+      break;
+
+    case ActionTypes.SHOE_UPDATE:
       var itemID = payload.data.id;
       if (_.isArray(_collection)) {
         _collection = _collection.map(function(item) {
