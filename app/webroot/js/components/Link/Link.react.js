@@ -13,7 +13,20 @@ var Link = React.createClass({
   mixins: [TooltipMixin],
 
   render: function() {
-    return <a {...this.props}>{this.props.children}</a>;
+    return (
+      <a
+        {...this.props}
+        onClick={this._onClick}>
+        {this.props.children}
+      </a>
+    );
+  },
+
+  _onClick: function(e) {
+    if (this.props.href === '#') {
+      e.preventDefault();
+    }
+    this.props.onClick && this.props.onClick(e);
   }
 });
 
