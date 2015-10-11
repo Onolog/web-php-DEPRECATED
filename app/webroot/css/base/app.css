@@ -178,7 +178,7 @@ fieldset {
   padding: 20px;
 }
 
-.narrow-page .main.container {
+.narrow-page .main .container {
   max-width: 600px;
 }
 
