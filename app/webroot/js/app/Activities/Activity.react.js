@@ -75,9 +75,7 @@ var Activity = React.createClass({
         {this._renderMap(activity.series)}
         <div className="activityInfo">
           <ActivityHeader
-            activityDate={activity.date}
-            activityID={activity.id}
-            activityType={activity.activity_type}
+            {...this.props}
             athlete={activity.athlete}
           />
           <TabbedSection className="activityPanes">

@@ -58,7 +58,8 @@
   margin-top: 5px;
 }
 
-.activityDate {
+.activityDate,
+.activityDate .activityTime {
   color: #aaa;
   font-size: 12px;
   line-height: 1em;

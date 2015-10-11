@@ -321,22 +321,6 @@ class WorkoutsController extends AppController {
     return $response->send();
 	}
 
-  public function migrate_dates() {
-    $user = $this->requireLoggedInUser();
-    $workouts = $this->Workout->find('all');
-
-    foreach ($workouts as $workout) {
-      $date = $workout['Workout']['date'];
-
-      $workout['Workout']['start_date'] = gmdate('Y-m-d\TH:i:s.000\Z', $date);
-      $workout['Workout']['start_date_local'] = date('Y-m-d\TH:i:s.000O', $date);
-
-      debug($workout);
-
-      // $this->Workout->save($workout);
-    }
-  }
-
   protected function populateWorkoutForView($workout) {
     // Shoe info
     $shoes = $this->Workout->Shoe->read(
@@ -374,5 +358,22 @@ class WorkoutsController extends AppController {
       ENT_QUOTES,
       'UTF-8'
     );
+  }
+
+  public function migrate_dates() {
+    $user = $this->requireLoggedInUser();
+
+    $workouts = $this->Workout->find('all');
+
+    foreach ($workouts as $workout) {
+      $date = $workout['Workout']['date'];
+
+      // YYYY-MM-DDThh:mm:ss+zz:zz
+      $workout['Workout']['start_date'] = date('Y-m-d\TH:i:sP', $date);
+      $workout['Workout']['timezone'] = 'America/Los_Angeles';
+
+      echo 'Saving workout ' . $workout['Workout']['id'] . '...<br/>';
+      $this->Workout->save($workout);
+    }
   }
 }

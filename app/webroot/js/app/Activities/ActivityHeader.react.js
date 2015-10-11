@@ -1,4 +1,6 @@
+var moment = require('moment-timezone');
 var React = require('react');
+var {PropTypes} = React;
 
 var ActivitySection = require('./ActivitySection.react');
 var FBImage = require('../../components/Facebook/FBImage.react');
@@ -7,9 +9,8 @@ var ImageBlock = require('../../components/ImageBlock/ImageBlock.react');
 var LeftRight = require('../../components/LeftRight/LeftRight.react');
 var Link = require('../../components/Link/Link.react');
 var Middot = require('../../components/Middot.react');
-
-var DateTimeUtils = require('../../utils/DateTimeUtils');
-var unixTimeToDate = require('../../utils/unixTimeToDate');
+var OverlayTrigger = require('react-bootstrap/lib/OverlayTrigger');
+var Tooltip = require('react-bootstrap/lib/Tooltip');
 
 var PHOTO_DIMENSIONS = 75; // In px
 
@@ -21,22 +22,25 @@ var ActivityHeader = React.createClass({
   displayName: 'ActivityHeader',
 
   propTypes: {
-    activityDate: React.PropTypes.number.isRequired,
-    activityID: React.PropTypes.number.isRequired,
-    activityType: React.PropTypes.string,
-    athlete: React.PropTypes.shape({
-      id: React.PropTypes.number,
-      name: React.PropTypes.string
+    activity: PropTypes.shape({
+      activity_type: PropTypes.string,
+      date: PropTypes.oneOfType([
+        PropTypes.instanceOf(Date),
+        PropTypes.number,
+        PropTypes.object,
+        PropTypes.string,
+      ]).isRequired,
+      id: PropTypes.number.isRequired,
+      timezone: PropTypes.string.isRequired
+    }),
+    athlete: PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string
     }).isRequired
   },
 
   render: function() {
-    var props = this.props;
-
-    var activityDate = DateTimeUtils.formatDate(
-      unixTimeToDate(props.activityDate),
-      'dddd, MMMM Do, YYYY LT'
-    );
+    var {activity, athlete} = this.props;
 
     return (
       <ActivitySection className="activityHeader">
@@ -45,27 +49,46 @@ var ActivityHeader = React.createClass({
           image={
             <Link
               className="activityAthletePhoto innerBorder"
-              href={'/users/profile/' + props.athlete.id}>
+              href={'/users/profile/' + athlete.id}>
               <FBImage
-                fbid={props.athlete.id}
+                fbid={athlete.id}
                 height={PHOTO_DIMENSIONS}
                 width={PHOTO_DIMENSIONS}
               />
             </Link>
           }>
           <h4 className="activityAthleteName">
-            {props.athlete.name}
+            {athlete.name}
           </h4>
           <div className="activityDate">
-            {activityDate}
+            {this._renderActivityDate(activity)}
           </div>
           <FBLikeButton
-            href={'/workouts/view/' + props.activityID}
+            href={'/workouts/view/' + activity.id}
             layout="button_count"
             showFaces={false}
           />
         </ImageBlock>
       </ActivitySection>
+    );
+  },
+
+  _renderActivityDate: function({start_date, timezone}) {
+    var date = moment.tz(start_date, timezone);
+    var tooltip =
+      <Tooltip id={timezone}>
+        {timezone + ' ('+ date.format('Z') +')'}
+      </Tooltip>;
+
+    return (
+      <span>
+        {date.format('dddd, MMMM Do, YYYY ')}
+        <OverlayTrigger overlay={tooltip}>
+          <Link className="activityTime" href="#">
+            {date.format('LT')}
+          </Link>
+        </OverlayTrigger>
+      </span>
     );
   }
 });

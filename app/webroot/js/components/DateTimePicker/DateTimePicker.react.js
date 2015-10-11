@@ -55,13 +55,15 @@ var DateTimePicker = React.createClass({
   },
 
   getInitialState: function() {
+    var {date, timezone} = this.props;
+
     return {
       /**
        * Convert the date to individual values to keep them separate from the
        * timezone/offset.
        */
-      dateObject: moment(this.props.date).toObject(),
-      timezone: this.props.timezone
+      dateObject: moment.tz(date, timezone).toObject(),
+      timezone: timezone
     };
   },
 

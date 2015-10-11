@@ -61,7 +61,9 @@ var WorkoutFields = React.createClass({
 
     // TODO: This conversion should no longer be necessary after `workout.date`
     // is converted to a date string instead of a Unix timestamp.
-    var dateString = workout.date && workout.date * 1000;
+    var date =
+      // workout.start_date ||
+      (workout.date && workout.date * 1000);
 
     return (
       <div className="form-horizontal workoutForm">
@@ -90,9 +92,9 @@ var WorkoutFields = React.createClass({
 
         <FormGroup label="Date">
           <DateTimePicker
-            date={dateString}
-            name={encodeName('date')}
+            date={date}
             onChange={this._onDateChange}
+            timezone={workout.timezone}
           />
         </FormGroup>
 
@@ -150,8 +152,7 @@ var WorkoutFields = React.createClass({
     var date = moment(dateString);
     var workout = _.extend({}, this.state.workout, {
       date: date.unix(),
-      start_date: date.toISOString(),
-      start_date_local: dateString,
+      start_date: dateString,
       timezone: timezone
     });
 
