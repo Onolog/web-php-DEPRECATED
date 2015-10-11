@@ -9,7 +9,7 @@ var PageHeader = require('../../../components/Page/PageHeader.react');
 var Panel = require('../../../components/Panel/Panel.react');
 var Select = require('../../../components/Select/Select.react');
 
-var UserStore = require('../../../stores/UserStore');
+var UserStore = require('../../../flux/stores/UserStore');
 
 var cakePHP = require('../../../utils/cakePHP');
 

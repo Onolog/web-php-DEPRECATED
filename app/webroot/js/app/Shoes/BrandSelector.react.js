@@ -3,7 +3,7 @@ var React = require('react');
 var TextInput = require('../../components/Forms/TextInput.react');
 var Select = require('../../components/Select/Select.react');
 
-var BrandStore = require('../../stores/BrandStore');
+var BrandStore = require('../../flux/stores/BrandStore');
 var StoreMixin = require('../../mixins/StoreMixin.react');
 
 /**

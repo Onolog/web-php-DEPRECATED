@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var React = require('react');
-var UserActions = require('../../actions/UserActions');
-var UserStore = require('../../stores/UserStore');
+var UserActions = require('../../flux/actions/UserActions');
+var UserStore = require('../../flux/stores/UserStore');
 
 var FBImage = require('../../components/Facebook/FBImage.react');
 var Link = require('../../components/Link/Link.react');

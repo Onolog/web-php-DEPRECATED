@@ -1,7 +1,7 @@
 var $ = require('jquery');
 
-var ActionTypes = require('../constants/ActionTypes');
-var ActionUtils = require('../utils/ActionUtils');
+var ActionTypes = require('../ActionTypes');
+var ActionUtils = require('./ActionUtils');
 
 /**
  * CalendarActions.js

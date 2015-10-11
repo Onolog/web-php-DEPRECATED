@@ -1,13 +1,13 @@
 var React = require('react');
 
-var ShoeView = require('./ShoeView.react');
 var Button = require('../../components/Button/Button.react');
 var Link = require('../../components/Link/Link.react');
 var Modal = require('../../components/Modal/Modal.react');
+var ShoeView = require('./ShoeView.react');
 
 var LayerMixin = require('../../mixins/LayerMixin.react');
-var ShoeActions = require('../../actions/ShoeActions');
-var ShoeStore = require('../../stores/ShoeStore');
+var ShoeActions = require('../../flux/actions/ShoeActions');
+var ShoeStore = require('../../flux/stores/ShoeStore');
 
 var cx = require('classnames');
 

@@ -12,10 +12,10 @@ var WorkoutFields = require('../../Workouts/WorkoutFields.react');
 var LayerMixin = require('../../../mixins/LayerMixin.react');
 var StoreMixin = require('../../../mixins/StoreMixin.react');
 
-var ActionTypes = require('../../../constants/ActionTypes');
-var AlertStore = require('../../../stores/AlertStore');
-var WorkoutActions = require('../../../actions/WorkoutActions');
-var WorkoutStore = require('../../../stores/WorkoutStore');
+var ActionTypes = require('../../../flux/ActionTypes');
+var AlertStore = require('../../../flux/stores/AlertStore');
+var WorkoutActions = require('../../../flux/actions/WorkoutActions');
+var WorkoutStore = require('../../../flux/stores/WorkoutStore');
 
 var formatDistance = require('../../../utils/formatDistance');
 

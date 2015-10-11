@@ -1,7 +1,7 @@
-var ActionTypes = require('../constants/ActionTypes');
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var MicroEvent = require('../lib/MicroEvent/microevent');
+var ActionTypes = require('../ActionTypes');
+var AppDispatcher = require('../AppDispatcher');
 var BrandActions = require('../actions/BrandActions');
+var MicroEvent = require('../MicroEvent');
 
 var _items;
 

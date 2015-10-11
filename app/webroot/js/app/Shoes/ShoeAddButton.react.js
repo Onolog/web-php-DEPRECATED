@@ -6,9 +6,10 @@ var Link = require('../../components/Link/Link.react');
 var Modal = require('../../components/Modal/Modal.react');
 var ShoeFields = require('./ShoeFields.react');
 
-var DialogStore = require('../../stores/DialogStore');
+var DialogStore = require('../../flux/stores/DialogStore');
+var ShoeActions = require('../../flux/actions/ShoeActions');
+
 var LayerMixin = require('../../mixins/LayerMixin.react');
-var ShoeActions = require('../../actions/ShoeActions');
 var StoreMixin = require('../../mixins/StoreMixin.react');
 
 var cx = require('classnames');

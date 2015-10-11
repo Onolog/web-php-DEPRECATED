@@ -1,7 +1,9 @@
-var CalendarActions = require('../../../actions/CalendarActions');
 var moment = require('moment');
 var React = require('react');
-var WorkoutStore = require('../../../stores/WorkoutStore');
+
+var ActionTypes = require('../../../flux/ActionTypes');
+var CalendarActions = require('../../../flux/actions/CalendarActions');
+var WorkoutStore = require('../../../flux/stores/WorkoutStore');
 
 var ActivityCalendar = require('./ActivityCalendar.react');
 var AppPage = require('../../../components/Page/AppPage.react');
@@ -14,8 +16,6 @@ var WorkoutAddDialog = require('../../../app/Users/Home/WorkoutAddDialog.react')
 
 var cloneDate = require('../../../utils/cloneDate');
 var cx = require('classnames');
-
-var ActionTypes = require('../../../constants/ActionTypes');
 
 /**
  * Home.react

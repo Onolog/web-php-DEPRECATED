@@ -7,9 +7,9 @@ var Loader = require('../../components/Loader/Loader.react');
 var PageHeader = require('../../components/Page/PageHeader.react');
 var ShoeAddButton = require('./ShoeAddButton.react');
 
-var ActionTypes = require('../../constants/ActionTypes');
-var ShoeActions = require('../../actions/ShoeActions');
-var ShoeStore = require('../../stores/ShoeStore');
+var ActionTypes = require('../../flux/ActionTypes');
+var ShoeActions = require('../../flux/actions/ShoeActions');
+var ShoeStore = require('../../flux/stores/ShoeStore');
 
 /**
  * ShoesPage.react

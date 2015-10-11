@@ -1,12 +1,12 @@
 var $ = require('jquery');
 
-var ActionTypes = require('../constants/ActionTypes');
-var ActionUtils = require('../utils/ActionUtils');
-var AppDispatcher = require('../dispatcher/AppDispatcher');
+var ActionTypes = require('../ActionTypes');
+var ActionUtils = require('./ActionUtils');
+var AppDispatcher = require('../AppDispatcher');
 
-var cakePHP = require('../utils/cakePHP');
+var cakePHP = require('../../utils/cakePHP');
 
-var WORKOUTS = require('../constants/Workouts');
+var WORKOUTS = require('../../constants/Workouts');
 var ENDPOINT = WORKOUTS.ENDPOINT;
 var FORM_NAME = WORKOUTS.FORM_NAME;
 

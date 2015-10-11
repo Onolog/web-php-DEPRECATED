@@ -1,5 +1,5 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var ResponseHandler = require('./ResponseHandler');
+var AppDispatcher = require('../AppDispatcher');
+var ResponseHandler = require('../../utils/ResponseHandler');
 
 /**
  * ActionUtils.js

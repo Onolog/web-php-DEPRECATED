@@ -2,8 +2,8 @@ var React = require('react');
 
 var Select = require('../../components/Select/Select.react');
 
-var ActionTypes = require('../../constants/ActionTypes');
-var ShoeStore = require('../../stores/ShoeStore');
+var ActionTypes = require('../../flux/ActionTypes');
+var ShoeStore = require('../../flux/stores/ShoeStore');
 var ShoeUtils = require('../../utils/ShoeUtils');
 
 function getOptgroupData(/*string*/ label, /*array*/ shoes) /*object*/ {

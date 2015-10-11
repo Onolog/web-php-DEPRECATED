@@ -1,6 +1,6 @@
 var React = require('react');
 
-var ActionTypes = require('../constants/ActionTypes');
+var ActionTypes = require('../flux/ActionTypes');
 
 /**
  * StoreMixin.react

@@ -1,10 +1,10 @@
 var $ = require('jquery');
 
-var ActionTypes = require('../constants/ActionTypes');
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var ResponseHandler = require('../utils/ResponseHandler');
+var ActionTypes = require('../ActionTypes');
+var AppDispatcher = require('../AppDispatcher');
+var ResponseHandler = require('../../utils/ResponseHandler');
 
-var homeUrl = require('../utils/homeUrl');
+var homeUrl = require('../../utils/homeUrl');
 
 var PERMISSIONS = {
   scope: [

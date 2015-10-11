@@ -4,7 +4,7 @@ var React = require('react');
 var BaseAppPage = require('../../../components/Page/BaseAppPage.react');
 var FBLoginButton = require('../../../components/Facebook/FBLoginButton.react');
 
-var UserActions = require('../../../actions/UserActions');
+var UserActions = require('../../../flux/actions/UserActions');
 
 require('../../../../css/app/Login.css');
 

@@ -10,7 +10,7 @@ var Link = require('../../components/Link/Link.react');
 var Panel = require('../../components/Panel/Panel.react');
 var Table = require('../../components/Table/Table.react');
 
-var ShoeActions = require('../../actions/ShoeActions');
+var ShoeActions = require('../../flux/actions/ShoeActions');
 var ShoeUtils = require('../../utils/ShoeUtils');
 
 var cx = require('classnames');

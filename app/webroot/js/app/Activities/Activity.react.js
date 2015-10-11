@@ -11,9 +11,9 @@ var FBFacepile = require('../../components/Facebook/FBFacepile.react');
 var Link = require('../../components/Link/Link.react');
 var TabbedSection = require('../../components/Navigation/TabbedSection.react');
 
-var ActionTypes = require('../../constants/ActionTypes');
+var ActionTypes = require('../../flux/ActionTypes');
 var Autolinker = require('../../lib/Autolinker.min');
-var ShoeStore = require('../../stores/ShoeStore');
+var ShoeStore = require('../../flux/stores/ShoeStore');
 
 var cx = require('classnames');
 

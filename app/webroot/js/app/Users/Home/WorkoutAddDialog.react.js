@@ -2,14 +2,15 @@ var _ = require('underscore');
 var React = require('react');
 
 var Button = require('../../../components/Button/Button.react');
-var LayerMixin = require('../../../mixins/LayerMixin.react');
 var Modal = require('../../../components/Modal/Modal.react');
-var StoreMixin = require('../../../mixins/StoreMixin.react');
 var WorkoutFields = require('../../Workouts/WorkoutFields.react');
 
-var AlertStore = require('../../../stores/AlertStore');
-var DialogStore = require('../../../stores/DialogStore');
-var WorkoutActions = require('../../../actions/WorkoutActions');
+var LayerMixin = require('../../../mixins/LayerMixin.react');
+var StoreMixin = require('../../../mixins/StoreMixin.react');
+
+var AlertStore = require('../../../flux/stores/AlertStore');
+var DialogStore = require('../../../flux/stores/DialogStore');
+var WorkoutActions = require('../../../flux/actions/WorkoutActions');
 
 var cakePHP = require('../../../utils/cakePHP');
 var dateToUnixTime = require('../../../utils/dateToUnixTime');

@@ -1,8 +1,8 @@
 var $ = require('jquery');
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var ActionTypes = require('../constants/ActionTypes');
-var ActionUtils = require('../utils/ActionUtils');
+var AppDispatcher = require('../AppDispatcher');
+var ActionTypes = require('../ActionTypes');
+var ActionUtils = require('./ActionUtils');
 
 /**
  * BrandActions.js

@@ -1,11 +1,11 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var ActionTypes = require('../constants/ActionTypes');
-var ActionUtils = require('../utils/ActionUtils');
+var ActionTypes = require('../ActionTypes');
+var ActionUtils = require('./ActionUtils');
+var AppDispatcher = require('../AppDispatcher');
 
 var $ = require('jquery');
-var cakePHP = require('../utils/cakePHP');
+var cakePHP = require('../../utils/cakePHP');
 
-var SHOES = require('../constants/Shoes');
+var SHOES = require('../../constants/Shoes');
 var ENDPOINT = SHOES.ENDPOINT;
 var FORM_NAME = SHOES.FORM_NAME;
 
