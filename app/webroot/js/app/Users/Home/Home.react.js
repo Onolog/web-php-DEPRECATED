@@ -86,13 +86,7 @@ var Home = React.createClass({
       <div>
         <WorkoutAddDialog
           date={new Date()}
-          trigger={
-            <Button
-              glyph="plus"
-              label="New Activity"
-              use="success"
-            />
-          }
+          trigger={<Button glyph="plus" use="success" />}
         />
         <ButtonGroup>
           <Button
@@ -127,7 +121,7 @@ var Home = React.createClass({
     // Update component state
     this.setState({
       date: date,
-      workouts: null // Reset workouts to trigger loader
+      activities: null // Reset activities to trigger loader
     });
 
     // Update the browser state history
@@ -137,7 +131,7 @@ var Home = React.createClass({
       moment(date).format('/YYYY/MM') // URL
     );
 
-    // Fetch workouts for the selected month
+    // Fetch activities for the selected month
     CalendarActions.fetch(
       date.getFullYear(),
       date.getMonth() + 1
