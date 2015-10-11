@@ -7,8 +7,6 @@ var ButtonGroup = require('../../components/ButtonGroup/ButtonGroup.react');
 var PageHeader = require('../../components/Page/PageHeader.react');
 var Panel = require('../../components/Panel/Panel.react');
 
-var DateTimeUtils = require('../../utils/DateTimeUtils');
-
 /**
  * WorkoutViewPage.react
  * @jsx React.DOM

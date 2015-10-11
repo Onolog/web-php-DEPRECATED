@@ -1,6 +1,6 @@
 var moment = require('moment');
 
-var DateTimeUtils = require('./DateTimeUtils');
+var secondsToTime = require('./secondsToTime');
 
 /**
  * calculatePace.js
@@ -34,10 +34,10 @@ var calculatePace = {
       // If distance hasn't been entered or has a value of zero, the
       // calculation will come back invalid. No time will just be zero.
       // In either case, just return '0:00' as the pace.
-      return DateTimeUtils.secondsToTime(0);
+      return secondsToTime(0);
     }
 
-    return DateTimeUtils.secondsToTime(
+    return secondsToTime(
       moment.duration(seconds/distance, 's').asSeconds()
     );
   }

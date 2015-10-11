@@ -1,3 +1,4 @@
+var moment = require('moment-timezone');
 var React = require('react');
 
 var ActivitySection = require('../Activities/ActivitySection.react');
@@ -8,10 +9,8 @@ var Panel = require('../../components/Panel/Panel.react');
 var Table = require('../../components/Table/Table.react');
 var Topline = require('../../components/Data/Topline.react');
 
-var DateTimeUtils = require('../../utils/DateTimeUtils');
 var formatDistance = require('../../utils/formatDistance');
-
-var DATE_FORMAT = 'MM/DD/YY';
+var secondsToTime = require('../../utils/secondsToTime');
 
 /**
  * ShoeView.react
@@ -84,10 +83,10 @@ var ShoeView = React.createClass({
   },
 
   _renderRows: function(activity, idx) {
-    var date = DateTimeUtils.formatDate(
+    var date = moment.tz(
       activity.date * 1000,
-      DATE_FORMAT
-    );
+      activity.timezone
+    ).format('MM/DD/YY');
 
     return (
       <tr key={idx}>
@@ -98,7 +97,7 @@ var ShoeView = React.createClass({
           {formatDistance(activity.distance) + ' mi'}
         </td>
         <td className="time">
-          {DateTimeUtils.secondsToTime(activity.time)}
+          {secondsToTime(activity.time)}
         </td>
       </tr>
     );

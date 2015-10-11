@@ -17,7 +17,6 @@ var AlertStore = require('../../../stores/AlertStore');
 var WorkoutActions = require('../../../actions/WorkoutActions');
 var WorkoutStore = require('../../../stores/WorkoutStore');
 
-var DateTimeUtils = require('../../../utils/DateTimeUtils');
 var formatDistance = require('../../../utils/formatDistance');
 
 /**

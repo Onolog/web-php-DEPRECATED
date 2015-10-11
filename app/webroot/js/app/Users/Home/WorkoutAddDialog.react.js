@@ -12,7 +12,6 @@ var DialogStore = require('../../../stores/DialogStore');
 var WorkoutActions = require('../../../actions/WorkoutActions');
 
 var cakePHP = require('../../../utils/cakePHP');
-var DateTimeUtils = require('../../../utils/DateTimeUtils');
 var dateToUnixTime = require('../../../utils/dateToUnixTime');
 
 var WORKOUTS = require('../../../constants/Workouts');

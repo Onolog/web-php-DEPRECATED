@@ -3,8 +3,8 @@ var React = require('react');
 var Table = require('../../components/Table/Table.react');
 
 var TcxActivityFactory = require('../../lib/garmin/activity/TcxActivityFactory');
-var DateTimeUtils = require('../../utils/DateTimeUtils');
 var distanceUtils = require('../../utils/distanceUtils');
+var secondsToTime = require('../../utils/secondsToTime');
 
 var SCHEMA_TAGS = TcxActivityFactory.SCHEMA_TAGS;
 
@@ -85,7 +85,7 @@ var ActivitySplitsTable = React.createClass({
       label: 'Distance',
       tag: SCHEMA_TAGS.lapDistance
     }, {
-      formatter: this._formatTime,
+      formatter: secondsToTime,
       label: 'Time',
       tag: SCHEMA_TAGS.lapTotalTime
     }, {
@@ -104,12 +104,7 @@ var ActivitySplitsTable = React.createClass({
 
   _formatElevation: function(elevationChange) {
     return distanceUtils.metersToFeet(elevationChange);
-  },
-
-  _formatTime: function(time) {
-    return DateTimeUtils.secondsToTime(time);
-  }    
-
+  }
 });
 
 module.exports = ActivitySplitsTable;

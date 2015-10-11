@@ -1,4 +1,5 @@
 var CalendarActions = require('../../../actions/CalendarActions');
+var moment = require('moment');
 var React = require('react');
 var WorkoutStore = require('../../../stores/WorkoutStore');
 
@@ -13,7 +14,6 @@ var WorkoutAddDialog = require('../../../app/Users/Home/WorkoutAddDialog.react')
 
 var cloneDate = require('../../../utils/cloneDate');
 var cx = require('classnames');
-var DateTimeUtils = require('../../../utils/DateTimeUtils');
 
 var ActionTypes = require('../../../constants/ActionTypes');
 
@@ -58,10 +58,10 @@ var Home = React.createClass({
   },
 
   render: function() {
-    var date = this.state.date;
+    var {date} = this.state;
     return (
       <AppPage>
-        <PageHeader title={DateTimeUtils.formatDate(date, 'MMMM YYYY')}>
+        <PageHeader title={moment(date).format('MMMM YYYY')}>
           {this._renderButtonGroup()}
         </PageHeader>
         <Panel className="calendarContainer">
@@ -134,7 +134,7 @@ var Home = React.createClass({
     history.pushState(
       {}, // State object
       '', // Title
-      DateTimeUtils.formatDate(date, '/YYYY/MM') // URL
+      moment(date).format('/YYYY/MM') // URL
     );
 
     // Fetch workouts for the selected month

@@ -15,7 +15,6 @@ var Panel = require('../../components/Panel/Panel.react');
 var WorkoutFields = require('../Workouts/WorkoutFields.react');
 
 var cloneDate = require('../../utils/cloneDate');
-var DateTimeUtils = require('../../utils/DateTimeUtils');
 
 var DATA = require('../../constants/TestData');
 

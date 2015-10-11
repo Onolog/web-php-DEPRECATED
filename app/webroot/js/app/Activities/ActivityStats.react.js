@@ -4,8 +4,8 @@ var LabeledStat = require('../../components/Data/LabeledStat.react');
 var Topline = require('../../components/Data/Topline.react');
 
 var calculatePace = require('../../utils/calculatePace');
-var DateTimeUtils = require('../../utils/DateTimeUtils');
 var formatDistance = require('../../utils/formatDistance');
+var secondsToTime = require('../../utils/secondsToTime');
 
 /**
  * ActivityStats.react
@@ -44,7 +44,7 @@ var ActivityStats = React.createClass({
       value: formatDistance(activity.distance)
     }, {
       label: 'Time',
-      value: DateTimeUtils.secondsToTime(activity.time)
+      value: secondsToTime(activity.time)
     }, {
       annotation: 'per mile',
       label: 'Pace',

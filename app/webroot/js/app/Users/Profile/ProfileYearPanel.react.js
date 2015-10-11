@@ -9,7 +9,6 @@ var LabeledStat = require('../../../components/Data/LabeledStat.react');
 var Panel = require('../../../components/Panel/Panel.react');
 var Topline = require('../../../components/Data/Topline.react');
 
-var DateTimeUtils = require('../../../utils/DateTimeUtils');
 var formatDistance = require('../../../utils/formatDistance');
 
 function _getOptions(year, interval) {

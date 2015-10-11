@@ -13,7 +13,6 @@ var Middot = require('../../../components/Middot.react');
 var Panel = require('../../../components/Panel/Panel.react');
 var Topline = require('../../../components/Data/Topline.react');
 
-var DateTimeUtils = require('../../../utils/DateTimeUtils');
 var formatDistance = require('../../../utils/formatDistance');
 
 var DATE_FORMAT = 'MMMM Do';
@@ -131,18 +130,12 @@ var Report = React.createClass({
         <LabeledStat
           label="Longest Run (Miles)"
           stat={runExtremes.max.distance}
-          annotation={DateTimeUtils.formatDate(
-            runExtremes.max.date*1000,
-            DATE_FORMAT
-          )}
+          annotation={moment(runExtremes.max.date*1000).format(DATE_FORMAT)}
         />
         <LabeledStat
           label="Shortest Run (Miles)"
           stat={runExtremes.min.distance}
-          annotation={DateTimeUtils.formatDate(
-            runExtremes.min.date*1000,
-            DATE_FORMAT
-          )}
+          annotation={moment(runExtremes.min.date*1000).format(DATE_FORMAT)}
         />
       </Topline>
     );
@@ -239,10 +232,10 @@ var Report = React.createClass({
     var monthKeys = Object.keys(monthData);
     var months = monthKeys.map(function(monthKey) {
       var month = monthData[monthKey];
-      var monthName = DateTimeUtils.formatDate(
-        [month.year, month.month-1],
-        'MMM'
-      );
+      var monthName = moment({
+        years: month.year,
+        months: month.month-1
+      }).format('MMM');
       var metadata = month.run_count + ' runs';
 
       var dayData = month.days;
@@ -304,11 +297,12 @@ var Report = React.createClass({
     var keys = Object.keys(monthData);
     var months = keys.map(function(key) {
       var month = monthData[key];
-      var monthName = DateTimeUtils.formatDate(
-        [month.year, month.month-1],
-        'MMM'
-      );
+      var monthName = moment({
+        years: month.year,
+        months: month.month-1
+      }).format('MMM');
       var metadata = month.run_count + ' runs';
+
       return (
         <BarGraphSection
           key={month.year + month.month}
