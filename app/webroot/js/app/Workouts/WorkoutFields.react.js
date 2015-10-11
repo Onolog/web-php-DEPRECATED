@@ -62,7 +62,7 @@ var WorkoutFields = React.createClass({
     // TODO: This conversion should no longer be necessary after `workout.date`
     // is converted to a date string instead of a Unix timestamp.
     var date =
-      // workout.start_date ||
+      workout.start_date ||
       (workout.date && workout.date * 1000);
 
     return (
