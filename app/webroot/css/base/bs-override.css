@@ -1,7 +1,7 @@
 /*
  * bs-override.css
  *
- * These override the base styles in bootstrap.css
+ * Global overrides for bootstrap.css
  */
 
 /* Headers */
@@ -117,6 +117,11 @@ a.btn-default,
   outline: none;
 }
 
+
+/* ListGroup */
+.list-group-item {
+  border-color: #f5f5f5;
+}
 
 /* Modal */
 .modal-header,

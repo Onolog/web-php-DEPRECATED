@@ -1,14 +1,14 @@
-var React = require('react');
+var _ = require('underscore');
+var React = require('react/addons');
 
-var AppPage = require('../../../components/Page/AppPage.react');
-var LabeledStat = require('../../../components/Data/LabeledStat.react');
-var PageHeader = require('../../../components/Page/PageHeader.react');
-var Panel = require('../../../components/Panel/Panel.react');
+var AppPage = require('components/Page/AppPage.react');
+var LabeledStat = require('components/Data/LabeledStat.react');
+var PageHeader = require('components/Page/PageHeader.react');
+var Panel = require('components/Panel/Panel.react');
 var ProfileYearPanel = require('./ProfileYearPanel.react');
-var Topline = require('../../../components/Data/Topline.react');
+var Topline = require('components/Data/Topline.react');
 
-var DATE_FORMAT = 'MMMM Do';
-var GRAPH_HEIGHT = 200;
+var {getAggregateDistance, groupActivities} = require('utils/ActivityUtils');
 
 require('../../../../css/app/Profile.css');
 
@@ -20,61 +20,39 @@ var Profile = React.createClass({
   displayName: 'Profile',
 
   componentWillMount: function() {
-    var {
-      shoeCount,
-      totalMiles,
-      totalRuns,
-      user,
-      workoutData,
-      workoutDataByWeek
-    } = window.app;
-
+    var {shoeCount, user, activities} = window.app;
     this.setState({
       shoeCount: shoeCount,
-      totalMiles: totalMiles,
-      totalRuns: totalRuns,
       user: user,
-      workoutData: workoutData,
-      workoutDataByWeek: workoutDataByWeek
+      activities: activities
     });
   },
 
   render: function() {
-    var workoutData = this.state.workoutData;
-
-    // Render an empty state when there's no data
-    /*
-    if (!workoutData.run_count) {
-      return (
-        <Panel className="clearfix">
-          <div className="emptyState">
-            No runs this year. Get back out there!
-          </div>
-        </Panel>
-      );
-    }
-    */
-
     return (
       <AppPage className="profile">
         <PageHeader title={this.state.user.name} />
         {this._renderToplineStats()}
-        {this._renderAnnualData()}
+        {this._renderContent()}
       </AppPage>
     );
   },
 
   _renderToplineStats: function() {
+    var {activities} = this.state;
+    var totalMiles = getAggregateDistance(activities);
+    var totalRuns = activities.length;
+
     return (
       <Panel title="Lifetime Stats">
         <Topline>
           <LabeledStat
             label="Miles"
-            stat={this.state.totalMiles.toLocaleString()}
+            stat={totalMiles.toLocaleString()}
           />
           <LabeledStat
             label="Runs"
-            stat={this.state.totalRuns.toLocaleString()}
+            stat={totalRuns.toLocaleString()}
           />
           <LabeledStat
             label="Shoes"
@@ -85,27 +63,36 @@ var Profile = React.createClass({
     );
   },
 
-  _renderAnnualData: function() {
-    var workoutData = this.state.workoutData;
-    var workoutDataByWeek = this.state.workoutDataByWeek;
-    var years = Object.keys(workoutData).reverse();
+  _renderContent: function() {
+    var {activities} = this.state;
 
-    return years.map(function(year, idx) {
-      var section = workoutData[year];
+    // Render an empty state when there's no data.
+    if (!activities.length) {
+      return (
+        <Panel>
+          <div className="emptyState">
+            No runs this year. Get back out there!
+          </div>
+        </Panel>
+      );
+    }
+
+    var activitiesByYear = groupActivities.byYear(activities);
+    var years = _.chain(activitiesByYear)
+      .keys()
+      .reverse()
+      .value();
+
+    return _.map(years, function(year) {
       return (
         <ProfileYearPanel
-          key={idx}
-          miles={section.miles}
-          months={workoutData[year].months}
-          runs={section.run_count}
-          time={section.time}
-          title={section.year}
-          weeks={workoutDataByWeek[year].weeks}
+          activities={activitiesByYear[year]}
+          key={year}
+          year={year}
         />
       );
-    }.bind(this));
+    });
   }
-
 });
 
 module.exports = Profile;

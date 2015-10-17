@@ -36,11 +36,13 @@ var config = {
       'process.env.NODE_ENV': JSON.stringify('development')
     }),
     // Don't include every single moment locale
-    new webpack.ContextReplacementPlugin(
-      /moment[\/\\]locale$/, /en|no|hu/
-    ),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|no|hu/),
   ],
   resolve: {
+    root: [
+      WEBROOT + '/js'
+    ],
+
     // Allows you to require('file') instead of require('file.js')
     extensions: ['', '.js', '.json', 'jsx']
   }

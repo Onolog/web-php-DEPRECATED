@@ -35,12 +35,18 @@ class WorkoutsController extends AppController {
         'Workout.date >=' => mktime(0, 0, 0, $month, -7, $year),
         'Workout.date <=' => mktime(0, 0, 0, $month+1, 7, $year),
       ),
-      'order'  => 'Workout.date ASC'
+      'order'  => 'Workout.date ASC',
     ));
+
+    // Strip out extraneous data (User, Shoe) from the data set.
+    $data = array();
+    foreach($workouts as $workout) {
+      $data[] = $workout['Workout'];
+    }
 
     return $response
       ->setSuccess(true)
-      ->setPayload($this->Workout->flattenWorkouts($workouts))
+      ->setPayload($data)
       ->send();
   }
 
