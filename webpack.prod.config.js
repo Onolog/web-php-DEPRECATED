@@ -6,17 +6,21 @@ var webpack = require('webpack');
 var config = Object.create(baseConfig);
 
 config.output.path = __dirname + '/app/webroot/dist';
-config.plugins = [
-  new webpack.optimize.OccurenceOrderPlugin(),
+config.plugins = config.commonPlugins.concat([
   new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify('production')
+    'process.env': {
+      NODE_ENV: JSON.stringify('production')
+    }
   }),
   new webpack.optimize.UglifyJsPlugin({
     compressor: {
       screw_ie8: true,
-      warnings: false
+      warnings: false,
+    },
+    mangle: {
+      except: ['$', 'exports', 'require']
     }
-  })
-];
+  }),
+]);
 
 module.exports = config;
