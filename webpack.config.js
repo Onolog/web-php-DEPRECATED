@@ -31,6 +31,8 @@ var config = {
     ]
   },
   plugins: [
+    // Optimize common code
+    new webpack.optimize.CommonsChunkPlugin('Common.js'),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development')

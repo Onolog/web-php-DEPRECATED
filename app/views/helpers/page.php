@@ -58,7 +58,6 @@ class PageHelper extends AppHelper {
         '<body class="' . implode(' ', $this->getClasses()) . '">' .
           $this->view .
           $this->renderDevConsole() .
-          // Always put JS at the bottom so it doesn't stop the page from loading!
           $this->renderPageJS() .
         '</body>' .
       '</html>';
@@ -170,7 +169,9 @@ class PageHelper extends AppHelper {
   }
 
   protected function renderPageJS() {
+    $path = Configure::read('debug') === 2 ? '__dev__' : 'dist';
     return
+      $this->Html->script('/' . $path . '/Common') .
       $this->getPageJS() .
       $this->renderGoogleAnalyticsJS();
   }
