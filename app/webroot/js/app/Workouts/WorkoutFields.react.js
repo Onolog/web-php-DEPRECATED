@@ -1,25 +1,17 @@
-var _ = require('underscore');
 var moment = require('moment');
 var React = require('react');
 
 var ShoeSelector = require('./ShoeSelector.react');
 
-var DateTimePicker = require('../../components/DateTimePicker/DateTimePicker.react');
-var DurationInput = require('../../components/Forms/DurationInput.react');
-var FBFriendTokenizer = require('../../components/Facebook/FBFriendTokenizer.react');
-var FormGroup = require('../../components/Forms/FormGroup.react');
-var Textarea = require('../../components/Forms/Textarea.react');
-var TextInput = require('../../components/Forms/TextInput.react');
+var DateTimePicker = require('components/DateTimePicker/DateTimePicker.react');
+var DurationInput = require('components/Forms/DurationInput.react');
+var FBFriendTokenizer = require('components/Facebook/FBFriendTokenizer.react');
+var FormGroup = require('components/Forms/FormGroup.react');
+var Textarea = require('components/Forms/Textarea.react');
+var TextInput = require('components/Forms/TextInput.react');
 
-var cakePHP = require('../../utils/cakePHP');
-var calculatePace = require('../../utils/calculatePace');
-var dateToUnixTime = require('../../utils/dateToUnixTime');
-
-var FORM_NAME = 'Workout';
-
-function encodeName(name) {
-  return cakePHP.encodeFormFieldName(name, FORM_NAME);
-}
+var calculatePace = require('utils/calculatePace');
+var dateToUnixTime = require('utils/dateToUnixTime');
 
 /**
  * WorkoutFields.react
@@ -59,30 +51,24 @@ var WorkoutFields = React.createClass({
   render: function() {
     var {workout} = this.state;
 
-    // TODO: This conversion should no longer be necessary after `workout.date`
-    // is converted to a date string instead of a Unix timestamp.
-    var date =
-      workout.start_date ||
-      (workout.date && workout.date * 1000);
-
     return (
       <div className="form-horizontal workoutForm">
         <FormGroup label="Distance">
           <TextInput
             className="distanceInput"
             defaultValue={workout.distance}
-            name={encodeName('distance')}
+            name="distance"
             onChange={this._onInputChange}
             ref="distance"
           />
           <span className="colon">miles</span>
         </FormGroup>
 
-        <FormGroup label="Time" className="time">
+        <FormGroup label="Duration" className="time">
           <DurationInput
             className="timeInput"
             duration={workout.time}
-            name={encodeName('time')}
+            name="time"
             onChange={this._onInputChange}
           />
       		<span className="colon">
@@ -92,7 +78,7 @@ var WorkoutFields = React.createClass({
 
         <FormGroup label="Date">
           <DateTimePicker
-            date={date}
+            date={workout.start_date}
             onChange={this._onDateChange}
             timezone={workout.timezone}
           />
@@ -103,7 +89,7 @@ var WorkoutFields = React.createClass({
             className="heartRateInput"
             defaultValue={workout.avg_hr}
             maxLength={3}
-            name={encodeName('avg_hr')}
+            name="avg_hr"
             onChange={this._onInputChange}
           />
           <span className="colon">bpm</span>
@@ -112,7 +98,7 @@ var WorkoutFields = React.createClass({
         <FormGroup label="Shoes">
           <ShoeSelector
             defaultValue={workout.shoe_id}
-            name={encodeName('shoe_id')}
+            name="shoe_id"
             onChange={this._onInputChange}
           />
         </FormGroup>
@@ -120,7 +106,7 @@ var WorkoutFields = React.createClass({
         <FormGroup label="Friends">
           <FBFriendTokenizer
             friends={workout.friends}
-            name={encodeName('friends')}
+            name="friends"
             onChange={this._onInputChange}
           />
         </FormGroup>
@@ -129,7 +115,7 @@ var WorkoutFields = React.createClass({
           <Textarea
             className="notes"
             defaultValue={workout.notes}
-            name={encodeName('notes')}
+            name="notes"
             onChange={this._onInputChange}
             placeholder="Add some details about your activity..."
             rows="6"
@@ -140,17 +126,16 @@ var WorkoutFields = React.createClass({
   },
 
   _onInputChange: function(e) {
-    var field = cakePHP.decodeFormFieldName(e.target.name);
-    var value = e.target.value;
-    var workout = _.extend({}, this.state.workout);
-    workout[field] = value;
+    var {name, value} = e.target;
+    var workout = Object.assign({}, this.state.workout);
+    workout[name] = value;
 
     this._onChange(workout);
   },
 
   _onDateChange: function(/*string*/ dateString, /*string*/ timezone) {
     var date = moment(dateString);
-    var workout = _.extend({}, this.state.workout, {
+    var workout = Object.assign({}, this.state.workout, {
       date: date.unix(),
       start_date: dateString,
       timezone: timezone
