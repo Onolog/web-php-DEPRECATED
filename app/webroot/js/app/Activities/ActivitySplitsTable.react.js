@@ -1,12 +1,10 @@
+var _ = require('underscore');
 var React = require('react');
 
-var Table = require('../../components/Table/Table.react');
+var Table = require('components/Table/Table.react');
 
-var TcxActivityFactory = require('../../lib/garmin/activity/TcxActivityFactory');
-var distanceUtils = require('../../utils/distanceUtils');
-var secondsToTime = require('../../utils/secondsToTime');
-
-var SCHEMA_TAGS = TcxActivityFactory.SCHEMA_TAGS;
+var {metersToFeet, metersToMiles} = require('utils/distanceUtils');
+var secondsToTime = require('utils/secondsToTime');
 
 /**
  * ActivitySplitsTable.react
@@ -23,9 +21,9 @@ var ActivitySplitsTable = React.createClass({
 
   render: function() {
     return (
-      <Table condensed={true} border={true} hover={true}>
+      <Table condensed border hover>
         {this._renderHeaderRows()}
-        {this._renderBodyRows()}
+        {this._renderBody()}
       </Table>
     );
   },
@@ -44,66 +42,60 @@ var ActivitySplitsTable = React.createClass({
     );
   },
 
-  _renderBodyRows: function() {
-    var laps = this.props.laps;
-    var contents;
-    var columns = this._getColumns();
-
-    if (!laps || !laps.length) {
-      contents =
-        <tr>
-          <td colSpan={columns.length}>
-            No splits data available
-          </td>
-        </tr>;
-    } else {
-      contents = laps.map(function(lap, idx) {
-        var cells = columns.map(function(column, idx) {
-          var value = lap[column.tag];
-          return (
-            <td key={idx}>
-              {column.formatter ? column.formatter(value) : value}
-            </td>
-          );
-        });
-
-        return (
-          <tr key={idx}>{cells}</tr>
-        );
-      });
+  _renderBody: function() {
+    var {laps} = this.props;
+    if (laps && laps.length) {
+      return <tbody>{laps.map(this._renderRows)}</tbody>;
     }
 
-    return <tbody>{contents}</tbody>;
+    return (
+      <tbody>
+        <tr>
+          <td colSpan={this._getColumns().length}>
+            No splits data available
+          </td>
+        </tr>
+      </tbody>
+    );
+  },
+
+  _renderRows: function(lap, idx) {
+    var cells = _.map(this._getColumns(), function(column, idx) {
+      var value = lap[column.key];
+      return (
+        <td key={idx}>
+          {column.formatter ? column.formatter(value) : value}
+        </td>
+      );
+    });
+
+    return <tr key={idx}>{cells}</tr>;
   },
 
   _getColumns: function() /*array*/ {
     return [{
       label: 'Lap',
-      tag: SCHEMA_TAGS.lap
+      key: 'lap'
     }, {
       formatter: this._formatDistance,
       label: 'Distance',
-      tag: SCHEMA_TAGS.lapDistance
+      key: 'distance'
     }, {
       formatter: secondsToTime,
-      label: 'Time',
-      tag: SCHEMA_TAGS.lapTotalTime
+      label: 'Duration',
+      key: 'duration'
     }, {
       label: 'Avg. HR',
-      tag: SCHEMA_TAGS.lapAverageHeartRate
+      key: 'avg_hr'
     }, {
-      formatter: this._formatElevation,
+      formatter: metersToFeet,
       label: 'Elev (ft)',
-      tag: SCHEMA_TAGS.lapElevationChange
+      key: 'elevation_change'
     }];
   },
 
   _formatDistance: function(distance) {
-    return distanceUtils.metersToMiles(distance) + ' mi';
-  },
-
-  _formatElevation: function(elevationChange) {
-    return distanceUtils.metersToFeet(elevationChange);
+    return metersToMiles(distance) + ' mi';
   }
 });
 

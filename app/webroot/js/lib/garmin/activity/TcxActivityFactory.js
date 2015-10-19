@@ -1,21 +1,3 @@
-/**
- * Copyright &copy; 2007-2010 Garmin Ltd. or its subsidiaries.
- *
- * Licensed under the Apache License, Version 2.0 (the 'License')
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * 
- * @fileoverview Garmin.TcxActivityFactory - A factory for producing tcx activity and data.
- * @version 1.9
- */
 var GarminActivity = require('./GarminActivity');
 var GarminSample = require('./GarminSample');
 var GarminSeries = require('./GarminSeries');
@@ -75,19 +57,17 @@ var SCHEMA_TAGS = {
 var SUMMARY_KEYS = GarminActivity.SUMMARY_KEYS;
 
 /**
- * A factory that can produce an array activity given tcx xml and produce tcx xml given an
- * array of activity.
- * many other types of data.
- * @class Garmin.TcxActivityFactory
- * @constructor 
+ * TcxActivityFactory
+ *
+ * Parses Garmin TCX files and produces a Garmin Activity object.
  */
 var TcxActivityFactory = {
 	
 	parseString: function(tcxString) {
-		var tcxDocument = XmlConverter.toDocument(tcxString);		
-		return this.parseDocument(tcxDocument);		
+		var tcxDocument = XmlConverter.toDocument(tcxString);
+		return this.parseDocument(tcxDocument);
 	},
-	
+
 	/* Creates and returns an array of activities from the document. */
 	parseDocument: function(tcxDocument) {
 		if (
@@ -95,41 +75,36 @@ var TcxActivityFactory = {
 			!tcxDocument.getElementsByTagName(SCHEMA_TAGS.courses).length
 		) {
       // Not TCX parseable
-			throw new Error("ERROR: Unable to parse TCX document.");
+			throw new Error('Error: Unable to parse TCX document.');
 		}
 
-		var parsedDocument;
 		var activities = tcxDocument.getElementsByTagName(SCHEMA_TAGS.activity);
 		var tracks = tcxDocument.getElementsByTagName(SCHEMA_TAGS.track);
 		var courses = tcxDocument.getElementsByTagName(SCHEMA_TAGS.course);
 		var laps = tcxDocument.getElementsByTagName(SCHEMA_TAGS.lap);
 		
 		// Activities		
-		if (activities.length >= 0) {
-			if (tracks.length >= 0) { 
+		if (activities.length) {
+			return tracks.length ?
 				// Complete activity
-				parsedDocument = this._parseTcxActivities(tcxDocument);
-			} else {
+				this._parseTcxActivities(tcxDocument) :
 				// Directory listing
-				parsedDocument = this._parseTcxHistoryDirectory(tcxDocument);
-			}
-    // Courses
-		} else if (courses.length >= 0) {
-			if (laps.length >= 0) {
-				// Complete course
-				parsedDocument = this._parseTcxCourses(tcxDocument);
-			} else {
-				// Directory listing
-				parsedDocument = this._parseTcxCourseDirectory(tcxDocument);
-			}
+				this._parseTcxHistoryDirectory(tcxDocument);
 		}
 
-		return parsedDocument;
+    // Courses
+		if (courses.length) {
+			return laps.length ?
+				// Complete course
+				this._parseTcxCourses(tcxDocument) :
+				// Directory listing
+				this._parseTcxCourseDirectory(tcxDocument);
+		}
 	},
 	
 	produceString: function(activities) {
 		var tcxString = '';
-		
+
 		// header tags
 		tcxString += '<?xml version="1.0" encoding="UTF-8" standalone="no" ?>';
 		tcxString += '\n<TrainingCenterDatabase xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd http://www.garmin.com/xmlschemas/FatCalories/v1 http://www.garmin.com/xmlschemas/fatcalorieextensionv1.xsd">';
@@ -700,7 +675,7 @@ var TcxActivityFactory = {
 
 		return subNode.length > 0 ? subNode[0].childNodes[0].nodeValue : null;
 	},	
-	
+
   toString: function() {
     return "[TcxActivityFactory]";
   }
@@ -709,7 +684,6 @@ var TcxActivityFactory = {
 TcxActivityFactory.DETAIL = {
 	creator: 'Garmin Communicator Plugin API - http://www.garmin.com/'
 };
-
 TcxActivityFactory.SCHEMA_TAGS = SCHEMA_TAGS;
 
 module.exports = TcxActivityFactory;

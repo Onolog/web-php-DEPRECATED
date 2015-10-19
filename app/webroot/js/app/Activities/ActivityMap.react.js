@@ -1,8 +1,8 @@
 var GoogleMapsLoader = require('google-maps');
 var React = require('react');
 
-var GarminSeries = require('../../lib/garmin/activity/GarminSeries');
-var GoogleMapController = require('../../lib/garmin/device/GoogleMapController');
+var GarminSeries = require('lib/garmin/activity/GarminSeries');
+var GoogleMapController = require('lib/garmin/device/GoogleMapController');
 
 /**
  * ActivityMap.react

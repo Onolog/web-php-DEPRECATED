@@ -7,13 +7,14 @@ var ActivityMap = require('./ActivityMap.react');
 var ActivitySection = require('./ActivitySection.react');
 var ActivitySplitsTable = require('./ActivitySplitsTable.react');
 var ActivityStats = require('./ActivityStats.react');
-var FBFacepile = require('../../components/Facebook/FBFacepile.react');
-var Link = require('../../components/Link/Link.react');
-var TabbedSection = require('../../components/Navigation/TabbedSection.react');
 
-var ActionTypes = require('../../flux/ActionTypes');
-var Autolinker = require('../../lib/Autolinker.min');
-var ShoeStore = require('../../flux/stores/ShoeStore');
+var FBFacepile = require('components/Facebook/FBFacepile.react');
+var Link = require('components/Link/Link.react');
+var TabbedSection = require('components/Navigation/TabbedSection.react');
+
+var ActionTypes = require('flux/ActionTypes');
+var Autolinker = require('lib/Autolinker.min');
+var ShoeStore = require('flux/stores/ShoeStore');
 
 var cx = require('classnames');
 
@@ -64,31 +65,33 @@ var Activity = React.createClass({
   },
 
   render: function() {
-    var activity = this.props.activity;
+    var {activity} = this.props;
+    var {athlete, series} = activity;
+
     return (
       <div className={cx({
         'activityContainer': true,
         'clearfix': true,
-        'noMap': !(activity.series && activity.series.length),
+        'noMap': !(series && series.length),
         'horizontal': this.state.isHorizontal,
       })}>
-        {this._renderMap(activity.series)}
+        {this._renderMap(series)}
         <div className="activityInfo">
           <ActivityHeader
             {...this.props}
-            athlete={activity.athlete}
+            athlete={athlete}
           />
           <TabbedSection className="activityPanes">
             <div className="activityNavPane" label="Detail">
               <ActivitySection>
                 <ActivityStats activity={activity} />
               </ActivitySection>
-              {this._renderActivityNotes(activity.notes)}
-              {this._renderActivityShoes(activity.shoe_id)}
-              {this._renderActivityFriends(activity.friends)}
-              {this._renderDeviceInfo(activity.device)}
+              {this._renderActivityNotes(activity)}
+              {this._renderActivityShoes(activity)}
+              {this._renderActivityFriends(activity)}
+              {this._renderDeviceInfo(activity)}
             </div>
-            {this._renderSplitsPane(activity.laps)}
+            {this._renderSplitsPane(activity)}
           </TabbedSection>
         </div>
       </div>
@@ -105,7 +108,7 @@ var Activity = React.createClass({
     }
   },
 
-  _renderActivityNotes: function(notes) {
+  _renderActivityNotes: function({notes}) {
     if (notes) {
       return (
         <ActivitySection title="Notes" border={true}>
@@ -118,8 +121,8 @@ var Activity = React.createClass({
     }
   },
 
-  _renderActivityShoes: function(/*number*/ shoeID) {
-    var shoe = ShoeStore.getItem(shoeID);
+  _renderActivityShoes: function(/*number*/ {shoe_id}) {
+    var shoe = ShoeStore.getItem(shoe_id);
     if (shoe) {
       return (
         <ActivitySection title="Shoes" border={true}>
@@ -129,7 +132,7 @@ var Activity = React.createClass({
     }
   },
 
-  _renderActivityFriends: function(/*string*/ friends) {
+  _renderActivityFriends: function(/*string*/ {friends}) {
     if (friends) {
       return (
         <ActivitySection border={true} title="Friends">
@@ -139,7 +142,7 @@ var Activity = React.createClass({
     }
   },
 
-  _renderDeviceInfo: function(/*object*/ device) {
+  _renderDeviceInfo: function(/*object*/ {device}) {
     if (device && Object.keys(device).length) {
       return (
         <ActivitySection border={true} title="Device">
@@ -152,7 +155,7 @@ var Activity = React.createClass({
     }
   },
 
-  _renderSplitsPane: function(/*array*/ laps) {
+  _renderSplitsPane: function(/*array*/ {laps}) {
     if (laps && laps.length) {
       return (
         <div className="activityNavPane" label="Splits">

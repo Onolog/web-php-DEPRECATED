@@ -1,3 +1,4 @@
+var _ = require('underscore');
 var React = require('react');
 
 var LabeledStat = require('components/Data/LabeledStat.react');
@@ -22,7 +23,7 @@ var ActivityStats = React.createClass({
   },
 
   render: function() {
-    var items = this._getStats().map(function(stat, idx) {
+    var items = _.map(this._getStats(), function(stat, idx) {
       return (
         <LabeledStat
           annotation={stat.annotation}
@@ -37,51 +38,56 @@ var ActivityStats = React.createClass({
   },
 
   _getStats: function() {
-    var activity = this.props.activity;
+    var {
+      avg_hr,
+      calories,
+      distance,
+      duration,
+      elevation_gain,
+      max_hr
+    } = this.props.activity;
+
     var stats = [{
       annotation: 'miles',
       label: 'Distance',
-      value: formatDistance(activity.distance)
+      value: formatDistance(distance)
     }, {
       label: 'Time',
-      value: secondsToTime(activity.duration)
+      value: secondsToTime(duration)
     }, {
       annotation: 'per mile',
       label: 'Pace',
-      value: calculatePace.fromSeconds(
-        activity.distance,
-        activity.duration // in seconds
-      )
+      value: calculatePace.fromSeconds(distance, duration)
     }];
 
-    if (activity.elevation) {
+    if (elevation_gain) {
       stats.push({
         annotation: 'feet',
         label: 'Elevation Gain',
-        value: activity.elevation
+        value: Math.round(elevation_gain)
       });
     }
 
-    if (activity.avg_hr) {
+    if (avg_hr) {
       stats.push({
         annotation: 'bpm',
         label: 'Avg. HR',
-        value: Math.round(activity.avg_hr)
+        value: Math.round(avg_hr)
       });
     }
 
-    if (activity.max_hr) {
+    if (max_hr) {
       stats.push({
         annotation: 'bpm',
         label: 'Max. HR',
-        value: Math.round(activity.max_hr)
+        value: Math.round(max_hr)
       });
     }
 
-    if (activity.calories) {
+    if (calories) {
       stats.push({
         label: 'Calories',
-        value: activity.calories
+        value: calories
       });
     }
 

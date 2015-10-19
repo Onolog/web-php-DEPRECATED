@@ -1,14 +1,17 @@
+var _ = require('underscore');
+var moment = require('moment');
 var React = require('react');
 
-var AppPage = require('../../components/Page/AppPage.react');
-var Activity = require('../Activities/Activity.react');
-var EmptyState = require('../../components/EmptyState.react');
-var FileInput = require('../../components/Forms/FileInput.react');
-var PageHeader = require('../../components/Page/PageHeader.react');
-var Panel = require('../../components/Panel/Panel.react');
-var TcxActivityFactory = require('../../lib/garmin/activity/TcxActivityFactory');
+var Activity = require('app/Activities/Activity.react');
+var AppPage = require('components/Page/AppPage.react');
+var EmptyState = require('components/EmptyState.react');
+var FileInput = require('components/Forms/FileInput.react');
+var PageHeader = require('components/Page/PageHeader.react');
+var Panel = require('components/Panel/Panel.react');
 
-var distanceUtils = require('../../utils/distanceUtils');
+var {metersToFeet, metersToMiles} = require('utils/distanceUtils');
+var FileParser = require('utils/parsers/FileParser');
+var GoogleTimezone = require('utils/GoogleTimezone');
 
 /**
  * GarminUploader.react
@@ -24,7 +27,7 @@ var GarminUploader = React.createClass({
   },
 
   render: function() {
-    var activity = this.state.activity;
+    var {activity} = this.state;
     var contents;
 
     if (activity) {
@@ -52,8 +55,12 @@ var GarminUploader = React.createClass({
   /**
    * Convert a Garmin activity to the standardized format.
    */
-  _normalizeActivity: function(activity) {;
-    var friends = [4280, 700963, 509191417].join(',');
+  _normalizeActivity: function(activity) {
+    var friends = [
+      4280,
+      700963,
+      509191417
+    ].join(',');
 
     var notes =
       'Long run in Wunderlich Park with Sonderby, Turner, and Laney. ' +
@@ -63,33 +70,32 @@ var GarminUploader = React.createClass({
       '\n\n' +
       'http://connect.garmin.com/modern/activity/719673604';
 
-    return {
-      activity_type: activity.getActivityType(), // TODO: convert to IDs?
+    var m = moment(activity.start_date);
+
+    return Object.assign({}, activity, {
+      // General activity data
+      id: 0,
+      date: m.unix(),
+      start_date: m.format(),
+
+      // Athlete-specific data
+      distance: metersToMiles(activity.distance),
+      time: activity.duration,
+      elevation_gain: metersToFeet(activity.elevation_gain),
+      elevation_loss: metersToFeet(activity.elevation_loss),
+      friends: friends,
+      notes: notes,
+
+      // From foreign keys
       athlete: {
         id: 517820043,
         name: 'Eric Giovanola'
       },
-      calories: activity.getCalories(),
-      date: activity.getStartTime().getDate().getTime() / 1000,
-      device: {
-        name: activity.getDeviceName(),
-        version: activity.getSoftwareVersionString()
-      },
-      distance: distanceUtils.metersToMiles(activity.getTotalDistance()),
-      elevation: distanceUtils.metersToFeet(activity.getElevationGain()),
-      friends: friends,
-      id: 0,
-      notes: notes,
-      series: activity.getSeries(),
       shoes: {
         id: 41,
         name: 'ASICS DS Trainer 19.2'
-      },
-      laps: activity.getLaps(),
-      time: activity.getTotalTime(),
-      avg_hr: activity.getAvgHeartRate(),
-      max_hr: activity.getMaxHeartRate()
-    };
+      }
+    });
   },
 
   _onChange: function(evt) {
@@ -102,14 +108,24 @@ var GarminUploader = React.createClass({
 
   _onLoadEnd: function(evt) {
     if (evt.target.readyState === FileReader.DONE) {
-      var file = evt.target.result;
-      var activities = TcxActivityFactory.parseString(file);
+      var parser = new FileParser();
+      var activities = parser.parse(evt.target.result);
 
       // We currently only upload one file at a time
-      this.setState({activity: activities[0]});
+      var activity = _.first(activities);
+      var start = activity.tracks[0][0];
+
+      // Get the timezone from the activity's geodata.
+      GoogleTimezone({
+        latitude: start.latitude,
+        longitude: start.longitude,
+        timestamp: moment(start.time).unix()
+      }, response => {
+        activity.timezone = response.timeZoneId;
+        this.setState({activity: activity});
+      }.bind(this));
     }
   }
-
 });
 
 module.exports = GarminUploader;

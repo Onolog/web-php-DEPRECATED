@@ -132,7 +132,7 @@ GarminActivity.prototype = {
 
   getSoftwareVersionString: function() {
     var v = this.getAttribute(ATTRIBUTE_KEYS.creatorVersion);
-    return [
+    return v && [
       v.versionMajor,
       v.versionMinor,
       v.buildMajor,
@@ -201,7 +201,8 @@ GarminActivity.prototype = {
   },
 
   _getValue: function(/*string*/ key) /*?any*/ {
-    return this.getSummaryValue(key).getValue();
+    var summaryValue = this.getSummaryValue(key);
+    return summaryValue && summaryValue.getValue();
   },
 
 	printMe: function(tabs) {
