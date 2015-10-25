@@ -28,14 +28,17 @@ class WorkoutsController extends AppController {
         ->send();
     }
 
+    // Get workouts for the selected month, plus and minus a week.
+    $start = mktime(0, 0, 0, $month, -7, $year);
+    $end = mktime(0, 0, 0, $month+1, 7, $year);
+
     $workouts = $this->Workout->find('all', array(
       'conditions' => array(
         'Workout.user_id' => $user,
-        // Only get workouts for the selected month, + or - a week
-        'Workout.date >=' => mktime(0, 0, 0, $month, -7, $year),
-        'Workout.date <=' => mktime(0, 0, 0, $month+1, 7, $year),
+        'Workout.start_date >=' => date('c', $start),
+        'Workout.start_date <=' => date('c', $end),
       ),
-      'order'  => 'Workout.date ASC',
+      'order'  => 'Workout.start_date ASC',
     ));
 
     // Strip out extraneous data (User, Shoe) from the data set.

@@ -1,22 +1,23 @@
 var _ = require('underscore');
+var jstz = require('jstz');
+var moment = require('moment');
 var React = require('react');
 
-var Button = require('../../../components/Button/Button.react');
-var Modal = require('../../../components/Modal/Modal.react');
-var WorkoutFields = require('../../Workouts/WorkoutFields.react');
+var Button = require('components/Button/Button.react');
+var Modal = require('components/Modal/Modal.react');
+var WorkoutFields = require('app/Workouts/WorkoutFields.react');
 
-var LayerMixin = require('../../../mixins/LayerMixin.react');
-var StoreMixin = require('../../../mixins/StoreMixin.react');
+var LayerMixin = require('mixins/LayerMixin.react');
+var StoreMixin = require('mixins/StoreMixin.react');
 
-var AlertStore = require('../../../flux/stores/AlertStore');
-var DialogStore = require('../../../flux/stores/DialogStore');
-var WorkoutActions = require('../../../flux/actions/WorkoutActions');
+var AlertStore = require('flux/stores/AlertStore');
+var DialogStore = require('flux/stores/DialogStore');
+var WorkoutActions = require('flux/actions/WorkoutActions');
 
-var cakePHP = require('../../../utils/cakePHP');
-var dateToUnixTime = require('../../../utils/dateToUnixTime');
+var cakePHP = require('utils/cakePHP');
+var dateToUnixTime = require('utils/dateToUnixTime');
 
-var WORKOUTS = require('../../../constants/Workouts');
-var NEW_ID = WORKOUTS.NEW_ID;
+var {NEW_ID} = require('constants/Workouts');
 
 /**
  * WorkoutAddDialog.react
@@ -40,8 +41,9 @@ var WorkoutAddDialog = React.createClass({
 
   getInitialState: function() {
     return {
-      isLoading: false,
       alert: null,
+      hasEdits: false,
+      isLoading: false,
       shown: false,
       workout: this._getNewWorkout()
     };
@@ -110,8 +112,9 @@ var WorkoutAddDialog = React.createClass({
   _toggleModal: function() {
     this.setState({
       alert: null,
-      shown: !this.state.shown,
+      hasEdits: false,
       isLoading: false,
+      shown: !this.state.shown,
       workout: this._getNewWorkout()
     });
   },
@@ -122,7 +125,7 @@ var WorkoutAddDialog = React.createClass({
   },
 
   _onCancel: function() {
-    var hasEdits = !_.isEqual(this._getNewWorkout(), this.state.workout);
+    var {hasEdits} = this.state;
     var confirmed = hasEdits && confirm(
       'Are you sure you want to close the dialog? Your changes will not ' +
       'be saved.'
@@ -134,7 +137,10 @@ var WorkoutAddDialog = React.createClass({
   },
 
   _onChange: function(/*object*/ workout) {
-    this.setState({workout: workout});
+    this.setState({
+      hasEdits: true,
+      workout: workout
+    });
   },
 
   _getNewWorkout: function() {
@@ -149,8 +155,8 @@ var WorkoutAddDialog = React.createClass({
     );
 
     return {
-      date: dateToUnixTime(this.props.date),
-      id: NEW_ID
+      start_date: moment(date).format(),
+      timezone: jstz.determine().name() // Guess the user's timezone
     };
   }
 

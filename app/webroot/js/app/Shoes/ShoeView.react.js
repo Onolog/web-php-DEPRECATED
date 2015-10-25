@@ -84,7 +84,7 @@ var ShoeView = React.createClass({
 
   _renderRows: function(activity, idx) {
     var date = moment.tz(
-      activity.date * 1000,
+      activity.start_date,
       activity.timezone
     ).format('MM/DD/YY');
 

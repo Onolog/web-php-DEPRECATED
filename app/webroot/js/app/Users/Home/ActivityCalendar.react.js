@@ -1,13 +1,14 @@
+var moment = require('moment');
 var React = require('react');
 
 var ActivityCalendarDay = require('./ActivityCalendarDay.react');
-var AppPage = require('../../../components/Page/AppPage.react');
-var BaseCalendar = require('../../../components/Calendar/BaseCalendar.react');
-var BaseCalendarWeek = require('../../../components/Calendar/BaseCalendarWeek.react');
+var AppPage = require('components/Page/AppPage.react');
+var BaseCalendar = require('components/Calendar/BaseCalendar.react');
+var BaseCalendarWeek = require('components/Calendar/BaseCalendarWeek.react');
 
-var calendarGrid = require('../../../utils/calendarGrid');
-var isSameDay = require('../../../utils/isSameDay');
-var unixTimeToDate = require('../../../utils/unixTimeToDate');
+var calendarGrid = require('utils/calendarGrid');
+var isSameDay = require('utils/isSameDay');
+var unixTimeToDate = require('utils/unixTimeToDate');
 
 /**
  * ActivityCalendar.react
@@ -48,10 +49,7 @@ var ActivityCalendar = React.createClass({
     var workouts = this.props.workouts || [];
 
     workouts = workouts.filter(function(workout) {
-      return isSameDay(
-        dateObject,
-        unixTimeToDate(workout.date)
-      );
+      return moment(dateObject).isSame(workout.start_date, 'day');
     });
 
     if (workouts.length) {

@@ -1,14 +1,12 @@
 var $ = require('jquery');
 
-var ActionTypes = require('../ActionTypes');
-var ActionUtils = require('./ActionUtils');
-var AppDispatcher = require('../AppDispatcher');
+var ActionTypes = require('flux/ActionTypes');
+var ActionUtils = require('flux/actions/ActionUtils');
+var AppDispatcher = require('flux/AppDispatcher');
 
-var cakePHP = require('../../utils/cakePHP');
+var cakePHP = require('utils/cakePHP');
 
-var WORKOUTS = require('../../constants/Workouts');
-var ENDPOINT = WORKOUTS.ENDPOINT;
-var FORM_NAME = WORKOUTS.FORM_NAME;
+var {ENDPOINT, FORM_NAME} = require('constants/Workouts');
 
 /**
  * WorkoutActions.js
@@ -18,7 +16,7 @@ var WorkoutActions = {
   add: function(workout) {
     // Add the new workout to the DB
     $.ajax({
-      url: ENDPOINT.WORKOUT_ADD + workout.date,
+      url: ENDPOINT.WORKOUT_ADD,
       type: 'POST',
       data: cakePHP.encodeFormData(workout, FORM_NAME),
       success: this.onAddSuccess,

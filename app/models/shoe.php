@@ -50,7 +50,7 @@ class Shoe extends AppModel {
 			'dependent' => false,
 			'conditions' => '',
 			'fields' => '',
-			'order' => 'Workout.date DESC',
+			'order' => 'Workout.start_date DESC',
 			'limit' => '',
 			'offset' => '',
 			'exclusive' => '',

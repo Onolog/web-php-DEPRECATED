@@ -195,7 +195,7 @@ class UsersController extends AppController {
       'fields' => array(
         'Workout.distance',
         'Workout.start_date',
-        'Workout.time',
+        'Workout.duration',
       ),
       'order' => 'Workout.start_date DESC',
     ));
@@ -239,10 +239,10 @@ class UsersController extends AppController {
     $workouts = $this->User->Workout->find('all', array(
 		  'conditions' => array(
         'Workout.user_id' => $id,
-        'Workout.date >=' => $start_date,
-        'Workout.date <=' => $end_date,
+        'Workout.start_date >=' => date('c', $start_date),
+        'Workout.start_date <=' => date('c', $end_date),
       ),
-      'order'  => 'Workout.date ASC'
+      'order'  => 'Workout.start_date ASC'
     ));
 
     $friends = $this->getTopFriends($workouts);

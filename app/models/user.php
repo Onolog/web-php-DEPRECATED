@@ -41,7 +41,6 @@ class User extends AppModel {
 			'className' => 'Shoe',
 			'foreignKey' => 'user_id',
 			'dependent' => false,
-			//'order' => 'Workout.date ASC'
 		),
 		'Workout' => array(
 			'className' => 'Workout',
