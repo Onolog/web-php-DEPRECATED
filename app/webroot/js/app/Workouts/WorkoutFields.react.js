@@ -67,7 +67,7 @@ var WorkoutFields = React.createClass({
         <FormGroup label="Duration" className="time">
           <DurationInput
             className="timeInput"
-            duration={workout.time}
+            duration={workout.duration}
             name="time"
             onChange={this._onInputChange}
           />
@@ -156,7 +156,7 @@ var WorkoutFields = React.createClass({
   _getPace: function(/*object*/ workout) /*string*/ {
     return calculatePace.fromSeconds(
       workout.distance || 0,
-      workout.time || 0
+      workout.duration || 0
     );
   }
 

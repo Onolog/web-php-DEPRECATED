@@ -1,16 +1,16 @@
 var moment = require('moment-timezone');
 var React = require('react');
 
-var ActivitySection = require('../Activities/ActivitySection.react');
-var EmptyState = require('../../components/EmptyState.react');
-var LabeledStat = require('../../components/Data/LabeledStat.react');
-var Link = require('../../components/Link/Link.react');
-var Panel = require('../../components/Panel/Panel.react');
-var Table = require('../../components/Table/Table.react');
-var Topline = require('../../components/Data/Topline.react');
+var ActivitySection = require('app/Activities/ActivitySection.react');
+var EmptyState = require('components/EmptyState.react');
+var LabeledStat = require('components/Data/LabeledStat.react');
+var Link = require('components/Link/Link.react');
+var Panel = require('components/Panel/Panel.react');
+var Table = require('components/Table/Table.react');
+var Topline = require('components/Data/Topline.react');
 
-var formatDistance = require('../../utils/formatDistance');
-var secondsToTime = require('../../utils/secondsToTime');
+var formatDistance = require('utils/formatDistance');
+var secondsToTime = require('utils/secondsToTime');
 
 /**
  * ShoeView.react
@@ -97,7 +97,7 @@ var ShoeView = React.createClass({
           {formatDistance(activity.distance) + ' mi'}
         </td>
         <td className="time">
-          {secondsToTime(activity.time)}
+          {secondsToTime(activity.duration)}
         </td>
       </tr>
     );
