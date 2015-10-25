@@ -1,7 +1,7 @@
 /**
  * Google-related constants
  */
-define({
+module.exports = {
   /**
    * Google Analytics ID
    */
@@ -11,5 +11,8 @@ define({
    * Google API Key
    * https://code.google.com/apis/console/?pli=1#project:227714135206:access
    */
-  API_KEY: 'AIzaSyBI2oBuFbYuvwmHpNrQGjvmg7r-eIFKtEM'
-});
+  API_KEY: 'AIzaSyBI2oBuFbYuvwmHpNrQGjvmg7r-eIFKtEM',
+
+  // API Key for Google Maps Timezone API
+  TIMEZONE_API_KEY: 'AIzaSyAHI8_yGde63IxXqZJ1FTJsHNkmia9j_Eo'
+};
