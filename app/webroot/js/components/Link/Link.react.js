@@ -1,5 +1,5 @@
 var React = require('react');
-var TooltipMixin = require('../../mixins/TooltipMixin.react');
+var TooltipMixin = require('mixins/TooltipMixin.react');
 
 /**
  * Link.react
@@ -13,10 +13,8 @@ var Link = React.createClass({
   mixins: [TooltipMixin],
 
   render: function() {
-    return (
-      <a
-        {...this.props}
-        onClick={this._onClick}>
+    return this.addTooltip(
+      <a {...this.props} onClick={this._onClick}>
         {this.props.children}
       </a>
     );

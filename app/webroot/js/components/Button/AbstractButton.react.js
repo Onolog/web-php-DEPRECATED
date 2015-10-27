@@ -1,8 +1,9 @@
 var React = require('react');
 
-var Glyph = require('../../components/Glyph/Glyph.react');
-var Link = require('../../components/Link/Link.react');
-var TooltipMixin = require('../../mixins/TooltipMixin.react');
+var Glyph = require('components/Glyph/Glyph.react');
+var Link = require('components/Link/Link.react');
+
+var TooltipMixin = require('mixins/TooltipMixin.react');
 
 var cx = require('classnames');
 
@@ -36,26 +37,37 @@ var AbstractButton = React.createClass({
 
   getDefaultProps: function() {
     return {
-      glyphPosition: 'left'
+      glyphPosition: 'left',
+      type: 'submit'
     };
   },
 
   render: function() {
-    var className = cx({
-      'disabled': this.props.disabled && this.props.href,
-      'active': this.props.depressed
-    }, this.props.className);
+    var {
+      className,
+      depressed,
+      disabled,
+      glyphPosition,
+      href,
+      tooltip,
+      type
+    } = this.props;
+
+    className = cx({
+      'disabled': disabled && href,
+      'active': depressed
+    }, className);
 
     var children = [this._renderLabel()];
     var glyphChild = this._renderGlyph();
 
-    if (this.props.glyphPosition === 'right') {
+    if (glyphPosition === 'right') {
       children.push(glyphChild);
     } else {
       children.unshift(glyphChild);
     }
 
-    if (this.props.href) {
+    if (href) {
       return (
         <Link
           {...this.props}
@@ -64,20 +76,17 @@ var AbstractButton = React.createClass({
           {children}
         </Link>
       );
-    } else {
-      var type = this.props.type || 'submit';
-      var value = type === 'submit' ? '1' : null;
-      return (
-        <button
-          {...this.props}
-          className={className}
-          disabled={this.props.disabled}
-          type={type}
-          value={value}>
-          {children}
-        </button>
-      );
     }
+
+    return this.addTooltip(
+      <button
+        {...this.props}
+        className={className}
+        disabled={disabled}
+        value={type === 'submit' ? '1' : null}>
+        {children}
+      </button>
+    );
   },
 
   _renderLabel: function() {

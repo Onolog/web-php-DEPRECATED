@@ -1,6 +1,6 @@
 var React = require('react');
 
-var TooltipMixin = require('../../mixins/TooltipMixin.react');
+var TooltipMixin = require('mixins/TooltipMixin.react');
 
 var cx = require('classnames');
 
@@ -14,7 +14,7 @@ var CloseButton = React.createClass({
   mixins: [TooltipMixin],
 
   render: function() {
-    return (
+    return this.addTooltip(
       <button
         {...this.props}
         className={cx(this.props.className, 'close')}

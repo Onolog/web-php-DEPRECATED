@@ -1,22 +1,22 @@
 var moment = require('moment-timezone');
 var React = require('react');
 
-var Activity = require('../Activities/Activity.react');
-var AppPage = require('../../components/Page/AppPage.react');
-var Button = require('../../components/Button/Button.react');
-var ButtonGroup = require('../../components/ButtonGroup/ButtonGroup.react');
-var Calendar = require('../../components/Calendar/Calendar.react');
-var DateTimePicker = require('../../components/DateTimePicker/DateTimePicker.react');
-var FBFriendTokenizer = require('../../components/Facebook/FBFriendTokenizer.react');
-var BarGraph = require('../../components/Graph/BarGraph/BarGraph.react');
-var LeftRight = require('../../components/LeftRight/LeftRight.react');
-var PageHeader = require('../../components/Page/PageHeader.react');
-var Panel = require('../../components/Panel/Panel.react');
-var WorkoutFields = require('../Workouts/WorkoutFields.react');
+var Activity = require('app/Activities/Activity.react');
+var AppPage = require('components/Page/AppPage.react');
+var Button = require('components/Button/Button.react');
+var ButtonGroup = require('components/ButtonGroup/ButtonGroup.react');
+var Calendar = require('components/Calendar/Calendar.react');
+var DateTimePicker = require('components/DateTimePicker/DateTimePicker.react');
+var FBFriendTokenizer = require('components/Facebook/FBFriendTokenizer.react');
+var BarGraph = require('components/Graph/BarGraph/BarGraph.react');
+var LeftRight = require('components/LeftRight/LeftRight.react');
+var PageHeader = require('components/Page/PageHeader.react');
+var Panel = require('components/Panel/Panel.react');
+var WorkoutFields = require('app/Workouts/WorkoutFields.react');
 
-var cloneDate = require('../../utils/cloneDate');
+var cloneDate = require('utils/cloneDate');
 
-var DATA = require('../../constants/TestData');
+var DATA = require('constants/TestData');
 
 /**
  * ReactPage.react

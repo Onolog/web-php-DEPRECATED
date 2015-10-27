@@ -1,13 +1,11 @@
 var _ = require('underscore');
 var React = require('react');
 
-var AbstractButton = require('../../components/Button/AbstractButton.react');
+var AbstractButton = require('components/Button/AbstractButton.react');
 
 var cx = require('classnames');
 
-var BOOTSTRAP = require('../../constants/Bootstrap');
-var SIZE = BOOTSTRAP.SIZE;
-var USE = BOOTSTRAP.USE;
+var {SIZE, USE} = require('constants/Bootstrap');
 
 USE.LINK = 'link'; // Extra use type for buttons.
 
@@ -45,12 +43,7 @@ var Button = React.createClass({
       'btn-xs': size === SIZE.XSMALL
     }, this.props.className);
 
-    return (
-      <AbstractButton
-        {...this.props}
-        className={classNames}
-      />
-    );
+    return <AbstractButton {...this.props} className={classNames} />;
   }
 
 });
