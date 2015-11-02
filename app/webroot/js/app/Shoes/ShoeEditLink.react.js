@@ -1,18 +1,20 @@
 var _ = require('underscore');
 var React = require('react');
 
-var Button = require('../../components/Button/Button.react');
-var Link = require('../../components/Link/Link.react');
-var Modal = require('../../components/Modal/Modal.react');
+var Button = require('components/Button/Button.react');
+var Link = require('components/Link/Link.react');
+var Modal = require('components/Modal/Modal.react');
 var ShoeFields = require('./ShoeFields.react');
 
-var DialogStore = require('../../flux/stores/DialogStore');
-var ShoeActions = require('../../flux/actions/ShoeActions');
+var DialogStore = require('flux/stores/DialogStore');
+var ShoeActions = require('flux/actions/ShoeActions');
+var ShoeStore = require('flux/stores/ShoeStore');
 
-var LayerMixin = require('../../mixins/LayerMixin.react');
-var StoreMixin = require('../../mixins/StoreMixin.react');
+var LayerMixin = require('mixins/LayerMixin.react');
 
 var cx = require('classnames');
+
+var ActionTypes = require('flux/ActionTypes');
 
 /**
  * ShoeEditLink.react
@@ -23,7 +25,7 @@ var cx = require('classnames');
 var ShoeEditLink = React.createClass({
   displayName: 'ShoeEditLink',
 
-  mixins: [LayerMixin, StoreMixin],
+  mixins: [LayerMixin],
 
   propTypes: {
     initialShoe: React.PropTypes.object.isRequired
@@ -38,30 +40,33 @@ var ShoeEditLink = React.createClass({
   },
 
   componentWillMount: function() {
-    this.stores = [
-      this.setStoreInfo(DialogStore, this._onDialogChange)
-    ];
+    ShoeStore.bind(ActionTypes.SHOE_UPDATE, this._onShoeUpdate);
   },
 
-  _onDialogChange: function() {
-    if (!DialogStore.getIsShown()) {
-      this._closeModal();
-    }
+  componentWillUnmount: function() {
+    ShoeStore.unbind(ActionTypes.SHOE_UPDATE, this._onShoeUpdate);
+  },
+
+  _onShoeUpdate: function(shoe) {
+    this.setState({
+      isLoading: false,
+      shoe: shoe,
+      shown: false
+    });
   },
 
   render: function() {
     return (
-      <Link href="javascript:;" onClick={this._onEdit}>
+      <Link href="#" onClick={this._onEdit}>
         Edit
       </Link>
     );
   },
 
   renderLayer: function() {
-    var shoe = this.state.shoe;
+    var shoe = this.props.initialShoe;
     return (
       <Modal
-        alert={this.state.alert}
         isLoading={this.state.isLoading}
         shown={this.state.shown}
         size="small"
@@ -95,13 +100,12 @@ var ShoeEditLink = React.createClass({
       return;
     }
 
-    var hasEdits = !_.isEqual(this.props.initialShoe, this.state.shoe);
-    var confirmed = hasEdits && confirm(
+    var confirmed = this.state.hasEdits && confirm(
       'Are you sure you want to close the dialog? Your changes will not ' +
       'be saved'
     );
 
-    if (!hasEdits || confirmed) {
+    if (!this.state.hasEdits || confirmed) {
       this.setState(this.getInitialState());
     }
   },
@@ -111,12 +115,18 @@ var ShoeEditLink = React.createClass({
   },
 
   _onSave: function() {
-    this.setState({isLoading: true});
+    this.setState({
+      hasEdits: false,
+      isLoading: true,
+    });
     ShoeActions.save(this.state.shoe);
   },
 
   _onChange: function(shoe) {
-    this.setState({shoe: shoe});
+    this.setState({
+      hasEdits: true,
+      shoe: shoe
+    });
   }
 });
 

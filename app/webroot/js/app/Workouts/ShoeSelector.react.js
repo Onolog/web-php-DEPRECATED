@@ -1,25 +1,10 @@
-var React = require('react');
+import _ from 'underscore';
+import React from 'react';
 
-var Select = require('../../components/Select/Select.react');
+import Select from 'components/Select/Select.react';
 
-var ActionTypes = require('../../flux/ActionTypes');
-var ShoeStore = require('../../flux/stores/ShoeStore');
-var ShoeUtils = require('../../utils/ShoeUtils');
-
-function getOptgroupData(/*string*/ label, /*array*/ shoes) /*object*/ {
-  var options = [];
-  shoes.forEach(function(shoe) {
-    options.push({
-      label: shoe.name,
-      value: shoe.id
-    });
-  });
-
-  return {
-    label: label,
-    options: options
-  };
-}
+import ActionTypes from 'flux/ActionTypes';
+import ShoeStore from 'flux/stores/ShoeStore';
 
 /**
  * ShoeSelector.react
@@ -61,17 +46,18 @@ var ShoeSelector = React.createClass({
    * correctly.
    */
   _getOptions: function() {
+    var shoes = _.groupBy(this.state.shoes, 'inactive');
+    var active = shoes['0'];
+
     var options = [];
-    var shoes = ShoeUtils.groupByActivity(this.state.shoes);
-
-    if (shoes.active.length) {
-      options.push(getOptgroupData('Active', shoes.active));
+    if (active && active.length) {
+      _.forEach(active, (shoe) => {
+        options.push({
+          label: shoe.name + ' (' + shoe.mileage + ' miles)',
+          value: shoe.id
+        });
+      });
     }
-
-    if (shoes.inactive.length) {
-      options.push(getOptgroupData('Inactive', shoes.inactive));
-    }
-
     return options;
   }
 });

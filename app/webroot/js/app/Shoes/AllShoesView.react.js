@@ -1,17 +1,16 @@
-var React = require('react');
+import _ from 'underscore';
+import React from 'react';
 
 var ShoeEditLink = require('./ShoeEditLink.react');
 var ShoeViewLink = require('./ShoeViewLink.react');
 
-var Button = require('../../components/Button/Button.react');
-var CloseButton = require('../../components/Button/CloseButton.react');
-var EmptyState = require('../../components/EmptyState.react');
-var Link = require('../../components/Link/Link.react');
-var Panel = require('../../components/Panel/Panel.react');
-var Table = require('../../components/Table/Table.react');
+var Button = require('components/Button/Button.react');
+var CloseButton = require('components/Button/CloseButton.react');
+var EmptyState = require('components/EmptyState.react');
+var Link = require('components/Link/Link.react');
+import {Panel, Table} from 'react-bootstrap/lib';
 
-var ShoeActions = require('../../flux/actions/ShoeActions');
-var ShoeUtils = require('../../utils/ShoeUtils');
+var ShoeActions = require('flux/actions/ShoeActions');
 
 var cx = require('classnames');
 
@@ -29,19 +28,19 @@ var AllShoesView = React.createClass({
   },
 
   render: function() {
-    var shoes = ShoeUtils.groupByActivity(this.props.shoes);
+    var shoes = _.groupBy(this.props.shoes, 'inactive');
 
     return (
       <div>
-        {this._renderActiveShoes(shoes.active)}
-        {this._renderInactiveShoes(shoes.inactive)}
+        {this._renderActiveShoes(shoes['0'])}
+        {this._renderInactiveShoes(shoes['1'])}
       </div>
     );
   },
 
   _renderActiveShoes: function(/*array*/ activeShoes) {
     var contents;
-    if (activeShoes.length) {
+    if (activeShoes && activeShoes.length) {
       contents = this._renderShoeTable(activeShoes);
     } else {
       contents =
@@ -51,16 +50,16 @@ var AllShoesView = React.createClass({
     }
 
     return (
-      <Panel title="Active">
+      <Panel header="Active">
         {contents}
       </Panel>
     );
   },
 
   _renderInactiveShoes: function(/*array*/ inactiveShoes) {
-    if (inactiveShoes.length) {
+    if (inactiveShoes && inactiveShoes.length) {
       return (
-        <Panel title="Inactive">
+        <Panel header="Inactive">
           {this._renderShoeTable(inactiveShoes)}
         </Panel>
       );
@@ -69,7 +68,13 @@ var AllShoesView = React.createClass({
 
   _renderShoeTable: function(/*array*/ shoes) {
     return (
-      <Table hover={true}>
+      <Table hover fill>
+        <thead>
+          <th>Name</th>
+          <th className="activities">Runs</th>
+          <th className="mileage">Miles</th>
+          <th colSpan={2} />
+        </thead>
         <tbody>
           {shoes.map(this._renderTableRows)}
         </tbody>
@@ -88,11 +93,15 @@ var AllShoesView = React.createClass({
           <ShoeViewLink shoe={shoe} />
         </td>
         <td className="activities">
-          {shoe.activity_count + ' runs'}
+          {shoe.activity_count}
         </td>
-        <td className="mileage">{shoe.mileage + ' mi'}</td>
+        <td className="mileage">
+          {shoe.mileage}
+        </td>
         <td className="actions">
           <ShoeEditLink initialShoe={shoe} />
+        </td>
+        <td className="actions">
           <CloseButton
             onClick={this._onDeleteClick.bind(this, shoe.id)}
             tooltip={{title: 'Delete'}}

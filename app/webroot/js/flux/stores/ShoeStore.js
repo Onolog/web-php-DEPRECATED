@@ -1,8 +1,9 @@
 var _ = require('underscore');
-var ActionTypes = require('../ActionTypes');
-var AppDispatcher = require('../AppDispatcher');
-var MicroEvent = require('../MicroEvent');
-var ShoeActions = require('../actions/ShoeActions');
+
+var ActionTypes = require('flux/ActionTypes');
+var AppDispatcher = require('flux/AppDispatcher');
+var MicroEvent = require('flux/MicroEvent');
+var ShoeActions = require('flux/actions/ShoeActions');
 
 var _collection;
 
@@ -24,9 +25,7 @@ var ShoeStore = {
       return;
     }
 
-    var item = _.find(_collection, function(item) {
-      return item.id === +itemID;
-    });
+    var item = _.findWhere(_collection, {id: itemID});
 
     if (!item) {
       ShoeActions.view(itemID);
@@ -78,6 +77,7 @@ AppDispatcher.register(function(payload) {
           return item.id === itemID ? payload.data : item;
         });
       }
+      ShoeStore.trigger(ActionTypes.SHOE_UPDATE, payload.data);
       ShoeStore.trigger(ActionTypes.CHANGE);
       break;
   }

@@ -1,13 +1,12 @@
-var ActionTypes = require('../ActionTypes');
-var ActionUtils = require('./ActionUtils');
-var AppDispatcher = require('../AppDispatcher');
-
 var $ = require('jquery');
-var cakePHP = require('../../utils/cakePHP');
 
-var SHOES = require('../../constants/Shoes');
-var ENDPOINT = SHOES.ENDPOINT;
-var FORM_NAME = SHOES.FORM_NAME;
+var ActionTypes = require('flux/ActionTypes');
+var ActionUtils = require('flux/actions/ActionUtils');
+var AppDispatcher = require('flux/AppDispatcher');
+
+var cakePHP = require('utils/cakePHP');
+
+var {ENDPOINT, FORM_NAME} = require('constants/Shoes');
 
 /**
  * ShoeActions.js
@@ -57,13 +56,9 @@ module.exports = {
   },
 
   fetch: function() {
-    // Fetch the collection of items from the DB
-    $.ajax({
-      url: ENDPOINT.FETCH,
-      type: 'GET',
-      success: this.onFetchSuccess,
-      error: this.onFetchError
-    });
+    $.get(ENDPOINT.FETCH)
+      .then(this.onFetchSuccess)
+      .fail(this.onFetchError);
   },
 
   onFetchSuccess: function(/*string*/ response) {

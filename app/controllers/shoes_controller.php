@@ -16,9 +16,14 @@ class ShoesController extends AppController {
     $this->setIsAjax();
     $response = new Response();
 
+    $conditions = array('Shoe.user_id' => $user);
+    if (isset($this->data['inactive'])) {
+      $conditions['Shoe.inactive'] = $this->data['inactive'];
+    }
+
     // Get all the user's shoes
     $shoes = $this->Shoe->find('all', array(
-      'conditions' => array('Shoe.user_id' => $user)
+      'conditions' => $conditions
     ));
 
     return $response
@@ -251,25 +256,4 @@ class ShoesController extends AppController {
       ->setMessage('Sorry, we couldn\'t delete your shoe for some reason')
       ->send();
   }
-
-
-  public function ajax_get() {
-    $this->layout = 'ajax';
-    $this->autoLayout = false;
-    $this->autoRender = false;
-
-    $user = $this->requireLoggedInUser();
-    $this->set('title_for_layout', 'Shoes');
-
-    // Get all the user's shoes
-    $shoes = $this->Shoe->find(
-      'all', array(
-        'conditions' => array('Shoe.user_id' => $user),
-      )
-    );
-
-    $shoes = $this->User->Shoe->groupByActivity($shoes);
-    return json_encode($shoes);
-  }
-
 }

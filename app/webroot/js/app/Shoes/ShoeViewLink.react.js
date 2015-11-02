@@ -35,7 +35,7 @@ var ShoeViewLink = React.createClass({
 
   render: function() {
     return (
-      <Link href="javascript:;" onClick={this._onViewClick}>
+      <Link href="#" onClick={this._onViewClick}>
         {this.props.shoe.name}
       </Link>
     );
