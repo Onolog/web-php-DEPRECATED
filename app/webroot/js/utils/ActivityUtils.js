@@ -14,7 +14,7 @@ function getGroupingInfo(/*array*/ activities) {
   return {
     miles: getAggregateDistance(activities),
     run_count: activities.length,
-    time: getAggregateDuration(activities),
+    duration: getAggregateDuration(activities),
   };
 }
 
@@ -36,7 +36,7 @@ function getAggregateDistance(/*array*/ activities) {
  */
 function getAggregateDuration(/*array*/ activities) {
   return _.chain(activities)
-    .pluck('time')
+    .pluck('duration')
     .reduce((total, seconds) => {
       return +total + +seconds;
     }, 0)

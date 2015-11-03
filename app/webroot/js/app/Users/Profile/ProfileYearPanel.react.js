@@ -117,9 +117,9 @@ var ProfileYearPanel = React.createClass({
   },
 
   _renderToplineStats: function() {
-    var {miles, run_count, time} = getGroupingInfo(this.props.activities);
+    var {miles, run_count, duration} = getGroupingInfo(this.props.activities);
 
-    var duration = moment.duration(time, 'seconds');
+    var duration = moment.duration(duration, 'seconds');
     var durationString =
       duration.days() + 'd ' +
       duration.hours() + 'h ' +
