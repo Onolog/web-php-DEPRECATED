@@ -36,10 +36,8 @@ var WorkoutFields = React.createClass({
   },
 
   getInitialState: function() {
-    var {workout} = this.props;
     return {
-      pace: this._getPace(workout),
-      workout: workout
+      workout: this.props.workout
     };
   },
 
@@ -50,6 +48,10 @@ var WorkoutFields = React.createClass({
 
   render: function() {
     var {workout} = this.state;
+    var pace = calculatePace.fromSeconds(
+      workout.distance || 0,
+      workout.duration || 0
+    );
 
     return (
       <div className="form-horizontal workoutForm">
@@ -68,11 +70,11 @@ var WorkoutFields = React.createClass({
           <DurationInput
             className="timeInput"
             duration={workout.duration}
-            name="time"
+            name="duration"
             onChange={this._onInputChange}
           />
       		<span className="colon">
-      		  {this.state.pace} per mile
+      		  {pace} per mile
       		</span>
       	</FormGroup>
 
@@ -145,21 +147,9 @@ var WorkoutFields = React.createClass({
   },
 
   _onChange: function(/*object*/ workout) {
-    this.setState({
-      pace: this._getPace(workout),
-      workout: workout
-    });
-
+    this.setState({workout: workout});
     this.props.onChange && this.props.onChange(workout);
-  },
-
-  _getPace: function(/*object*/ workout) /*string*/ {
-    return calculatePace.fromSeconds(
-      workout.distance || 0,
-      workout.duration || 0
-    );
   }
-
 });
 
 module.exports = WorkoutFields;
