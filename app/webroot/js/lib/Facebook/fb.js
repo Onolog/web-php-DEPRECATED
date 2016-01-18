@@ -1,5 +1,5 @@
 var $ = require('jquery');
-var FACEBOOK = require('../../constants/Facebook');
+var FACEBOOK = require('constants/Facebook');
 
 /**
  * JS for initializing Facebook API

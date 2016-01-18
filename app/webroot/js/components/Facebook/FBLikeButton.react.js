@@ -1,8 +1,8 @@
 var $ = require('jquery');
 var React = require('react');
 
-var FACEBOOK = require('../../constants/Facebook');
-var ONOLOG = require('../../constants/Onolog');
+var FACEBOOK = require('constants/Facebook');
+var ONOLOG = require('constants/Onolog');
 var FB_URL = '//www.facebook.com/plugins/like.php';
 
 /**

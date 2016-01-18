@@ -1,6 +1,6 @@
 var ActionTypes = require('flux/ActionTypes');
 var AppDispatcher = require('flux/AppDispatcher');
-var MicroEvent = require('flux/microEvent');
+var MicroEvent = require('flux/microevent');
 
 var _isShown = false;
 

@@ -2,10 +2,9 @@ var $ = require('jquery');
 var React = require('react');
 var cx = require('classnames');
 
-var FBLoader = require('../../lib/Facebook/fb');
-var UserActions = require('../../flux/actions/UserActions');
+var FBLoader = require('lib/Facebook/fb');
+var UserActions = require('flux/actions/UserActions');
 
-var FACEBOOK = require('../../constants/Facebook');
 var INTERVAL = 1 * 60 * 1000; // 1 min
 
 /**
