@@ -2,7 +2,7 @@ var _ = require('underscore');
 
 var ActionTypes = require('flux/ActionTypes');
 var AppDispatcher = require('flux/AppDispatcher');
-var MicroEvent = require('flux/MicroEvent');
+var MicroEvent = require('flux/microEvent');
 var ShoeActions = require('flux/actions/ShoeActions');
 
 var _collection;

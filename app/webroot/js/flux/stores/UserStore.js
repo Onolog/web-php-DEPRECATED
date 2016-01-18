@@ -1,10 +1,10 @@
 var _ = require('underscore');
-var ActionTypes = require('../ActionTypes');
-var AppDispatcher = require('../AppDispatcher');
-var MicroEvent = require('../MicroEvent');
-var UserActions = require('../actions/UserActions');
+var ActionTypes = require('flux/ActionTypes');
+var AppDispatcher = require('flux/AppDispatcher');
+var MicroEvent = require('flux/microEvent');
+var UserActions = require('flux/actions/UserActions');
 
-var homeUrl = require('../../utils/homeUrl');
+var homeUrl = require('utils/homeUrl');
 
 var _user = window.app && window.app.user;
 
