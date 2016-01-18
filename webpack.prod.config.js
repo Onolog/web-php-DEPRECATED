@@ -5,7 +5,7 @@ var webpack = require('webpack');
 
 var config = Object.create(baseConfig);
 
-config.output.path = __dirname + '/app/webroot/dist';
+config.output.path = __dirname + '/app/webroot/js/build';
 config.plugins = config.commonPlugins.concat([
   new webpack.DefinePlugin({
     'process.env': {

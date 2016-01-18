@@ -18,8 +18,7 @@ if (isset($title)) {
 echo $this->element('loader', array('id' => 'root'));
 
 // Prepend the correct path to root JS files depending on the environment.
-$path = Configure::read('debug') === 2 ? '/__dev__/' : '/dist/';
-$this->Html->script($path . $page, array('inline' => false));
+$this->Html->script('build/' . $page, array('inline' => false));
 
 // Set data for window
 if (isset($data)) {

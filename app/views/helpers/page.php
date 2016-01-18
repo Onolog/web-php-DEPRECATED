@@ -146,10 +146,8 @@ class PageHelper extends AppHelper {
   }
 
   protected function getBaseCSS() {
-    $debugCSS = '';
-    if (Configure::read('debug') > 0) {
-      $debugCSS = $this->Html->css('/css/base/debug');
-    }
+    $debugCSS =
+      Configure::read('debug') > 0 ? $this->Html->css('/css/base/debug') : '';
 
     return
       $this->Html->css('/css/base/bootstrap') .
@@ -169,9 +167,8 @@ class PageHelper extends AppHelper {
   }
 
   protected function renderPageJS() {
-    $path = Configure::read('debug') === 2 ? '__dev__' : 'dist';
     return
-      $this->Html->script('/' . $path . '/Common') .
+      $this->Html->script('/js/build/Common') .
       $this->getPageJS() .
       $this->renderGoogleAnalyticsJS();
   }

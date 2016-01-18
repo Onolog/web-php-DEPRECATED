@@ -25,7 +25,7 @@ var config = {
   context: JS_ROOT,
   entry: entryPages,
   output: {
-    path: __dirname + '/app/webroot/__dev__',
+    path: __dirname + '/app/webroot/js/build',
     filename: '[name].js'
   },
   module: {
