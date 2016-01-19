@@ -224,7 +224,11 @@ section + section,
   margin-bottom: 0;
 }
 .table > thead > tr > th {
+  border-bottom-color: #e7e7e7;
   border-bottom-width: 1px;
+  color: #aaa;
+  font-size: 10px;
+  text-transform: uppercase;
 }
 .table > thead > tr > th,
 .table > tbody > tr > th,
@@ -233,6 +237,7 @@ section + section,
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
   border-top: 1px solid #f5f5f5;
+  padding: 10px 15px;
 }
 .table > tbody > tr:first-child > td {
   border-top: 0;

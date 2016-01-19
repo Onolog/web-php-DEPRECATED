@@ -40,16 +40,13 @@ var BaseCalendar = React.createClass({
 
   /**
    * Renders the days of the week in the header cells ('Sun', 'Mon', etc.).
-   *
-   * TODO: Allow for different week start days. Currently Sunday.
    */
   _renderHeaderRow: function() {
-    var headerCells = [];
-    for (var ii=0; ii < DAYS_IN_WEEK; ii++) {
-      headerCells.push(
-        <th key={ii}>{this._formatDayOfWeek(ii)}</th>
-      );
-    }
+    // TODO: Allow for different week start days. Sunday (7) is currently first.
+    var headerCells = [7, 1, 2, 3, 4, 5, 6].map((day) => {
+      return <th key={day}>{this._formatDayOfWeek(day)}</th>
+    });
+
     return <thead><tr>{headerCells}</tr></thead>;
   },
 

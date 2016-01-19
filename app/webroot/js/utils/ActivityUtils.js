@@ -68,6 +68,11 @@ function _getRange(/*string*/ unit, /*object*/ activities) {
   var min;
   var max;
 
+  // TODO: Find a better fallback for this scenario.
+  if (!activities.length) {
+    return _.range(1, 53);
+  }
+
   switch (unit) {
     case 'year':
       // From the earliest year in the set of activities to the current year.
