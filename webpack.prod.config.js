@@ -20,7 +20,6 @@ config.plugins = config.commonPlugins.concat([
     mangle: {
       except: ['$', 'exports', 'require']
     },
-    sourceMap: false,
   }),
 ]);
 
