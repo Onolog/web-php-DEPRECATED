@@ -8,7 +8,6 @@ import ShoeStore from 'flux/stores/ShoeStore';
 
 /**
  * ShoeSelector.react
- * @jsx React.DOM
  *
  * HTML selector that displays all of a user's shoes, grouped by activity state.
  */

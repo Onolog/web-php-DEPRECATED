@@ -8,7 +8,6 @@ var secondsToTime = require('utils/secondsToTime');
 
 /**
  * ActivitySplitsTable.react
- * @jsx React.DOM
  *
  * Displays data for each split/lap in a table view
  */

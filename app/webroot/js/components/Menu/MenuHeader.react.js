@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * MenuHeader.react
- * @jsx React.DOM
  *
  * Header used in a dropdown menu.
  */

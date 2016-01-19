@@ -1,10 +1,9 @@
 var React = require('react');
-var Link = require('../Link/Link.react');
+var Link = require('components/Link/Link.react');
 var cx = require('classnames');
 
 /**
  * PageNav.react
- * @jsx React.DOM
  *
  * Tab or pill navigation for use within a page.
  */

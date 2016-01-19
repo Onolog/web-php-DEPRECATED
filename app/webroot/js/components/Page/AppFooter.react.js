@@ -1,12 +1,11 @@
 var React = require('react');
 
-var LeftRight = require('../../components/LeftRight/LeftRight.react');
-var Link = require('../../components/Link/Link.react');
-var Middot = require('../../components/Middot.react');
+var LeftRight = require('components/LeftRight/LeftRight.react');
+var Link = require('components/Link/Link.react');
+var Middot = require('components/Middot.react');
 
 /**
  * AppFooter.react
- * @jsx React.DOM
  */
 var AppFooter = React.createClass({
   displayName: 'AppFooter',

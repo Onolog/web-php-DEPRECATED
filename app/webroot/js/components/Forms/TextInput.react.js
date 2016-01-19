@@ -1,9 +1,9 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var cx = require('classnames');
 
 /**
  * TextInput.react
- * @jsx React.DOM
  *
  * React wrapper around a standard text input.
  */
@@ -21,17 +21,17 @@ var TextInput = React.createClass({
   },
 
   blur: function() {
-    this.getDOMNode().blur();
+    ReactDOM.findDOMNode(this).blur();
     return this;
   },
 
   focus: function() {
-    this.getDOMNode().focus();
+    ReactDOM.findDOMNode(this).focus();
     return this;
   },
 
   getValue: function() {
-    return this.getDOMNode().value;
+    return ReactDOM.findDOMNode(this).value;
   }
 });
 

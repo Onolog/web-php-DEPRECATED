@@ -1,25 +1,24 @@
 var moment = require('moment');
 var React = require('react');
 
-var BarGraph = require('../../../components/Graph/BarGraph/BarGraph.react');
-var BarGraphBar = require('../../../components/Graph/BarGraph/BarGraphBar.react');
-var BarGraphSection = require('../../../components/Graph/BarGraph/BarGraphSection.react');
-var BarGraphSectionUnit = require('../../../components/Graph/BarGraph/BarGraphSectionUnit.react');
-var BaseAppPage = require('../../../components/Page/BaseAppPage.react');
-var FBImage = require('../../../components/Facebook/FBImage.react');
-var LabeledStat = require('../../../components/Data/LabeledStat.react');
-var Link = require('../../../components/Link/Link.react');
-var Middot = require('../../../components/Middot.react');
-var Panel = require('../../../components/Panel/Panel.react');
-var Topline = require('../../../components/Data/Topline.react');
+var BarGraph = require('components/Graph/BarGraph/BarGraph.react');
+var BarGraphBar = require('components/Graph/BarGraph/BarGraphBar.react');
+var BarGraphSection = require('components/Graph/BarGraph/BarGraphSection.react');
+var BarGraphSectionUnit = require('components/Graph/BarGraph/BarGraphSectionUnit.react');
+var BaseAppPage = require('components/Page/BaseAppPage.react');
+var FBImage = require('components/Facebook/FBImage.react');
+var LabeledStat = require('components/Data/LabeledStat.react');
+var Link = require('components/Link/Link.react');
+var Middot = require('components/Middot.react');
+var Panel = require('components/Panel/Panel.react');
+var Topline = require('components/Data/Topline.react');
 
-var formatDistance = require('../../../utils/formatDistance');
+var formatDistance = require('utils/formatDistance');
 
 var DATE_FORMAT = 'MMMM Do';
 
 /**
  * Report.react
- * @jsx React.DOM
  */
 var Report = React.createClass({
   displayName: 'Report',

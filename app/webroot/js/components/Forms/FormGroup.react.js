@@ -3,7 +3,6 @@ var cx = require('classnames');
 
 /**
  * FormGroup.react
- * @jsx React.DOM
  */
 var FormGroup = React.createClass({
   displayName: 'FormGroup',

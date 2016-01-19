@@ -16,7 +16,6 @@ require('./Daniels.css');
 
 /**
  * DanielsPage.react
- * @jsx React.DOM
  *
  * Displays Daniels data
  */

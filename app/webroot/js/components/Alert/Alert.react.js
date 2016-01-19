@@ -1,14 +1,13 @@
 var React = require('react');
 
-var CloseButton = require('../../components/Button/CloseButton.react');
+var CloseButton = require('components/Button/CloseButton.react');
 
 var cx = require('classnames');
 
-var USE = require('../../constants/Bootstrap').USE;
+var USE = require('constants/Bootstrap').USE;
 
 /**
  * Alert.react
- * @jsx React.DOM
  *
  * Display different types of alerts
  */

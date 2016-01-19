@@ -1,14 +1,13 @@
 var React = require('react');
 
-var Tokenizer = require('../Tokenizer/Tokenizer.react');
+var Tokenizer = require('components/Tokenizer/Tokenizer.react');
 
-var FBLoader = require('../../lib/Facebook/fb');
+var FBLoader = require('lib/Facebook/fb');
 
 require('./FBFriendTokenizer.css');
 
 /**
  * FriendTokenizer.react
- * @jsx React.DOM
  *
  * FB friend typeahead with name tokenizer
  */

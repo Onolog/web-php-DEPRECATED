@@ -4,7 +4,6 @@ var cx = require('classnames');
 
 /**
  * Nav.react
- * @jsx React.DOM
  */
 var Nav = React.createClass({
   displayName: 'Nav',

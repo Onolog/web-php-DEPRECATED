@@ -6,7 +6,6 @@ var cx = require('classnames');
 
 /**
  * CloseButton.react
- * @jsx React.DOM
  */
 var CloseButton = React.createClass({
   displayName: 'CloseButton',

@@ -15,7 +15,6 @@ var dateToUnixTime = require('utils/dateToUnixTime');
 
 /**
  * WorkoutFields.react
- * @jsx React.DOM
  *
  * Displays a form with inputs for adding or editing a workout
  */

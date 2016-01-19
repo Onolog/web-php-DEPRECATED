@@ -1,10 +1,9 @@
 var React = require('react');
 
-var CloseButton = require('../Button/CloseButton.react');
+var CloseButton = require('components/Button/CloseButton.react');
 
 /**
  * ModalHeader.react
- * @jsx React.DOM
  *
  * Header portion of a modal dialog
  */

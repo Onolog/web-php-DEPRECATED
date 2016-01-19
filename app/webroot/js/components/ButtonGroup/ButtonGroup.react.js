@@ -3,7 +3,7 @@ var React = require('react');
 
 var cx = require('classnames');
 
-var SIZE = require('../../constants/Bootstrap').SIZE;
+var {SIZE} = require('constants/Bootstrap');
 var LAYOUT = {
   horizontal: 'horizontal',
   vertical: 'vertical'
@@ -11,7 +11,6 @@ var LAYOUT = {
 
 /**
  * ButtonGroup.react
- * @jsx React.DOM
  */
 var ButtonGroup = React.createClass({
   displayName: 'ButtonGroup',

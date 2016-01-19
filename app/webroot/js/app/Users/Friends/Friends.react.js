@@ -1,19 +1,18 @@
 var React = require('react');
 
-var AppPage = require('../../../components/Page/AppPage.react');
-var Button = require('../../../components/Button/Button.react');
-var FBImage = require('../../../components/Facebook/FBImage.react');
-var ImageBlock = require('../../../components/ImageBlock/ImageBlock.react');
-var Link = require('../../../components/Link/Link.react');
-var Loader = require('../../../components/Loader/Loader.react');
-var PageHeader = require('../../../components/Page/PageHeader.react');
-var Panel = require('../../../components/Panel/Panel.react');
+var AppPage = require('components/Page/AppPage.react');
+var Button = require('components/Button/Button.react');
+var FBImage = require('components/Facebook/FBImage.react');
+var ImageBlock = require('components/ImageBlock/ImageBlock.react');
+var Link = require('components/Link/Link.react');
+var Loader = require('components/Loader/Loader.react');
+var PageHeader = require('components/Page/PageHeader.react');
+var Panel = require('components/Panel/Panel.react');
 
-var FBLoader = require('../../../lib/Facebook/fb');
+var FBLoader = require('lib/Facebook/fb');
 
 /**
  * Friends.react
- * @jsx React.DOM
  */
 var Friends = React.createClass({
   displayName: 'Friends',

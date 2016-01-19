@@ -21,7 +21,6 @@ var {NEW_ID} = require('constants/Workouts');
 
 /**
  * WorkoutAddDialog.react
- * @jsx React.DOM
  *
  * Takes a trigger prop and renders a dialog for adding workouts when that
  * trigger is clicked.

@@ -7,8 +7,6 @@ require('./Loader.css');
  * Loader.react
  *
  * Displays a loading indicator.
- *
- * @jsx React.DOM
  */
 var Loader = React.createClass({
   displayName: 'Loader',

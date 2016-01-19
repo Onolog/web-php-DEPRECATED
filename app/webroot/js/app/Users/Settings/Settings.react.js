@@ -1,23 +1,22 @@
 var React = require('react');
 
-var AppPage = require('../../../components/Page/AppPage.react');
-var Button = require('../../../components/Button/Button.react');
-var FormGroup = require('../../../components/Forms/FormGroup.react');
-var HiddenInput = require('../../../components/Forms/HiddenInput.react');
-var TextInput = require('../../../components/Forms/TextInput.react');
-var PageHeader = require('../../../components/Page/PageHeader.react');
-var Panel = require('../../../components/Panel/Panel.react');
-var Select = require('../../../components/Select/Select.react');
+var AppPage = require('components/Page/AppPage.react');
+var Button = require('components/Button/Button.react');
+var FormGroup = require('components/Forms/FormGroup.react');
+var HiddenInput = require('components/Forms/HiddenInput.react');
+var TextInput = require('components/Forms/TextInput.react');
+var PageHeader = require('components/Page/PageHeader.react');
+var Panel = require('components/Panel/Panel.react');
+var Select = require('components/Select/Select.react');
 
-var UserStore = require('../../../flux/stores/UserStore');
+var UserStore = require('flux/stores/UserStore');
 
-var cakePHP = require('../../../utils/cakePHP');
+var cakePHP = require('utils/cakePHP');
 
 var FORM_NAME = 'User';
 
 /**
  * Settings.react
- * @jsx React.DOM
  */
 var Settings = React.createClass({
   displayName: 'Settings',

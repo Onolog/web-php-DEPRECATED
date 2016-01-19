@@ -1,15 +1,15 @@
 var moment = require('moment');
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var DateInputCalendarPopover = require('./DateInputCalendarPopover.react');
 var Glyphicon = require('react-bootstrap/lib/Glyphicon');
 
-var cloneDate = require('../../utils/cloneDate');
+var cloneDate = require('utils/cloneDate');
 var cx = require('classnames');
 
 /**
  * DateInput.react
- * @jsx React.DOM
  *
  * Structured input for selecting a date via a calendar picker.
  */
@@ -73,7 +73,7 @@ var DateInput = React.createClass({
    */
   _closeOnBlur: function(evt) {
     var target = evt.target;
-    var parent = this.getDOMNode();
+    var parent = ReactDOM.findDOMNode(this);
     if (!(parent.contains(target) || target === parent)) {
       this.setState({showCalendar: false});
     }

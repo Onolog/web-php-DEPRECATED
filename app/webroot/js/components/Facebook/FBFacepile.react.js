@@ -1,16 +1,15 @@
 var React = require('react');
 
 var FBImage = require('./FBImage.react');
-var Link = require('../Link/Link.react');
-var Loader = require('../Loader/Loader.react');
+var Link = require('components/Link/Link.react');
+var Loader = require('components/Loader/Loader.react');
 
-var FBLoader = require('../../lib/Facebook/fb');
+var FBLoader = require('lib/Facebook/fb');
 
 require('./FBFacepile.css');
 
 /**
  * FBFacepile.react
- * @jsx React.DOM
  *
  * Renders a series of linkified profile photos. The name of the person is
  * displayed via tooltip on hover and clicking on the hoto takes the user to

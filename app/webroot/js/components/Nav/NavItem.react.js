@@ -1,10 +1,10 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var cx = require('classnames');
 
 /**
  * NavItem.react
- * @jsx React.DOM
  */
 var NavItem = React.createClass({
   displayName: 'NavItem',
@@ -87,7 +87,7 @@ var NavItem = React.createClass({
 
   _onWindowClick: function(evt) {
     var target = evt.target;
-    var triggerNode = this.getDOMNode();
+    var triggerNode = ReactDOM.findDOMNode(this);
     if (!(triggerNode.contains(target) || target === triggerNode)) {
       this.setState({menuOpen: false})
     }

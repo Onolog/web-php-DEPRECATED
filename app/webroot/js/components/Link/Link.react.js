@@ -3,7 +3,6 @@ var TooltipMixin = require('mixins/TooltipMixin.react');
 
 /**
  * Link.react
- * @jsx React.DOM
  *
  * React wrapper around standard HTML <a> tag
  */

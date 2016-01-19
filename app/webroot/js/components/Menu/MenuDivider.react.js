@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * MenuDivider.react
- * @jsx React.DOM
  *
  * Divider used in a dropdown menu.
  */

@@ -4,7 +4,6 @@ var cx = require('classnames');
 
 /**
  * ListGroup.react
- * @jsx React.DOM
  */
 var ListGroup = React.createClass({
   displayName: 'ListGroup',

@@ -1,27 +1,26 @@
 var _ = require('underscore');
 var React = require('react');
 
-var Activity = require('../../Activities/Activity.react');
-var Button = require('../../../components/Button/Button.react');
-var ButtonGroup = require('../../../components/ButtonGroup/ButtonGroup.react');
-var LeftRight = require('../../../components/LeftRight/LeftRight.react');
-var Link = require('../../../components/Link/Link.react');
-var Modal = require('../../../components/Modal/Modal.react');
-var WorkoutFields = require('../../Workouts/WorkoutFields.react');
+var Activity = require('app/Activities/Activity.react');
+var Button = require('components/Button/Button.react');
+var ButtonGroup = require('components/ButtonGroup/ButtonGroup.react');
+var LeftRight = require('components/LeftRight/LeftRight.react');
+var Link = require('components/Link/Link.react');
+var Modal = require('components/Modal/Modal.react');
+var WorkoutFields = require('app/Workouts/WorkoutFields.react');
 
-var LayerMixin = require('../../../mixins/LayerMixin.react');
-var StoreMixin = require('../../../mixins/StoreMixin.react');
+var LayerMixin = require('mixins/LayerMixin.react');
+var StoreMixin = require('mixins/StoreMixin.react');
 
-var ActionTypes = require('../../../flux/ActionTypes');
-var AlertStore = require('../../../flux/stores/AlertStore');
-var WorkoutActions = require('../../../flux/actions/WorkoutActions');
-var WorkoutStore = require('../../../flux/stores/WorkoutStore');
+var ActionTypes = require('flux/ActionTypes');
+var AlertStore = require('flux/stores/AlertStore');
+var WorkoutActions = require('flux/actions/WorkoutActions');
+var WorkoutStore = require('flux/stores/WorkoutStore');
 
-var formatDistance = require('../../../utils/formatDistance');
+var formatDistance = require('utils/formatDistance');
 
 /**
  * WorkoutLink.react
- * @jsx React.DOM
  */
 var WorkoutLink = React.createClass({
   displayName: 'WorkoutLink',

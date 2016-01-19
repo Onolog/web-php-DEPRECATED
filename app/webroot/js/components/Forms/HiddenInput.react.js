@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * HiddenInput.react
- * @jsx React.DOM
  *
  * React wrapper around a standard hidden input element.
  */

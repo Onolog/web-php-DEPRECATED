@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * ModalBody.react
- * @jsx React.DOM
  *
  * Main body of a modal dialog
  */

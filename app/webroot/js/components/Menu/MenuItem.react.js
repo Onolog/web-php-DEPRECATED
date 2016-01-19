@@ -1,10 +1,9 @@
 var React = require('react');
 
-var Link = require('../../components/Link/Link.react');
+var Link = require('components/Link/Link.react');
 
 /**
  * MenuItem.react
- * @jsx React.DOM
  *
  * Single menu item in a dropdown.
  */

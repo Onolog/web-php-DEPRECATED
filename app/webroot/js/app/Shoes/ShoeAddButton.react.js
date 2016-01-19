@@ -1,22 +1,21 @@
 var _ = require('underscore');
 var React = require('react');
 
-var Button = require('../../components/Button/Button.react');
-var Link = require('../../components/Link/Link.react');
-var Modal = require('../../components/Modal/Modal.react');
+var Button = require('components/Button/Button.react');
+var Link = require('components/Link/Link.react');
+var Modal = require('components/Modal/Modal.react');
 var ShoeFields = require('./ShoeFields.react');
 
-var DialogStore = require('../../flux/stores/DialogStore');
-var ShoeActions = require('../../flux/actions/ShoeActions');
+var DialogStore = require('flux/stores/DialogStore');
+var ShoeActions = require('flux/actions/ShoeActions');
 
-var LayerMixin = require('../../mixins/LayerMixin.react');
-var StoreMixin = require('../../mixins/StoreMixin.react');
+var LayerMixin = require('mixins/LayerMixin.react');
+var StoreMixin = require('mixins/StoreMixin.react');
 
 var cx = require('classnames');
 
 /**
  * ShoeAddButton.react
- * @jsx React.DOM
  *
  * Button that opens a dialog to add a new shoe.
  */

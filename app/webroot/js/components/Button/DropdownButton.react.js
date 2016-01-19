@@ -1,8 +1,9 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
-var Button = require('../../components/Button/Button.react');
-var ButtonGroup = require('../../components/ButtonGroup/ButtonGroup.react');
-var Menu = require('../../components/Menu/Menu.react');
+var Button = require('components/Button/Button.react');
+var ButtonGroup = require('components/ButtonGroup/ButtonGroup.react');
+var Menu = require('components/Menu/Menu.react');
 
 var cx = require('classnames');
 
@@ -101,7 +102,7 @@ var DropdownButton = React.createClass({
 
   _onWindowClick: function(evt) {
     var target = evt.target;
-    var triggerNode = this.refs.trigger.getDOMNode();
+    var triggerNode = ReactDOM.findDOMNode(this.refs.trigger);
     if (!(triggerNode.contains(target) || target === triggerNode)) {
       this.setState({open: false})
     }

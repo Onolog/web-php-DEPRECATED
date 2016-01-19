@@ -32,7 +32,6 @@ var WEEKLY = 'weekly';
 
 /**
  * ProfileYearPanel.react
- * @jsx React.DOM
  */
 var ProfileYearPanel = React.createClass({
   displayName: 'ProfileYearPanel',

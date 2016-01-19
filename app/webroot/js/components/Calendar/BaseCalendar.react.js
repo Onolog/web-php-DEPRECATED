@@ -3,7 +3,6 @@ var moment = require('moment');
 
 /**
  * BaseCalendar.react
- * @jsx React.DOM
  */
 var DAYS_IN_WEEK = 7;
 var ISO_DAY_OF_WEEK = 'E';

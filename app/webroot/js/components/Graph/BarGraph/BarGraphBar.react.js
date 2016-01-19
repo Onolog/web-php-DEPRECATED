@@ -1,12 +1,11 @@
 var React = require('react');
 
-var Link = require('../../Link/Link.react');
+var Link = require('components/Link/Link.react');
 
 var cx = require('classnames');
 
 /**
  * GraphBar.react
- * @jsx React.DOM
  *
  * Represent a single piece of data in a bar graph
  */

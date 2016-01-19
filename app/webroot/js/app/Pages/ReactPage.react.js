@@ -20,7 +20,6 @@ var DATA = require('constants/TestData');
 
 /**
  * ReactPage.react
- * @jsx React.DOM
  *
  * Displays React components
  */

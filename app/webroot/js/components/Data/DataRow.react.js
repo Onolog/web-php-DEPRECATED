@@ -1,7 +1,5 @@
 /**
  * DataRow.react
- * @jsx React.DOM
- * @responsive
  *
  * Renders a label/content pairing. Used within a DataGroup, which
  * specifies alignment.

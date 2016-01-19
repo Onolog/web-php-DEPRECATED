@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * Middot.react
- * @jsx React.DOM
  *
  * Renders a styled middot character within a span
  */

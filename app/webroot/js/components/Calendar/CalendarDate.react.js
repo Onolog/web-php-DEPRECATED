@@ -4,7 +4,6 @@ var cx = require('classnames');
 
 /**
  * CalendarDate.react
- * @jsx React.DOM
  *
  * Renders the date in a single calendar cell.
  */

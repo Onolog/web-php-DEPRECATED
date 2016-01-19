@@ -2,12 +2,12 @@ var _ = require('underscore');
 var moment = require('moment');
 var React = require('react');
 
-var ConstrainedTextInput = require('../Forms/ConstrainedTextInput.react');
+var ConstrainedTextInput = require('components/Forms/ConstrainedTextInput.react');
 
-var cloneDate = require('../../utils/cloneDate');
+var cloneDate = require('utils/cloneDate');
 var cx = require('classnames');
-var dateToUnixTime = require('../../utils/dateToUnixTime');
-var pad = require('../../utils/pad');
+var dateToUnixTime = require('utils/dateToUnixTime');
+var pad = require('utils/pad');
 
 var MERIDIEM = {
   AM: 'AM',
@@ -20,7 +20,6 @@ function formatter(value) {
 
 /**
  * TimeInput.react.js
- * @jsx React.DOM
  *
  * Structured input for specifiying a time of day. Can be used as a controlled
  * or uncontrolled input similar to a normal form field.

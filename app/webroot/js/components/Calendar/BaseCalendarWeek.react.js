@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * BaseCalendarWeek.react
- * @jsx React.DOM
  *
  * Renders a single row in the calendar grid (ie: one week)
  */

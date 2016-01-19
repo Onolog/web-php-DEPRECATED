@@ -1,13 +1,12 @@
 var _ = require('underscore');
 var React = require('react');
 
-var Link = require('../../components/Link/Link.react');
+var Link = require('components/Link/Link.react');
 
 var cx = require('classnames');
 
 /**
  * ListGroupItem.react
- * @jsx React.DOM
  */
 var ListGroupItem = React.createClass({
   displayName: 'ListGroupItem',

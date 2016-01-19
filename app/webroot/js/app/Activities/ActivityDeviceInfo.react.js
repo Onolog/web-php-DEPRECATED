@@ -1,14 +1,13 @@
 var React = require('react');
 
-var Image = require('../../components/Image/Image.react');
-var ImageBlock = require('../../components/ImageBlock/ImageBlock.react');
-var Link = require('../../components/Link/Link.react');
+var Image = require('components/Image/Image.react');
+var ImageBlock = require('components/ImageBlock/ImageBlock.react');
+var Link = require('components/Link/Link.react');
 
-var GarminDeviceUtils = require('../../utils/GarminDeviceUtils');
+var GarminDeviceUtils = require('utils/GarminDeviceUtils');
 
 /**
  * ActivityDeviceInfo.react
- * @jsx React.DOM
  *
  * Displays the the name and software version for a given device.
  */

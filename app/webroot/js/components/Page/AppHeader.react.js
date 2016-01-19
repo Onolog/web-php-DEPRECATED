@@ -1,24 +1,23 @@
 var _ = require('underscore');
 var React = require('react');
-var UserActions = require('../../flux/actions/UserActions');
-var UserStore = require('../../flux/stores/UserStore');
+var UserActions = require('flux/actions/UserActions');
+var UserStore = require('flux/stores/UserStore');
 
-var FBImage = require('../../components/Facebook/FBImage.react');
-var Link = require('../../components/Link/Link.react');
-var Menu = require('../../components/Menu/Menu.react');
-var MenuDivider = require('../../components/Menu/MenuDivider.react');
-var MenuItem = require('../../components/Menu/MenuItem.react');
-var Nav = require('../../components/Nav/Nav.react');
-var NavItem = require('../../components/Nav/NavItem.react');
-var Navbar = require('../../components/Navbar/Navbar.react');
-var StoreMixin = require('../../mixins/StoreMixin.react');
+var FBImage = require('components/Facebook/FBImage.react');
+var Link = require('components/Link/Link.react');
+var Menu = require('components/Menu/Menu.react');
+var MenuDivider = require('components/Menu/MenuDivider.react');
+var MenuItem = require('components/Menu/MenuItem.react');
+var Nav = require('components/Nav/Nav.react');
+var NavItem = require('components/Nav/NavItem.react');
+var Navbar = require('components/Navbar/Navbar.react');
+var StoreMixin = require('mixins/StoreMixin.react');
 
-var homeUrl = require('../../utils/homeUrl');
-var pad = require('../../utils/pad');
+var homeUrl = require('utils/homeUrl');
+var pad = require('utils/pad');
 
 /**
  * AppHeader.react
- * @jsx React.DOM
  */
 var AppHeader = React.createClass({
   displayName: 'AppHeader',

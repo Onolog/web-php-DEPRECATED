@@ -4,7 +4,6 @@ var cx = require('classnames');
 
 /**
  * Badge.react
- * @jsx React.DOM
  */
 var Badge = React.createClass({
   displayName: 'Badge',

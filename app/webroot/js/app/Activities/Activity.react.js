@@ -1,5 +1,6 @@
 var $ = require('jquery');
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var ActivityDeviceInfo = require('./ActivityDeviceInfo.react');
 var ActivityHeader = require('./ActivityHeader.react');
@@ -22,7 +23,6 @@ require('./Activity.css');
 
 /**
  * Activity.react
- * @jsx React.DOM
  *
  * Renders a full activity view, depending on what data is passed in, like maps,
  * graphs, stats and any user-created details.
@@ -48,10 +48,10 @@ var Activity = React.createClass({
 
   componentDidMount: function() {
     this._setOrientation();
-    $(this.getDOMNode()).resize(function() {
+    $(ReactDOM.findDOMNode(this)).resize(() => {
       // Update the component if it's resized for some reason
       this._setOrientation();
-    }.bind(this));
+    });
 
     ShoeStore.bind(ActionTypes.CHANGE, this._setShoes);
   },
@@ -169,7 +169,7 @@ var Activity = React.createClass({
 
   _setOrientation: function() {
     this.setState({
-      isHorizontal: this.getDOMNode().scrollWidth > 750
+      isHorizontal: ReactDOM.findDOMNode(this).scrollWidth > 750
     });
   }
 });

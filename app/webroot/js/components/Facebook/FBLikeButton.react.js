@@ -7,7 +7,6 @@ var FB_URL = '//www.facebook.com/plugins/like.php';
 
 /**
  * FBLikeButton.react
- * @jsx React.DOM
  *
  * Renders the Like button plugin for the specified URL.
  *

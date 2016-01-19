@@ -1,4 +1,4 @@
-var React = require('react');
+var ReactDOM = require('react-dom');
 
 /**
  * LayerMixin.react.js
@@ -47,14 +47,14 @@ var LayerMixin = {
   _renderLayer: function() {
     var layerElement = this.renderLayer();
 
-    // Renders can return null, but React.render() doesn't like being asked
+    // Renders can return null, but ReactDOM.render() doesn't like being asked
     // to render null. If we get null back from renderLayer(), just render
     // a noscript element, like React does when an element's render returns
     // null.
     if (layerElement === null) {
-      React.render('<noscript />', this._layer);
+      ReactDOM.render('<noscript />', this._layer);
     } else {
-      React.render(layerElement, this._layer);
+      ReactDOM.render(layerElement, this._layer);
     }
 
     this.layerDidMount && this.layerDidMount(this._layer);
@@ -62,7 +62,7 @@ var LayerMixin = {
 
   _unrenderLayer: function() {
     this.layerWillUnmount && this.layerWillUnmount(this._layer);
-    React.unmountComponentAtNode(this._layer);
+    ReactDOM.unmountComponentAtNode(this._layer);
   }
 };
 

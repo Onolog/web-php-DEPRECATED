@@ -1,19 +1,18 @@
 var React = require('react');
 
-var AppPage = require('../../components/Page/AppPage.react');
-var Button = require('../../components/Button/Button.react');
-var LeftRight = require('../../components/LeftRight/LeftRight.react');
-var Loader = require('../../components/Loader/Loader.react');
-var PageHeader = require('../../components/Page/PageHeader.react');
-var Panel = require('../../components/Panel/Panel.react');
+var AppPage = require('components/Page/AppPage.react');
+var Button = require('components/Button/Button.react');
+var LeftRight = require('components/LeftRight/LeftRight.react');
+var Loader = require('components/Loader/Loader.react');
+var PageHeader = require('components/Page/PageHeader.react');
+var Panel = require('components/Panel/Panel.react');
 var WorkoutFields = require('./WorkoutFields.react');
 
 var cx = require('classnames');
-var dateToUnixTime = require('../../utils/dateToUnixTime');
+var dateToUnixTime = require('utils/dateToUnixTime');
 
 /**
  * WorkoutAddEditPage.react
- * @jsx React.DOM
  *
  * Permalink page for adding new workouts or editing existing ones.
  */
@@ -92,7 +91,7 @@ var WorkoutAddEditPage = React.createClass({
     this.setState({isSaving: true});
 
     // Submit the form via normal /add or /edit endpoints.
-    this.refs.form.getDOMNode().submit();
+    this.refs.form.submit();
   }
 
 });

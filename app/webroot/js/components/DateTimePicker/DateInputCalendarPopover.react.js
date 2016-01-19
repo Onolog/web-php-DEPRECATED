@@ -3,14 +3,13 @@ var React = require('react');
 
 var DateInputCalendar = require('./DateInputCalendar.react');
 var Glyphicon = require('react-bootstrap/lib/Glyphicon');
-var Link = require('../Link/Link.react');
+var Link = require('components/Link/Link.react');
 
-var cloneDate = require('../../utils/cloneDate');
+var cloneDate = require('utils/cloneDate');
 var cx = require('classnames');
 
 /**
  * DateInputCalendarPopover.react.js
- * @jsx React.DOM
  *
  * Renders a popover displaying a single-month calendar and controls for
  * changing the displayed month. The visibility of the popover is controlled

@@ -5,7 +5,6 @@ var Image = require('../../components/Image/Image.react');
 
 /**
  * FBImage.react
- * @jsx React.DOM
  *
  * Given an fbid, retrieves and renders an FB graph image.
  */

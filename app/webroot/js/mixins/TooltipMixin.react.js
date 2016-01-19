@@ -5,7 +5,6 @@ var Tooltip = require('react-bootstrap/lib/Tooltip');
 
 /**
  * TooltipMixin.react
- * @jsx React.DOM
  *
  * Adds tooltip functionality that can be used in any component.
  */

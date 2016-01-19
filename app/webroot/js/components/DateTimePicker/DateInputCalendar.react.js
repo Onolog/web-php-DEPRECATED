@@ -1,18 +1,17 @@
 var moment = require('moment');
 var React = require('react');
 
-var BaseCalendar = require('../Calendar/BaseCalendar.react');
-var BaseCalendarDay = require('../Calendar/BaseCalendarDay.react');
-var BaseCalendarWeek = require('../Calendar/BaseCalendarWeek.react');
-var Link = require('../Link/Link.react');
+var BaseCalendar = require('components/Calendar/BaseCalendar.react');
+var BaseCalendarDay = require('components/Calendar/BaseCalendarDay.react');
+var BaseCalendarWeek = require('components/Calendar/BaseCalendarWeek.react');
+var Link = require('components/Link/Link.react');
 
-var calendarGrid = require('../../utils/calendarGrid');
-var cloneDate = require('../../utils/cloneDate');
+var calendarGrid = require('utils/calendarGrid');
+var cloneDate = require('utils/cloneDate');
 var cx = require('classnames');
 
 /**
  * DateInputCalendar.react.js
- * @jsx React.DOM
  */
 var DateInputCalendar = React.createClass({
   displayName: 'DateInputCalendar',

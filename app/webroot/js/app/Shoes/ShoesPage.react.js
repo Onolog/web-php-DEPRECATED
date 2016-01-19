@@ -1,19 +1,18 @@
 var React = require('react');
 
 var AllShoesView = require('./AllShoesView.react');
-var AppPage = require('../../components/Page/AppPage.react');
-var Button = require('../../components/Button/Button.react');
-var Loader = require('../../components/Loader/Loader.react');
-var PageHeader = require('../../components/Page/PageHeader.react');
+var AppPage = require('components/Page/AppPage.react');
+var Button = require('components/Button/Button.react');
+var Loader = require('components/Loader/Loader.react');
+var PageHeader = require('components/Page/PageHeader.react');
 var ShoeAddButton = require('./ShoeAddButton.react');
 
-var ActionTypes = require('../../flux/ActionTypes');
-var ShoeActions = require('../../flux/actions/ShoeActions');
-var ShoeStore = require('../../flux/stores/ShoeStore');
+var ActionTypes = require('flux/ActionTypes');
+var ShoeActions = require('flux/actions/ShoeActions');
+var ShoeStore = require('flux/stores/ShoeStore');
 
 /**
  * ShoesPage.react
- * @jsx React.DOM
  *
  * View controller for displaying all of a user's shoes
  */

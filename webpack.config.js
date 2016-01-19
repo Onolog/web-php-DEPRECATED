@@ -29,14 +29,29 @@ var config = {
     filename: '[name].js'
   },
   module: {
-    loaders: [
-      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
-      { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.css$/, loader: 'style-loader!css-loader' },
-      { test: /\.(eot|svg|ttf|woff|woff2)$/, loader: 'file-loader'},
+    loaders: [{
+      test: /\.js$/,
+      loader: 'babel',
+      exclude: /node_modules/,
+      query: {
+        // https://github.com/babel/babel-loader#options
+        cacheDirectory: true,
+        presets: ['es2015', 'react'],
+      },
+    }, {
+      test: /\.json$/,
+      loader: 'json-loader'
+    }, {
+      test: /\.css$/,
+      loader: 'style-loader!css-loader'
+    }, {
+      test: /\.(eot|svg|ttf|woff|woff2)$/,
+      loader: 'file-loader'
+    }, {
       // Inline base64 URLs for <=8k images, direct URLs for the rest
-      { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' }
-    ]
+      test: /\.(png|jpg)$/,
+      loader: 'url-loader?limit=8192'
+    }]
   },
   // Just for prod config file. Not used by webpack.
   commonPlugins: commonPlugins,

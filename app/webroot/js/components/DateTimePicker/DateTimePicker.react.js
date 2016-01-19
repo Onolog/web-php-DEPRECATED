@@ -17,7 +17,6 @@ require('./DateTimePicker.css');
 
 /**
  * DateTimePicker.react
- * @jsx React.DOM
  *
  * Form element that allows the user to select date, time and timezone.
  * Returns a date string with timezone offset and a timezone name.

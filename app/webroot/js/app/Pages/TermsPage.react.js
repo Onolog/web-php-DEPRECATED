@@ -1,12 +1,11 @@
 var React = require('react');
 
-var AppPage = require('../../components/Page/AppPage.react');
-var PageHeader = require('../../components/Page/PageHeader.react');
-var Panel = require('../../components/Panel/Panel.react');
+var AppPage = require('components/Page/AppPage.react');
+var PageHeader = require('components/Page/PageHeader.react');
+var Panel = require('components/Panel/Panel.react');
 
 /**
  * TermsPage.react
- * @jsx React.DOM
  *
  * Static page displaying the terms of service.
  */

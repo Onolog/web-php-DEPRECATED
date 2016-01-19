@@ -4,7 +4,6 @@ require('./BarGraph.css');
 
 /**
  * Graph.react
- * @jsx React.DOM
  *
  * Main container for bar graphs
  */

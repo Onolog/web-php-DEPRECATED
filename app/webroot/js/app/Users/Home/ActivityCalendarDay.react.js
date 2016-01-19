@@ -1,18 +1,17 @@
 var React = require('react');
 
-var BaseCalendarDay = require('../../../components/Calendar/BaseCalendarDay.react');
-var Button = require('../../../components/Button/Button.react');
-var CalendarDate = require('../../../components/Calendar/CalendarDate.react');
+var BaseCalendarDay = require('components/Calendar/BaseCalendarDay.react');
+var Button = require('components/Button/Button.react');
+var CalendarDate = require('components/Calendar/CalendarDate.react');
 var WorkoutAddDialog = require('./WorkoutAddDialog.react');
 var WorkoutLink = require('./WorkoutLink.react');
 
-var formatDistance = require('../../../utils/formatDistance');
+var formatDistance = require('utils/formatDistance');
 
 var LAST_DAY_OF_WEEK = 6; // Saturday (Sunday is 0)
 
 /**
 * ActivityCalendarDay.react
-* @jsx React.DOM
 */
 var ActivityCalendarDay = React.createClass({
   displayName: 'ActivityCalendarDay',

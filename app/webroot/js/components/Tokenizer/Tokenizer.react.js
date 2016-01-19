@@ -1,10 +1,9 @@
 var $ = require('jquery');
 var React = require('react');
-var TokenInput = require('../../lib/TokenInput');
+var TokenInput = require('lib/TokenInput');
 
 /**
  * Tokenizer.react
- * @jsx React.DOM
  *
  * Basic tokenizer component
  */
@@ -76,7 +75,7 @@ var Tokenizer = React.createClass({
   },
 
   componentDidMount: function() {
-    $(this.refs.input.getDOMNode()).tokenInput(this.props.dataSource, {
+    $(this.refs.input).tokenInput(this.props.dataSource, {
       theme: 'facebook',
       hintText: this.props.hintText,
       noResultsText: this.props.noResultsText,
@@ -92,7 +91,7 @@ var Tokenizer = React.createClass({
   componentDidUpdate: function(prevProps, prevState) {
     // Update the data source if it has changed
     if (dataSourceChanged(prevProps.dataSource, this.props.dataSource)) {
-      $(this.refs.input.getDOMNode()).tokenInput(
+      $(this.refs.input).tokenInput(
         'updateLocalData',
         this.props.dataSource
       );
@@ -102,7 +101,7 @@ var Tokenizer = React.createClass({
       prevProps.prePopulate,
       this.props.prePopulate
     )) {
-      $(this.refs.input.getDOMNode()).tokenInput(
+      $(this.refs.input).tokenInput(
         'updatePrePopulate',
         this.props.prePopulate
       );
@@ -145,7 +144,7 @@ var Tokenizer = React.createClass({
   },
 
   getValue: function() {
-    return this.refs.input.getDOMNode().value;
+    return this.refs.input.value;
   }
 
 });

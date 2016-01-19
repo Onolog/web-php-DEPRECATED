@@ -7,7 +7,6 @@ var TIMEZONES = moment.tz.names();
 
 /**
  * TimezonePicker
- * @jsx React.DOM
  */
 var TimezonePicker = React.createClass({
   displayName: 'TimezonePicker',

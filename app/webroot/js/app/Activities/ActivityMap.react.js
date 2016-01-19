@@ -1,12 +1,12 @@
 var GoogleMapsLoader = require('google-maps');
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var GarminSeries = require('lib/garmin/activity/GarminSeries');
 var GoogleMapController = require('lib/garmin/device/GoogleMapController');
 
 /**
  * ActivityMap.react
- * @jsx React.DOM
  *
  * Maps waypoints for a single activity on a Google map
  */
@@ -15,7 +15,7 @@ var ActivityMap = React.createClass({
 
   componentDidMount: function() {
     GoogleMapsLoader.load(function(google) {
-      this.mc = new GoogleMapController(this.getDOMNode());
+      this.mc = new GoogleMapController(ReactDOM.findDOMNode(this));
       this._initTracks();
     }.bind(this));
   },

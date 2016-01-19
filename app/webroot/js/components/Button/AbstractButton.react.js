@@ -9,7 +9,6 @@ var cx = require('classnames');
 
 /**
  * AbstractButton.react
- * @jsx React.DOM
  */
 var AbstractButton = React.createClass({
   displayName: 'AbstractButton',

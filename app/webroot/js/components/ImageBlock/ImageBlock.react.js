@@ -1,13 +1,12 @@
 var React = require('react');
 
-var Image = require('../Image/Image.react');
-var Link = require('../Link/Link.react');
+var Image = require('components/Image/Image.react');
+var Link = require('components/Link/Link.react');
 
 var cx = require('classnames');
 
 /**
  * ImageBlock.react
- * @jsx React.DOM
  */
 var ImageBlock = React.createClass({
   displayName: 'ImageBlock',

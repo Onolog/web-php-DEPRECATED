@@ -11,7 +11,6 @@ USE.LINK = 'link'; // Extra use type for buttons.
 
 /**
  * Button.react
- * @jsx React.DOM
  */
 var Button = React.createClass({
   displayName: 'Button',

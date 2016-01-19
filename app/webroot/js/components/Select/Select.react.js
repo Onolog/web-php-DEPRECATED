@@ -3,7 +3,6 @@ var cx = require('classnames');
 
 /**
  * Select.react
- * @jsx React.DOM
  *
  * React wrapper around standard HTML <select> tag
  */

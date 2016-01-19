@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * ModalFooter.react
- * @jsx React.DOM
  *
  * Footer portion of a modal dialog
  */

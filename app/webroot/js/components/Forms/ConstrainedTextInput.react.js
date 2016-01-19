@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var cx = require('classnames');
 
 var KEYCODE = {
@@ -14,7 +15,6 @@ var TYPES = {
 
 /**
  * ConstrainedTextInput.react
- * @jsx React.DOM
  *
  * A text input with a predefined set of valid values. User can cycle through
  * the values by pressing the up and down arrow keys. They can also enter a
@@ -107,7 +107,7 @@ var ConstrainedTextInput = React.createClass({
   },
 
   getValue: function() {
-    return this.getDOMNode().value;
+    return ReactDOM.findDOMNode(this).value;
   },
 
   _getIndex: function(value) {
@@ -121,7 +121,7 @@ var ConstrainedTextInput = React.createClass({
 
   _onKeydown: function(evt) {
     // Make sure the input is selected.
-    if (this.getDOMNode() !== document.activeElement) {
+    if (ReactDOM.findDOMNode(this) !== document.activeElement) {
       return;
     }
 

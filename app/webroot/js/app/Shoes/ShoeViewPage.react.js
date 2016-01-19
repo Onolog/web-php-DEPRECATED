@@ -1,15 +1,14 @@
 var React = require('react');
 
-var AppPage = require('../../components/Page/AppPage.react');
-var Button = require('../../components/Button/Button.react');
-var ButtonGroup = require('../../components/ButtonGroup/ButtonGroup.react');
-var PageHeader = require('../../components/Page/PageHeader.react');
-var Panel = require('../../components/Panel/Panel.react');
+var AppPage = require('components/Page/AppPage.react');
+var Button = require('components/Button/Button.react');
+var ButtonGroup = require('components/ButtonGroup/ButtonGroup.react');
+var PageHeader = require('components/Page/PageHeader.react');
+var Panel = require('components/Panel/Panel.react');
 var ShoeView = require('./ShoeView.react');
 
 /**
  * ShoeViewPage.react
- * @jsx React.DOM
  *
  * Displays the page header and view for a single shoe
  */

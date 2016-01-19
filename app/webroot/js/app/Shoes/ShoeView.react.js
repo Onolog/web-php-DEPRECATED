@@ -14,7 +14,6 @@ var secondsToTime = require('utils/secondsToTime');
 
 /**
  * ShoeView.react
- * @jsx React.DOM
  *
  * Data (mileage, total activities, and activity summary) for a single shoe.
  */

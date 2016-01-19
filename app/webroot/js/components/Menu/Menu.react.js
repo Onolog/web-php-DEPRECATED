@@ -3,7 +3,6 @@ var cx = require('classnames');
 
 /**
  * Menu.react
- * @jsx React.DOM
  *
  * Menu used in a dropdown.
  */

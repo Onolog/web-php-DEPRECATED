@@ -8,7 +8,6 @@ var cx = require('classnames');
 
 /**
  * AppPage.react
- * @jsx React.DOM
  */
 var AppPage = React.createClass({
   displayName: 'AppPage',

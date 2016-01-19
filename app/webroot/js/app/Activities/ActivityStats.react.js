@@ -10,7 +10,6 @@ var secondsToTime = require('utils/secondsToTime');
 
 /**
  * ActivityStats.react
- * @jsx React.DOM
  *
  * Renders a series of label/stat pairings for the activity, like distance,
  * time, heart rate, etc.

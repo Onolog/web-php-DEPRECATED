@@ -13,7 +13,6 @@ function getID(label) {
 
 /**
  * TabbedSection.react
- * @jsx React.DOM
  *
  * Displays a pane with tabs. Clicking on the tabs changes the content
  * of the pane.

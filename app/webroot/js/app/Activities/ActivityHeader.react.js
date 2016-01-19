@@ -3,12 +3,12 @@ var React = require('react');
 var {PropTypes} = React;
 
 var ActivitySection = require('./ActivitySection.react');
-var FBImage = require('../../components/Facebook/FBImage.react');
-var FBLikeButton = require('../../components/Facebook/FBLikeButton.react');
-var ImageBlock = require('../../components/ImageBlock/ImageBlock.react');
-var LeftRight = require('../../components/LeftRight/LeftRight.react');
-var Link = require('../../components/Link/Link.react');
-var Middot = require('../../components/Middot.react');
+var FBImage = require('components/Facebook/FBImage.react');
+var FBLikeButton = require('components/Facebook/FBLikeButton.react');
+var ImageBlock = require('components/ImageBlock/ImageBlock.react');
+var LeftRight = require('components/LeftRight/LeftRight.react');
+var Link = require('components/Link/Link.react');
+var Middot = require('components/Middot.react');
 var OverlayTrigger = require('react-bootstrap/lib/OverlayTrigger');
 var Tooltip = require('react-bootstrap/lib/Tooltip');
 
@@ -16,7 +16,6 @@ var PHOTO_DIMENSIONS = 75; // In px
 
 /**
  * ActivityHeader.react
- * @jsx React.DOM
  */
 var ActivityHeader = React.createClass({
   displayName: 'ActivityHeader',

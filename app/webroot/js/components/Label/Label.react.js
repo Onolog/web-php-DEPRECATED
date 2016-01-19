@@ -3,11 +3,10 @@ var React = require('react');
 
 var cx = require('classnames');
 
-var USE = require('../../constants/Bootstrap').USE;
+var {USE} = require('constants/Bootstrap');
 
 /**
  * Label.react
- * @jsx React.DOM
  */
 var Label = React.createClass({
   displayName: 'Label',

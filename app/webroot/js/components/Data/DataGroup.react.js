@@ -1,7 +1,5 @@
 /**
  * DataGroup.react
- * @jsx React.DOM
- * @responsive
  *
  * Renders a group of DataRows
  */

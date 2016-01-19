@@ -16,7 +16,6 @@ var cx = require('classnames');
 
 /**
  * AllShoesView.react
- * @jsx React.DOM
  *
  * View controller for displaying all of a user's shoes
  */
@@ -70,10 +69,12 @@ var AllShoesView = React.createClass({
     return (
       <Table hover fill>
         <thead>
-          <th>Name</th>
-          <th className="activities">Runs</th>
-          <th className="mileage">Miles</th>
-          <th colSpan={2} />
+          <tr>
+            <th>Name</th>
+            <th className="activities">Runs</th>
+            <th className="mileage">Miles</th>
+            <th colSpan={2} />
+          </tr>
         </thead>
         <tbody>
           {shoes.map(this._renderTableRows)}

@@ -1,19 +1,18 @@
 var React = require('react');
 
-var Button = require('../../components/Button/Button.react');
-var Link = require('../../components/Link/Link.react');
-var Modal = require('../../components/Modal/Modal.react');
+var Button = require('components/Button/Button.react');
+var Link = require('components/Link/Link.react');
+var Modal = require('components/Modal/Modal.react');
 var ShoeView = require('./ShoeView.react');
 
-var LayerMixin = require('../../mixins/LayerMixin.react');
-var ShoeActions = require('../../flux/actions/ShoeActions');
-var ShoeStore = require('../../flux/stores/ShoeStore');
+var LayerMixin = require('mixins/LayerMixin.react');
+var ShoeActions = require('flux/actions/ShoeActions');
+var ShoeStore = require('flux/stores/ShoeStore');
 
 var cx = require('classnames');
 
 /**
  * ShoeViewLink.react
- * @jsx React.DOM
  *
  * Linkified name of shoe. Opens a dialog with the shoe's data when clicked.
  */

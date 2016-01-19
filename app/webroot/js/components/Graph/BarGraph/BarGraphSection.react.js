@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * GraphSection.react
- * @jsx React.DOM
  *
  * A section within a bar graph that denotes a grouping of data. For example,
  * it could represent one month, with sets of data for that month displayed

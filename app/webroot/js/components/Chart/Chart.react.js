@@ -3,9 +3,10 @@
 var $ = require('jquery');
 var Highcharts = require('highcharts-commonjs');
 var React = require('react');
+var ReactDOM = require('react-dom');
 
-var HighchartsOnologTheme = require('../../lib/highcharts/themes/onolog');
-var HIGHCHARTS = require('../../constants/Highcharts');
+var HighchartsOnologTheme = require('lib/highcharts/themes/onolog');
+var HIGHCHARTS = require('constants/Highcharts');
 
 /**
  * Chart.react
@@ -81,7 +82,10 @@ var Chart = React.createClass({
   },
 
   _renderChart: function() {
-    Highcharts.createChart(this.getDOMNode(), this._getOptions(this.props));
+    Highcharts.createChart(
+      ReactDOM.findDOMNode(this),
+      this._getOptions(this.props)
+    );
   },
 
   _getOptions: function(props) {

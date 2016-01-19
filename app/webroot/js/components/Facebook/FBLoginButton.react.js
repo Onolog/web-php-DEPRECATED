@@ -3,7 +3,6 @@ var Button = require('react-bootstrap/lib/Button');
 
 /**
  * FBLoginButton.react
- * @jsx React.DOM
  *
  * Renders a custom React FB login button.
  */

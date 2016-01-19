@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * LabeledStat.react
- * @jsx React.DOM
  *
  * Renders a single label/statistic pair, with an optional annotation below
  */

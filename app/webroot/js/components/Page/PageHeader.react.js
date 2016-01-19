@@ -1,10 +1,9 @@
 var React = require('react');
 
-var LeftRight = require('../../components/LeftRight/LeftRight.react');
+var LeftRight = require('components/LeftRight/LeftRight.react');
 
 /**
  * PageHeader.react
- * @jsx React.DOM
  */
 var PageHeader = React.createClass({
   displayName: 'PageHeader',

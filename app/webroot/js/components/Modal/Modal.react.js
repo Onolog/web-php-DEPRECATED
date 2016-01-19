@@ -1,15 +1,14 @@
 var $ = require('jquery');
 var React = require('react');
 
-var Alert = require('../../components/Alert/Alert.react');
-var ModalBody = require('../../components/Modal/ModalBody.react');
-var ModalDialog = require('../../components/Modal/ModalDialog.react');
-var ModalFooter = require('../../components/Modal/ModalFooter.react');
-var ModalHeader = require('../../components/Modal/ModalHeader.react');
+var Alert = require('components/Alert/Alert.react');
+var ModalBody = require('components/Modal/ModalBody.react');
+var ModalDialog = require('components/Modal/ModalDialog.react');
+var ModalFooter = require('components/Modal/ModalFooter.react');
+var ModalHeader = require('components/Modal/ModalHeader.react');
 
 /**
  * Modal.react
- * @jsx React.DOM
  *
  * Modal Component
  */

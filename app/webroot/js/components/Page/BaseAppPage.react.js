@@ -9,7 +9,6 @@ var INTERVAL = 1 * 60 * 1000; // 1 min
 
 /**
  * BaseAppPage.react
- * @jsx React.DOM
  *
  * Base component for rendering the app page, with code that should execute on
  * every page.

@@ -15,7 +15,6 @@ function formatter(value) {
 
 /**
  * DurationInput.react
- * @jsx React.DOM
  *
  * Input for specifying and displaying the duration of an activity, formatted
  * as `hh:mm:ss`.

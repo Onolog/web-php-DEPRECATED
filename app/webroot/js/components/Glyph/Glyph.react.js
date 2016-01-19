@@ -4,7 +4,6 @@ var cx = require('classnames');
 
 /**
  * Glyph.react
- * @jsx React.DOM
  */
 var Glyph = React.createClass({
   displayName: 'Glyph',

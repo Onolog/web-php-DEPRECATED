@@ -1,25 +1,24 @@
 var moment = require('moment');
 var React = require('react');
 
-var ActionTypes = require('../../../flux/ActionTypes');
-var CalendarActions = require('../../../flux/actions/CalendarActions');
-var WorkoutStore = require('../../../flux/stores/WorkoutStore');
+var ActionTypes = require('flux/ActionTypes');
+var CalendarActions = require('flux/actions/CalendarActions');
+var WorkoutStore = require('flux/stores/WorkoutStore');
 
 var ActivityCalendar = require('./ActivityCalendar.react');
-var AppPage = require('../../../components/Page/AppPage.react');
-var Button = require('../../../components/Button/Button.react');
-var ButtonGroup = require('../../../components/ButtonGroup/ButtonGroup.react');
-var Loader = require('../../../components/Loader/Loader.react');
-var PageHeader = require('../../../components/Page/PageHeader.react');
-var Panel = require('../../../components/Panel/Panel.react');
-var WorkoutAddDialog = require('../../../app/Users/Home/WorkoutAddDialog.react');
+var AppPage = require('components/Page/AppPage.react');
+var Button = require('components/Button/Button.react');
+var ButtonGroup = require('components/ButtonGroup/ButtonGroup.react');
+var Loader = require('components/Loader/Loader.react');
+var PageHeader = require('components/Page/PageHeader.react');
+var Panel = require('components/Panel/Panel.react');
+var WorkoutAddDialog = require('app/Users/Home/WorkoutAddDialog.react');
 
-var cloneDate = require('../../../utils/cloneDate');
+var cloneDate = require('utils/cloneDate');
 var cx = require('classnames');
 
 /**
  * Home.react
- * @jsx React.DOM
  */
 var Home = React.createClass({
   displayName: 'Home',

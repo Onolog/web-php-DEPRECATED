@@ -3,7 +3,6 @@ var cx = require('classnames');
 
 /**
  * Textarea.react
- * @jsx React.DOM
  *
  * React wrapper around a standard textarea.
  */

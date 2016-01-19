@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * GraphSectionUnit.react
- * @jsx React.DOM
  *
  * An abstract container for displaying one or more bars inside.
  */

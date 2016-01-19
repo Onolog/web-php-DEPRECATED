@@ -15,7 +15,6 @@ var GoogleTimezone = require('utils/GoogleTimezone');
 
 /**
  * GarminUploader.react
- * @jsx React.DOM
  */
 var GarminUploader = React.createClass({
   displayName: 'GarminUploader',
@@ -120,10 +119,10 @@ var GarminUploader = React.createClass({
         latitude: start.latitude,
         longitude: start.longitude,
         timestamp: moment(start.time).unix()
-      }, response => {
+      }, (response) => {
         activity.timezone = response.timeZoneId;
         this.setState({activity: activity});
-      }.bind(this));
+      });
     }
   }
 });

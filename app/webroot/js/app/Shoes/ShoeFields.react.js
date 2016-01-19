@@ -2,10 +2,10 @@ var _ = require('underscore');
 var React = require('react');
 
 var BrandSelector = require('./BrandSelector.react');
-var FormGroup = require('../../components/Forms/FormGroup.react');
-var TextInput = require('../../components/Forms/TextInput.react');
+var FormGroup = require('components/Forms/FormGroup.react');
+var TextInput = require('components/Forms/TextInput.react');
 
-var cakePHP = require('../../utils/cakePHP');
+var cakePHP = require('utils/cakePHP');
 
 var FIELD_INACTIVE = 'inactive';
 var FORM_NAME = 'Shoe';
@@ -16,7 +16,6 @@ function encodeName(name) {
 
 /**
  * ShoeFields.react
- * @jsx React.DOM
  *
  * Displays a form with inputs for adding or editing a shoe.
  */

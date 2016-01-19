@@ -1,10 +1,9 @@
 var React = require('react');
 
-var ActionTypes = require('../flux/ActionTypes');
+var ActionTypes = require('flux/ActionTypes');
 
 /**
  * StoreMixin.react
- * @jsx React.DOM
  *
  * Abstracts a bunch of boilerplate associated with adding stores to components.
  * To use, set `this.stores` in `componentWillMount`.

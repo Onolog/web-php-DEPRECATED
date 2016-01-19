@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * FileInput.react
- * @jsx React.DOM
  *
  * React wrapper around a standard file input.
  */

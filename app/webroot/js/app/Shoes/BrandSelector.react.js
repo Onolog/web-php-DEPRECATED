@@ -1,14 +1,13 @@
 var React = require('react');
 
-var TextInput = require('../../components/Forms/TextInput.react');
-var Select = require('../../components/Select/Select.react');
+var TextInput = require('components/Forms/TextInput.react');
+var Select = require('components/Select/Select.react');
 
-var BrandStore = require('../../flux/stores/BrandStore');
-var StoreMixin = require('../../mixins/StoreMixin.react');
+var BrandStore = require('flux/stores/BrandStore');
+var StoreMixin = require('mixins/StoreMixin.react');
 
 /**
  * BrandSelector.react
- * @jsx React.DOM
  *
  * A selector element that displays all possible shoe brands.
  */

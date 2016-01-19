@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * Image.react
- * @jsx React.DOM
  *
  * React wrapper around standard HTML <img> tag
  */

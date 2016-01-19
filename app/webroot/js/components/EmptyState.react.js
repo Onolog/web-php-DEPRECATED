@@ -2,7 +2,6 @@ var React = require('react');
 
 /**
  * EmptyState.react
- * @jsx React.DOM
  *
  * Standardized component for when there's no data to display.
  */

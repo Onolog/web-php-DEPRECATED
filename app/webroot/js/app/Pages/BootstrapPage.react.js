@@ -1,35 +1,34 @@
 var _ = require('underscore');
 var React = require('react');
 
-var Alert = require('../../components/Alert/Alert.react');
-var AppPage = require('../../components/Page/AppPage.react');
-var Badge = require('../../components/Badge/Badge.react');
-var Button = require('../../components/Button/Button.react');
-var DropdownButton = require('../../components/Button/DropdownButton.react');
-var ButtonGroup = require('../../components/ButtonGroup/ButtonGroup.react');
-var Glyph = require('../../components/Glyph/Glyph.react');
-var Label = require('../../components/Label/Label.react');
-var ListGroup = require('../../components/ListGroup/ListGroup.react');
-var ListGroupItem = require('../../components/ListGroup/ListGroupItem.react');
-var Menu = require('../../components/Menu/Menu.react');
-var MenuDivider = require('../../components/Menu/MenuDivider.react');
-var MenuHeader = require('../../components/Menu/MenuHeader.react');
-var MenuItem = require('../../components/Menu/MenuItem.react');
-var Nav = require('../../components/Nav/Nav.react');
-var NavItem = require('../../components/Nav/NavItem.react');
-var Navbar = require('../../components/Navbar/Navbar.react');
-var PageHeader = require('../../components/Page/PageHeader.react');
-var Panel = require('../../components/Panel/Panel.react');
-var Table = require('../../components/Table/Table.react');
+var Alert = require('components/Alert/Alert.react');
+var AppPage = require('components/Page/AppPage.react');
+var Badge = require('components/Badge/Badge.react');
+var Button = require('components/Button/Button.react');
+var DropdownButton = require('components/Button/DropdownButton.react');
+var ButtonGroup = require('components/ButtonGroup/ButtonGroup.react');
+var Glyph = require('components/Glyph/Glyph.react');
+var Label = require('components/Label/Label.react');
+var ListGroup = require('components/ListGroup/ListGroup.react');
+var ListGroupItem = require('components/ListGroup/ListGroupItem.react');
+var Menu = require('components/Menu/Menu.react');
+var MenuDivider = require('components/Menu/MenuDivider.react');
+var MenuHeader = require('components/Menu/MenuHeader.react');
+var MenuItem = require('components/Menu/MenuItem.react');
+var Nav = require('components/Nav/Nav.react');
+var NavItem = require('components/Nav/NavItem.react');
+var Navbar = require('components/Navbar/Navbar.react');
+var PageHeader = require('components/Page/PageHeader.react');
+var Panel = require('components/Panel/Panel.react');
+var Table = require('components/Table/Table.react');
 
-var BOOTSTRAP = require('../../constants/Bootstrap');
+var BOOTSTRAP = require('constants/Bootstrap');
 
 var SIZE = BOOTSTRAP.SIZE; 
 var USE = BOOTSTRAP.USE;
 
 /**
  * ReactPage.react
- * @jsx React.DOM
  *
  * Displays React components
  */

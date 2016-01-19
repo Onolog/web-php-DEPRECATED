@@ -1,14 +1,12 @@
-/**
- * Navbar.react
- * @jsx React.DOM
- */
 var React = require('react');
 
-var Nav = require('../../components/Nav/Nav.react');
+var Nav = require('components/Nav/Nav.react');
 
 var cx = require('classnames');
 
-
+/**
+ * Navbar.react
+ */
 var Navbar = React.createClass({
   displayName: 'Navbar',
 

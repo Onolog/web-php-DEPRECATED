@@ -12,7 +12,6 @@ var unixTimeToDate = require('utils/unixTimeToDate');
 
 /**
  * ActivityCalendar.react
- * @jsx React.DOM
  */
 var ActivityCalendar = React.createClass({
   displayName: 'ActivityCalendar',

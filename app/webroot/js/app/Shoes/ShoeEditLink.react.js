@@ -18,7 +18,6 @@ var ActionTypes = require('flux/ActionTypes');
 
 /**
  * ShoeEditLink.react
- * @jsx React.DOM
  *
  * Link that opens a dialog with the editable fields for the shoe.
  */

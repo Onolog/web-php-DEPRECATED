@@ -1,5 +1,5 @@
 var _ = require('underscore');
-var React = require('react/addons');
+var React = require('react');
 
 var AppPage = require('components/Page/AppPage.react');
 var LabeledStat = require('components/Data/LabeledStat.react');
@@ -14,7 +14,6 @@ require('../../../../css/app/Profile.css');
 
 /**
  * Profile.react
- * @jsx React.DOM
  */
 var Profile = React.createClass({
   displayName: 'Profile',

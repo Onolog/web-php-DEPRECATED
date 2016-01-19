@@ -5,7 +5,6 @@ require('./Topline.css');
 
 /**
  * Topline.react
- * @jsx React.DOM
  *
  * Renders a series of labeled stats
  */

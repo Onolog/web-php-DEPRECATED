@@ -3,7 +3,6 @@ var cx = require('classnames');
 
 /**
  * Table.react
- * @jsx React.DOM
  *
  * Wrapper around standard HTML table, with Boostrap support.
  */

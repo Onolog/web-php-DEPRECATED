@@ -5,7 +5,6 @@ require('./ActivitySection.css');
 
 /**
  * ActivitySection.react
- * @jsx React.DOM
  */
 var ActivitySection = React.createClass({
   displayName: 'ActivitySection',

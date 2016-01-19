@@ -4,7 +4,6 @@ var cx = require('classnames');
 
 /**
  * ModalDialog.react
- * @jsx React.DOM
  */
 var ModalDialog = React.createClass({
   displayName: 'ModalDialog',

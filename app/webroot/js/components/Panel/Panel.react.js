@@ -1,12 +1,11 @@
 var React = require('react');
 
-var LeftRight = require('../../components/LeftRight/LeftRight.react');
+var LeftRight = require('components/LeftRight/LeftRight.react');
 
 var cx = require('classnames');
 
 /**
  * Panel.react
- * @jsx React.DOM
  *
  * Panel component, with optional title, body, and footer
  */

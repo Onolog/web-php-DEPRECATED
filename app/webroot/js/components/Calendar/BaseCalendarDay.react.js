@@ -1,11 +1,10 @@
 var React = require('react');
 
 var cx = require('classnames');
-var isSameDay = require('../../utils/isSameDay');
+var isSameDay = require('utils/isSameDay');
 
 /**
  * BaseCalendarDay.react
- * @jsx React.DOM
  *
  * Renders a single day for a month-view calendar
  */
