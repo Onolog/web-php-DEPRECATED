@@ -1,0 +1,10 @@
+.bootstrap-typeahead .dropdown-menu {
+  overflow: scroll;
+}
+.bootstrap-typeahead .dropdown-menu > li a:focus {
+  outline: none;
+}
+
+.bootstrap-typeahead-input-hint {
+  color: #aaa;
+}

@@ -1,7 +1,7 @@
 /**
  * Dummy data for UI Explorer
  */
-define({
+module.exports = {
 
   FRIENDS: [
     { id: 4280, name: 'Paul McDonald'},
@@ -23,6 +23,59 @@ define({
       { value: "34", label: "Mizuno Waverider 16.1" }
     ]
   }],
+
+  STATES: [
+    'Alabama',
+    'Alaska',
+    'Arkansas',
+    'Arizona',
+    'California',
+    'Colorado',
+    'Connecticut',
+    'Delaware',
+    'Florida',
+    'Georgia',
+    'Hawaii',
+    'Idaho',
+    'Illinois',
+    'Indiana',
+    'Iowa',
+    'Kansas',
+    'Kentucky',
+    'Louisiana',
+    'Maine',
+    'Maryland',
+    'Massachusetts',
+    'Michigan',
+    'Minnesota',
+    'Mississippi',
+    'Missouri',
+    'Montana',
+    'Nebraska',
+    'Nevada',
+    'New Hampshire',
+    'New Jersey',
+    'New Mexico',
+    'New York',
+    'North Carolina',
+    'North Dakota',
+    'Ohio',
+    'Oklahoma',
+    'Oregon',
+    'Pennsylvania',
+    'Rhode Island',
+    'South Dakota',
+    'South Carolina',
+    'Tennessee',
+    'Texas',
+    'Utah',
+    'Vermont',
+    'Virginia',
+    'Washington',
+    'West Virginia',
+    'Wisconsin',
+    'Wyoming'
+  ],
 
   WORKOUTS: {
     '2014': {
@@ -100,6 +153,6 @@ define({
         }]
       }
     }
-  }
+  },
 
-});
+};

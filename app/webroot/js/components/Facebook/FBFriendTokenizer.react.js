@@ -1,10 +1,8 @@
-var React = require('react');
+import React from 'react';
+import Typeahead from 'components/Tokenizer/Typeahead.react';
 
-var Tokenizer = require('components/Tokenizer/Tokenizer.react');
-
-var FBLoader = require('lib/Facebook/fb');
-
-require('./FBFriendTokenizer.css');
+import FBLoader from 'lib/Facebook/fb';
+import {map} from 'lodash/collection';
 
 /**
  * FriendTokenizer.react
@@ -21,8 +19,8 @@ var FBFriendTokenizer = React.createClass({
 
   getInitialState: function() {
     return {
-      taggableFriends: [],
-      prePopulate: []
+      options: [],
+      selected: []
     };
   },
 
@@ -31,14 +29,16 @@ var FBFriendTokenizer = React.createClass({
   },
 
   render: function() {
+    var {selected, options} = this.state;
+
     return (
-      <Tokenizer
-        dataSource={this.state.taggableFriends}
-        hintText="Type a friend's name..."
-        onChange={this._onChange}
-        prePopulate={this.state.prePopulate}
-        name={this.props.name}
-        placeholder="Friends"
+      <Typeahead
+        labelKey="name"
+        multiple
+        onChange={this._handleChange}
+        options={options}
+        placeholder="Type a friend's name..."
+        selected={selected}
       />
     );
   },
@@ -51,10 +51,9 @@ var FBFriendTokenizer = React.createClass({
     }];
 
     // Get info for any already-tagged friends
-    var friends = this.props.friends + '';
+    var {friends} = this.props;
     if (friends) {
-      var fbids = friends.split(',');
-      fbids.forEach(function(fbid) {
+      friends.toString().split(',').forEach((fbid) => {
         batch.push({
           method: 'GET',
           relative_url: fbid + '?fields=name'
@@ -63,29 +62,19 @@ var FBFriendTokenizer = React.createClass({
     }
 
     // Get taggable + already tagged FB friends
-    FB.getLoginStatus(function(response) {
-      FB.api('/', 'POST', {batch: batch}, this._processGraphResponse);
-    }.bind(this));
+    FB.api('/', 'POST', {batch}, this._handleGraphResponse);
   },
 
   /**
    * Simulate firing an onChange event
    */
-  _onChange: function(/*array*/ friends) {
-    this.setState({
-      prePopulate: friends
-    });
-
-    // Convert back to a string when passing the data up to the activity.
-    var fbidArr = [];
-    friends.forEach(function(friend) {
-      fbidArr.push(friend.id);
-    });
+  _handleChange: function(/*array*/ selected) {
+    this.setState({selected});
 
     this.props.onChange && this.props.onChange({
       target: {
         name: this.props.name,
-        value: fbidArr.join(',')
+        value: map(selected, 'id').join(',')
       }
     });
   },
@@ -93,22 +82,19 @@ var FBFriendTokenizer = React.createClass({
   /**
    * Parse the batched response from the FB Graph API.
    */
-  _processGraphResponse: function(response) {
+  _handleGraphResponse: function(response) {
     // The first item in the response is the full list of taggable friends.
     // The other items are friends who are already tagged,
-    var taggableFriends = JSON.parse(response.shift().body).data;
-    var prePopulate = [];
+    var options = JSON.parse(response.shift().body).data;
+    var selected = [];
 
-    response.forEach(function(data) {
+    response.forEach((data) => {
       if (data.code === 200) {
-        prePopulate.push(JSON.parse(data.body));
+        selected.push(JSON.parse(data.body));
       }
     });
 
-    this.setState({
-      taggableFriends: taggableFriends,
-      prePopulate: prePopulate
-    });
+    this.setState({options, selected});
   }
 });
 

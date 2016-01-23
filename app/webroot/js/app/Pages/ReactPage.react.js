@@ -12,11 +12,18 @@ var BarGraph = require('components/Graph/BarGraph/BarGraph.react');
 var LeftRight = require('components/LeftRight/LeftRight.react');
 var PageHeader = require('components/Page/PageHeader.react');
 var Panel = require('components/Panel/Panel.react');
+var Typeahead = require('components/Tokenizer/Typeahead.react');
 var WorkoutFields = require('app/Workouts/WorkoutFields.react');
 
 var cloneDate = require('utils/cloneDate');
 
-var DATA = require('constants/TestData');
+var {FRIENDS, SHOES, STATES, WORKOUTS} = require('constants/TestData');
+let states = STATES.map((state, idx) => {
+  return {
+    id: idx,
+    label: state
+  };
+});
 
 /**
  * ReactPage.react
@@ -31,7 +38,7 @@ var ReactPage = React.createClass({
       calendarDate: new Date(),
       datePickerDate: moment().toDate(),
       timezone: 'America/Los_Angeles',
-      workouts: DATA.WORKOUTS
+      workouts: WORKOUTS
     };
   },
 
@@ -93,24 +100,29 @@ var ReactPage = React.createClass({
           <FBFriendTokenizer />
           <h4 style={{margin: '15px 0 5px'}}>Pre-Populated</h4>
           <FBFriendTokenizer
-            prePopulate={DATA.FRIENDS}
+            prePopulate={FRIENDS}
           />
         </Panel>
 
         <Panel title="Workout Fields">
           <WorkoutFields
             action="add"
-            shoes={DATA.SHOES}
-            workout={DATA.WORKOUTS['2014']['10']['21'][1]}
+            shoes={SHOES}
+            workout={WORKOUTS['2014']['10']['21'][1]}
           />
         </Panel>
 
+        {/*
         <Panel title="Activity">
-          <Activity activity={DATA.WORKOUTS['2014']['10']['21'][1]} />
+          <Activity activity={WORKOUTS['2014']['10']['21'][1]} />
         </Panel>
+        */}
 
-        <Panel title="Graph">
-          Need to add
+        <Panel title="Typeahead">
+          <Typeahead
+            multiple
+            options={states}
+          />
         </Panel>
       </AppPage>
     );
