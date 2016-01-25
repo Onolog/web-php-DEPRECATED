@@ -1,4 +1,5 @@
 var $ = require('jquery');
+var Autolinker = require('autolinker');
 var React = require('react');
 var ReactDOM = require('react-dom');
 
@@ -14,7 +15,6 @@ var Link = require('components/Link/Link.react');
 var TabbedSection = require('components/Navigation/TabbedSection.react');
 
 var ActionTypes = require('flux/ActionTypes');
-var Autolinker = require('lib/Autolinker.min');
 var ShoeStore = require('flux/stores/ShoeStore');
 
 var cx = require('classnames');
