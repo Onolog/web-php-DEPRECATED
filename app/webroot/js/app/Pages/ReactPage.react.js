@@ -12,7 +12,6 @@ var BarGraph = require('components/Graph/BarGraph/BarGraph.react');
 var LeftRight = require('components/LeftRight/LeftRight.react');
 var PageHeader = require('components/Page/PageHeader.react');
 var Panel = require('components/Panel/Panel.react');
-var Typeahead = require('components/Tokenizer/Typeahead.react');
 var WorkoutFields = require('app/Workouts/WorkoutFields.react');
 
 var cloneDate = require('utils/cloneDate');
@@ -99,9 +98,7 @@ var ReactPage = React.createClass({
           <h4 style={{margin: '0 0 5px'}}>Initially Empty</h4>
           <FBFriendTokenizer />
           <h4 style={{margin: '15px 0 5px'}}>Pre-Populated</h4>
-          <FBFriendTokenizer
-            prePopulate={FRIENDS}
-          />
+          <FBFriendTokenizer friends={FRIENDS} />
         </Panel>
 
         <Panel title="Workout Fields">
@@ -117,13 +114,6 @@ var ReactPage = React.createClass({
           <Activity activity={WORKOUTS['2014']['10']['21'][1]} />
         </Panel>
         */}
-
-        <Panel title="Typeahead">
-          <Typeahead
-            multiple
-            options={states}
-          />
-        </Panel>
       </AppPage>
     );
   },

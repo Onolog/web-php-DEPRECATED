@@ -1,5 +1,5 @@
 import React from 'react';
-import Typeahead from 'components/Tokenizer/Typeahead.react';
+import Typeahead from 'react-bootstrap-typeahead';
 
 import fbLoader from 'utils/fbLoader';
 import {map} from 'lodash/collection';
