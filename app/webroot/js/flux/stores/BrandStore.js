@@ -1,7 +1,7 @@
 var ActionTypes = require('flux/ActionTypes');
 var AppDispatcher = require('flux/AppDispatcher');
 var BrandActions = require('flux/actions/BrandActions');
-var MicroEvent = require('flux/microevent');
+var MicroEvent = require('lib/microevent');
 
 var _items;
 

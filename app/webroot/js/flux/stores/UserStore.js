@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var ActionTypes = require('flux/ActionTypes');
 var AppDispatcher = require('flux/AppDispatcher');
-var MicroEvent = require('flux/microevent');
+var MicroEvent = require('lib/microevent');
 var UserActions = require('flux/actions/UserActions');
 
 var homeUrl = require('utils/homeUrl');

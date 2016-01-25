@@ -1,6 +1,6 @@
 var ActionTypes = require('flux/ActionTypes');
 var AppDispatcher = require('flux/AppDispatcher');
-var MicroEvent = require('flux/microevent');
+var MicroEvent = require('lib/microevent');
 
 var {USE} = require('constants/Bootstrap');
 
