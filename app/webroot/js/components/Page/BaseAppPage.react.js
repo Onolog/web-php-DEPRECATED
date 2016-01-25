@@ -2,7 +2,7 @@ var $ = require('jquery');
 var React = require('react');
 var cx = require('classnames');
 
-var FBLoader = require('lib/Facebook/fb');
+var fbLoader = require('utils/fbLoader');
 var UserActions = require('flux/actions/UserActions');
 
 var INTERVAL = 1 * 60 * 1000; // 1 min
@@ -17,9 +17,7 @@ var BaseAppPage = React.createClass({
   displayName: 'BaseAppPage',
 
   componentDidMount: function() {
-    FBLoader(function() {
-      setInterval(this._checkLoginStatus, INTERVAL);
-    }.bind(this));
+    fbLoader(() => {setInterval(this._checkLoginStatus, INTERVAL)});
   },
 
   componentWillUnmount: function() {

@@ -9,7 +9,7 @@ var Loader = require('components/Loader/Loader.react');
 var PageHeader = require('components/Page/PageHeader.react');
 var Panel = require('components/Panel/Panel.react');
 
-var FBLoader = require('lib/Facebook/fb');
+var fbLoader = require('utils/fbLoader');
 
 /**
  * Friends.react
@@ -25,7 +25,7 @@ var Friends = React.createClass({
 
   componentWillMount: function() {
     // Get all friends who are in the system
-    FBLoader(this._getFriends);
+    fbLoader(this._getFriends);
   },
 
   render: function() {
@@ -51,7 +51,7 @@ var Friends = React.createClass({
           image={
             <Link
               className="innerBorder"
-              href={'/users/profile/' + friend.id}>
+              href={`/users/profile/${friend.id}`}>
               <FBImage fbid={friend.id} />
             </Link>
           }
@@ -63,11 +63,13 @@ var Friends = React.createClass({
   },
 
   _getFriends: function() {
-    FB.getLoginStatus(function(response) {
-      FB.api('/me/friends', function(response) {
+    FB.getLoginStatus((response) => {
+      debugger;
+      FB.api('/me/friends', (response) => {
+        debugger;
         this.setState({friends: response.data});
-      }.bind(this));
-    }.bind(this));
+      });
+    });
   }
 });
 

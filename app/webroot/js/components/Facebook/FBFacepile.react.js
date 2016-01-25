@@ -4,7 +4,7 @@ var FBImage = require('./FBImage.react');
 var Link = require('components/Link/Link.react');
 var Loader = require('components/Loader/Loader.react');
 
-var FBLoader = require('lib/Facebook/fb');
+var fbLoader = require('utils/fbLoader');
 
 require('./FBFacepile.css');
 
@@ -36,7 +36,7 @@ var FBFacepile = React.createClass({
   },
 
   componentWillMount: function() {
-    FBLoader(this._getFriends);
+    fbLoader(this._getFriends);
   },
 
   render: function() {

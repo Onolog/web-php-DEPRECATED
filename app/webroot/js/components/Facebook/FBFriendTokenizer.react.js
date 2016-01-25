@@ -1,7 +1,7 @@
 import React from 'react';
 import Typeahead from 'components/Tokenizer/Typeahead.react';
 
-import FBLoader from 'lib/Facebook/fb';
+import fbLoader from 'utils/fbLoader';
 import {map} from 'lodash/collection';
 
 /**
@@ -25,7 +25,7 @@ var FBFriendTokenizer = React.createClass({
   },
 
   componentWillMount: function() {
-    FBLoader(this._getFriends);
+    fbLoader(this._getFriends);
   },
 
   render: function() {

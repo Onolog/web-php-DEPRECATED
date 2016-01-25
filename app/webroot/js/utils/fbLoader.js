@@ -4,7 +4,7 @@ var FACEBOOK = require('constants/Facebook');
 /**
  * JS for initializing Facebook API
  */
-var FBLoader = function(/*function*/ callback) {
+var fbLoader = function(/*function*/ callback) {
   $.ajaxSetup({ cache: true });
   $.getScript('//connect.facebook.net/en_US/all.js', function() {
     FB.init({
@@ -21,4 +21,4 @@ var FBLoader = function(/*function*/ callback) {
   });
 };
 
-module.exports = FBLoader;
+module.exports = fbLoader;
