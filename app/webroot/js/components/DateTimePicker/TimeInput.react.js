@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var moment = require('moment');
 var React = require('react');
 
@@ -8,6 +7,7 @@ var cloneDate = require('utils/cloneDate');
 var cx = require('classnames');
 var dateToUnixTime = require('utils/dateToUnixTime');
 var pad = require('utils/pad');
+var {range} = require('lodash');
 
 var MERIDIEM = {
   AM: 'AM',
@@ -47,7 +47,7 @@ var TimeInput = React.createClass({
             format={formatter}
             maxLength={2}
             onChange={this._onHoursChange}
-            values={_.range(1, 13)}
+            values={range(1, 13)}
           />
           {':'}
           <ConstrainedTextInput
@@ -55,7 +55,7 @@ var TimeInput = React.createClass({
             format={formatter}
             maxLength={2}
             onChange={this._onMinutesChange}
-            values={_.range(0, 60)}
+            values={range(0, 60)}
           />
           <ConstrainedTextInput
             className="meridiem"

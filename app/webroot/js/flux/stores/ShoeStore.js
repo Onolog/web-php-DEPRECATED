@@ -1,9 +1,9 @@
-var _ = require('underscore');
-
 var ActionTypes = require('flux/ActionTypes');
 var AppDispatcher = require('flux/AppDispatcher');
 var MicroEvent = require('lib/microevent');
 var ShoeActions = require('flux/actions/ShoeActions');
+
+var {contains, find, isArray, map} = require('lodash');
 
 var _collection;
 
@@ -25,7 +25,7 @@ var ShoeStore = {
       return;
     }
 
-    var item = _.findWhere(_collection, {id: itemID});
+    var item = find(_collection, {id: itemID});
 
     if (!item) {
       ShoeActions.view(itemID);
@@ -63,8 +63,8 @@ AppDispatcher.register(function(payload) {
 
     case ActionTypes.SHOE_VIEW:
       var shoe = payload.data;
-      var shoeIds = _.pluck(_collection, 'id');
-      if (!_.contains(shoeIds, shoe.id)) {
+      var shoeIds = map(_collection, 'id');
+      if (!contains(shoeIds, shoe.id)) {
         _collection.push(shoe);
       }
       ShoeStore.trigger(ActionTypes.CHANGE);
@@ -72,7 +72,7 @@ AppDispatcher.register(function(payload) {
 
     case ActionTypes.SHOE_UPDATE:
       var itemID = payload.data.id;
-      if (_.isArray(_collection)) {
+      if (isArray(_collection)) {
         _collection = _collection.map(function(item) {
           return item.id === itemID ? payload.data : item;
         });

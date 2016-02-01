@@ -1,10 +1,11 @@
-import _ from 'underscore';
 import React from 'react';
 
 import Select from 'components/Select/Select.react';
 
 import ActionTypes from 'flux/ActionTypes';
 import ShoeStore from 'flux/stores/ShoeStore';
+
+import {forEach, groupBy} from 'lodash';
 
 /**
  * ShoeSelector.react
@@ -45,14 +46,14 @@ var ShoeSelector = React.createClass({
    * correctly.
    */
   _getOptions: function() {
-    var shoes = _.groupBy(this.state.shoes, 'inactive');
+    var shoes = groupBy(this.state.shoes, 'inactive');
     var active = shoes['0'];
 
     var options = [];
     if (active && active.length) {
-      _.forEach(active, (shoe) => {
+      forEach(active, (shoe) => {
         options.push({
-          label: shoe.name + ' (' + shoe.mileage + ' miles)',
+          label: `${shoe.name} (${shoe.mileage} miles)`,
           value: shoe.id
         });
       });

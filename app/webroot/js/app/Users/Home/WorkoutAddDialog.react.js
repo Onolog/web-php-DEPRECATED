@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var jstz = require('jstz');
 var moment = require('moment');
 var React = require('react');

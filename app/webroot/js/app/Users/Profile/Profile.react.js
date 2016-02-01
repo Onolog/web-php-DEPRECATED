@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var React = require('react');
 
 var AppPage = require('components/Page/AppPage.react');
@@ -8,6 +7,7 @@ var Panel = require('components/Panel/Panel.react');
 var ProfileYearPanel = require('./ProfileYearPanel.react');
 var Topline = require('components/Data/Topline.react');
 
+var {chain, keys} = require('lodash');
 var {getAggregateDistance, groupActivities} = require('utils/ActivityUtils');
 
 require('../../../../css/app/Profile.css');
@@ -77,12 +77,12 @@ var Profile = React.createClass({
     }
 
     var activitiesByYear = groupActivities.byYear(activities);
-    var years = _.chain(activitiesByYear)
+    var years = chain(activitiesByYear)
       .keys()
       .reverse()
       .value();
 
-    return _.map(years, function(year) {
+    return years.map((year) => {
       return (
         <ProfileYearPanel
           activities={activitiesByYear[year]}

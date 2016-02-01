@@ -1,8 +1,9 @@
-import _ from 'underscore';
 import GarminSample from 'lib/garmin/activity/GarminSample';
 import GarminSeries from 'lib/garmin/activity/GarminSeries';
 import TcxActivityFactory from 'lib/garmin/activity/TcxActivityFactory';
 import XMLParser from './XMLParser';
+
+import {chain, flatten, forEach, head, map, max, reduce} from 'lodash';
 
 import {TCX_SCHEMA_TAGS} from 'constants/Garmin';
 const TAGS = TCX_SCHEMA_TAGS;
@@ -30,10 +31,10 @@ class TCXActivityParser extends XMLParser {
 
   parse() {
     // Parse each lap in the activity.
-    _.each(this.getByTagName(TAGS.lap), this.parseLap);
+    forEach(this.getByTagName(TAGS.lap), this.parseLap);
 
     // Parse each track and trackpoint.
-    _.each(this.getByTagName(TAGS.track), this.parseTrack);
+    forEach(this.getByTagName(TAGS.track), this.parseTrack);
 
     var elevationChange = this._getElevationChange();
 
@@ -56,10 +57,10 @@ class TCXActivityParser extends XMLParser {
   }
 
   parseLap(lapNode, idx) {
-    var avgHrNode = _.first(lapNode.getElementsByTagName(
+    var avgHrNode = head(lapNode.getElementsByTagName(
       TAGS.lapAverageHeartRate
     ));
-    var maxHrNode = _.first(lapNode.getElementsByTagName(
+    var maxHrNode = head(lapNode.getElementsByTagName(
       TAGS.lapMaxHeartRate
     ));
 
@@ -81,7 +82,7 @@ class TCXActivityParser extends XMLParser {
     var track = [];
     var trackpointNodes = trackNode.getElementsByTagName(TAGS.trackPoint);
 
-    _.each(trackpointNodes, trackpointNode => {
+    forEach(trackpointNodes, trackpointNode => {
       track.push(this.parseTrackpoint(trackpointNode));
 
       // TODO: Remove
@@ -108,7 +109,7 @@ class TCXActivityParser extends XMLParser {
    * Returns info for the device that created the activity, if present.
    */
   parseDevice() /*object*/ {
-    var deviceNode = _.first(this.getByTagName(TAGS.creator));
+    var deviceNode = head(this.getByTagName(TAGS.creator));
     if (!deviceNode) {
       return;
     }
@@ -140,9 +141,9 @@ class TCXActivityParser extends XMLParser {
    * Calculates total positive and negative elevation gain for the activity.
    */
   _getElevationChange() /*object*/ {
-    var altitudeValues = _.chain(this.tracks)
+    var altitudeValues = chain(this.tracks)
       .flatten()
-      .pluck('altitude')
+      .map('altitude')
       .value();
 
     var change;
@@ -165,8 +166,8 @@ class TCXActivityParser extends XMLParser {
     }
 
     return {
-      gain: _.reduce(elevationGain, (total, value) => total + value, 0),
-      loss: _.reduce(elevationLoss, (total, value) => total + value, 0)
+      gain: reduce(elevationGain, (total, value) => total + value, 0),
+      loss: reduce(elevationLoss, (total, value) => total + value, 0)
     };
   }
 
@@ -174,14 +175,14 @@ class TCXActivityParser extends XMLParser {
    * Gets the maximum value for the given field.
    */
   _getMax(/*string*/ keyName) /*number*/ {
-    return +_.chain(this.laps).pluck(keyName).max().value() || 0;
+    return +chain(this.laps).map(keyName).max().value() || 0;
   }
 
   /**
    * Calculates the sum total for the given field.
    */
   _getTotal(/*string*/ keyName) /*number*/ {
-    return _.pluck(this.laps, keyName).reduce((total, value) => {
+    return map(this.laps, keyName).reduce((total, value) => {
       value = value || 0;
       return +value + total;
     }, 0);

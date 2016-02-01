@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var React = require('react');
 
 var Alert = require('components/Alert/Alert.react');
@@ -22,10 +21,9 @@ var PageHeader = require('components/Page/PageHeader.react');
 var Panel = require('components/Panel/Panel.react');
 var Table = require('components/Table/Table.react');
 
-var BOOTSTRAP = require('constants/Bootstrap');
+import {values} from 'lodash';
 
-var SIZE = BOOTSTRAP.SIZE; 
-var USE = BOOTSTRAP.USE;
+const {SIZE, USE} = require('constants/Bootstrap');
 
 /**
  * ReactPage.react
@@ -36,10 +34,10 @@ var BootstrapPage = React.createClass({
   displayName: 'BootstrapPage',
 
   render: function() {
-    var uses = _.values(USE);
-    var sizes = _.values(SIZE);
+    var uses = values(USE);
+    var sizes = values(SIZE);
 
-    var buttonUses = uses.map(function(use) {
+    var buttonUses = uses.map((use) => {
       return (
         <Button
           key={use}
@@ -49,7 +47,7 @@ var BootstrapPage = React.createClass({
       );
     });
 
-    var buttonSizes = sizes.map(function(size) {
+    var buttonSizes = sizes.map((size) => {
       return (
         <Button
           key={size}
@@ -59,7 +57,7 @@ var BootstrapPage = React.createClass({
       );
     });
 
-    var buttonGlyphs = sizes.map(function(size) {
+    var buttonGlyphs = sizes.map((size) => {
       return (
         <Button
           key={size}
@@ -75,7 +73,7 @@ var BootstrapPage = React.createClass({
         <MenuHeader label="First Header" />
         <MenuItem
           label="Item 1 (Click me!)"
-          onClick={function() {alert('You clicked the menu item!');}}
+          onClick={() => { alert('You clicked the menu item!'); }}
         />
         <MenuItem label="Item 2" />
         <MenuDivider />

@@ -1,8 +1,8 @@
-var _ = require('underscore');
 var React = require('react');
 
 var Table = require('components/Table/Table.react');
 
+var {map} = require('lodash');
 var {metersToFeet, metersToMiles} = require('utils/distanceUtils');
 var secondsToTime = require('utils/secondsToTime');
 
@@ -28,7 +28,7 @@ var ActivitySplitsTable = React.createClass({
   },
 
   _renderHeaderRows: function() {
-    var headerCells = this._getColumns().map(function(column, idx) {
+    var headerCells = map(this._getColumns(), (column, idx) => {
       return <th key={idx}>{column.label}</th>;
     });
 
@@ -59,7 +59,7 @@ var ActivitySplitsTable = React.createClass({
   },
 
   _renderRows: function(lap, idx) {
-    var cells = _.map(this._getColumns(), function(column, idx) {
+    var cells = map(this._getColumns(), (column, idx) => {
       var value = lap[column.key];
       return (
         <td key={idx}>

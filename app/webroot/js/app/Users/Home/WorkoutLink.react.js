@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var React = require('react');
 
 var Activity = require('app/Activities/Activity.react');
@@ -18,6 +17,7 @@ var WorkoutActions = require('flux/actions/WorkoutActions');
 var WorkoutStore = require('flux/stores/WorkoutStore');
 
 var formatDistance = require('utils/formatDistance');
+var {isEqual} = require('lodash');
 
 /**
  * WorkoutLink.react
@@ -179,7 +179,7 @@ var WorkoutLink = React.createClass({
       return;
     }
 
-    var hasEdits = !_.isEqual(
+    var hasEdits = !isEqual(
       WorkoutStore.getItem(this.props.workout.id),
       this.state.workout
     );

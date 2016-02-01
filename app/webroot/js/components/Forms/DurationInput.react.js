@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var moment = require('moment');
 var React = require('react');
 
@@ -7,7 +6,8 @@ var HiddenInput = require('./HiddenInput.react');
 var TextInput = require('./TextInput.react');
 
 var cx = require('classnames');
-var pad = require('../../utils/pad');
+var pad = require('utils/pad');
+var {range} = require('lodash');
 
 function formatter(value) {
   return pad(value, 2);
@@ -52,7 +52,7 @@ var DurationInput = React.createClass({
           onChange={this._onChange}
           placeholder="hh"
           ref="hours"
-          values={_.range(0, 100)}
+          values={range(0, 100)}
         />
         :
         <ConstrainedTextInput
@@ -62,7 +62,7 @@ var DurationInput = React.createClass({
           onChange={this._onChange}
           placeholder="mm"
           ref="minutes"
-          values={_.range(0, 60)}
+          values={range(0, 60)}
         />
         :
         <ConstrainedTextInput
@@ -72,7 +72,7 @@ var DurationInput = React.createClass({
           onChange={this._onChange}
           placeholder="ss"
           ref="seconds"
-          values={_.range(0, 60)}
+          values={range(0, 60)}
         />
         <HiddenInput
           name={this.props.name}

@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var jstz = require('jstz');
 var moment = require('moment-timezone');
 var React = require('react');
@@ -23,7 +22,7 @@ var TimezonePicker = React.createClass({
           className="TimezoneSelector-select"
           onChange={this._onChange}
           value={this.props.timezone}>
-          {_.map(TIMEZONES, this._renderTimezoneOption)}
+          {TIMEZONES.map(this._renderTimezoneOption)}
         </select>
       </div>
     );

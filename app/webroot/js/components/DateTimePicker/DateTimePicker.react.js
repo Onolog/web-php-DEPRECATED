@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var jstz = require('jstz');
 var moment = require('moment-timezone');
 var React = require('react');
@@ -8,10 +7,12 @@ var DateInput = require('./DateInput.react');
 var TimeInput = require('./TimeInput.react');
 var TimezoneSelector = require('./TimezoneSelector.react');
 
+var {assign} = require('lodash');
+
 // Make a best guess as to the user's current timezone.
 // TODO: Allow users to set default timezones in Settings.
-var CURRENT_TIMEZONE = jstz.determine().name();
-var TIMEZONES = moment.tz.names();
+const CURRENT_TIMEZONE = jstz.determine().name();
+const TIMEZONES = moment.tz.names();
 
 require('./DateTimePicker.css');
 
@@ -92,9 +93,9 @@ var DateTimePicker = React.createClass({
 
   _onChange: function(/*object*/ values) {
     var {dateObject, timezone} = this.state;
-    dateObject = _.extend({}, dateObject, values);
+    dateObject = assign({}, dateObject, values);
 
-    this.setState({dateObject: dateObject});
+    this.setState({dateObject});
 
     this.props.onChange(
       moment.tz(dateObject, timezone).format(),
@@ -103,7 +104,7 @@ var DateTimePicker = React.createClass({
   },
 
   _onTimezoneChange: function(/*string*/ timezone) {
-    this.setState({timezone: timezone});
+    this.setState({timezone});
 
     this.props.onChange(
       moment.tz(this.state.dateObject, timezone).format(),

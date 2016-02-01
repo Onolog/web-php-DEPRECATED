@@ -1,8 +1,8 @@
-var _ = require('underscore');
 var React = require('react');
 
 var Link = require('components/Link/Link.react');
 
+var {clone} = require('lodash');
 var cx = require('classnames');
 
 /**
@@ -23,8 +23,8 @@ var ListGroupItem = React.createClass({
   },
 
   render: function() {
-    var props = _.extend({}, this.props);
-    var type = props.type;
+    var props = clone(this.props);
+    var {type} = props;
     props.className = cx({
       'list-group-item': true,
       'active': props.active,

@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var moment = require('moment');
 var React = require('react');
 
@@ -9,6 +8,7 @@ var FileInput = require('components/Forms/FileInput.react');
 var PageHeader = require('components/Page/PageHeader.react');
 var Panel = require('components/Panel/Panel.react');
 
+var {head} = require('lodash');
 var {metersToFeet, metersToMiles} = require('utils/distanceUtils');
 var FileParser = require('utils/parsers/FileParser');
 var GoogleTimezone = require('utils/GoogleTimezone');
@@ -111,7 +111,7 @@ var GarminUploader = React.createClass({
       var activities = parser.parse(evt.target.result);
 
       // We currently only upload one file at a time
-      var activity = _.first(activities);
+      var activity = head(activities);
       var start = activity.tracks[0][0];
 
       // Get the timezone from the activity's geodata.

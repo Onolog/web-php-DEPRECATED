@@ -1,9 +1,9 @@
-var _ = require('underscore');
 var React = require('react');
 
 var AbstractButton = require('components/Button/AbstractButton.react');
 
 var cx = require('classnames');
+var {values} = require('lodash');
 
 var {SIZE, USE} = require('constants/Bootstrap');
 
@@ -16,8 +16,8 @@ var Button = React.createClass({
   displayName: 'Button',
 
   propTypes: {
-    use: React.PropTypes.oneOf(_.values(USE)),
-    size: React.PropTypes.oneOf(_.values(SIZE)),
+    use: React.PropTypes.oneOf(values(USE)),
+    size: React.PropTypes.oneOf(values(SIZE)),
     suppressed: React.PropTypes.bool
   },
 

@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var React = require('react');
 var UserActions = require('flux/actions/UserActions');
 var UserStore = require('flux/stores/UserStore');

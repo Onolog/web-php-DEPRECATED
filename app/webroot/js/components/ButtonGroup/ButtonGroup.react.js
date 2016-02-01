@@ -1,7 +1,7 @@
-var _ = require('underscore');
 var React = require('react');
 
 var cx = require('classnames');
+var {values} = require('lodash');
 
 var {SIZE} = require('constants/Bootstrap');
 var LAYOUT = {
@@ -18,7 +18,7 @@ var ButtonGroup = React.createClass({
   propTypes: {
     justified: React.PropTypes.bool,
     layout: React.PropTypes.oneOf(Object.keys(LAYOUT)),
-    size: React.PropTypes.oneOf(_.values(SIZE)),
+    size: React.PropTypes.oneOf(values(SIZE)),
   },
 
   getDefaultProps: function() {

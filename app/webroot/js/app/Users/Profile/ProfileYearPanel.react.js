@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var moment = require('moment');
 var React = require('react');
 var {PropTypes} = React;
@@ -15,6 +14,7 @@ var Chart = require('components/Chart/Chart.react');
 var LabeledStat = require('components/Data/LabeledStat.react');
 var Topline = require('components/Data/Topline.react');
 
+var {forEach} = require('lodash');
 var formatDistance = require('utils/formatDistance');
 var {
   getGroupingInfo,
@@ -88,7 +88,7 @@ var ProfileYearPanel = React.createClass({
     }
 
     var data = [];
-    _.each(groupedActivities, (activities) => {
+    forEach(groupedActivities, (activities) => {
       data.push(getAggregateDistance(activities));
     });
 

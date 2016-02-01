@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var ActionTypes = require('flux/ActionTypes');
 var AppDispatcher = require('flux/AppDispatcher');
 var MicroEvent = require('lib/microevent');

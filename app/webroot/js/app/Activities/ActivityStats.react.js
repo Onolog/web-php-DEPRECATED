@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var React = require('react');
 
 var LabeledStat = require('components/Data/LabeledStat.react');
@@ -6,6 +5,7 @@ var Topline = require('components/Data/Topline.react');
 
 var calculatePace = require('utils/calculatePace');
 var formatDistance = require('utils/formatDistance');
+var {map} = require('lodash');
 var secondsToTime = require('utils/secondsToTime');
 
 /**
@@ -22,7 +22,7 @@ var ActivityStats = React.createClass({
   },
 
   render: function() {
-    var items = _.map(this._getStats(), function(stat, idx) {
+    var items = map(this._getStats(), (stat, idx) => {
       return (
         <LabeledStat
           annotation={stat.annotation}

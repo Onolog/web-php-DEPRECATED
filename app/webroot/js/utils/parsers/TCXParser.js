@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import {forEach} from 'lodash';
 
 import TcxActivityFactory from 'lib/garmin/activity/TcxActivityFactory';
 import TCXActivityParser from './TCXActivityParser';
@@ -22,7 +22,7 @@ class TCXParser extends XMLParser {
     }
     
     var activities = [];
-    _.each(activityNodes, activityNode => {
+    forEach(activityNodes, activityNode => {
       var activity = (new TCXActivityParser(activityNode)).parse();
       activities.push(activity);
     });

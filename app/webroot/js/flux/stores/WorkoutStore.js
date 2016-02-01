@@ -1,7 +1,8 @@
-var _ = require('underscore');
 var ActionTypes = require('flux/ActionTypes');
 var AppDispatcher = require('flux/AppDispatcher');
 var MicroEvent = require('lib/microevent');
+
+var {find, indexOf} = require('lodash');
 
 var _collection = [];
 var _cache = [];
@@ -21,7 +22,7 @@ var WorkoutStore = {
   },
 
   getItem: function(/*number*/ itemId) {
-    var item = _.find(_collection, function(item) {
+    var item = find(_collection, function(item) {
       return item.id === itemId;
     });
 
@@ -36,7 +37,7 @@ var WorkoutStore = {
    * server and stored.
    */
   getIsCached: function(/*number*/ itemId) /*bool*/ {
-    return _.indexOf(_cache, itemId) !== -1;
+    return indexOf(_cache, itemId) !== -1;
   }
 };
 

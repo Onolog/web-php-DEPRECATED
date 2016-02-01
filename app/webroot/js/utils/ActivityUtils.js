@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var {chain, map, reduce} = require('lodash');
 var moment = require('moment-timezone');
 
 /**
@@ -22,11 +22,9 @@ function getGroupingInfo(/*array*/ activities) {
  * Calculates the total distance across an array of activities.
  */
 function getAggregateDistance(/*array*/ activities) {
-  return +_.chain(activities)
-    .pluck('distance')
-    .reduce((total, miles) => {
-      return +total + +miles;
-    }, 0)
+  return +chain(activities)
+    .map('distance')
+    .reduce((total, miles) => +total + +miles, 0)
     .value()
     .toFixed(2);
 }
@@ -36,10 +34,8 @@ function getAggregateDistance(/*array*/ activities) {
  */
 function getAggregateDuration(/*array*/ activities) {
   return _.chain(activities)
-    .pluck('duration')
-    .reduce((total, seconds) => {
-      return +total + +seconds;
-    }, 0)
+    .map('duration')
+    .reduce((total, seconds) => +total + +seconds, 0)
     .value();
 }
 

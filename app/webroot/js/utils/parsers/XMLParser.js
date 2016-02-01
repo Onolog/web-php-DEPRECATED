@@ -1,4 +1,4 @@
-import _ from 'underscore';
+import {head} from 'lodash';
 
 /**
  * XMLParser
@@ -36,7 +36,7 @@ class XMLParser {
    */
   getTagValue(tagName, parentNode) {
     if (parentNode) {
-      var childNode = _.first(parentNode.getElementsByTagName(tagName));
+      var childNode = head(parentNode.getElementsByTagName(tagName));
       return (childNode && childNode.innerHTML) || 0;
     }
     return 0;
