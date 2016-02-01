@@ -1,10 +1,9 @@
-var $ = require('jquery');
 var React = require('react');
 
-var BaseAppPage = require('../../../components/Page/BaseAppPage.react');
-var FBLoginButton = require('../../../components/Facebook/FBLoginButton.react');
+var BaseAppPage = require('components/Page/BaseAppPage.react');
+var FBLoginButton = require('components/Facebook/FBLoginButton.react');
 
-var UserActions = require('../../../flux/actions/UserActions');
+var UserActions = require('flux/actions/UserActions');
 
 require('../../../../css/app/Login.css');
 
@@ -16,14 +15,17 @@ var Login = React.createClass({
 
   getInitialState: function() {
     return {
-      windowHeight: this._getWindowHeight()
+      windowHeight: null
     };
   },
 
   componentDidMount: function() {
-    $(window).resize(function() {
-      this.setState({ windowHeight: this._getWindowHeight() });
-    }.bind(this));
+    this._resize();
+    window.addEventListener('resize', this._resize);
+  },
+
+  componentWillUnmount: function() {
+    window.removeEventListener('resize', this._resize);
   },
 
   render: function() {
@@ -55,9 +57,13 @@ var Login = React.createClass({
     );
   },
 
-  _getWindowHeight: function() {
-    return $(window).height();
-  }
+  _resize: function() {
+    var windowHeight = Math.max(
+      document.documentElement.clientHeight,
+      window.innerHeight || 0
+    );
+    this.setState({windowHeight});
+  },
 });
 
 module.exports = Login;

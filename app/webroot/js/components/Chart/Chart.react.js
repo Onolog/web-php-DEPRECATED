@@ -1,19 +1,20 @@
 'use strict';
 
-var $ = require('jquery');
 var Highcharts = require('highcharts-commonjs');
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var HighchartsOnologTheme = require('lib/highcharts/themes/onolog');
-var HIGHCHARTS = require('constants/Highcharts');
+import {merge} from 'lodash';
+
+const HighchartsOnologTheme = require('lib/highcharts/themes/onolog');
+const HIGHCHARTS = require('constants/Highcharts');
 
 /**
  * Chart.react
  *
  * React wrapper around Highcharts API
  */
-var Chart = React.createClass({
+const Chart = React.createClass({
   displayName: 'Chart',
 
   propTypes: {
@@ -89,7 +90,7 @@ var Chart = React.createClass({
   },
 
   _getOptions: function(props) {
-    var options = $.extend({
+    var options = merge({
       chart: {
         height: props.height,
         type: props.type
@@ -114,7 +115,7 @@ var Chart = React.createClass({
       }
     }, props.options);
 
-    return $.extend(true, // Recursive copy
+    return merge(
       HIGHCHARTS.BASE_SETTINGS,
       HighchartsOnologTheme,
       options
