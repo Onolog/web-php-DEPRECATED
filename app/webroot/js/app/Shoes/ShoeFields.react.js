@@ -1,17 +1,18 @@
-var _ = require('underscore');
-var React = require('react');
+import React from 'react';
+import {Input} from 'react-bootstrap';
 
-var BrandSelector = require('./BrandSelector.react');
-var FormGroup = require('components/Forms/FormGroup.react');
-var TextInput = require('components/Forms/TextInput.react');
+import BrandSelector from './BrandSelector.react';
+import FormGroup from 'components/Forms/FormGroup.react';
+import TextInput from 'components/Forms/TextInput.react';
 
-var cakePHP = require('utils/cakePHP');
+import {clone} from 'lodash';
+import {decodeFormFieldName, encodeFormFieldName} from 'utils/cakePHP';
 
-var FIELD_INACTIVE = 'inactive';
-var FORM_NAME = 'Shoe';
+const FIELD_INACTIVE = 'inactive';
+const FORM_NAME = 'Shoe';
 
 function encodeName(name) {
-  return cakePHP.encodeFormFieldName(name, FORM_NAME);
+  return encodeFormFieldName(name, FORM_NAME);
 }
 
 /**
@@ -19,33 +20,16 @@ function encodeName(name) {
  *
  * Displays a form with inputs for adding or editing a shoe.
  */
-var ShoeFields = React.createClass({
+const ShoeFields = React.createClass({
   displayName: 'ShoeFields',
 
   propTypes: {
-    /**
-     * Existing shoe object.
-     *
-     * Should be kept in the store only, and not used directly in the
-     * component.
-     */
-    shoe: React.PropTypes.object
-  },
-
-  getDefaultProps: function() {
-    return {
-      shoe: {}
-    };
-  },
-
-  getInitialState: function() {
-    return {
-      shoe: this.props.shoe
-    };
+    isNew: React.PropTypes.bool,
+    shoe: React.PropTypes.object.isRequired
   },
 
   render: function() {
-    var shoe = this.state.shoe;
+    const {shoe} = this.props;
 
     return (
       <div className="form-horizontal workoutForm">
@@ -53,14 +37,14 @@ var ShoeFields = React.createClass({
           <BrandSelector
             defaultValue={shoe.brand_id}
             name={encodeName('brand_id')}
-            onChange={this._onChange}
+            onChange={this._handleChange}
           />
         </FormGroup>
         <FormGroup label="Model">
           <TextInput
             defaultValue={shoe.model}
             name={encodeName('model')}
-            onChange={this._onChange}
+            onChange={this._handleChange}
             ref="distance"
           />
         </FormGroup>
@@ -70,43 +54,37 @@ var ShoeFields = React.createClass({
   },
 
   _renderInactiveCheckbox: function() {
+    var {isNew, shoe} = this.props;
+
     // Don't render this input when creating a new shoe, since we assume
-    // that all newly created shoes are active. Check props, which is the
-    // initial state, rather than state.
-    var shoe = this.props.shoe
-    if (!_.isEmpty(shoe)) {
+    // that all newly created shoes are active.
+    if (!isNew) {
       return (
-        <FormGroup>
-          <div className="checkbox">
-            <label>
-              <input
-                defaultChecked={!!shoe.inactive}
-                name={encodeName(FIELD_INACTIVE)}
-                onChange={this._onChange}
-                type="checkbox"
-              />
-              Inactive
-            </label>
-          </div>
-        </FormGroup>
+        <Input
+          defaultChecked={!!shoe.inactive}
+          label="Inactive"
+          name={encodeName(FIELD_INACTIVE)}
+          onChange={this._handleChange}
+          type="checkbox"
+          wrapperClassName="col-sm-9 col-sm-offset-3"
+        />
       );
     }
   },
 
-  _onChange: function(event) {
-    var field = cakePHP.decodeFormFieldName(event.target.name);
-    var value = event.target.value;
+  _handleChange: function(e) {
+    var {checked, name, value} = e.target;
+    var field = decodeFormFieldName(name);
 
     if (field === FIELD_INACTIVE) {
-      value = +event.target.checked;
+      value = +checked;
     }
 
-    var shoe = _.extend({}, this.state.shoe);
+    var shoe = clone(this.props.shoe);
     shoe[field] = value;
 
-    this.setState({shoe: shoe});
     this.props.onChange && this.props.onChange(shoe);
-  }
+  },
 });
 
 module.exports = ShoeFields;

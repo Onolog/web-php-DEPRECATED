@@ -1,11 +1,11 @@
-var React = require('react');
+import React from 'react';
+import {Button, Glyphicon} from 'react-bootstrap/lib';
 
 var AllShoesView = require('./AllShoesView.react');
 var AppPage = require('components/Page/AppPage.react');
-var Button = require('components/Button/Button.react');
 var Loader = require('components/Loader/Loader.react');
 var PageHeader = require('components/Page/PageHeader.react');
-var ShoeAddButton = require('./ShoeAddButton.react');
+var ShoeModal = require('./ShoeModal.react');
 
 var ActionTypes = require('flux/ActionTypes');
 var ShoeActions = require('flux/actions/ShoeActions');
@@ -21,7 +21,8 @@ var ShoesPage = React.createClass({
 
   getInitialState: function() {
     return {
-      shoes: null
+      shoes: null,
+      show: false,
     };
   },
 
@@ -38,24 +39,40 @@ var ShoesPage = React.createClass({
   },
 
   _shoesChanged: function() {
-    this.setState({shoes: ShoeStore.getCollection()});
+    this.setState({
+      shoes: ShoeStore.getCollection(),
+      show: false,
+    });
   },
 
   render: function() {
+    const {shoes, show} = this.state;
+
     return (
       <AppPage narrow>
         <PageHeader title="Shoes">
-          <ShoeAddButton />
+          <div>
+            <Button onClick={this._handleShowModal}>
+              <Glyphicon glyph="plus" /> New Shoe
+            </Button>
+            <ShoeModal
+              onHide={this._handleHideModal}
+              show={show}
+            />
+          </div>
         </PageHeader>
-        {this._renderContent()}
+        {shoes ? <AllShoesView shoes={shoes} /> : <Loader />}
       </AppPage>
     );
   },
 
-  _renderContent: function() {
-    var shoes = this.state.shoes;
-    return shoes ? <AllShoesView shoes={shoes} /> : <Loader />;
-  }
+  _handleHideModal: function() {
+    this.setState({show: false});
+  },
+
+  _handleShowModal: function() {
+    this.setState({show: true});
+  },
 });
 
 module.exports = ShoesPage;

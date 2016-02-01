@@ -1,33 +1,43 @@
-import _ from 'underscore';
 import React from 'react';
 
-var ShoeEditLink = require('./ShoeEditLink.react');
-var ShoeViewLink = require('./ShoeViewLink.react');
+import ShoeModal from './ShoeModal.react';
+import ShoeViewLink from './ShoeViewLink.react';
 
-var Button = require('components/Button/Button.react');
-var CloseButton = require('components/Button/CloseButton.react');
-var EmptyState = require('components/EmptyState.react');
-var Link = require('components/Link/Link.react');
+import CloseButton from 'components/Button/CloseButton.react';
+import EmptyState from 'components/EmptyState.react';
+import Link from 'components/Link/Link.react';
 import {Panel, Table} from 'react-bootstrap/lib';
 
-var ShoeActions = require('flux/actions/ShoeActions');
+import ShoeActions from 'flux/actions/ShoeActions';
 
-var cx = require('classnames');
+import cx from 'classnames';
+import {groupBy} from 'lodash';
 
 /**
  * AllShoesView.react
  *
  * View controller for displaying all of a user's shoes
  */
-var AllShoesView = React.createClass({
+const AllShoesView = React.createClass({
   displayName: 'AllShoesView',
 
   propTypes: {
     shoes: React.PropTypes.array.isRequired
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    // Close dialog when shoes get updated.
+    this.setState({shownShoe: null});
+  },
+
+  getInitialState: function() {
+    return {
+      shownShoe: null
+    };
+  },
+
   render: function() {
-    var shoes = _.groupBy(this.props.shoes, 'inactive');
+    var shoes = groupBy(this.props.shoes, 'inactive');
 
     return (
       <div>
@@ -85,11 +95,7 @@ var AllShoesView = React.createClass({
 
   _renderTableRows: function(shoe, idx) {
     return (
-      <tr
-        className={cx({
-          inactive: !!shoe.inactive
-        })}
-        key={idx}>
+      <tr className={cx({inactive: !!shoe.inactive})} key={idx}>
         <td>
           <ShoeViewLink shoe={shoe} />
         </td>
@@ -100,7 +106,14 @@ var AllShoesView = React.createClass({
           {shoe.mileage}
         </td>
         <td className="actions">
-          <ShoeEditLink initialShoe={shoe} />
+          <Link href="#" onClick={this._handleEdit.bind(null, shoe.id)}>
+            Edit
+          </Link>
+          <ShoeModal
+            initialShoe={shoe}
+            onHide={this._handleHideModal}
+            show={this.state.shownShoe === shoe.id}
+          />
         </td>
         <td className="actions">
           <CloseButton
@@ -116,7 +129,16 @@ var AllShoesView = React.createClass({
     if (confirm('Are you sure you want to delete this shoe?')) {
       ShoeActions.delete(id);
     }
-  }
+  },
+
+  _handleEdit: function(shoeId, e) {
+    e.preventDefault();
+    this.setState({shownShoe: shoeId});
+  },
+
+  _handleHideModal: function() {
+    this.setState({shownShoe: null});
+  },
 });
 
 module.exports = AllShoesView;
