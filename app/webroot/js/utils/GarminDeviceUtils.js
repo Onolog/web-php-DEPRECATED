@@ -1,11 +1,13 @@
-var GARMIN = require('../constants/Garmin');
+import param from 'utils/param';
+
+import {BASE_IMG_URL, BASE_STORE_URL, PRODUCT_ID} from 'constants/Garmin';
 
 /**
  * GarminDeviceUtils
  *
  * Util functions for getting certain device-related values
  */
-var GarminDeviceUtils = {
+const GarminDeviceUtils = {
   /**
    * Converts the full Garmin device name to an image URL
    */
@@ -18,7 +20,7 @@ var GarminDeviceUtils = {
       .split(' ')
       .join('-');
 
-    return GARMIN.BASE_IMG_URL + model + '.png';
+    return BASE_IMG_URL + model + '.png';
   },
 
   /**
@@ -34,8 +36,8 @@ var GarminDeviceUtils = {
       return '';
     }
 
-    var productID = GARMIN.PRODUCT_ID[info.series][info.model];
-    return GARMIN.BASE_STORE_URL + '?' + $.param({pID: productID});
+    var pID = PRODUCT_ID[info.series][info.model];
+    return `${BASE_STORE_URL}?${param({pID})}`;
   }
 };
 

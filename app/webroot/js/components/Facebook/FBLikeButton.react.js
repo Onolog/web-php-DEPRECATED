@@ -1,9 +1,11 @@
-var $ = require('jquery');
-var React = require('react');
+import React from 'react';
 
-var FACEBOOK = require('constants/Facebook');
-var ONOLOG = require('constants/Onolog');
-var FB_URL = '//www.facebook.com/plugins/like.php';
+import param from 'utils/param';
+
+import {APP_ID} from 'constants/Facebook';
+import {URL} from 'constants/Onolog';
+
+const FB_URL = '//www.facebook.com/plugins/like.php';
 
 /**
  * FBLikeButton.react
@@ -67,27 +69,27 @@ var FBLikeButton = React.createClass({
   },
 
   render: function() {
-    var params = $.param({
-      href: ONOLOG.URL + this.props.href,
+    var params = param({
+      href: URL + this.props.href,
       width: this.props.width,
       layout: this.props.layout,
       action: this.props.action,
       show_faces: this.props.showFaces,
       share: this.props.useShare,
       height: this._getHeight(),
-      appId: FACEBOOK.APP_ID
+      appId: APP_ID
     });
 
     return (
       <iframe
-        src={FB_URL + '?' + params}
+        src={`${FB_URL}?${params}`}
         scrolling="no"
         frameBorder="0"
         style={{
           border: 'none',
           overflow: 'hidden',
-          height: this._getHeight() + 'px',
-          width: this.props.width + 'px'
+          height: `${this._getHeight()}px`,
+          width: `${this.props.width}px`,
         }}
         allowTransparency="true">
       </iframe>

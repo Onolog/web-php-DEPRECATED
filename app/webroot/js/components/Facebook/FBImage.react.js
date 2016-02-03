@@ -1,14 +1,17 @@
-var $ = require('jquery');
-var React = require('react');
+import React from 'react';
 
-var Image = require('../../components/Image/Image.react');
+import Image from 'components/Image/Image.react';
+
+import param from 'utils/param';
+
+const GRAPH_URL = 'https://graph.facebook.com';
 
 /**
  * FBImage.react
  *
  * Given an fbid, retrieves and renders an FB graph image.
  */
-var FBImage = React.createClass({
+const FBImage = React.createClass({
   displayName: 'FBImage',
 
   propTypes: {
@@ -28,20 +31,20 @@ var FBImage = React.createClass({
   },
 
   render: function() {
-    var src =
-      'https://graph.facebook.com/' + this.props.fbid + '/picture?' +
-        // Double the height and width for retina displays
-        $.param({
-          height: this.props.height * 2,
-          width: this.props.width * 2
-        });
+    const {fbid, height, width} = this.props;
+
+    // Double the height and width for retina displays
+    var params = param({
+      height: height * 2,
+      width: width * 2
+    });
 
     return (
       <Image
         className={this.props.className}
-        height={Math.floor(this.props.height)}
-        width={Math.floor(this.props.width)}
-        src={src}
+        height={Math.floor(height)}
+        width={Math.floor(width)}
+        src={`${GRAPH_URL}/${fbid}/picture?${params}`}
       />
     );
   }
