@@ -1,24 +1,30 @@
 var $ = require('jquery');
-var FACEBOOK = require('constants/Facebook');
+var {APP_ID} = require('constants/Facebook');
 
 /**
  * JS for initializing Facebook API
  */
-var fbLoader = function(/*function*/ callback) {
-  $.ajaxSetup({ cache: true });
-  $.getScript('//connect.facebook.net/en_US/all.js', function() {
-    FB.init({
-      appId: FACEBOOK.APP_ID,
-      oauth: true,
-      status: true, // check login status
-      cookie: true, // enable cookies to allow the server to access the session
-      version: 'v2.3'
-    });
-
-    window.FB = FB;
-
+module.exports = function(/*function*/ callback) {
+  if (window.FB) {
     callback();
+    return;
+  }
+
+  $.ajax({
+    cache: true,
+    dataType: 'script',
+    success: () => {
+      FB.init({
+        appId: APP_ID,
+        oauth: true,
+        status: true, // check login status
+        cookie: true, // enable cookies to allow the server to access the session
+        version: 'v2.3'
+      });
+
+      window.FB = FB;
+      callback();
+    },
+    url: '//connect.facebook.net/en_US/all.js',
   });
 };
-
-module.exports = fbLoader;
