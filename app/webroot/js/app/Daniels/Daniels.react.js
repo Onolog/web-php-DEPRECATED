@@ -1,7 +1,6 @@
 var React = require('react');
 
 var AppPage = require('components/Page/AppPage.react');
-var Button = require('components/Button/Button.react');
 var PageHeader = require('components/Page/PageHeader.react');
 var Panel = require('components/Panel/Panel.react');
 var Tab = require('react-bootstrap/lib/Tab');

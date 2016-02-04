@@ -1,11 +1,10 @@
 var React = require('react');
+var {Button, Panel} = require('react-bootstrap/lib');
 
 var AppPage = require('components/Page/AppPage.react');
-var Button = require('components/Button/Button.react');
 var LeftRight = require('components/LeftRight/LeftRight.react');
 var Loader = require('components/Loader/Loader.react');
 var PageHeader = require('components/Page/PageHeader.react');
-var Panel = require('components/Panel/Panel.react');
 var WorkoutFields = require('./WorkoutFields.react');
 
 var cx = require('classnames');
@@ -66,19 +65,21 @@ var WorkoutAddEditPage = React.createClass({
       this.state.isEditing ? 'Update Activity' : 'Add Activity';
 
     return (
-      <div className="pull-right">
-        <Button
-          disabled={this.state.isSaving}
-          label="Cancel"
-          onClick={this._onCancel}
-        />
-        <Button
-          disabled={this.state.isSaving}
-          label={submitLabel}
-          onClick={this._onSubmit}
-          type="submit"
-          use="primary"
-        />
+      <div className="clearfix">
+        <div className="pull-right">
+          <Button
+            disabled={this.state.isSaving}
+            onClick={this._onCancel}>
+            Cancel
+          </Button>
+          <Button
+            bsStyle="primary"
+            disabled={this.state.isSaving}
+            onClick={this._onSubmit}
+            type="submit">
+            {submitLabel}
+          </Button>
+        </div>
       </div>
     );
   },

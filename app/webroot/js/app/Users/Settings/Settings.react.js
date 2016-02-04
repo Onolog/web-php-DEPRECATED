@@ -1,7 +1,7 @@
 var React = require('react');
+var {Button} = require('react-bootstrap/lib');
 
 var AppPage = require('components/Page/AppPage.react');
-var Button = require('components/Button/Button.react');
 var FormGroup = require('components/Forms/FormGroup.react');
 var HiddenInput = require('components/Forms/HiddenInput.react');
 var TextInput = require('components/Forms/TextInput.react');
@@ -56,7 +56,9 @@ var Settings = React.createClass({
               />
             </FormGroup>
             <FormGroup label="">
-              <Button use="primary" label="Save Changes" type="submit" />
+              <Button bsStyle="primary" type="submit">
+                Save Changes
+              </Button>
             </FormGroup>
             <HiddenInput
               name={cakePHP.encodeFormFieldName('id', FORM_NAME)}

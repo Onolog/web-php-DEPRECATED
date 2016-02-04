@@ -1,12 +1,12 @@
 var moment = require('moment-timezone');
 var React = require('react');
+var {Table} = require('react-bootstrap/lib');
 
 var ActivitySection = require('app/Activities/ActivitySection.react');
 var EmptyState = require('components/EmptyState.react');
 var LabeledStat = require('components/Data/LabeledStat.react');
 var Link = require('components/Link/Link.react');
 var Panel = require('components/Panel/Panel.react');
-var Table = require('components/Table/Table.react');
 var Topline = require('components/Data/Topline.react');
 
 var formatDistance = require('utils/formatDistance');

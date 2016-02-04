@@ -1,25 +1,27 @@
-var React = require('react');
+import React from 'react';
+import {
+  Alert,
+  Badge,
+  Button,
+  ButtonGroup,
+  Glyphicon,
+  Label,
+  ListGroup,
+  ListGroupItem,
+  Nav,
+  NavItem,
+  Navbar,
+  NavbarBrand,
+  Panel,
+  Table
+} from 'react-bootstrap/lib';
 
-var Alert = require('components/Alert/Alert.react');
 var AppPage = require('components/Page/AppPage.react');
-var Badge = require('components/Badge/Badge.react');
-var Button = require('components/Button/Button.react');
-var DropdownButton = require('components/Button/DropdownButton.react');
-var ButtonGroup = require('components/ButtonGroup/ButtonGroup.react');
-var Glyph = require('components/Glyph/Glyph.react');
-var Label = require('components/Label/Label.react');
-var ListGroup = require('components/ListGroup/ListGroup.react');
-var ListGroupItem = require('components/ListGroup/ListGroupItem.react');
 var Menu = require('components/Menu/Menu.react');
 var MenuDivider = require('components/Menu/MenuDivider.react');
 var MenuHeader = require('components/Menu/MenuHeader.react');
 var MenuItem = require('components/Menu/MenuItem.react');
-var Nav = require('components/Nav/Nav.react');
-var NavItem = require('components/Nav/NavItem.react');
-var Navbar = require('components/Navbar/Navbar.react');
 var PageHeader = require('components/Page/PageHeader.react');
-var Panel = require('components/Panel/Panel.react');
-var Table = require('components/Table/Table.react');
 
 import {values} from 'lodash';
 
@@ -39,32 +41,27 @@ var BootstrapPage = React.createClass({
 
     var buttonUses = uses.map((use) => {
       return (
-        <Button
-          key={use}
-          label={use}
-          use={use}
-        />
+        <Button bsStyle={use} key={use}>
+          {use}
+        </Button>
       );
     });
 
     var buttonSizes = sizes.map((size) => {
       return (
-        <Button
-          key={size}
-          label={size}
-          size={size}
-        />
+        <Button bsSize={size} key={size}>
+          {size}
+        </Button>
       );
     });
 
     var buttonGlyphs = sizes.map((size) => {
       return (
         <Button
-          key={size}
-          glyph="comment"
-          label="Comment"
-          size={size}
-        />
+          bsSize={size}
+          key={size}>
+          <Glyphicon glyph="comment" /> Comment
+        </Button>
       );
     });
 
@@ -85,30 +82,30 @@ var BootstrapPage = React.createClass({
       <AppPage>
         <PageHeader title="Bootstrap Components" />
 
-        <Panel title="Alerts">
-          <Alert type="success">
+        <Panel header={<h3>Alert</h3>}>
+          <Alert bsStyle="success">
             <strong>Well done!</strong> You successfully read this important
             alert message.
           </Alert>
-          <Alert type="info">
+          <Alert bsStyle="info">
             <strong>Heads up!</strong> This alert needs your attention, but
             it{"'"}s not super important.
           </Alert>
-          <Alert type="warning">
+          <Alert bsStyle="warning">
             <strong>Warning!</strong> Better check yourself, you{"'"}re not
             looking too good.
           </Alert>
-          <Alert type="danger">
+          <Alert bsStyle="danger">
             <strong>Oh snap!</strong> Change a few things up and try
             submitting again.
           </Alert>
-          <Alert type="info" dismissible={true}>
+          <Alert bsStyle="info" dismissible>
             <strong>Sweeeeeeet!</strong> You can dismiss this alert by
             pressing the button over here ---->
           </Alert>
         </Panel>
 
-        <Panel title="Badge">
+        <Panel header={<h3>Badge</h3>}>
           <Badge>101</Badge>
         </Panel>
 
@@ -127,53 +124,40 @@ var BootstrapPage = React.createClass({
           </div>
         </Panel>
 
-        <Panel title="Button Group">
+        <Panel header={<h3>Button Group</h3>}>
           <h5 style={{margin: '0 0 5px'}}>
             Standard Button Group
           </h5>
           <ButtonGroup size="large">
-            <Button label="Left" />
-            <Button label="Middle" />
-            <Button label="Right" />
+            <Button>Left</Button>
+            <Button>Middle</Button>
+            <Button>Right</Button>
           </ButtonGroup>
           <h5 style={{margin: '15px 0 5px'}}>
             Justified Button Group
           </h5>
-          <ButtonGroup justified={true}>
-            <Button href="#" label="Left" />
-            <Button href="#" label="Middle" />
-            <Button href="#" label="Right" />
+          <ButtonGroup justified>
+            <Button href="#">Left</Button>
+            <Button href="#">Middle</Button>
+            <Button href="#">Right</Button>
           </ButtonGroup>
           <h5 style={{margin: '15px 0 5px'}}>
             Vertical Button Group
           </h5>
-          <ButtonGroup layout="vertical">
-            <Button label="Left" />
-            <Button label="Middle" />
-            <Button label="Right" />
+          <ButtonGroup vertical>
+            <Button>Left</Button>
+            <Button>Middle</Button>
+            <Button>Right</Button>
           </ButtonGroup>
         </Panel>
 
-        <Panel title="Dropdown Button">
-          <DropdownButton
-            label="Open Me!"
-            menu={menu}
-          />
-          <DropdownButton
-            label="Split Button"
-            menu={menu}
-            split={true}
-            use="danger"
-          />
+        <Panel header={<h3>Glyphicon</h3>}>
+          <Glyphicon glyph="heart" />
+          <Glyphicon glyph="triangle-left" />
+          <Glyphicon glyph="triangle-right" />
         </Panel>
 
-        <Panel title="Glyph">
-          <Glyph icon="heart" />
-          <Glyph icon="triangle-left" />
-          <Glyph icon="triangle-right" />
-        </Panel>
-
-        <Panel title="Label">
+        <Panel header={<h3>Label</h3>}>
           <h1>Example Heading <Label>New</Label></h1>
           <h2>Example Heading <Label>New</Label></h2>
           <h3>Example Heading <Label>New</Label></h3>
@@ -194,7 +178,7 @@ var BootstrapPage = React.createClass({
           <Label use="danger">Danger</Label>
         </Panel>
 
-        <Panel title="ListGroup">
+        <Panel header={<h3>ListGroup</h3>}>
           <ListGroup>
             <ListGroupItem>Standard List Item</ListGroupItem>
             <ListGroupItem href="#">Linked List Item</ListGroupItem>
@@ -217,7 +201,7 @@ var BootstrapPage = React.createClass({
           </ListGroup>
         </Panel>
 
-        <Panel title="Nav">
+        <Panel header={<h3>Nav</h3>}>
           <h5 style={{margin: '0 0 10px 0'}}>Tabbed Nav</h5>
           <Nav>
             <NavItem active>Item 1</NavItem>
@@ -247,21 +231,23 @@ var BootstrapPage = React.createClass({
           </Nav>
         </Panel>
 
-        <Panel title="Navbar">
-          <Navbar brand="Brand" fluid>
+        <Panel header={<h3>Navbar</h3>}>
+          <Navbar fluid>
+            <NavbarBrand>Brand</NavbarBrand>
             <Nav>
               <NavItem active>Item 1</NavItem>
               <NavItem menu={menu}>Item 2</NavItem>
               <NavItem disabled>Item 3</NavItem>
             </Nav>
           </Navbar>
-          <Navbar brand="Brand" fluid inverse>
+          <Navbar fluid inverse>
+            <NavbarBrand>Brand</NavbarBrand>
             <Nav>
               <NavItem active>Item 1</NavItem>
               <NavItem>Item 2</NavItem>
               <NavItem disabled>Item 3</NavItem>
             </Nav>
-            <Nav right>
+            <Nav pullRight>
               <NavItem active>Item 1</NavItem>
               <NavItem>Item 2</NavItem>
               <NavItem disabled>Item 3</NavItem>
@@ -269,13 +255,13 @@ var BootstrapPage = React.createClass({
           </Navbar>
         </Panel>
 
-        <Panel title="Panel">
-          <Panel title="This is the title" footer="This is the footer">
+        <Panel header={<h3>Panel</h3>}>
+          <Panel header="This is the title" footer="This is the footer">
             This is the body
           </Panel>
         </Panel>
 
-        <Panel title="Table">
+        <Panel header={<h3>Table</h3>}>
           <Table>
             <thead>
               <tr>

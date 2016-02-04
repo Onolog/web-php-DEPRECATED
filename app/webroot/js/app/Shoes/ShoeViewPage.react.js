@@ -1,8 +1,13 @@
 var React = require('react');
+var {
+  Button,
+  ButtonGroup,
+  Glyphicon,
+  OverlayTrigger,
+  Tooltip
+} = require('react-bootstrap/lib');
 
 var AppPage = require('components/Page/AppPage.react');
-var Button = require('components/Button/Button.react');
-var ButtonGroup = require('components/ButtonGroup/ButtonGroup.react');
 var PageHeader = require('components/Page/PageHeader.react');
 var Panel = require('components/Panel/Panel.react');
 var ShoeView = require('./ShoeView.react');
@@ -30,7 +35,7 @@ var ShoeViewPage = React.createClass({
         <PageHeader title={shoe.name}>
           {this._renderButtonGroup()}
         </PageHeader>
-        <Panel noPadding={true}>
+        <Panel noPadding>
           <ShoeView
             activityCount={shoe.activity_count}
             activities={shoe.activities}
@@ -46,34 +51,34 @@ var ShoeViewPage = React.createClass({
     if (canEdit) {
       return (
         <ButtonGroup>
-          <Button
-            glyph="pencil"
-            href={'/shoes/edit/' + shoe.id}
-            tooltip={{
-              title: 'Edit Shoe'
-            }}
-          />
-          <Button
-            glyph="trash"
-            onClick={this._onShoeDelete}
-            tooltip={{
-              title: 'Delete Shoe'
-            }}
-          />
-          <Button
-            glyph="plus"
-            href="/shoes/add/"
-            tooltip={{
-              title: 'New Shoe'
-            }}
-          />
-          <Button
-            glyph="th"
-            href="/shoes"
-            tooltip={{
-              title: 'All Shoes'
-            }}
-          />
+          <OverlayTrigger
+            overlay={<Tooltip id="edit">Edit Shoe</Tooltip>}
+            placement="top">
+            <Button href={`/shoes/edit/${shoe.id}`}>
+              <Glyphicon glyph="pencil" />
+            </Button>
+          </OverlayTrigger>
+          <OverlayTrigger
+            overlay={<Tooltip id="edit">Delete Shoe</Tooltip>}
+            placement="top">
+            <Button onClick={this._onShoeDelete}>
+              <Glyphicon glyph="trash" />
+            </Button>
+          </OverlayTrigger>
+          <OverlayTrigger
+            overlay={<Tooltip id="edit">New Shoe</Tooltip>}
+            placement="top">
+            <Button href="/shoes/add/">
+              <Glyphicon glyph="plus" />
+            </Button>
+          </OverlayTrigger>
+          <OverlayTrigger
+            overlay={<Tooltip id="edit">All Shoes</Tooltip>}
+            placement="top">
+            <Button href="/shoes">
+              <Glyphicon glyph="th" />
+            </Button>
+          </OverlayTrigger>
         </ButtonGroup>
       );
     }

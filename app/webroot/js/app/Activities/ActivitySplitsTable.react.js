@@ -1,6 +1,5 @@
 var React = require('react');
-
-var Table = require('components/Table/Table.react');
+var {Table} = require('react-bootstrap/lib');
 
 var {map} = require('lodash');
 var {metersToFeet, metersToMiles} = require('utils/distanceUtils');

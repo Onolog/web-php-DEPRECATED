@@ -1,10 +1,9 @@
 var moment = require('moment-timezone');
 var React = require('react');
+var {Button, ButtonGroup, Glyphicon} = require('react-bootstrap/lib');
 
 var Activity = require('app/Activities/Activity.react');
 var AppPage = require('components/Page/AppPage.react');
-var Button = require('components/Button/Button.react');
-var ButtonGroup = require('components/ButtonGroup/ButtonGroup.react');
 var Calendar = require('components/Calendar/Calendar.react');
 var DateTimePicker = require('components/DateTimePicker/DateTimePicker.react');
 var FBFriendTokenizer = require('components/Facebook/FBFriendTokenizer.react');
@@ -68,27 +67,15 @@ var ReactPage = React.createClass({
           <LeftRight style={{'marginBottom': '10px'}}>
             <h3>{moment(this.state.calendarDate).format('MMMM YYYY')}</h3>
             <ButtonGroup>
-              <Button
-          	    glyph="triangle-left"
-                tooltip={{
-                  title: 'Last month'
-                }}
-                onClick={this.onLastMonthClick}
-              />
-              <Button
-          	    glyph="stop"
-                tooltip={{
-                  title: 'This month'
-                }}
-                onClick={this.onThisMonthClick}
-              />
-              <Button
-          	    glyph="triangle-right"
-                tooltip={{
-                  title: 'Next month'
-                }}
-                onClick={this.onNextMonthClick}
-              />
+              <Button onClick={this.onLastMonthClick}>
+          	    <Glyphicon glyph="triangle-left" />
+              </Button>
+              <Button onClick={this.onThisMonthClick}>
+                <Glyphicon glyph="stop" />
+              </Button>
+              <Button onClick={this.onNextMonthClick}>
+                <Glyphicon glyph="triangle-right" />
+              </Button>
             </ButtonGroup>
           </LeftRight>
           <Calendar date={this.state.calendarDate} />

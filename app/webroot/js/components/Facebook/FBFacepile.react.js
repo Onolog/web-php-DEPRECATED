@@ -1,4 +1,5 @@
 var React = require('react');
+var {OverlayTrigger, Tooltip} = require('react-bootstrap/lib');
 
 var FBImage = require('./FBImage.react');
 var Link = require('components/Link/Link.react');
@@ -54,16 +55,16 @@ var FBFacepile = React.createClass({
 
   _renderFace: function(friend, idx) {
     return (
-      <Link
-        className="FacepileLink innerBorder"
-        href={'/users/profile/' + friend.id}
-        key={idx}
-        tooltip={{
-          container: 'body',
-          title: friend.name
-        }}>
-        <FBImage fbid={friend.id} />
-      </Link>
+      <OverlayTrigger
+        overlay={<Tooltip id={friend.id}>{friend.name}</Tooltip>}
+        placement="top">
+        <Link
+          className="FacepileLink innerBorder"
+          href={`/users/profile/${friend.id}`}
+          key={idx}>
+          <FBImage fbid={friend.id} />
+        </Link>
+      </OverlayTrigger>
     );
   },
 

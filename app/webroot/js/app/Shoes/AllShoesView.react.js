@@ -1,12 +1,11 @@
 import React from 'react';
-
-import ShoeModal from './ShoeModal.react';
-import ShoeViewModal from './ShoeViewModal.react';
+import {OverlayTrigger, Panel, Table, Tooltip} from 'react-bootstrap/lib';
 
 import CloseButton from 'components/Button/CloseButton.react';
 import EmptyState from 'components/EmptyState.react';
 import Link from 'components/Link/Link.react';
-import {Panel, Table} from 'react-bootstrap/lib';
+import ShoeModal from './ShoeModal.react';
+import ShoeViewModal from './ShoeViewModal.react';
 
 import ShoeActions from 'flux/actions/ShoeActions';
 
@@ -131,10 +130,11 @@ const AllShoesView = React.createClass({
           />
         </td>
         <td className="actions">
-          <CloseButton
-            onClick={this._handleDelete.bind(this, shoe.id)}
-            tooltip={{title: 'Delete'}}
-          />
+          <OverlayTrigger
+            overlay={<Tooltip id="delete">Delete</Tooltip>}
+            placement="top">
+            <CloseButton onClick={this._handleDelete.bind(this, shoe.id)} />
+          </OverlayTrigger>
         </td>
       </tr>
     );

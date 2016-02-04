@@ -1,7 +1,7 @@
 var $ = require('jquery');
 var React = require('react');
+var {Alert} = require('react-bootstrap/lib');
 
-var Alert = require('components/Alert/Alert.react');
 var ModalBody = require('components/Modal/ModalBody.react');
 var ModalDialog = require('components/Modal/ModalDialog.react');
 var ModalFooter = require('components/Modal/ModalFooter.react');
@@ -101,7 +101,7 @@ var Modal = React.createClass({
   _renderAlertMessage: function() {
     if (this.props.alert) {
       return (
-        <Alert type={this.props.alert.type}>
+        <Alert bsStyle={this.props.alert.type}>
           {this.props.alert.message}
         </Alert>
       );

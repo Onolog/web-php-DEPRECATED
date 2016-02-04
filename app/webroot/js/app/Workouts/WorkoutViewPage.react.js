@@ -1,9 +1,14 @@
 var React = require('react');
+var {
+  Button,
+  ButtonGroup,
+  Glyphicon,
+  OverlayTrigger,
+  Tooltip,
+} = require('react-bootstrap/lib');
 
 var AppPage = require('components/Page/AppPage.react');
 var Activity = require('../Activities/Activity.react');
-var Button = require('components/Button/Button.react');
-var ButtonGroup = require('components/ButtonGroup/ButtonGroup.react');
 var PageHeader = require('components/Page/PageHeader.react');
 var Panel = require('components/Panel/Panel.react');
 
@@ -40,21 +45,20 @@ var WorkoutViewPage = React.createClass({
     if (this.state.viewer === workout.user_id) {
       return (
         <ButtonGroup>
-          <Button
-            glyph="pencil"
-            href={'/workouts/edit/' + workout.id}
-            onClick={this._onWorkoutEdit}
-            tooltip={{
-              title: 'Edit Activity'
-            }}
-          />
-          <Button
-            glyph="trash"
-            onClick={this._onWorkoutDelete}
-            tooltip={{
-              title: 'Delete Activity'
-            }}
-          />
+          <OverlayTrigger
+            overlay={<Tooltip id="edit">Edit Activity</Tooltip>}
+            placement="top">
+            <Button href={`/workouts/edit/${workout.id}`}>
+              <Glyphicon glyph="pencil" />
+            </Button>
+          </OverlayTrigger>
+          <OverlayTrigger
+            overlay={<Tooltip id="delete">Delete Activity</Tooltip>}
+            placement="top">
+            <Button onClick={this._onWorkoutDelete}>
+              <Glyphicon glyph="trash" />
+            </Button>
+          </OverlayTrigger>
         </ButtonGroup>
       );
     }

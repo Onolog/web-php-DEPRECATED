@@ -1,8 +1,13 @@
 var React = require('react');
+var {
+  Button,
+  ButtonGroup,
+  Glyphicon,
+  OverlayTrigger,
+  Tooltip,
+} = require('react-bootstrap/lib');
 
 var Activity = require('app/Activities/Activity.react');
-var Button = require('components/Button/Button.react');
-var ButtonGroup = require('components/ButtonGroup/ButtonGroup.react');
 var LeftRight = require('components/LeftRight/LeftRight.react');
 var Link = require('components/Link/Link.react');
 var Modal = require('components/Modal/Modal.react');
@@ -97,26 +102,25 @@ var WorkoutLink = React.createClass({
           title="Edit Activity"
           footer={
             <LeftRight>
-              <Button
-                disabled={isLoading}
-                glyph="trash"
-                onClick={this._onDeleteClick}
-                tooltip={{
-                  title: 'Delete Activity'
-                }}
-              />
+              <OverlayTrigger
+                overlay={<Tooltip id="delete">Delete Activity</Tooltip>}
+                placement="top">
+                <Button disabled={isLoading} onClick={this._onDeleteClick}>
+                  <Glyphicon glyph="trash" />
+                </Button>
+              </OverlayTrigger>
               <div>
                 <Button
                   disabled={isLoading}
-                  label="Cancel"
-                  onClick={this._onCancelEdit}
-                />
+                  onClick={this._onCancelEdit}>
+                  Cancel
+                </Button>
                 <Button
-                  use="primary"
+                  bsStyle="primary"
                   disabled={isLoading}
-                  label="Update Activity"
-                  onClick={this._onUpdateClick}
-                />
+                  onClick={this._onUpdateClick}>
+                  Update Activity
+                </Button>
               </div>
             </LeftRight>
           }>
@@ -137,36 +141,31 @@ var WorkoutLink = React.createClass({
         footer={
           <LeftRight>
             <ButtonGroup>
-              <Button
-                disabled={isLoading}
-                glyph="pencil"
-                onClick={this._onEditClick}
-                tooltip={{
-                  title: 'Edit Activity'
-                }}
-              />
-              <Button
-                disabled={isLoading}
-                glyph="trash"
-                onClick={this._onDeleteClick}
-                tooltip={{
-                  title: 'Delete Activity'
-                }}
-              />
-              <Button
-                disabled={isLoading}
-                glyph="link"
-                onClick={this._onPermalinkClick}
-                tooltip={{
-                  title: 'View Permalink'
-                }}
-              />
+              <OverlayTrigger
+                overlay={<Tooltip id="edit">Edit Activity</Tooltip>}
+                placement="top">
+                <Button disabled={isLoading} onClick={this._onEditClick}>
+                  <Glyphicon glyph="pencil" />
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger
+                overlay={<Tooltip id="delete">Delete Activity</Tooltip>}
+                placement="top">
+                <Button disabled={isLoading} onClick={this._onDeleteClick}>
+                  <Glyphicon glyph="trash" />
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger
+                overlay={<Tooltip id="permalink">View Permalink</Tooltip>}
+                placement="top">
+                <Button disabled={isLoading} onClick={this._onPermalinkClick}>
+                  <Glyphicon glyph="link" />
+                </Button>
+              </OverlayTrigger>
             </ButtonGroup>
-            <Button
-              disabled={isLoading}
-              label="Close"
-              onClick={this._closeModal}
-            />
+            <Button disabled={isLoading} onClick={this._closeModal}>
+              Close
+            </Button>
           </LeftRight>
         }>
         <Activity activity={this.state.workout} />

@@ -1,4 +1,5 @@
 var React = require('react');
+var {OverlayTrigger, Tooltip} = require('react-bootstrap/lib');
 
 var Link = require('components/Link/Link.react');
 
@@ -43,24 +44,21 @@ var GraphBar = React.createClass({
   },
 
   render: function() {
+    const {label, scale, value} = this.props;
+
     return (
-      <Link
-        href={this.props.href || '#'}
-        className={cx({
-          'graphBar': true,
-          'noData': !this.props.value
-        })}
-        style={{
-          height: Math.floor(this.props.value * this.props.scale) + 'px'
-        }}
-        tooltip={{
-          title: this.props.label,
-          position: 'top'
-        }}>
-        <span className="graphBarLabel">
-          {this.props.label}
-        </span>
-      </Link>
+      <OverlayTrigger
+        overlay={<Tooltip id={label}>{label}</Tooltip>}
+        placement="top">
+        <Link
+          href={this.props.href || '#'}
+          className={cx('graphBar', {'noData': !value})}
+          style={{height: `${Math.floor(value * scale)}px`}}>
+          <span className="graphBarLabel">
+            {label}
+          </span>
+        </Link>
+      </OverlayTrigger>
     );
   }
 });
