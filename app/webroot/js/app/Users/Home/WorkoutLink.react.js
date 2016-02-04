@@ -14,9 +14,8 @@ var Modal = require('components/Modal/Modal.react');
 var WorkoutFields = require('app/Workouts/WorkoutFields.react');
 
 var LayerMixin = require('mixins/LayerMixin.react');
-var StoreMixin = require('mixins/StoreMixin.react');
 
-var ActionTypes = require('flux/ActionTypes');
+var {CHANGE} = require('flux/ActionTypes');
 var AlertStore = require('flux/stores/AlertStore');
 var WorkoutActions = require('flux/actions/WorkoutActions');
 var WorkoutStore = require('flux/stores/WorkoutStore');
@@ -30,7 +29,7 @@ var {isEqual} = require('lodash');
 var WorkoutLink = React.createClass({
   displayName: 'WorkoutLink',
 
-  mixins: [LayerMixin, StoreMixin],
+  mixins: [LayerMixin],
 
   propTypes: {
     workout: React.PropTypes.object.isRequired
@@ -46,11 +45,14 @@ var WorkoutLink = React.createClass({
     };
   },
 
-  componentWillMount: function() {
-    this.stores = [
-      this.setStoreInfo(AlertStore, this._alertChanged),
-      this.setStoreInfo(WorkoutStore, this._workoutsChanged)
-    ];
+  componentDidMount: function() {
+    AlertStore.bind(CHANGE, this._alertChanged);
+    WorkoutStore.bind(CHANGE, this._workoutsChanged);
+  },
+
+  componentWillUnmount: function() {
+    AlertStore.unbind(CHANGE, this._alertChanged);
+    WorkoutStore.unbind(CHANGE, this._workoutsChanged);
   },
 
   _alertChanged: function() {

@@ -10,7 +10,8 @@ var MenuItem = require('components/Menu/MenuItem.react');
 var Nav = require('components/Nav/Nav.react');
 var NavItem = require('components/Nav/NavItem.react');
 var Navbar = require('components/Navbar/Navbar.react');
-var StoreMixin = require('mixins/StoreMixin.react');
+
+var {CHANGE} = require('flux/ActionTypes');
 
 var homeUrl = require('utils/homeUrl');
 var pad = require('utils/pad');
@@ -21,8 +22,6 @@ var pad = require('utils/pad');
 var AppHeader = React.createClass({
   displayName: 'AppHeader',
 
-  mixins: [StoreMixin],
-
   getInitialState: function() {
     return {
       isLoading: true,
@@ -30,8 +29,12 @@ var AppHeader = React.createClass({
     };
   },
 
-  componentWillMount: function() {
-    this.stores = [this.setStoreInfo(UserStore, this._onUserStoreUpdate)];
+  componentDidMount: function() {
+    UserStore.bind(CHANGE, this._onUserStoreUpdate);
+  },
+
+  componentWillUnmount: function() {
+    UserStore.unbind(CHANGE, this._onUserStoreUpdate);
   },
 
   _onUserStoreUpdate: function() {

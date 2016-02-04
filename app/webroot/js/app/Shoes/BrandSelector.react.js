@@ -1,10 +1,10 @@
 var React = require('react');
 
-var TextInput = require('components/Forms/TextInput.react');
 var Select = require('components/Select/Select.react');
+var TextInput = require('components/Forms/TextInput.react');
 
+var {CHANGE} = require('flux/ActionTypes');
 var BrandStore = require('flux/stores/BrandStore');
-var StoreMixin = require('mixins/StoreMixin.react');
 
 /**
  * BrandSelector.react
@@ -14,14 +14,16 @@ var StoreMixin = require('mixins/StoreMixin.react');
 var BrandSelector = React.createClass({
   displayName: 'BrandSelector',
 
-  mixins: [StoreMixin],
-
   componentWillMount: function() {
-    this.stores = [
-      this.setStoreInfo(BrandStore, this._setBrands)
-    ];
-
     this._setBrands();
+  },
+
+  componentDidMount: function() {
+    BrandStore.bind(CHANGE, this._setBrands);
+  },
+
+  componentWillUnmount: function() {
+    BrandStore.unbind(CHANGE, this._setBrands);
   },
 
   _setBrands: function() {
