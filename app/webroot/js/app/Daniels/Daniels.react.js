@@ -1,13 +1,10 @@
 var React = require('react');
+var {Panel, Tab, Tabs} = require('react-bootstrap/lib');
 
 var AppPage = require('components/Page/AppPage.react');
-var PageHeader = require('components/Page/PageHeader.react');
-var Panel = require('components/Panel/Panel.react');
-var Tab = require('react-bootstrap/lib/Tab');
-var Tabs = require('react-bootstrap/lib/Tabs');
-
 var DistanceTable = require('./DistanceTable.react');
 var PaceTable = require('./PaceTable.react');
+var PageHeader = require('components/Page/PageHeader.react');
 
 var cx = require('classnames');
 
