@@ -2,7 +2,7 @@ import React from 'react';
 import Typeahead from 'react-bootstrap-typeahead';
 
 import fbLoader from 'utils/fbLoader';
-import {map} from 'lodash/collection';
+import {isArray, map} from 'lodash';
 
 /**
  * FriendTokenizer.react
@@ -83,6 +83,10 @@ var FBFriendTokenizer = React.createClass({
    * Parse the batched response from the FB Graph API.
    */
   _handleGraphResponse: function(response) {
+    if (!(response && isArray(response))) {
+      return;
+    }
+
     // The first item in the response is the full list of taggable friends.
     // The other items are friends who are already tagged,
     var options = JSON.parse(response.shift().body).data;
