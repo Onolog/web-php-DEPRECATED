@@ -1,7 +1,7 @@
-var $ = require('jquery');
 var Autolinker = require('autolinker');
 var React = require('react');
 var ReactDOM = require('react-dom');
+var {Tab, Tabs} = require('react-bootstrap/lib');
 
 var ActivityDeviceInfo = require('./ActivityDeviceInfo.react');
 var ActivityHeader = require('./ActivityHeader.react');
@@ -12,7 +12,6 @@ var ActivityStats = require('./ActivityStats.react');
 
 var FBFacepile = require('components/Facebook/FBFacepile.react');
 var Link = require('components/Link/Link.react');
-var TabbedSection = require('components/Navigation/TabbedSection.react');
 
 var ActionTypes = require('flux/ActionTypes');
 var ShoeStore = require('flux/stores/ShoeStore');
@@ -48,15 +47,17 @@ var Activity = React.createClass({
 
   componentDidMount: function() {
     this._setOrientation();
-    $(ReactDOM.findDOMNode(this)).resize(() => {
-      // Update the component if it's resized for some reason
-      this._setOrientation();
-    });
+    ReactDOM.findDOMNode(this).addEventListener('resize', this._setOrientation);
 
     ShoeStore.bind(ActionTypes.CHANGE, this._setShoes);
   },
 
   componentWillUnmount: function() {
+    ReactDOM.findDOMNode(this).removeEventListener(
+      'resize',
+      this._setOrientation
+    );
+
     ShoeStore.unbind(ActionTypes.CHANGE, this._setShoes);
   },
 
@@ -81,8 +82,8 @@ var Activity = React.createClass({
             {...this.props}
             athlete={athlete}
           />
-          <TabbedSection className="activityPanes">
-            <div className="activityNavPane" label="Detail">
+          <Tabs className="activityPanes" defaultActiveKey={1}>
+            <Tab className="activityNavPane" eventKey={1} title="Detail">
               <ActivitySection>
                 <ActivityStats activity={activity} />
               </ActivitySection>
@@ -90,9 +91,11 @@ var Activity = React.createClass({
               {this._renderActivityShoes(activity)}
               {this._renderActivityFriends(activity)}
               {this._renderDeviceInfo(activity)}
-            </div>
-            {this._renderSplitsPane(activity)}
-          </TabbedSection>
+            </Tab>
+            <Tab className="activityNavPane" eventKey={2} title="Splits">
+              {this._renderSplitsPane(activity)}
+            </Tab>
+          </Tabs>
         </div>
       </div>
     );
@@ -111,7 +114,7 @@ var Activity = React.createClass({
   _renderActivityNotes: function({notes}) {
     if (notes) {
       return (
-        <ActivitySection title="Notes" border={true}>
+        <ActivitySection title="Notes" border>
           <div
             className="activityNotes"
             dangerouslySetInnerHTML={{__html: Autolinker.link(notes)}}
@@ -125,7 +128,7 @@ var Activity = React.createClass({
     var shoe = ShoeStore.getItem(shoe_id);
     if (shoe) {
       return (
-        <ActivitySection title="Shoes" border={true}>
+        <ActivitySection title="Shoes" border>
           {shoe.name}
         </ActivitySection>
       );
@@ -158,11 +161,9 @@ var Activity = React.createClass({
   _renderSplitsPane: function(/*array*/ {laps}) {
     if (laps && laps.length) {
       return (
-        <div className="activityNavPane" label="Splits">
-          <ActivitySection>
-            <ActivitySplitsTable laps={laps} />
-          </ActivitySection>
-        </div>
+        <ActivitySection>
+          <ActivitySplitsTable laps={laps} />
+        </ActivitySection>
       );
     }
   },
