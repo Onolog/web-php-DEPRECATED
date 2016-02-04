@@ -1,18 +1,23 @@
 var moment = require('moment');
 var React = require('react');
+var {
+  Button,
+  ButtonGroup,
+  Glyphicon,
+  OverlayTrigger,
+  Panel,
+  Tooltip
+} = require('react-bootstrap/lib');
 
 var ActionTypes = require('flux/ActionTypes');
 var CalendarActions = require('flux/actions/CalendarActions');
 var WorkoutStore = require('flux/stores/WorkoutStore');
 
+var ActivityModal = require('./ActivityModal.react');
 var ActivityCalendar = require('./ActivityCalendar.react');
 var AppPage = require('components/Page/AppPage.react');
-var Button = require('components/Button/Button.react');
-var ButtonGroup = require('components/ButtonGroup/ButtonGroup.react');
 var Loader = require('components/Loader/Loader.react');
 var PageHeader = require('components/Page/PageHeader.react');
-var Panel = require('components/Panel/Panel.react');
-var WorkoutAddDialog = require('app/Users/Home/WorkoutAddDialog.react');
 
 var cloneDate = require('utils/cloneDate');
 var cx = require('classnames');
@@ -27,10 +32,11 @@ var Home = React.createClass({
     var {month, year} = window.app;
 
     return {
-      date: new Date(year, month - 1, 1),
       // Null means we haven't gotten a response back yet. An empty array
       // means there are no workouts for that timeframe.
-      activities: null
+      activities: null,
+      date: new Date(year, month - 1, 1),
+      showModal: false
     };
   },
 
@@ -52,28 +58,24 @@ var Home = React.createClass({
 
   _workoutsChanged: function() {
     this.setState({
-      activities: WorkoutStore.getCollection()
+      activities: WorkoutStore.getCollection(),
+      showModal: false,
     });
   },
 
   render: function() {
-    var {date} = this.state;
+    const {activities, date} = this.state;
+
     return (
       <AppPage>
         <PageHeader title={moment(date).format('MMMM YYYY')}>
           {this._renderButtonGroup()}
         </PageHeader>
         <Panel className="calendarContainer">
-          <Loader
-            background={true}
-            full={true}
-            className={cx({
-              hidden: this.state.activities
-            })}
-          />
+          {activities ? null: <Loader background full />}
           <ActivityCalendar
             date={date}
-            workouts={this.state.activities}
+            workouts={activities}
           />
         </Panel>
       </AppPage>
@@ -83,37 +85,53 @@ var Home = React.createClass({
   _renderButtonGroup: function() {
     return (
       <div>
-        <WorkoutAddDialog
-          date={new Date()}
-          trigger={<Button glyph="plus" use="success" />}
+        <ActivityModal
+          onHide={this._hideModal}
+          show={this.state.showModal}
         />
+        <Button
+          bsStyle="success"
+          onClick={this._showModal}>
+          <Glyphicon glyph="plus" />
+        </Button>
         <ButtonGroup>
-          <Button
-            className="monthArrow"
-            glyph="triangle-left"
-            tooltip={{
-              title: 'Last month'
-            }}
-            onClick={this._onLastMonthClick}
-          />
-          <Button
-            glyph="stop"
-            tooltip={{
-              title: 'This month'
-            }}
-            onClick={this._onThisMonthClick}
-          />
-          <Button
-            className="monthArrow"
-            glyph="triangle-right"
-            tooltip={{
-              title: 'Next month'
-            }}
-            onClick={this._onNextMonthClick}
-          />
+          <OverlayTrigger
+            overlay={<Tooltip id="last-month">Last month</Tooltip>}
+            placement="top">
+            <Button
+              className="monthArrow"
+              onClick={this._onLastMonthClick}>
+              <Glyphicon glyph="triangle-left" />
+            </Button>
+          </OverlayTrigger>
+          <OverlayTrigger
+            overlay={<Tooltip id="this-month">This month</Tooltip>}
+            placement="top">
+            <Button
+              onClick={this._onThisMonthClick}>
+              <Glyphicon glyph="stop" />
+            </Button>
+          </OverlayTrigger>
+          <OverlayTrigger
+            overlay={<Tooltip id="next-month">Next month</Tooltip>}
+            placement="top">
+            <Button
+              className="monthArrow"
+              onClick={this._onNextMonthClick}>
+              <Glyphicon glyph="triangle-right" />
+            </Button>
+          </OverlayTrigger>
         </ButtonGroup>
       </div>
     );
+  },
+
+  _hideModal: function() {
+    this.setState({showModal: false});
+  },
+
+  _showModal: function() {
+    this.setState({showModal: true});
   },
 
   _updateCalendar: function(/*Date*/ date) {

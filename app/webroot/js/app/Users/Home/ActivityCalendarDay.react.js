@@ -1,9 +1,9 @@
 var React = require('react');
+var {Button, Glyphicon, OverlayTrigger, Tooltip} = require('react-bootstrap/lib');
 
+var ActivityModal = require('./ActivityModal.react');
 var BaseCalendarDay = require('components/Calendar/BaseCalendarDay.react');
-var Button = require('components/Button/Button.react');
 var CalendarDate = require('components/Calendar/CalendarDate.react');
-var WorkoutAddDialog = require('./WorkoutAddDialog.react');
 var WorkoutLink = require('./WorkoutLink.react');
 
 var formatDistance = require('utils/formatDistance');
@@ -32,51 +32,48 @@ var ActivityCalendarDay = React.createClass({
     workouts: React.PropTypes.array,
   },
 
+  getInitialState: function() {
+    return {
+      showModal: false
+    };
+  },
+
   render: function() {
-    var dateObject = this.props.date;
+    var {date, month} = this.props;
+    var tooltip = <Tooltip id={date.toISOString()}>Add workout</Tooltip>;
 
     return (
-      <BaseCalendarDay
-        date={dateObject}
-        month={this.props.month}>
+      <BaseCalendarDay date={date} month={month}>
         <div className="wrapper">
-          <CalendarDate date={dateObject} />
+          <CalendarDate date={date} />
           {this._renderWorkouts()}
-          <WorkoutAddDialog
-            date={dateObject}
-            trigger={
-              <Button
-                glyph="plus"
-                className="add"
-                use="default"
-                size="xsmall"
-                tooltip={{
-                  title: 'Add workout',
-                  placement: 'right'
-                }}
-              />
-            }
+          <OverlayTrigger overlay={tooltip} placement="right">
+            <Button
+              bsSize="xsmall"
+              bsStyle="default"
+              className="add"
+              onClick={this._showModal}>
+              <Glyphicon glyph="plus" />
+            </Button>
+          </OverlayTrigger>
+          <ActivityModal
+            date={date}
+            onHide={this._hideModal}
+            show={this.state.showModal}
           />
-          {this._renderWeeklyTotal(dateObject)}
+          {this._renderWeeklyTotal(date)}
         </div>
       </BaseCalendarDay>
     );
   },
 
   _renderWorkouts: function() /*?object*/ {
-    var workouts = this.props.workouts;
-    if (!workouts.length) {
-      return;
+    var {workouts} = this.props;
+    if (workouts.length) {
+      return workouts.map((/*object*/ workout) => {
+        return <WorkoutLink key={workout.id} workout={workout} />;
+      });
     }
-
-    return workouts.map(function(/*object*/ workout) {
-      return (
-        <WorkoutLink
-          key={workout.id}
-          workout={workout}
-        />
-      );
-    });
   },
 
   _renderWeeklyTotal: function(dateObject) {
@@ -89,7 +86,15 @@ var ActivityCalendarDay = React.createClass({
         </div>
       );
     }
-  }
+  },
+
+  _hideModal: function() {
+    this.setState({showModal: false});
+  },
+
+  _showModal: function() {
+    this.setState({showModal: true});
+  },
 });
 
 module.exports = ActivityCalendarDay;

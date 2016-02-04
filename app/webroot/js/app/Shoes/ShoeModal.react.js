@@ -45,8 +45,8 @@ const ShoeModal = React.createClass({
       primaryAction = 'Update Shoe';
       title = initialShoe.name;
     } else {
-      primaryAction = 'Add Shoe';
-      title = 'Add A New Shoe';
+      primaryAction = 'Create Shoe';
+      title = 'Create A New Shoe';
     }
 
     return (
