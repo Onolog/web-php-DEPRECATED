@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ShoeModal from './ShoeModal.react';
-import ShoeViewLink from './ShoeViewLink.react';
+import ShoeViewModal from './ShoeViewModal.react';
 
 import CloseButton from 'components/Button/CloseButton.react';
 import EmptyState from 'components/EmptyState.react';
@@ -12,6 +12,11 @@ import ShoeActions from 'flux/actions/ShoeActions';
 
 import cx from 'classnames';
 import {groupBy} from 'lodash';
+
+const ACTION = {
+  EDIT: 'edit',
+  VIEW: 'view',
+};
 
 /**
  * AllShoesView.react
@@ -27,12 +32,13 @@ const AllShoesView = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     // Close dialog when shoes get updated.
-    this.setState({shownShoe: null});
+    this.setState(this.getInitialState());
   },
 
   getInitialState: function() {
     return {
-      shownShoe: null
+      action: null,
+      shown: null,
     };
   },
 
@@ -94,10 +100,19 @@ const AllShoesView = React.createClass({
   },
 
   _renderTableRows: function(shoe, idx) {
+    let {action, shown} = this.state;
+
     return (
       <tr className={cx({inactive: !!shoe.inactive})} key={idx}>
         <td>
-          <ShoeViewLink shoe={shoe} />
+          <Link href="#" onClick={this._handleView.bind(null, shoe.id)}>
+            {shoe.name}
+          </Link>
+          <ShoeViewModal
+            onHide={this._handleHideModal}
+            shoe={shoe}
+            show={action === ACTION.VIEW && shown === shoe.id}
+          />
         </td>
         <td className="activities">
           {shoe.activity_count}
@@ -112,12 +127,12 @@ const AllShoesView = React.createClass({
           <ShoeModal
             initialShoe={shoe}
             onHide={this._handleHideModal}
-            show={this.state.shownShoe === shoe.id}
+            show={action === ACTION.EDIT && shown === shoe.id}
           />
         </td>
         <td className="actions">
           <CloseButton
-            onClick={this._onDeleteClick.bind(this, shoe.id)}
+            onClick={this._handleDelete.bind(this, shoe.id)}
             tooltip={{title: 'Delete'}}
           />
         </td>
@@ -125,7 +140,7 @@ const AllShoesView = React.createClass({
     );
   },
 
-  _onDeleteClick: function(id, evt) {
+  _handleDelete: function(id, evt) {
     if (confirm('Are you sure you want to delete this shoe?')) {
       ShoeActions.delete(id);
     }
@@ -133,11 +148,25 @@ const AllShoesView = React.createClass({
 
   _handleEdit: function(shoeId, e) {
     e.preventDefault();
-    this.setState({shownShoe: shoeId});
+    this.setState({
+      action: ACTION.EDIT,
+      shown: shoeId,
+    });
   },
 
   _handleHideModal: function() {
-    this.setState({shownShoe: null});
+    this.setState({
+      action: null,
+      shown: null,
+    });
+  },
+
+  _handleView: function(shoeId, e) {
+    e.preventDefault();
+    this.setState({
+      action: ACTION.VIEW,
+      shown: shoeId,
+    });
   },
 });
 
