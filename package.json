@@ -36,7 +36,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "git pull origin master && npm run prod",
+    "deploy": "git pull origin master && npm install && npm run prod",
     "dev": "webpack -w --progress --colors",
     "prod": "NODE_ENV=production webpack --progress --colors --config webpack.prod.config.js"
   },
