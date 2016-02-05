@@ -63,9 +63,7 @@ var Friends = React.createClass({
 
   _getFriends: function() {
     FB.getLoginStatus((response) => {
-      debugger;
       FB.api('/me/friends', (response) => {
-        debugger;
         this.setState({friends: response.data});
       });
     });
