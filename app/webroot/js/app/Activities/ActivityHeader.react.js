@@ -23,12 +23,18 @@ var ActivityHeader = React.createClass({
   propTypes: {
     activity: PropTypes.shape({
       activity_type: PropTypes.string,
-      id: PropTypes.number.isRequired,
+      id: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+      ]).isRequired,
       start_date: PropTypes.string.isRequired,
       timezone: PropTypes.string.isRequired
     }),
     athlete: PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string,
+      ]).isRequired,
       name: PropTypes.string
     }).isRequired
   },

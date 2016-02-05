@@ -1,5 +1,6 @@
-var React = require('react');
-var cx = require('classnames');
+import React from 'react';
+
+import cx from 'classnames';
 
 require('./ActivitySection.css');
 
@@ -21,13 +22,11 @@ var ActivitySection = React.createClass({
   },
 
   render: function() {
-    var classNames = cx({
-      'activitySection': true,
-      'activitySectionBorder': this.props.border
-    }, this.props.className);
-
     return (
-      <div className={classNames}>
+      <div
+        className={cx('activitySection', {
+          'activitySectionBorder': this.props.border
+        }, this.props.className)}>
         {this._renderTitle()}
         {this.props.children}
       </div>

@@ -1,7 +1,7 @@
 var Autolinker = require('autolinker');
 var React = require('react');
 var ReactDOM = require('react-dom');
-var {Tab, Tabs} = require('react-bootstrap/lib');
+var {ListGroup, Tab, Tabs} = require('react-bootstrap/lib');
 
 var ActivityDeviceInfo = require('./ActivityDeviceInfo.react');
 var ActivityHeader = require('./ActivityHeader.react');
@@ -47,16 +47,13 @@ var Activity = React.createClass({
 
   componentDidMount: function() {
     this._setOrientation();
-    ReactDOM.findDOMNode(this).addEventListener('resize', this._setOrientation);
+    window.addEventListener('resize', this._setOrientation);
 
     ShoeStore.bind(ActionTypes.CHANGE, this._setShoes);
   },
 
   componentWillUnmount: function() {
-    ReactDOM.findDOMNode(this).removeEventListener(
-      'resize',
-      this._setOrientation
-    );
+    window.removeEventListener('resize', this._setOrientation);
 
     ShoeStore.unbind(ActionTypes.CHANGE, this._setShoes);
   },
@@ -66,13 +63,24 @@ var Activity = React.createClass({
   },
 
   render: function() {
-    var {activity} = this.props;
-    var {athlete, series} = activity;
+    const {activity} = this.props;
+    const {athlete, series} = activity;
+
+    let content = this._renderDetailsContent(activity);
+    let splitsTab = this._renderSplitsTab(activity);
+
+    if (splitsTab) {
+      content =
+        <Tabs className="activityPanes" defaultActiveKey={1}>
+          <Tab className="activityNavPane" eventKey={1} title="Detail">
+            {content}
+          </Tab>
+          {splitsTab}
+        </Tabs>
+    }
 
     return (
-      <div className={cx({
-        'activityContainer': true,
-        'clearfix': true,
+      <div className={cx('activityContainer', 'clearfix', {
         'noMap': !(series && series.length),
         'horizontal': this.state.isHorizontal,
       })}>
@@ -82,23 +90,61 @@ var Activity = React.createClass({
             {...this.props}
             athlete={athlete}
           />
-          <Tabs className="activityPanes" defaultActiveKey={1}>
-            <Tab className="activityNavPane" eventKey={1} title="Detail">
-              <ActivitySection>
-                <ActivityStats activity={activity} />
-              </ActivitySection>
-              {this._renderActivityNotes(activity)}
-              {this._renderActivityShoes(activity)}
-              {this._renderActivityFriends(activity)}
-              {this._renderDeviceInfo(activity)}
-            </Tab>
-            <Tab className="activityNavPane" eventKey={2} title="Splits">
-              {this._renderSplitsPane(activity)}
-            </Tab>
-          </Tabs>
+          {content}
         </div>
       </div>
     );
+  },
+
+  _renderDetailsContent: function(activity) {
+    const {device, friends, notes, shoe_id} = activity;
+
+    let content = [
+      <ActivitySection key="stats">
+        <ActivityStats activity={activity} />
+      </ActivitySection>
+    ];
+
+    if (notes) {
+      content.push(
+        <ActivitySection key="notes" title="Notes">
+          <div
+            className="activityNotes"
+            dangerouslySetInnerHTML={{__html: Autolinker.link(notes)}}
+          />
+        </ActivitySection>
+      );
+    }
+
+    let shoe = ShoeStore.getItem(shoe_id);
+    if (shoe) {
+      content.push(
+        <ActivitySection key="shoe" title="Shoes">
+          {shoe.name}
+        </ActivitySection>
+      );
+    }
+
+    if (friends) {
+      content.push(
+        <ActivitySection key="friends" title="Friends">
+          <FBFacepile friends={friends} />
+        </ActivitySection>
+      );
+    }
+
+    if (device && Object.keys(device).length) {
+      content.push(
+        <ActivitySection key="device" title="Device">
+          <ActivityDeviceInfo
+            deviceName={device.name}
+            softwareVersion={device.version}
+          />
+        </ActivitySection>
+      );
+    }
+
+    return content;
   },
 
   _renderMap: function(series) {
@@ -111,66 +157,21 @@ var Activity = React.createClass({
     }
   },
 
-  _renderActivityNotes: function({notes}) {
-    if (notes) {
-      return (
-        <ActivitySection title="Notes" border>
-          <div
-            className="activityNotes"
-            dangerouslySetInnerHTML={{__html: Autolinker.link(notes)}}
-          />
-        </ActivitySection>
-      );
-    }
-  },
-
-  _renderActivityShoes: function(/*number*/ {shoe_id}) {
-    var shoe = ShoeStore.getItem(shoe_id);
-    if (shoe) {
-      return (
-        <ActivitySection title="Shoes" border>
-          {shoe.name}
-        </ActivitySection>
-      );
-    }
-  },
-
-  _renderActivityFriends: function(/*string*/ {friends}) {
-    if (friends) {
-      return (
-        <ActivitySection border={true} title="Friends">
-          <FBFacepile friends={friends} />
-        </ActivitySection>
-      );
-    }
-  },
-
-  _renderDeviceInfo: function(/*object*/ {device}) {
-    if (device && Object.keys(device).length) {
-      return (
-        <ActivitySection border={true} title="Device">
-          <ActivityDeviceInfo
-            deviceName={device.name}
-            softwareVersion={device.version}
-          />
-        </ActivitySection>
-      );
-    }
-  },
-
-  _renderSplitsPane: function(/*array*/ {laps}) {
+  _renderSplitsTab: function(/*array*/ {laps}) {
     if (laps && laps.length) {
       return (
-        <ActivitySection>
-          <ActivitySplitsTable laps={laps} />
-        </ActivitySection>
+        <Tab className="activityNavPane" eventKey={2} title="Splits">
+          <ActivitySection>
+            <ActivitySplitsTable laps={laps} />
+          </ActivitySection>
+        </Tab>
       );
     }
   },
 
   _setOrientation: function() {
     this.setState({
-      isHorizontal: ReactDOM.findDOMNode(this).scrollWidth > 750
+      isHorizontal: ReactDOM.findDOMNode(this).offsetWidth > 750
     });
   }
 });
