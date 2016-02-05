@@ -27,6 +27,7 @@ const ShoeViewModal = React.createClass({
           <Modal.Title>{shoe.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {shoe ? null : <Loader background full large />}
           <ShoeView
             activities={shoe.activities}
             activityCount={shoe.activity_count}

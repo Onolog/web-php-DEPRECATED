@@ -8,12 +8,12 @@ var WorkoutLink = require('./WorkoutLink.react');
 
 var formatDistance = require('utils/formatDistance');
 
-var LAST_DAY_OF_WEEK = 6; // Saturday (Sunday is 0)
+const LAST_DAY_OF_WEEK = 6; // Saturday (Sunday is 0)
 
 /**
 * ActivityCalendarDay.react
 */
-var ActivityCalendarDay = React.createClass({
+const ActivityCalendarDay = React.createClass({
   displayName: 'ActivityCalendarDay',
 
   propTypes: {
@@ -36,6 +36,16 @@ var ActivityCalendarDay = React.createClass({
     return {
       showModal: false
     };
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    var {workouts} = this.props;
+    var thisCount = workouts && workouts.length;
+    var nextCount = nextProps.workouts && nextProps.workouts.length;
+
+    if (nextCount !== thisCount) {
+      this._hideModal();
+    }
   },
 
   render: function() {
@@ -70,10 +80,14 @@ var ActivityCalendarDay = React.createClass({
   _renderWorkouts: function() /*?object*/ {
     var {workouts} = this.props;
     if (workouts.length) {
-      return workouts.map((/*object*/ workout) => {
-        return <WorkoutLink key={workout.id} workout={workout} />;
-      });
+      return workouts.map(this._renderWorkoutLink);
     }
+  },
+
+  _renderWorkoutLink: function(/*object*/ workout) {
+    return (
+      <WorkoutLink key={workout.id} workout={workout} />
+    );
   },
 
   _renderWeeklyTotal: function(dateObject) {

@@ -56,12 +56,12 @@ var FBFacepile = React.createClass({
   _renderFace: function(friend, idx) {
     return (
       <OverlayTrigger
+        key={idx}
         overlay={<Tooltip id={friend.id}>{friend.name}</Tooltip>}
         placement="top">
         <Link
           className="FacepileLink innerBorder"
-          href={`/users/profile/${friend.id}`}
-          key={idx}>
+          href={`/users/profile/${friend.id}`}>
           <FBImage fbid={friend.id} />
         </Link>
       </OverlayTrigger>

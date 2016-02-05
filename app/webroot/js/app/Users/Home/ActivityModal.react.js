@@ -1,5 +1,3 @@
-import jstz from 'jstz';
-import {isEqual} from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import {Button, Modal} from 'react-bootstrap/lib';
@@ -9,6 +7,8 @@ import WorkoutFields from 'app/Workouts/WorkoutFields.react';
 import WorkoutActions from 'flux/actions/WorkoutActions';
 
 import dateToUnixTime from 'utils/dateToUnixTime';
+import jstz from 'jstz';
+import {isEqual} from 'lodash';
 
 import {NEW_ID} from 'constants/Workouts';
 
@@ -52,14 +52,16 @@ const ActivityModal = React.createClass({
 
     if (initialActivity) {
       primaryAction = 'Update Activity';
-      title = initialActivity.name;
+      title = 'Edit Activity';
     } else {
       primaryAction = 'Create Shoe';
       title = 'Create A New Activity';
     }
 
     return (
-      <Modal onHide={this._handleClose} show={this.props.show}>
+      <Modal
+        {...this.props}
+        onHide={this._handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -107,7 +109,10 @@ const ActivityModal = React.createClass({
 
   _handleSave: function(e) {
     this.setState({isLoading: true});
-    WorkoutActions.add(this.state.activity);
+    this.props.initialActivity ?
+      WorkoutActions.save(this.state.activity) :
+      WorkoutActions.add(this.state.activity);
+
   },
 
   _getNewActivity: function() {
