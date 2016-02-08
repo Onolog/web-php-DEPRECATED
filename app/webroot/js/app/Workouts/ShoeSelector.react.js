@@ -54,12 +54,12 @@ var ShoeSelector = React.createClass({
       forEach(active, (shoe) => {
         options.push({
           label: `${shoe.name} (${shoe.mileage} miles)`,
-          value: shoe.id
+          value: shoe.id,
         });
       });
     }
     return options;
-  }
+  },
 });
 
 module.exports = ShoeSelector;

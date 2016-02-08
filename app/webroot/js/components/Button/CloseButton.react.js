@@ -18,7 +18,7 @@ var CloseButton = React.createClass({
         <span className="sr-only">Close</span>
       </button>
     );
-  }
+  },
 });
 
 module.exports = CloseButton;

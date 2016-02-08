@@ -11,7 +11,7 @@ var GraphSection = React.createClass({
 
   propTypes: {
     label: React.PropTypes.string,
-    metadata: React.PropTypes.string
+    metadata: React.PropTypes.string,
   },
 
   render: function() {
@@ -42,8 +42,7 @@ var GraphSection = React.createClass({
         </div>
       );
     }
-  }
-
+  },
 });
 
 module.exports = GraphSection;

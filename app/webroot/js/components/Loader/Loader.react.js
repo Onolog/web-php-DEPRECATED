@@ -16,15 +16,15 @@ var Loader = React.createClass({
     full: React.PropTypes.bool,
     size: React.PropTypes.oneOf([
       'large',
-      'small'
-    ])
+      'small',
+    ]),
   },
 
   getDefaultProps: function() {
     return {
       background: false,
       full: false,
-      size: 'large'
+      size: 'large',
     };
   },
 
@@ -33,15 +33,14 @@ var Loader = React.createClass({
 
     return (
       <div
-        className={cx({
-          'loader': true,
+        className={cx('loader', {
           'loader-bg': background,
           'loader-lg': size === 'large',
           'loader-full': full,
         }, className)}
       />
     );
-  }
+  },
 });
 
 module.exports = Loader;

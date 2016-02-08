@@ -73,7 +73,7 @@ function calendarGrid(/*number*/ month, /*number*/ year) {
     // Continue incrementing day; ex: Oct 32nd == Nov. 1st
     for (ii; ii < DAYS_IN_WEEK; ii++, day++) {
       weekArr.push({
-        date: getDate(year, month, day)
+        date: getDate(year, month, day),
       });
     }
     monthArr.push(weekArr);

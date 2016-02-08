@@ -1,12 +1,12 @@
-var React = require('react');
-var Button = require('react-bootstrap/lib/Button');
+import React from 'react';
+import {Button} from 'react-bootstrap/lib';
 
 /**
  * FBLoginButton.react
  *
  * Renders a custom React FB login button.
  */
-var FBLoginButton = React.createClass({
+const FBLoginButton = React.createClass({
   displayName: 'FBLoginButton',
 
   render: function() {
@@ -19,7 +19,7 @@ var FBLoginButton = React.createClass({
         <i className="fbIcon" /> Sign in with Facebook
       </Button>
     );
-  }
+  },
 });
 
 module.exports = FBLoginButton;

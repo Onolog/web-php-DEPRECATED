@@ -32,7 +32,7 @@ var ShoeStore = {
     }
 
     return item;
-  }
+  },
 };
 
 MicroEvent.mixin(ShoeStore);

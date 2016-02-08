@@ -23,7 +23,7 @@ var AlertStore = {
 
   getAlertTypeIsDanger: function() {
     return _alertType === USE.DANGER;
-  }
+  },
 };
 
 MicroEvent.mixin(AlertStore);

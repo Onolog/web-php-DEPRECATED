@@ -43,27 +43,27 @@ var ActivityStats = React.createClass({
       distance,
       duration,
       elevation_gain,
-      max_hr
+      max_hr,
     } = this.props.activity;
 
     var stats = [{
       annotation: 'miles',
       label: 'Distance',
-      value: formatDistance(distance)
+      value: formatDistance(distance),
     }, {
       label: 'Time',
-      value: secondsToTime(duration)
+      value: secondsToTime(duration),
     }, {
       annotation: 'per mile',
       label: 'Pace',
-      value: calculatePace.fromSeconds(distance, duration)
+      value: calculatePace.fromSeconds(distance, duration),
     }];
 
     if (elevation_gain) {
       stats.push({
         annotation: 'feet',
         label: 'Elevation Gain',
-        value: Math.round(elevation_gain)
+        value: Math.round(elevation_gain),
       });
     }
 
@@ -71,7 +71,7 @@ var ActivityStats = React.createClass({
       stats.push({
         annotation: 'bpm',
         label: 'Avg. HR',
-        value: Math.round(avg_hr)
+        value: Math.round(avg_hr),
       });
     }
 
@@ -79,19 +79,19 @@ var ActivityStats = React.createClass({
       stats.push({
         annotation: 'bpm',
         label: 'Max. HR',
-        value: Math.round(max_hr)
+        value: Math.round(max_hr),
       });
     }
 
     if (calories) {
       stats.push({
         label: 'Calories',
-        value: calories
+        value: calories,
       });
     }
 
     return stats;
-  }
+  },
 });
 
 module.exports = ActivityStats;

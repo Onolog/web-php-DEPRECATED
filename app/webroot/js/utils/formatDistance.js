@@ -4,19 +4,16 @@
  * Consistently formats distance measurements, by stripping trailing
  * zeroes and restricting floats to 2 decimal places.
  */
-define(function() {
-
-  function formatDistance(/*string|number*/ distance) /*string*/ {
-      // We may get irrational values for floats, so restrict
-      // to 2 decimal places.
-      if (typeof distance === 'number') {
-        distance = distance.toFixed(2);
-      }
-
-      // Trim trailing zeroes by converting to a number and then
-      // converting back to a string.
-      return (distance*1).toString();
+function formatDistance(/*string|number*/ distance) /*string*/ {
+  // We may get irrational values for floats, so restrict
+  // to 2 decimal places.
+  if (typeof distance === 'number') {
+    distance = distance.toFixed(2);
   }
-  return formatDistance;
 
-});
+  // Trim trailing zeroes by converting to a number and then
+  // converting back to a string.
+  return (distance * 1).toString();
+}
+
+module.exports = formatDistance;

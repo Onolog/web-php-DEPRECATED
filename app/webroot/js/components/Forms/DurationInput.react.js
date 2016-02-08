@@ -3,7 +3,6 @@ var React = require('react');
 
 var ConstrainedTextInput = require('./ConstrainedTextInput.react');
 var HiddenInput = require('./HiddenInput.react');
-var TextInput = require('./TextInput.react');
 
 var cx = require('classnames');
 var pad = require('utils/pad');
@@ -31,18 +30,17 @@ var DurationInput = React.createClass({
      * Name of the form that is using the component.
      */
     name: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    onChange: React.PropTypes.func.isRequired,
   },
 
   getInitialState: function() {
     return {
-      duration: this.props.duration
+      duration: this.props.duration,
     };
   },
 
   render: function() {
-    var duration = this.props.duration || 0;
-    duration = moment.duration(duration, 's');
+    var duration = moment.duration(this.props.duration || 0, 's');
 
     return (
       <div className={cx('form-control', this.props.className)}>
@@ -86,18 +84,18 @@ var DurationInput = React.createClass({
     var duration = moment.duration({
       hours:   this.refs.hours.getValue(),
       minutes: this.refs.minutes.getValue(),
-      seconds: this.refs.seconds.getValue()
+      seconds: this.refs.seconds.getValue(),
     }).asSeconds();
 
     // Update state to set the hidden input.
-    this.setState({ duration: duration });
+    this.setState({duration});
 
     // Bubble a fake event to the parent component.
     this.props.onChange({
       target: {
         name: this.props.name,
-        value: duration
-      }
+        value: duration,
+      },
     });
   },
 

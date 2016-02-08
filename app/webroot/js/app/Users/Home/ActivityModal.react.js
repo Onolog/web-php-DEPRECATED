@@ -6,11 +6,8 @@ import Loader from 'components/Loader/Loader.react';
 import WorkoutFields from 'app/Workouts/WorkoutFields.react';
 import WorkoutActions from 'flux/actions/WorkoutActions';
 
-import dateToUnixTime from 'utils/dateToUnixTime';
 import jstz from 'jstz';
 import {isEqual} from 'lodash';
-
-import {NEW_ID} from 'constants/Workouts';
 
 /**
  * ActivityModal.react
@@ -32,7 +29,7 @@ const ActivityModal = React.createClass({
 
   getDefaultProps: function() {
     return {
-      date: new Date()
+      date: new Date(),
     };
   },
 
@@ -128,10 +125,9 @@ const ActivityModal = React.createClass({
 
     return {
       start_date: moment(date).format(),
-      timezone: jstz.determine().name() // Guess the user's timezone
+      timezone: jstz.determine().name(), // Guess the user's timezone
     };
-  }
-
+  },
 });
 
 module.exports = ActivityModal;

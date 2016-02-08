@@ -1,21 +1,16 @@
-var React = require('react');
+import React from 'react';
 
 /**
  * FileInput.react
  *
  * React wrapper around a standard file input.
  */
-var FileInput = React.createClass({
+const FileInput = React.createClass({
   displayName: 'FileInput',
 
   render: function() {
-    return (
-      <input
-        {...this.props}
-        type="file"
-      />
-    );
-  }
+    return <input {...this.props} type="file" />;
+  },
 });
 
 module.exports = FileInput;

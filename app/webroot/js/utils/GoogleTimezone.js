@@ -13,6 +13,6 @@ module.exports = function(/*object*/ params, /*function*/ callback) {
   $.get(BASE_URL, {
     location: params.latitude + ',' + params.longitude,
     timestamp: params.timestamp,
-    key: TIMEZONE_API_KEY
+    key: TIMEZONE_API_KEY,
   }).done(callback);
-}
+};

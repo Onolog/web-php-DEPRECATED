@@ -1,18 +1,17 @@
-var jstz = require('jstz');
-var moment = require('moment-timezone');
-var React = require('react');
+import moment from 'moment-timezone';
+import React from 'react';
 
-var TIMEZONES = moment.tz.names();
+const TIMEZONES = moment.tz.names();
 
 /**
  * TimezonePicker
  */
-var TimezonePicker = React.createClass({
+const TimezonePicker = React.createClass({
   displayName: 'TimezonePicker',
 
   propTypes: {
     timezone: React.PropTypes.oneOf(TIMEZONES).isRequired,
-    onChange: React.PropTypes.func
+    onChange: React.PropTypes.func,
   },
 
   render: function() {
@@ -38,7 +37,7 @@ var TimezonePicker = React.createClass({
 
   _onChange: function(e) {
     this.props.onChange && this.props.onChange(e.target.value);
-  }
+  },
 });
 
 module.exports = TimezonePicker;

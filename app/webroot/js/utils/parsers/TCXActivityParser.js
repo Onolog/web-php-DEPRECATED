@@ -3,7 +3,7 @@ import GarminSeries from 'lib/garmin/activity/GarminSeries';
 import TcxActivityFactory from 'lib/garmin/activity/TcxActivityFactory';
 import XMLParser from './XMLParser';
 
-import {chain, flatten, forEach, head, map, max, reduce} from 'lodash';
+import {chain, forEach, head, map, reduce} from 'lodash';
 
 import {TCX_SCHEMA_TAGS} from 'constants/Garmin';
 const TAGS = TCX_SCHEMA_TAGS;
@@ -52,7 +52,7 @@ class TCXActivityParser extends XMLParser {
       device: this.parseDevice(),
       laps: this.laps,
       series: [this.series], // Needs to be an array...
-      tracks: this.tracks
+      tracks: this.tracks,
     };
   }
 
@@ -74,7 +74,7 @@ class TCXActivityParser extends XMLParser {
       lap: idx + 1, // Lap #
       lap_start_time: lapNode.getAttribute(TAGS.lapStartTime),
       max_hr: this.getTagValue('Value', maxHrNode),
-      max_speed: this.getTagValue(TAGS.lapMaxSpeed, lapNode)
+      max_speed: this.getTagValue(TAGS.lapMaxSpeed, lapNode),
     });
   }
 
@@ -101,7 +101,7 @@ class TCXActivityParser extends XMLParser {
       latitude: this.getTagValue(TAGS.positionLatitude, trackpointNode),
       longitude: this.getTagValue(TAGS.positionLongitude, trackpointNode),
       speed: this.getTagValue('Speed', trackpointNode),
-      time: this.getTagValue(TAGS.trackPointTime, trackpointNode)
+      time: this.getTagValue(TAGS.trackPointTime, trackpointNode),
     };
   }
 
@@ -118,14 +118,14 @@ class TCXActivityParser extends XMLParser {
       this.getTagValue(TAGS.versionMajor, deviceNode),
       this.getTagValue(TAGS.versionMinor, deviceNode),
       this.getTagValue(TAGS.versionBuildMajor, deviceNode),
-      this.getTagValue(TAGS.versionBuildMinor, deviceNode)
+      this.getTagValue(TAGS.versionBuildMinor, deviceNode),
     ].join('.');
 
     return {
       name: this.getTagValue(TAGS.creatorName, deviceNode),
       product_id: this.getTagValue(TAGS.creatorProductID, deviceNode),
       unit_id: this.getTagValue(TAGS.creatorUnitID, deviceNode),
-      version: version
+      version: version,
     };
   }
 
@@ -167,7 +167,7 @@ class TCXActivityParser extends XMLParser {
 
     return {
       gain: reduce(elevationGain, (total, value) => total + value, 0),
-      loss: reduce(elevationLoss, (total, value) => total + value, 0)
+      loss: reduce(elevationLoss, (total, value) => total + value, 0),
     };
   }
 
@@ -189,4 +189,4 @@ class TCXActivityParser extends XMLParser {
   }
 }
 
-module.exports = TCXActivityParser;
+export default TCXActivityParser;

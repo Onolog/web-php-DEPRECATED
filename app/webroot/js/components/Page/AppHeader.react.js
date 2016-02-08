@@ -14,7 +14,6 @@ var Navbar = require('components/Navbar/Navbar.react');
 var {CHANGE} = require('flux/ActionTypes');
 
 var homeUrl = require('utils/homeUrl');
-var pad = require('utils/pad');
 
 /**
  * AppHeader.react
@@ -25,7 +24,7 @@ var AppHeader = React.createClass({
   getInitialState: function() {
     return {
       isLoading: true,
-      user: UserStore.getUser()
+      user: UserStore.getUser(),
     };
   },
 
@@ -41,12 +40,12 @@ var AppHeader = React.createClass({
     var user = UserStore.getUser();
     this.setState({
       isLoading: !user,
-      user: user
+      user: user,
     });
   },
 
   render: function() {
-    var user = this.state.user;
+    var {user} = this.state;
 
     return (
       <Navbar
@@ -99,7 +98,7 @@ var AppHeader = React.createClass({
           <NavItem href={homeUrl()}>
             Calendar
           </NavItem>
-          <NavItem href={'/users/profile/' + user.id}>
+          <NavItem href={`/users/profile/${user.id}`}>
             Profile
           </NavItem>
           <NavItem href="/users/shoes">
@@ -124,7 +123,7 @@ var AppHeader = React.createClass({
         </Nav>
       );
     }
-  }
+  },
 });
 
 module.exports = AppHeader;

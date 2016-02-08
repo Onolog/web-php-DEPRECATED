@@ -12,7 +12,7 @@ var GraphSectionUnit = React.createClass({
         {this.props.children}
       </div>
     );
-  }
+  },
 });
 
 module.exports = GraphSectionUnit;

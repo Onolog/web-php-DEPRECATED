@@ -7,7 +7,7 @@ var Panel = require('components/Panel/Panel.react');
 var ProfileYearPanel = require('./ProfileYearPanel.react');
 var Topline = require('components/Data/Topline.react');
 
-var {chain, keys} = require('lodash');
+var {chain} = require('lodash');
 var {getAggregateDistance, groupActivities} = require('utils/ActivityUtils');
 
 require('../../../../css/app/Profile.css');
@@ -23,7 +23,7 @@ var Profile = React.createClass({
     this.setState({
       shoeCount: shoeCount,
       user: user,
-      activities: activities
+      activities: activities,
     });
   },
 
@@ -91,7 +91,7 @@ var Profile = React.createClass({
         />
       );
     });
-  }
+  },
 });
 
 module.exports = Profile;

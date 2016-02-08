@@ -17,16 +17,16 @@ const FBImage = React.createClass({
   propTypes: {
     fbid: React.PropTypes.oneOfType([
       React.PropTypes.number,
-      React.PropTypes.string
+      React.PropTypes.string,
     ]).isRequired,
     height: React.PropTypes.number,
-    width: React.PropTypes.number
+    width: React.PropTypes.number,
   },
 
   getDefaultProps: function() {
     return {
       height: 50,
-      width: 50
+      width: 50,
     };
   },
 
@@ -36,7 +36,7 @@ const FBImage = React.createClass({
     // Double the height and width for retina displays
     var params = param({
       height: height * 2,
-      width: width * 2
+      width: width * 2,
     });
 
     return (
@@ -47,8 +47,7 @@ const FBImage = React.createClass({
         src={`${GRAPH_URL}/${fbid}/picture?${params}`}
       />
     );
-  }
-
+  },
 });
 
 module.exports = FBImage;

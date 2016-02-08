@@ -7,7 +7,6 @@ var AppPage = require('components/Page/AppPage.react');
 var Calendar = require('components/Calendar/Calendar.react');
 var DateTimePicker = require('components/DateTimePicker/DateTimePicker.react');
 var FBFriendTokenizer = require('components/Facebook/FBFriendTokenizer.react');
-var BarGraph = require('components/Graph/BarGraph/BarGraph.react');
 var LeftRight = require('components/LeftRight/LeftRight.react');
 var PageHeader = require('components/Page/PageHeader.react');
 var Panel = require('components/Panel/Panel.react');
@@ -15,13 +14,7 @@ var WorkoutFields = require('app/Workouts/WorkoutFields.react');
 
 var cloneDate = require('utils/cloneDate');
 
-var {FRIENDS, SHOES, STATES, WORKOUTS} = require('constants/TestData');
-let states = STATES.map((state, idx) => {
-  return {
-    id: idx,
-    label: state
-  };
-});
+var {FRIENDS, SHOES, WORKOUTS} = require('constants/TestData');
 
 /**
  * ReactPage.react
@@ -36,7 +29,7 @@ var ReactPage = React.createClass({
       calendarDate: new Date(),
       datePickerDate: moment().toDate(),
       timezone: 'America/Los_Angeles',
-      workouts: WORKOUTS
+      workouts: WORKOUTS,
     };
   },
 
@@ -51,7 +44,7 @@ var ReactPage = React.createClass({
             onChange={(dateString, timezone) => {
               this.setState({
                 datePickerDate: dateString,
-                timezone: timezone
+                timezone,
               });
             }}
           />
@@ -68,7 +61,7 @@ var ReactPage = React.createClass({
             <h3>{moment(this.state.calendarDate).format('MMMM YYYY')}</h3>
             <ButtonGroup>
               <Button onClick={this.onLastMonthClick}>
-          	    <Glyphicon glyph="triangle-left" />
+                <Glyphicon glyph="triangle-left" />
               </Button>
               <Button onClick={this.onThisMonthClick}>
                 <Glyphicon glyph="stop" />
@@ -96,11 +89,9 @@ var ReactPage = React.createClass({
           />
         </Panel>
 
-        {/*
         <Panel title="Activity">
           <Activity activity={WORKOUTS['2014']['10']['21'][1]} />
         </Panel>
-        */}
       </AppPage>
     );
   },
@@ -122,8 +113,8 @@ var ReactPage = React.createClass({
   },
 
   _onWorkoutsUpdate: function(workouts) {
-    this.setState({ workouts: workouts });
-  }
+    this.setState({workouts});
+  },
 });
 
 module.exports = ReactPage;

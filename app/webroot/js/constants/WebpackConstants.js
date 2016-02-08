@@ -26,6 +26,6 @@ module.exports = {
 
     // Workouts
     'WorkoutAddEdit',
-    'Workout'
-  ]
+    'Workout',
+  ],
 };

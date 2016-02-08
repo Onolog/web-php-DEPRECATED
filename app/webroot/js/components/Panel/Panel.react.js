@@ -18,8 +18,8 @@ var Panel = React.createClass({
     noPadding: React.PropTypes.bool,
     title: React.PropTypes.oneOfType([
       React.PropTypes.number,
-      React.PropTypes.string
-    ])
+      React.PropTypes.string,
+    ]),
   },
 
   render: function() {
@@ -30,9 +30,7 @@ var Panel = React.createClass({
         this.props.className
       )}>
         {this._renderHeader()}
-        <div className={cx({
-          'panel-body': !this.props.noPadding
-        })}>
+        <div className={cx({'panel-body': !this.props.noPadding})}>
           {this.props.children}
         </div>
         {this._renderFooter()}
@@ -42,7 +40,7 @@ var Panel = React.createClass({
 
   _renderHeader: function() {
     if (!this.props.title && !this.props.actions) {
-      return null;
+      return;
     }
 
     return (
@@ -60,16 +58,14 @@ var Panel = React.createClass({
   },
 
   _renderFooter: function() {
-    if (!this.props.footer) {
-      return null;
+    if (this.props.footer) {
+      return (
+        <div className="panel-footer clearfix">
+          {this.props.footer}
+        </div>
+      );
     }
-
-    return (
-      <div className="panel-footer clearfix">
-        {this.props.footer}
-      </div>
-    );
-  }
+  },
 });
 
 module.exports = Panel;

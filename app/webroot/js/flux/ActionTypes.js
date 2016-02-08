@@ -3,7 +3,7 @@
  *
  * Defines a set of actions for the dispatcher to emit and stores to handle.
  */
-define({
+module.exports = {
   // Some change occured, necessitating an update
   CHANGE: 'change',
 
@@ -48,5 +48,5 @@ define({
   // User-related actions
   USER_LOGIN: 'user-login',
   USER_SESSION: 'user-session',
-  USER_LOGOUT: 'user-logout'
-});
+  USER_LOGOUT: 'user-logout',
+};

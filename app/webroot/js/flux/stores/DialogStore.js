@@ -13,7 +13,7 @@ var _isShown = false;
 var DialogStore = {
   getIsShown: function() {
     return _isShown;
-  }
+  },
 };
 
 MicroEvent.mixin(DialogStore);

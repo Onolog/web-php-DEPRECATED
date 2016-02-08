@@ -6,7 +6,7 @@ var {
   Glyphicon,
   OverlayTrigger,
   Panel,
-  Tooltip
+  Tooltip,
 } = require('react-bootstrap/lib');
 
 var ActionTypes = require('flux/ActionTypes');
@@ -20,7 +20,6 @@ var Loader = require('components/Loader/Loader.react');
 var PageHeader = require('components/Page/PageHeader.react');
 
 var cloneDate = require('utils/cloneDate');
-var cx = require('classnames');
 
 /**
  * Home.react
@@ -36,7 +35,7 @@ var Home = React.createClass({
       // means there are no workouts for that timeframe.
       activities: null,
       date: new Date(year, month - 1, 1),
-      showModal: false
+      showModal: false,
     };
   },
 
@@ -138,7 +137,7 @@ var Home = React.createClass({
     // Update component state
     this.setState({
       date: date,
-      activities: null // Reset activities to trigger loader
+      activities: null, // Reset activities to trigger loader
     });
 
     // Update the browser state history

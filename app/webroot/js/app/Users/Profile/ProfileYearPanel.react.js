@@ -1,13 +1,12 @@
 var moment = require('moment');
 var React = require('react');
 var {PropTypes} = React;
-
 var {
   Button,
   ButtonGroup,
   ListGroup,
   ListGroupItem,
-  Panel
+  Panel,
 } = require('react-bootstrap/lib');
 
 var Chart = require('components/Chart/Chart.react');
@@ -15,20 +14,19 @@ var LabeledStat = require('components/Data/LabeledStat.react');
 var Topline = require('components/Data/Topline.react');
 
 var {forEach} = require('lodash');
-var formatDistance = require('utils/formatDistance');
 var {
   getGroupingInfo,
   getAggregateDistance,
-  groupActivities
+  groupActivities,
 } = require('utils/ActivityUtils');
 
-var DAY_IN_MS = 24 * 60 * 60 * 1000;
-var WEEK_IN_MS = 7 * DAY_IN_MS;
-var MONTH_IN_MS = (DAY_IN_MS * 365) / 12;
+const DAY_IN_MS = 24 * 60 * 60 * 1000;
+const WEEK_IN_MS = 7 * DAY_IN_MS;
+const MONTH_IN_MS = (DAY_IN_MS * 365) / 12;
 
-var DAILY = 'daily';
-var MONTHLY = 'monthly';
-var WEEKLY = 'weekly';
+const DAILY = 'daily';
+const MONTHLY = 'monthly';
+const WEEKLY = 'weekly';
 
 /**
  * ProfileYearPanel.react
@@ -40,13 +38,13 @@ var ProfileYearPanel = React.createClass({
     activities: PropTypes.array.isRequired,
     year: PropTypes.oneOfType([
       PropTypes.number,
-      PropTypes.string
-    ]).isRequired
+      PropTypes.string,
+    ]).isRequired,
   },
 
   getInitialState: function() {
     return {
-      selectedGraph: WEEKLY
+      selectedGraph: WEEKLY,
     };
   },
 
@@ -101,15 +99,15 @@ var ProfileYearPanel = React.createClass({
           plotOptions: {
             series: {
               pointStart: Date.UTC(year, 0, 1),
-              pointInterval: interval
-            }
+              pointInterval: interval,
+            },
           },
           xAxis: {
             type: 'datetime',
             dateTimeLabelFormats: {
-              month: '%b'
+              month: '%b',
             },
-          }
+          },
         }}
       />
     );
@@ -118,7 +116,7 @@ var ProfileYearPanel = React.createClass({
   _renderToplineStats: function() {
     var {miles, run_count, duration} = getGroupingInfo(this.props.activities);
 
-    var duration = moment.duration(duration, 'seconds');
+    duration = moment.duration(duration, 'seconds');
     var durationString =
       duration.days() + 'd ' +
       duration.hours() + 'h ' +
@@ -159,7 +157,7 @@ var ProfileYearPanel = React.createClass({
 
   _onChartTypeClick: function(type) {
     this.setState({selectedGraph: type});
-  }
+  },
 });
 
 module.exports = ProfileYearPanel;

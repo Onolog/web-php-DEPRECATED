@@ -1,26 +1,26 @@
-var React = require('react');
-var cx = require('classnames');
+import React from 'react';
+import cx from 'classnames';
 
 /**
  * FormGroup.react
  */
-var FormGroup = React.createClass({
+const FormGroup = React.createClass({
   displayName: 'FormGroup',
 
   propTypes: {
     label: React.PropTypes.string,
     type: React.PropTypes.string,
-    hideLabel: React.PropTypes.bool
+    hideLabel: React.PropTypes.bool,
   },
 
   render: function() {
     return (
       <div className="form-group">
-        <label for={this.props.name} className={cx({
-          'control-label': true,
-          'col-sm-3': true,
-          'sr-only': this.props.hideLabel
-        })}>
+        <label
+          className={cx('control-label', 'col-sm-3', {
+            'sr-only': this.props.hideLabel,
+          })}
+          for={this.props.name}>
           {this.props.label}
         </label>
         <div className="col-sm-9">
@@ -28,7 +28,7 @@ var FormGroup = React.createClass({
         </div>
       </div>
     );
-  }
+  },
 });
 
 module.exports = FormGroup;

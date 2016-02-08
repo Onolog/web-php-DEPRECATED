@@ -54,6 +54,7 @@ class XMLParser {
   toDocument(fromString) {
     // Internet Explorer
     if (window.ActiveXObject) {
+      var {ActiveXObject} = window;
       var doc = new ActiveXObject('Microsoft.XMLDOM');
       doc.async = 'false';
       doc.loadXML(fromString);
@@ -70,7 +71,7 @@ class XMLParser {
    */  
   toString(fromDocument) {
     if (window.ActiveXObject) {
-      return fromDocument.xml
+      return fromDocument.xml;
     }
 
     var serializer = new XMLSerializer();

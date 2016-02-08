@@ -13,33 +13,34 @@ var Select = React.createClass({
     options: React.PropTypes.array.isRequired,
     defaultValue: React.PropTypes.oneOfType([
       React.PropTypes.string,
-      React.PropTypes.number
+      React.PropTypes.number,
     ]),
     /**
      * Option to be used if there's no defaultValue
      */
-    defaultLabel: React.PropTypes.string
+    defaultLabel: React.PropTypes.string,
   },
 
   getDefaultProps: function() {
     return {
-      defaultLabel: ''
+      defaultLabel: '',
     };
   },
 
   getInitialState: function() {
     return {
-      value: this.props.defaultValue
+      value: this.props.defaultValue,
     };
   },
 
   render: function() {
-    var options = this.props.options.map(this._renderOptions);
+    var options = this.props.options.slice();
+    options = options.map(this._renderOptions);
 
     if (this.props.defaultLabel) {
       options.unshift(this._renderOption({
         label: this.props.defaultLabel,
-        value: -1
+        value: -1,
       }, -1));
     }
 
@@ -79,8 +80,7 @@ var Select = React.createClass({
   _onChange: function(/*object*/ evt) {
     this.setState({value: evt.target.value});
     this.props.onChange && this.props.onChange(evt);
-  }
-
+  },
 });
 
 module.exports = Select;

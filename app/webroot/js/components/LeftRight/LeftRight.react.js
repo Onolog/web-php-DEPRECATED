@@ -1,10 +1,10 @@
 var React = require('react');
 var cx = require('classnames');
 
-var DIRECTION = {
+const DIRECTION = {
   left: 'left',
   right: 'right',
-  both: 'both'
+  both: 'both',
 };
 
 /**
@@ -12,24 +12,24 @@ var DIRECTION = {
  *
  * Simple left right positioning tool.
  */
-var LeftRight = React.createClass({
+const LeftRight = React.createClass({
   displayName: 'LeftRight',
 
   propTypes: {
-    direction: React.PropTypes.oneOf(Object.keys(DIRECTION))
+    direction: React.PropTypes.oneOf(Object.keys(DIRECTION)),
   },
 
   getDefaultProps: function() {
     return {
-      direction: DIRECTION.both
+      direction: DIRECTION.both,
     };
   },
 
   render: function() {
     var children = [];
-    React.Children.forEach(this.props.children, function(child) {
+    React.Children.forEach(this.props.children, (child) => {
       children.push(child);
-    }, this);
+    });
 
     var dir = this.props.direction || DIRECTION.both;
     var both = (dir === DIRECTION.both);
@@ -58,7 +58,7 @@ var LeftRight = React.createClass({
         {orderedChildren}
       </div>
     );
-  }
+  },
 });
 
 module.exports = LeftRight;

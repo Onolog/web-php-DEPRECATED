@@ -15,28 +15,27 @@ var Nav = React.createClass({
      */
     right: React.PropTypes.bool,
     stacked: React.PropTypes.bool,
-    type: React.PropTypes.oneOf(['navbar', 'pills', 'tabs'])
+    type: React.PropTypes.oneOf(['navbar', 'pills', 'tabs']),
   },
 
   getDefaultProps: function() {
     return {
       justified: false,
       right: false,
-      type: 'tabs'
+      type: 'tabs',
     };
   },
 
   render: function() {
     var {children, className, justified, right, stacked, type} = this.props;
 
-    var classes = cx({
-      'nav': true,
+    var classes = cx('nav', {
       'nav-justified': justified,
       'nav-pills': type === 'pills',
       'nav-stacked': type === 'pills' && stacked,
       'nav-tabs': type === 'tabs',
       'navbar-nav': type === 'navbar',
-      'navbar-right': type === 'navbar' && right
+      'navbar-right': type === 'navbar' && right,
     }, className);
 
     return (
@@ -44,7 +43,7 @@ var Nav = React.createClass({
         {children}
       </ul>
     );
-  }
+  },
 });
 
 module.exports = Nav;

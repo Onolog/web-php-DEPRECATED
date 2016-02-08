@@ -1,7 +1,7 @@
 /**
  * Constants associated with workouts
  */
-define({
+module.exports = {
   // Endpoints for mutating and viewing workouts
   ENDPOINT: {
     WORKOUT_ADD:    '/ajax/workouts/add/',
@@ -15,4 +15,4 @@ define({
 
   // Workouts don't have a real ID until they are saved to the DB
   NEW_ID: 'new-id',
-});
+};

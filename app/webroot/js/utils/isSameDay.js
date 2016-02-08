@@ -1,11 +1,11 @@
-var invariant = require('./invariant');
+import invariant from './invariant';
 
 /**
  * isSameDay.js
  *
  * Compares two Date objects to determine if they are the same calendar day.
  */
- function isSameDay(/*Date*/ date1, /*Date*/ date2) /*bool*/ {
+function isSameDay(/*Date*/ date1, /*Date*/ date2) /*bool*/ {
   invariant(
     date1 instanceof Date && date2 instanceof Date,
     '[isSameDay.js] The function parameters must be `Date` objects.'
@@ -18,4 +18,4 @@ var invariant = require('./invariant');
   );
 }
 
-module.exports = isSameDay;
+export default isSameDay;

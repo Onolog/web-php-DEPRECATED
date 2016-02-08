@@ -1,7 +1,6 @@
 var React = require('react');
 
 var Select = require('components/Select/Select.react');
-var TextInput = require('components/Forms/TextInput.react');
 
 var {CHANGE} = require('flux/ActionTypes');
 var BrandStore = require('flux/stores/BrandStore');
@@ -52,12 +51,12 @@ var BrandSelector = React.createClass({
     brands.forEach(function(brand) {
       options.push({
         label: brand.name,
-        value: +brand.id
+        value: +brand.id,
       });
     });
 
     return options;
-  }
+  },
 });
 
 module.exports = BrandSelector;

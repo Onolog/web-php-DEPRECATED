@@ -1,6 +1,6 @@
 var $ = require('jquery');
 
-var ActionTypes = require('../ActionTypes');
+var ActionTypes = require('flux/ActionTypes');
 var ActionUtils = require('./ActionUtils');
 
 /**
@@ -12,11 +12,11 @@ module.exports = {
       url: '/ajax/workouts/calendar/',
       data: {
         year: year,
-        month: month
+        month: month,
       },
       type: 'GET',
       success: this.onFetchSuccess,
-      error: this.onFetchError
+      error: this.onFetchError,
     });
   },
 
@@ -30,5 +30,5 @@ module.exports = {
 
   onFetchError: function(/*string|object*/ response) {
     ActionUtils.onError(response, ActionTypes.WORKOUTS_FETCH_ERROR);
-  }
+  },
 };

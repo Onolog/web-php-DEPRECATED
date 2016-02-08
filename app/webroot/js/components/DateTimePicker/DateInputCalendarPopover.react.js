@@ -5,7 +5,6 @@ var DateInputCalendar = require('./DateInputCalendar.react');
 var Glyphicon = require('react-bootstrap/lib/Glyphicon');
 var Link = require('components/Link/Link.react');
 
-var cloneDate = require('utils/cloneDate');
 var cx = require('classnames');
 
 /**
@@ -23,12 +22,12 @@ var DateInputCalendarPopover = React.createClass({
     months: React.PropTypes.number.isRequired,
     onChange: React.PropTypes.func.isRequired,
     show: React.PropTypes.bool.isRequired,
-    years: React.PropTypes.number.isRequired
+    years: React.PropTypes.number.isRequired,
   },
 
   getInitialState: function() {
     return {
-      calendarMoment: this._getMoment(this.props)
+      calendarMoment: this._getMoment(this.props),
     };
   },
 
@@ -79,20 +78,20 @@ var DateInputCalendarPopover = React.createClass({
   _onPrevMonthClick: function(e) {
     e.preventDefault();
     this.setState({
-      calendarMoment: this.state.calendarMoment.subtract(1, 'month')
+      calendarMoment: this.state.calendarMoment.subtract(1, 'month'),
     });
   },
 
   _onNextMonthClick: function(e) {
     e.preventDefault();
     this.setState({
-      calendarMoment: this.state.calendarMoment.add(1, 'month')
+      calendarMoment: this.state.calendarMoment.add(1, 'month'),
     });
   },
 
   _getMoment: function({date, months, years}) {
     return moment().year(years).month(months).date(date);
-  }
+  },
 });
 
 module.exports = DateInputCalendarPopover;

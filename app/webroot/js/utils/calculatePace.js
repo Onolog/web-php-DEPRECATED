@@ -17,11 +17,7 @@ var calculatePace = {
   ) /*string*/ {
 
     // Convert the time to seconds
-    var seconds = moment.duration({
-      hours:   hours,
-      minutes: minutes,
-      seconds: seconds
-    }).asSeconds();
+    seconds = moment.duration({hours, minutes, seconds}).asSeconds();
 
     return calculatePace.fromSeconds(distance, seconds);
   },
@@ -40,7 +36,7 @@ var calculatePace = {
     return secondsToTime(
       moment.duration(seconds/distance, 's').asSeconds()
     );
-  }
+  },
 };
 
 module.exports = calculatePace;

@@ -15,7 +15,7 @@ var Login = React.createClass({
 
   getInitialState: function() {
     return {
-      windowHeight: null
+      windowHeight: null,
     };
   },
 

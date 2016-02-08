@@ -1,5 +1,5 @@
-var AppDispatcher = require('../AppDispatcher');
-var ResponseHandler = require('../../utils/ResponseHandler');
+var AppDispatcher = require('flux/AppDispatcher');
+var ResponseHandler = require('utils/ResponseHandler');
 
 /**
  * ActionUtils.js
@@ -9,7 +9,7 @@ var ActionUtils = {
     var handler = new ResponseHandler(response);
     AppDispatcher.dispatch({
       eventName: onErrorEvent,
-      alertMessage: handler.getMessage()
+      alertMessage: handler.getMessage(),
     });
   },
 
@@ -19,12 +19,12 @@ var ActionUtils = {
       AppDispatcher.dispatch({
         data: handler.getPayload(),
         eventName: onSuccessEvent,
-        alertMessage: handler.getMessage()
+        alertMessage: handler.getMessage(),
       });
     } else {
       this.onError(response, onErrorEvent);
     }
-  }
+  },
 };
 
 module.exports = ActionUtils;

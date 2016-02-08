@@ -26,7 +26,7 @@ const AllShoesView = React.createClass({
   displayName: 'AllShoesView',
 
   propTypes: {
-    shoes: React.PropTypes.array.isRequired
+    shoes: React.PropTypes.array.isRequired,
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -140,7 +140,7 @@ const AllShoesView = React.createClass({
     );
   },
 
-  _handleDelete: function(id, evt) {
+  _handleDelete: function(id, e) {
     if (confirm('Are you sure you want to delete this shoe?')) {
       ShoeActions.delete(id);
     }

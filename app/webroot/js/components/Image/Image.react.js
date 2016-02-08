@@ -1,16 +1,16 @@
-var React = require('react');
+import React from 'react';
 
 /**
  * Image.react
  *
  * React wrapper around standard HTML <img> tag
  */
-var Image = React.createClass({
+const Image = React.createClass({
   displayName: 'Image',
 
   render: function() {
     return <img {...this.props} />;
-  }
+  },
 });
 
 module.exports = Image;

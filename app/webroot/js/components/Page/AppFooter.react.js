@@ -31,7 +31,7 @@ var AppFooter = React.createClass({
         </LeftRight>
       </footer>
     );
-  }
+  },
 });
 
 module.exports = AppFooter;

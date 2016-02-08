@@ -38,32 +38,32 @@ var DateTimePicker = React.createClass({
       PropTypes.instanceOf(Date),
       PropTypes.number,
       PropTypes.object,
-      PropTypes.string
+      PropTypes.string,
     ]),
     onChange: PropTypes.func.isRequired,
     /**
      * Timezone name (NOT the offset). For example: 'America/Los_Angeles'.
      */
-    timezone: PropTypes.oneOf(TIMEZONES)
+    timezone: PropTypes.oneOf(TIMEZONES),
   },
 
   getDefaultProps: function() {
     return {
       date: new Date(),
-      timezone: CURRENT_TIMEZONE
+      timezone: CURRENT_TIMEZONE,
     };
   },
 
   getInitialState: function() {
     var {date, timezone} = this.props;
 
+    // Convert the date to individual values to keep them separate from the
+    // timezone/offset.
+    var dateObject = moment.tz(date, timezone).toObject();
+
     return {
-      /**
-       * Convert the date to individual values to keep them separate from the
-       * timezone/offset.
-       */
-      dateObject: moment.tz(date, timezone).toObject(),
-      timezone: timezone
+      dateObject,
+      timezone,
     };
   },
 
@@ -110,7 +110,7 @@ var DateTimePicker = React.createClass({
       moment.tz(this.state.dateObject, timezone).format(),
       timezone
     );
-  }
+  },
 });
 
 module.exports = DateTimePicker;

@@ -1,14 +1,14 @@
-var React = require('react');
+import React from 'react';
 
-var cx = require('classnames');
-var isSameDay = require('utils/isSameDay');
+import cx from 'classnames';
+import isSameDay from 'utils/isSameDay';
 
 /**
  * BaseCalendarDay.react
  *
  * Renders a single day for a month-view calendar
  */
-var BaseCalendarDay = React.createClass({
+const BaseCalendarDay = React.createClass({
   displayName: 'BaseCalendarDay',
 
   propTypes: {
@@ -19,7 +19,7 @@ var BaseCalendarDay = React.createClass({
     /**
      * Month being displayed by the calendar
      */
-    month: React.PropTypes.number.isRequired
+    month: React.PropTypes.number.isRequired,
   },
 
   render: function() {
@@ -34,12 +34,12 @@ var BaseCalendarDay = React.createClass({
         className={cx({
           'lastMonth': month === lastMonth,
           'nextMonth': month === nextMonth,
-          'today': isSameDay(dateObj, new Date())
+          'today': isSameDay(dateObj, new Date()),
         })}>
         {this.props.children}
       </td>
     );
-  }
+  },
 });
 
 module.exports = BaseCalendarDay;

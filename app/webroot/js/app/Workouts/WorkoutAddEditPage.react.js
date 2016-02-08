@@ -2,13 +2,9 @@ var React = require('react');
 var {Button, Panel} = require('react-bootstrap/lib');
 
 var AppPage = require('components/Page/AppPage.react');
-var LeftRight = require('components/LeftRight/LeftRight.react');
 var Loader = require('components/Loader/Loader.react');
 var PageHeader = require('components/Page/PageHeader.react');
 var WorkoutFields = require('./WorkoutFields.react');
-
-var cx = require('classnames');
-var dateToUnixTime = require('utils/dateToUnixTime');
 
 /**
  * WorkoutAddEditPage.react
@@ -19,11 +15,11 @@ var WorkoutAddEditPage = React.createClass({
   displayName: 'WorkoutAddEditPage',
 
   getInitialState: function() {
-    var {isEditing, workout} = window.app ? window.app : {};
+    var {isEditing, workout} = window.app || {};
     return {
       isEditing: isEditing,
       isSaving: false,
-      workout: workout
+      workout: workout,
     };
   },
 
@@ -35,13 +31,7 @@ var WorkoutAddEditPage = React.createClass({
           <form action={this._getFormAction()} method="POST" ref="form">
             <WorkoutFields workout={this.state.workout} />
           </form>
-          <Loader
-            background={true}
-            className={cx({
-              'hidden': !this.state.isSaving
-            })}
-            full={true}
-          />
+          {this.state.isSaving && <Loader background full />}
         </Panel>
       </AppPage>
     );
@@ -49,11 +39,9 @@ var WorkoutAddEditPage = React.createClass({
 
   _getFormAction: function() {
     var {isEditing, workout} = this.state;
-    return [
-      '/workouts',
-      isEditing ? 'edit' : 'add',
-      isEditing ? workout.id : ''
-    ].join('/');
+    return isEditing ?
+      `/workouts/edit/${workout.id}` :
+      '/workouts/add';
   },
 
   _getTitle: function() {
@@ -93,8 +81,7 @@ var WorkoutAddEditPage = React.createClass({
 
     // Submit the form via normal /add or /edit endpoints.
     this.refs.form.submit();
-  }
-
+  },
 });
 
 module.exports = WorkoutAddEditPage;

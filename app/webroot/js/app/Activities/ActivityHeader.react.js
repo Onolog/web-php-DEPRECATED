@@ -1,4 +1,5 @@
 var moment = require('moment-timezone');
+var {OverlayTrigger, Tooltip} = require('react-bootstrap/lib');
 var React = require('react');
 var {PropTypes} = React;
 
@@ -6,11 +7,7 @@ var ActivitySection = require('./ActivitySection.react');
 var FBImage = require('components/Facebook/FBImage.react');
 var FBLikeButton = require('components/Facebook/FBLikeButton.react');
 var ImageBlock = require('components/ImageBlock/ImageBlock.react');
-var LeftRight = require('components/LeftRight/LeftRight.react');
 var Link = require('components/Link/Link.react');
-var Middot = require('components/Middot.react');
-var OverlayTrigger = require('react-bootstrap/lib/OverlayTrigger');
-var Tooltip = require('react-bootstrap/lib/Tooltip');
 
 var PHOTO_DIMENSIONS = 75; // In px
 
@@ -28,15 +25,15 @@ var ActivityHeader = React.createClass({
         PropTypes.string,
       ]).isRequired,
       start_date: PropTypes.string.isRequired,
-      timezone: PropTypes.string.isRequired
+      timezone: PropTypes.string.isRequired,
     }),
     athlete: PropTypes.shape({
       id: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
       ]).isRequired,
-      name: PropTypes.string
-    }).isRequired
+      name: PropTypes.string,
+    }).isRequired,
   },
 
   render: function() {
@@ -90,7 +87,7 @@ var ActivityHeader = React.createClass({
         </OverlayTrigger>
       </span>
     );
-  }
+  },
 });
 
 module.exports = ActivityHeader;

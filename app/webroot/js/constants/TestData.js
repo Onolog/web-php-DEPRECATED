@@ -6,22 +6,22 @@ module.exports = {
   FRIENDS: [
     { id: 4280, name: 'Paul McDonald'},
     { id: 11, name: 'Soleio'},
-    { id: 509191417, name: 'Jessica Shambora'}
+    { id: 509191417, name: 'Jessica Shambora'},
   ],
 
   SHOES: [{
     label: 'Active',
     options: [
-      { value: '42', label: "Mizuno Waverider 17.4"},
-      { value: "41", label: "ASICS DS Trainer 19"}
-    ]
+      { value: '42', label: 'Mizuno Waverider 17.4'},
+      { value: '41', label: 'ASICS DS Trainer 19'},
+    ],
   }, {
     label: 'Inactive',
     options: [
-      { value: "40", label: "Mizuno Waverider 17.3" },
-      { value: "39", label: "Mizuno Waverider 17.2" },
-      { value: "34", label: "Mizuno Waverider 16.1" }
-    ]
+      { value: '40', label: 'Mizuno Waverider 17.3' },
+      { value: '39', label: 'Mizuno Waverider 17.2' },
+      { value: '34', label: 'Mizuno Waverider 16.1' },
+    ],
   }],
 
   STATES: [
@@ -74,7 +74,7 @@ module.exports = {
     'Washington',
     'West Virginia',
     'Wisconsin',
-    'Wyoming'
+    'Wyoming',
   ],
 
   WORKOUTS: {
@@ -90,8 +90,8 @@ module.exports = {
             'http://connect.garmin.com/modern/activity/577839651',
           date: 1405234800,
           time: 4001,
-          friends: '509191417'
-        }]
+          friends: '509191417',
+        }],
       },
       '10': {
         '14': [{
@@ -110,7 +110,7 @@ module.exports = {
         '21': [{
           athlete: {
             id: 517820043,
-            name: 'Eric Giovanola'
+            name: 'Eric Giovanola',
           },
           id: 1400,
           user_id: 517820043,
@@ -118,7 +118,7 @@ module.exports = {
           shoe_id: 40,
           shoes: {
             id: 40,
-            name: 'Mizuno Waverider 18.1'
+            name: 'Mizuno Waverider 18.1',
           },
           notes:
             'Last couple legs of WSER with Paul, starting from Hwy 49 crossing ' +
@@ -126,11 +126,11 @@ module.exports = {
             'http://connect.garmin.com/modern/activity/577839638',
           date: 1404025200,
           time: 5747,
-          friends: '4280'
+          friends: '4280',
         }, {
           athlete: {
             id: 517820043,
-            name: 'Eric Giovanola'
+            name: 'Eric Giovanola',
           },
           id: 1411,
           user_id: 517820043,
@@ -138,7 +138,7 @@ module.exports = {
           shoe_id: 41,
           shoes: {
             id: 40,
-            name: 'Mizuno Waverider 18.1'
+            name: 'Mizuno Waverider 18.1',
           },
           notes:
             'Long run with Paul in San Carlos. First did a loop around the ' +
@@ -149,10 +149,9 @@ module.exports = {
             'http://connect.garmin.com/modern/activity/612283575',
           date: 1413097200,
           time: 7781,
-          friends: '4280,11'
-        }]
-      }
-    }
+          friends: '4280,11',
+        }],
+      },
+    },
   },
-
 };

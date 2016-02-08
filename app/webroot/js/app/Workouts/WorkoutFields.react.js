@@ -11,7 +11,6 @@ var Textarea = require('components/Forms/Textarea.react');
 var TextInput = require('components/Forms/TextInput.react');
 
 var calculatePace = require('utils/calculatePace');
-var dateToUnixTime = require('utils/dateToUnixTime');
 
 /**
  * WorkoutFields.react
@@ -25,18 +24,18 @@ var WorkoutFields = React.createClass({
     /**
      * An existing workout object.
      */
-    workout: React.PropTypes.object
+    workout: React.PropTypes.object,
   },
 
   getDefaultProps: function() {
     return {
-      workout: {}
+      workout: {},
     };
   },
 
   getInitialState: function() {
     return {
-      workout: this.props.workout
+      workout: this.props.workout,
     };
   },
 
@@ -72,10 +71,10 @@ var WorkoutFields = React.createClass({
             name="duration"
             onChange={this._onInputChange}
           />
-      		<span className="colon">
-      		  {pace} per mile
-      		</span>
-      	</FormGroup>
+          <span className="colon">
+            {pace} per mile
+          </span>
+        </FormGroup>
 
         <FormGroup label="Date">
           <DateTimePicker
@@ -139,7 +138,7 @@ var WorkoutFields = React.createClass({
     var workout = Object.assign({}, this.state.workout, {
       date: date.unix(),
       start_date: dateString,
-      timezone: timezone
+      timezone: timezone,
     });
 
     this._onChange(workout);
@@ -148,7 +147,7 @@ var WorkoutFields = React.createClass({
   _onChange: function(/*object*/ workout) {
     this.setState({workout: workout});
     this.props.onChange && this.props.onChange(workout);
-  }
+  },
 });
 
 module.exports = WorkoutFields;

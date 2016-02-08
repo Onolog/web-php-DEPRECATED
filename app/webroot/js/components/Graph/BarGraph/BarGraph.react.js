@@ -14,7 +14,7 @@ var Graph = React.createClass({
         {this.props.children}
       </ol>
     );
-  }
+  },
 });
 
 module.exports = Graph;

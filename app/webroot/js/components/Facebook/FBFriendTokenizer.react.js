@@ -9,18 +9,18 @@ import {isArray, map} from 'lodash';
  *
  * FB friend typeahead with name tokenizer
  */
-var FBFriendTokenizer = React.createClass({
+const FBFriendTokenizer = React.createClass({
   displayName: 'FBFriendTokenizer',
 
   propTypes: {
     // Comma-delimited string of FBIDs
-    friends: React.PropTypes.string
+    friends: React.PropTypes.string,
   },
 
   getInitialState: function() {
     return {
       options: [],
-      selected: []
+      selected: [],
     };
   },
 
@@ -47,7 +47,7 @@ var FBFriendTokenizer = React.createClass({
     // Get all taggable friends
     var batch = [{
       method: 'GET',
-      relative_url: 'me/friends'
+      relative_url: 'me/friends',
     }];
 
     // Get info for any already-tagged friends
@@ -56,7 +56,7 @@ var FBFriendTokenizer = React.createClass({
       friends.toString().split(',').forEach((fbid) => {
         batch.push({
           method: 'GET',
-          relative_url: fbid + '?fields=name'
+          relative_url: `${fbid}?fields=name`,
         });
       });
     }
@@ -74,8 +74,8 @@ var FBFriendTokenizer = React.createClass({
     this.props.onChange && this.props.onChange({
       target: {
         name: this.props.name,
-        value: map(selected, 'id').join(',')
-      }
+        value: map(selected, 'id').join(','),
+      },
     });
   },
 
@@ -99,7 +99,7 @@ var FBFriendTokenizer = React.createClass({
     });
 
     this.setState({options, selected});
-  }
+  },
 });
 
 module.exports = FBFriendTokenizer;

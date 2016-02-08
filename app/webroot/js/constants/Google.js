@@ -14,5 +14,5 @@ module.exports = {
   API_KEY: 'AIzaSyBI2oBuFbYuvwmHpNrQGjvmg7r-eIFKtEM',
 
   // API Key for Google Maps Timezone API
-  TIMEZONE_API_KEY: 'AIzaSyAHI8_yGde63IxXqZJ1FTJsHNkmia9j_Eo'
+  TIMEZONE_API_KEY: 'AIzaSyAHI8_yGde63IxXqZJ1FTJsHNkmia9j_Eo',
 };

@@ -1,13 +1,13 @@
 'use strict';
 
-var Highcharts = require('highcharts-commonjs');
-var React = require('react');
-var ReactDOM = require('react-dom');
+import Highcharts from 'highcharts-commonjs';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import {merge} from 'lodash';
 
-const HighchartsOnologTheme = require('lib/highcharts/themes/onolog');
-const HIGHCHARTS = require('constants/Highcharts');
+import HighchartsOnologTheme from 'lib/highcharts/themes/onolog';
+import HIGHCHARTS from 'constants/Highcharts';
 
 /**
  * Chart.react
@@ -29,7 +29,7 @@ const Chart = React.createClass({
     type: React.PropTypes.oneOf([
       'area',
       'bar',
-      'column'
+      'column',
     ]).isRequired,
     /**
      * Title for the chart.
@@ -48,7 +48,7 @@ const Chart = React.createClass({
      * Title for the x-axis.
      */
     xAxisTitle: React.PropTypes.string,
-    yAxisTitle: React.PropTypes.string
+    yAxisTitle: React.PropTypes.string,
   },
 
   getDefaultProps: function() {
@@ -56,7 +56,7 @@ const Chart = React.createClass({
       title: null,
       subtitle: null,
       xAxisTitle: null,
-      yAxisTitle: null
+      yAxisTitle: null,
     };
   },
 
@@ -89,38 +89,45 @@ const Chart = React.createClass({
     );
   },
 
-  _getOptions: function(props) {
-    var options = merge({
-      chart: {
-        height: props.height,
-        type: props.type
-      },
-      series: props.series,
+  _getOptions: function({
+    height,
+    options,
+    series,
+    subtitle,
+    title,
+    type,
+    xAxisCategories,
+    xAxisTitle,
+    yAxisTitle,
+  }) {
+    var mergedOptions = merge({
+      chart: {height, type},
+      series: series,
       subtitle: {
-        text: props.subtitle
+        text: subtitle,
       },
       title: {
-        text: props.title
+        text: title,
       },
       xAxis: {
-        categories: props.xAxisCategories,
+        categories: xAxisCategories,
         title: {
-          text: props.xAxisTitle
-        }
+          text: xAxisTitle,
+        },
       },
       yAxis: {
         title: {
-          text: props.yAxisTitle
-        }
-      }
-    }, props.options);
+          text: yAxisTitle,
+        },
+      },
+    }, options);
 
     return merge(
       HIGHCHARTS.BASE_SETTINGS,
       HighchartsOnologTheme,
-      options
+      mergedOptions
     );
-  }
+  },
 });
 
 module.exports = Chart;

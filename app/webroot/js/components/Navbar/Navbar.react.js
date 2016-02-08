@@ -13,7 +13,7 @@ var Navbar = React.createClass({
   propTypes: {
     brand: React.PropTypes.oneOfType([
       React.PropTypes.object,
-      React.PropTypes.string
+      React.PropTypes.string,
     ]),
     fixed: React.PropTypes.oneOf([
       'bottom',
@@ -21,20 +21,20 @@ var Navbar = React.createClass({
       'top',
     ]),
     fluid: React.PropTypes.bool,
-    inverse: React.PropTypes.bool
+    inverse: React.PropTypes.bool,
   },
 
   getDefaultProps: function() {
     return {
       fixed: 'none',
       fluid: false,
-      inverse: false
+      inverse: false,
     };
   },
 
   getInitialState: function() {
     return {
-      collapsed: true
+      collapsed: true,
     };
   },
 
@@ -46,13 +46,13 @@ var Navbar = React.createClass({
           'navbar-default': !this.props.inverse,
           'navbar-inverse': this.props.inverse,
           'navbar-fixed-bottom': this.props.fixed === 'bottom',
-          'navbar-fixed-top': this.props.fixed === 'top'
+          'navbar-fixed-top': this.props.fixed === 'top',
         }, this.props.className)}>
         <div
           className={cx({
             'clearfix': true,
             'container': !this.props.fluid,
-            'container-fluid': this.props.fluid
+            'container-fluid': this.props.fluid,
           })}>
           <div className="navbar-header">
             <button
@@ -70,7 +70,7 @@ var Navbar = React.createClass({
             className={cx({
               'navbar-collapse': true,
               'collapse': true,
-              'in': !this.state.collapsed
+              'in': !this.state.collapsed,
             })}
             style={this._getStyle()}>
             {React.Children.map(this.props.children, this._renderChild)}
@@ -111,15 +111,13 @@ var Navbar = React.createClass({
 
   _getStyle: function() {
     if (this.state.collapsed) {
-      return {
-        height: '1px'
-      }
+      return {height: '1px'};
     }
   },
 
   _onNavbarToggleClick: function() {
-    this.setState({collapsed: !this.state.collapsed})
-  }
+    this.setState({collapsed: !this.state.collapsed});
+  },
 });
 
 module.exports = Navbar;

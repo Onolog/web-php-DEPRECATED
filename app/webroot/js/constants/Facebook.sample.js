@@ -5,7 +5,7 @@
  * individual machines both for security and because dev environments use a
  * different version of the app.
  */
-define({
+module.exports = {
   APP_ID: '',
-  SECRET: ''
-});
+  SECRET: '',
+};

@@ -26,13 +26,13 @@ var FBFacepile = React.createClass({
      */
     friends: React.PropTypes.oneOfType([
       React.PropTypes.number,
-      React.PropTypes.string
-    ]).isRequired
+      React.PropTypes.string,
+    ]).isRequired,
   },
 
   getInitialState: function() {
     return {
-      friends: null
+      friends: null,
     };
   },
 
@@ -78,28 +78,28 @@ var FBFacepile = React.createClass({
     var batch = [];
 
     // Construct the batch query
-    fbids.forEach(function(fbid) {
+    fbids.forEach((fbid) => {
       batch.push({
         method: 'GET',
-        relative_url: fbid + '?fields=name'
+        relative_url: `${fbid}?fields=name`,
       });
     });
 
     // Retrieve the public data for each FBID
-    FB.getLoginStatus(function(response) {
-      FB.api('/', 'POST', {batch: batch}, this._parseFriendData);
-    }.bind(this));
+    FB.getLoginStatus((response) => {
+      FB.api('/', 'POST', {batch}, this._parseFriendData);
+    });
   },
 
   _parseFriendData: function(response) {
     var friends = [];
-    response.forEach(function(data) {
+    response.forEach((data) => {
       if (data.code === 200) {
         friends.push(JSON.parse(data.body));
       }
     });
-    this.setState({friends: friends});
-  }
+    this.setState({friends});
+  },
 });
 
 module.exports = FBFacepile;

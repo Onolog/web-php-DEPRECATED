@@ -13,12 +13,12 @@ var AppPage = React.createClass({
   displayName: 'AppPage',
 
   propTypes: {
-    narrow: React.PropTypes.bool
+    narrow: React.PropTypes.bool,
   },
 
   getDefaultProps: function() {
     return {
-      narrow: false
+      narrow: false,
     };
   },
 
@@ -38,7 +38,7 @@ var AppPage = React.createClass({
         <AppFooter />
       </BaseAppPage>
     );
-  }
+  },
 });
 
 module.exports = AppPage;

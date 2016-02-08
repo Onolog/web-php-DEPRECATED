@@ -1,7 +1,7 @@
 /**
  * Highcharts.js
  */
-define({
+module.exports = {
   /**
    * Settings for rendering highchart graphs
    */
@@ -10,7 +10,7 @@ define({
      * Option to display a link to highcharts.com at the bottom of the graph
      */
     credits: {
-      enabled: false
+      enabled: false,
     },
     /**
      * Styles for rendering the chart legend
@@ -29,13 +29,13 @@ define({
     plotOptions: {
       bar: {
         dataLabels: {
-          enabled: true
-        }
-      }
+          enabled: true,
+        },
+      },
     },
     yAxis: {
       labels: {
-        overflow: 'justify'
+        overflow: 'justify',
       },
       /**
        * Minimum value at which to start the y-axis
@@ -48,9 +48,8 @@ define({
          *  - 'middle' (default)
          *  - 'high'
          */
-        align: 'middle'
-      }
-    }
-  }
-
-});
+        align: 'middle',
+      },
+    },
+  },
+};

@@ -1,6 +1,4 @@
-import param from 'utils/param';
-
-import {BASE_IMG_URL, BASE_STORE_URL, PRODUCT_ID} from 'constants/Garmin';
+import {BASE_IMG_URL} from 'constants/Garmin';
 
 /**
  * GarminDeviceUtils
@@ -11,7 +9,7 @@ const GarminDeviceUtils = {
   /**
    * Converts the full Garmin device name to an image URL
    */
-  getDeviceImageSrc: function(/*string*/ deviceName) /*number*/ {
+  getDeviceImageSrc(/*string*/ deviceName) /*number*/ {
     // Convert from something like: 'Garmin Forerunner 910XT'
     // to: 'forerunner-910xt'
     var model = deviceName
@@ -28,17 +26,16 @@ const GarminDeviceUtils = {
    *
    * TODO: Get this working
    */
-  getDeviceProductPageURL: function() {
+  getDeviceProductPageURL() {
+    // var info = this._getDeviceInfo();
+    // if (!info) {
+    //   return '';
+    // }
+
+    // var pID = PRODUCT_ID[info.series][info.model];
+    // return `${BASE_STORE_URL}?${param({pID})}`;
     return '#';
-
-    var info = this._getDeviceInfo();
-    if (!info) {
-      return '';
-    }
-
-    var pID = PRODUCT_ID[info.series][info.model];
-    return `${BASE_STORE_URL}?${param({pID})}`;
-  }
+  },
 };
 
-module.exports = GarminDeviceUtils;
+export default GarminDeviceUtils;

@@ -1,15 +1,16 @@
-var React = require('react');
+import React from 'react';
 
 /**
  * Middot.react
  *
  * Renders a styled middot character within a span
  */
-var Middot = React.createClass({
+const Middot = React.createClass({
   displayName: 'Middot',
+
   render: function() {
     return <span className="middot">&middot;</span>;
-  }
+  },
 });
 
 module.exports = Middot;

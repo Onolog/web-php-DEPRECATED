@@ -1,15 +1,15 @@
-var React = require('react');
+import React from 'react';
 
 /**
  * MenuHeader.react
  *
  * Header used in a dropdown menu.
  */
-var MenuHeader = React.createClass({
+const MenuHeader = React.createClass({
   displayName: 'MenuHeader',
 
   propTypes: {
-    label: React.PropTypes.string.isRequired
+    label: React.PropTypes.string.isRequired,
   },
 
   render: function() {
@@ -18,7 +18,7 @@ var MenuHeader = React.createClass({
         {this.props.label}
       </li>
     );
-  }
+  },
 });
 
 module.exports = MenuHeader;

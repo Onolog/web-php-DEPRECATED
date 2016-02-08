@@ -1,19 +1,16 @@
+var {Glyphicon} = require('react-bootstrap/lib');
 var moment = require('moment');
 var React = require('react');
 var ReactDOM = require('react-dom');
 
 var DateInputCalendarPopover = require('./DateInputCalendarPopover.react');
-var Glyphicon = require('react-bootstrap/lib/Glyphicon');
-
-var cloneDate = require('utils/cloneDate');
-var cx = require('classnames');
 
 /**
  * DateInput.react
  *
  * Structured input for selecting a date via a calendar picker.
  */
-var DateInput = React.createClass({
+const DateInput = React.createClass({
   displayName: 'DateInput',
 
   propTypes: {
@@ -25,7 +22,7 @@ var DateInput = React.createClass({
 
   getInitialState: function() {
     return {
-      showCalendar: false
+      showCalendar: false,
     };
   },
 
@@ -38,12 +35,8 @@ var DateInput = React.createClass({
   },
 
   render: function() {
-    var {date, months, timezone, years} = this.props;
-    var m = moment({
-      date: date,
-      months: months,
-      years: years
-    });
+    const {date, months, years} = this.props;
+    var m = moment({date, months, years});
 
     return (
       <div className="DateInput">
@@ -86,7 +79,7 @@ var DateInput = React.createClass({
   _onChange: function(/*object*/ dateObject) {
     this.setState({showCalendar: false});
     this.props.onChange(dateObject);
-  }
+  },
 });
 
 module.exports = DateInput;

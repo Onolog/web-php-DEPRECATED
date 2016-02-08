@@ -1,7 +1,7 @@
 var Autolinker = require('autolinker');
 var React = require('react');
 var ReactDOM = require('react-dom');
-var {ListGroup, Tab, Tabs} = require('react-bootstrap/lib');
+var {Tab, Tabs} = require('react-bootstrap/lib');
 
 var ActivityDeviceInfo = require('./ActivityDeviceInfo.react');
 var ActivityHeader = require('./ActivityHeader.react');
@@ -11,7 +11,6 @@ var ActivitySplitsTable = require('./ActivitySplitsTable.react');
 var ActivityStats = require('./ActivityStats.react');
 
 var FBFacepile = require('components/Facebook/FBFacepile.react');
-var Link = require('components/Link/Link.react');
 
 var ActionTypes = require('flux/ActionTypes');
 var ShoeStore = require('flux/stores/ShoeStore');
@@ -30,13 +29,13 @@ var Activity = React.createClass({
   displayName: 'Activity',
 
   propTypes: {
-    activity: React.PropTypes.object.isRequired
+    activity: React.PropTypes.object.isRequired,
   },
 
   getInitialState: function() {
     return {
       isHorizontal: true,
-      shoes: []
+      shoes: [],
     };
   },
 
@@ -76,7 +75,7 @@ var Activity = React.createClass({
             {content}
           </Tab>
           {splitsTab}
-        </Tabs>
+        </Tabs>;
     }
 
     return (
@@ -99,11 +98,12 @@ var Activity = React.createClass({
   _renderDetailsContent: function(activity) {
     const {device, friends, notes, shoe_id} = activity;
 
-    let content = [
+    let content = [];
+    content.push(
       <ActivitySection key="stats">
         <ActivityStats activity={activity} />
       </ActivitySection>
-    ];
+    );
 
     if (notes) {
       content.push(
@@ -171,9 +171,9 @@ var Activity = React.createClass({
 
   _setOrientation: function() {
     this.setState({
-      isHorizontal: ReactDOM.findDOMNode(this).offsetWidth > 750
+      isHorizontal: ReactDOM.findDOMNode(this).offsetWidth > 750,
     });
-  }
+  },
 });
 
 module.exports = Activity;

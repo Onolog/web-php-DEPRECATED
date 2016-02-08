@@ -3,7 +3,7 @@ import TCXParser from './TCXParser';
 
 const FILE_TYPES = {
   GPX: 'gpx',
-  TCX: 'tcx'
+  TCX: 'tcx',
 };
 
 /**
@@ -47,4 +47,4 @@ class FileParser {
   }
 }
 
-module.exports = FileParser;
+export default FileParser;

@@ -1,7 +1,7 @@
 /**
  * Garmin-related constants
  */
-define({
+module.exports = {
   API_KEY: '2b3f4a3a13900af73dd5a19c1c8f77e3',
 
   BASE_IMG_URL: 'https://static.garmincdn.com/com.garmin.connect/content/images/device-images/',
@@ -24,8 +24,8 @@ define({
       '220':   129397,
       '210':   83280,
       '110':   63511,
-      '10':    107143
-    }
+      '10':    107143,
+    },
   },
 
   TCX_SCHEMA_TAGS: {
@@ -73,6 +73,6 @@ define({
     versionBuildMajor:        'BuildMajor',
     versionBuildMinor:        'BuildMinor', 
     versionMajor:             'VersionMajor',
-    versionMinor:             'VersionMinor'
-  }
-});
+    versionMinor:             'VersionMinor',
+  },
+};

@@ -17,7 +17,7 @@ const FB_URL = '//www.facebook.com/plugins/like.php';
  * TODO: Although we're including the FB SDK globally, it really should be
  * included individually by each module that needs it.
  */
-var FBLikeButton = React.createClass({
+const FBLikeButton = React.createClass({
   displayName: 'FBLikeButton',
   propTypes: { 
     href: React.PropTypes.string.isRequired,
@@ -26,7 +26,7 @@ var FBLikeButton = React.createClass({
      */
     action: React.PropTypes.oneOf([
       'like',
-      'recommend'
+      'recommend',
     ]),
     /**
      * standard: Horizontally aligned button(s) with a string indicating how
@@ -43,7 +43,7 @@ var FBLikeButton = React.createClass({
       'standard',
       'box_count',
       'button_count',
-      'button'
+      'button',
     ]),
     /**
      * Show profile photos when 2 or more friends like the URL.
@@ -52,7 +52,7 @@ var FBLikeButton = React.createClass({
     /**
      * Includes a Share button beside the Like button.
      */
-    useShare: React.PropTypes.bool
+    useShare: React.PropTypes.bool,
   },
 
   /**
@@ -64,7 +64,7 @@ var FBLikeButton = React.createClass({
       layout: 'standard',
       showFaces: true,
       useShare: true,
-      width: 165
+      width: 165,
     };
   },
 
@@ -77,7 +77,7 @@ var FBLikeButton = React.createClass({
       show_faces: this.props.showFaces,
       share: this.props.useShare,
       height: this._getHeight(),
-      appId: APP_ID
+      appId: APP_ID,
     });
 
     return (
@@ -101,10 +101,10 @@ var FBLikeButton = React.createClass({
       'standard': this.props.showFaces ? 80 : 35,
       'box_count': 65,
       'button_count': 21,
-      'button': 35
+      'button': 35,
     };
     return heights[this.props.layout];
-  }
+  },
 });
 
 module.exports = FBLikeButton;

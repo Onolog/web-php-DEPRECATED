@@ -9,7 +9,6 @@ var {
 
 var AppPage = require('components/Page/AppPage.react');
 var Activity = require('../Activities/Activity.react');
-var PageHeader = require('components/Page/PageHeader.react');
 var Panel = require('components/Panel/Panel.react');
 
 /**
@@ -23,8 +22,8 @@ var WorkoutViewPage = React.createClass({
   getInitialState: function() {
     var {viewer, workout} = window.app;
     return {
-      viewer: viewer,
-      workout: workout
+      viewer,
+      workout,
     };
   },
 
@@ -71,7 +70,7 @@ var WorkoutViewPage = React.createClass({
     if (confirm('Are you sure you want to delete this shoe?')) {
       document.location = '/workouts/delete/' + this.state.workout.id;
     }
-  }
+  },
 });
 
 module.exports = WorkoutViewPage;

@@ -2,11 +2,10 @@ var $ = require('jquery');
 
 var ActionTypes = require('flux/ActionTypes');
 var ActionUtils = require('flux/actions/ActionUtils');
-var AppDispatcher = require('flux/AppDispatcher');
 
-var cakePHP = require('utils/cakePHP');
+var {encodeFormData} = require('utils/cakePHP');
 
-var {ENDPOINT, FORM_NAME} = require('constants/Shoes');
+const {ENDPOINT, FORM_NAME} = require('constants/Shoes');
 
 /**
  * ShoeActions.js
@@ -16,9 +15,9 @@ module.exports = {
     $.ajax({
       url: ENDPOINT.ADD,
       type: 'POST',
-      data: cakePHP.encodeFormData(data, FORM_NAME),
+      data: encodeFormData(data, FORM_NAME),
       success: this.onAddSuccess,
-      error: this.onAddError
+      error: this.onAddError,
     });
   },
 
@@ -39,7 +38,7 @@ module.exports = {
       url: ENDPOINT.DELETE + id,
       type: 'POST',
       success: this.onDeleteSuccess,
-      error: this.onDeleteError
+      error: this.onDeleteError,
     });
   },
 
@@ -77,9 +76,9 @@ module.exports = {
     $.ajax({
       url: ENDPOINT.EDIT + data.id,
       type: 'POST',
-      data: cakePHP.encodeFormData(data, FORM_NAME),
+      data: encodeFormData(data, FORM_NAME),
       success: this.onSaveSuccess,
-      error: this.onSaveError
+      error: this.onSaveError,
     });
   },
 
@@ -103,7 +102,7 @@ module.exports = {
       url: ENDPOINT.VIEW + id,
       type: 'GET',
       success: this.onViewSuccess,
-      error: this.onViewError
+      error: this.onViewError,
     });
   },
 
@@ -117,5 +116,5 @@ module.exports = {
 
   onViewError: function(/*string|object*/ response) {
     ActionUtils.onError(response, ActionTypes.SHOE_VIEW_ERROR);
-  }
+  },
 };

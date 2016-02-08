@@ -1,11 +1,10 @@
-var $ = require('jquery');
 var React = require('react');
 var cx = require('classnames');
 
 var fbLoader = require('utils/fbLoader');
 var UserActions = require('flux/actions/UserActions');
 
-var INTERVAL = 1 * 60 * 1000; // 1 min
+const INTERVAL = 1 * 60 * 1000; // 1 min
 
 /**
  * BaseAppPage.react
@@ -17,7 +16,9 @@ var BaseAppPage = React.createClass({
   displayName: 'BaseAppPage',
 
   componentDidMount: function() {
-    fbLoader(() => {setInterval(this._checkLoginStatus, INTERVAL)});
+    fbLoader(() => {
+      setInterval(this._checkLoginStatus, INTERVAL);
+    });
   },
 
   componentWillUnmount: function() {
@@ -43,7 +44,7 @@ var BaseAppPage = React.createClass({
         }
       }
     });
-  }
+  },
 });
 
 module.exports = BaseAppPage;

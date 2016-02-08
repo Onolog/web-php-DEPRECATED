@@ -1,0 +1,7 @@
+# node_modules ignored by default
+
+# Ignore built files
+app/webroot/js/build/
+
+# Ignore 3rd-party libs
+app/webroot/js/lib/

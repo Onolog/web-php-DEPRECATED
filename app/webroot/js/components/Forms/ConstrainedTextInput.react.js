@@ -2,15 +2,15 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var cx = require('classnames');
 
-var KEYCODE = {
+const KEYCODE = {
   ESC: 27,
   UP: 38,
-  DOWN: 40
+  DOWN: 40,
 };
 
-var TYPES = {
+const TYPES = {
   any: 'any',
-  number: 'number'
+  number: 'number',
 };
 
 /**
@@ -20,7 +20,7 @@ var TYPES = {
  * the values by pressing the up and down arrow keys. They can also enter a
  * specific value, which will be validated on blur.
  */
-var ConstrainedTextInput = React.createClass({
+const ConstrainedTextInput = React.createClass({
   displayName: 'ConstrainedTextInput',
 
   propTypes: {
@@ -44,12 +44,12 @@ var ConstrainedTextInput = React.createClass({
      * An array of valid values for the input. This automatically restricts
      * and validates what can be entered as a value.
      */
-    values: React.PropTypes.array.isRequired
+    values: React.PropTypes.array.isRequired,
   },
 
   getDefaultProps: function() {
     return {
-      type: TYPES.number
+      type: TYPES.number,
     };
   },
 
@@ -57,7 +57,7 @@ var ConstrainedTextInput = React.createClass({
     var index = this._getIndex(this.props.defaultValue);
     if (index === -1) {
       throw new Error(
-        'TimeInput: `' + this.props.defaultValue + '` must be in `' +
+        'ConstrainedInput: `' + this.props.defaultValue + '` must be in `' +
         this.props.values + '`'
       );
     }
@@ -72,7 +72,7 @@ var ConstrainedTextInput = React.createClass({
        * Temporarily store a value when the user is manually entering it and
        * validate on blur.
        */
-      tempValue: null
+      tempValue: null,
     };
   },
 
@@ -173,13 +173,13 @@ var ConstrainedTextInput = React.createClass({
 
   _onChange: function(index) {
     this.setState({
-      index: index,
+      index,
       lastValidIndex: index,
-      tempValue: null
+      tempValue: null,
     });
 
     this.props.onChange && this.props.onChange(this.props.values[index]);
-  } 
+  },
 });
 
 module.exports = ConstrainedTextInput;

@@ -1,8 +1,6 @@
 import GpxActivityFactory from 'lib/garmin/activity/GpxActivityFactory';
 import XMLParser from './XMLParser';
 
-const {SCHEMA_TAGS} = GpxActivityFactory;
-
 /**
  * GPXParser
  *

@@ -1,11 +1,11 @@
-var React = require('react');
+import React from 'react';
 
 /**
  * LabeledStat.react
  *
  * Renders a single label/statistic pair, with an optional annotation below
  */
-var LabeledStat = React.createClass({
+const LabeledStat = React.createClass({
   displayName: 'LabeledStat',
 
   propTypes: {
@@ -13,7 +13,7 @@ var LabeledStat = React.createClass({
     label: React.PropTypes.string.isRequired,
     stat: React.PropTypes.oneOfType([
       React.PropTypes.string,
-      React.PropTypes.number
+      React.PropTypes.number,
     ]).isRequired,
   },
 
@@ -32,15 +32,14 @@ var LabeledStat = React.createClass({
   },
 
   _renderAnnotation: function() {
-    if (!this.props.annotation) {
-      return;
+    if (this.props.annotation) {
+      return (
+        <div className="labeledStatAnnotation">
+          {this.props.annotation}
+        </div>      
+      );
     }
-    return (
-      <div className="labeledStatAnnotation">
-        {this.props.annotation}
-      </div>      
-    );
-  }
+  },
 });
 
 module.exports = LabeledStat;

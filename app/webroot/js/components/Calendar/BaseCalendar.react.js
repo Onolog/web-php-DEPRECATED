@@ -1,13 +1,12 @@
-var React = require('react');
-var moment = require('moment');
+import React from 'react';
+import moment from 'moment';
+
+const ISO_DAY_OF_WEEK = 'E';
 
 /**
  * BaseCalendar.react
  */
-var DAYS_IN_WEEK = 7;
-var ISO_DAY_OF_WEEK = 'E';
-
-var BaseCalendar = React.createClass({
+const BaseCalendar = React.createClass({
   displayName: 'BaseCalendar',
 
   propTypes: {
@@ -16,14 +15,14 @@ var BaseCalendar = React.createClass({
       'd',    // M, T, W...
       'dd',   // Mo, Tu, We...
       'ddd',  // Mon, Tue, Wed...
-      'dddd'  // Monday, Tuesday, Wednesday...
-    ])
+      'dddd', // Monday, Tuesday, Wednesday...
+    ]),
   },
 
   getDefaultProps: function() {
     return {
       borders: true,
-      headerFormat: 'ddd'
+      headerFormat: 'ddd',
     };
   },
 
@@ -44,7 +43,7 @@ var BaseCalendar = React.createClass({
   _renderHeaderRow: function() {
     // TODO: Allow for different week start days. Sunday (7) is currently first.
     var headerCells = [7, 1, 2, 3, 4, 5, 6].map((day) => {
-      return <th key={day}>{this._formatDayOfWeek(day)}</th>
+      return <th key={day}>{this._formatDayOfWeek(day)}</th>;
     });
 
     return <thead><tr>{headerCells}</tr></thead>;
@@ -63,7 +62,7 @@ var BaseCalendar = React.createClass({
 
     var formatted = moment(day, ISO_DAY_OF_WEEK).format(format);
     return substr ? formatted.substr(0, 1) : formatted;
-  }
+  },
 });
 
 module.exports = BaseCalendar;

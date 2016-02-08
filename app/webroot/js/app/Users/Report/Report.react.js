@@ -33,7 +33,7 @@ var Report = React.createClass({
       totalRuns,
       totalTime,
       workoutData,
-      workoutDataByWeek
+      workoutDataByWeek,
     } = window.app;
 
     return {
@@ -45,7 +45,7 @@ var Report = React.createClass({
       totalRuns: totalRuns,
       totalTime: totalTime,
       workoutData: workoutData,
-      workoutDataByWeek: workoutDataByWeek
+      workoutDataByWeek: workoutDataByWeek,
     };
   },
 
@@ -229,17 +229,17 @@ var Report = React.createClass({
   _renderDailyGraph: function() {
     var monthData = this.state.workoutData.months;
     var monthKeys = Object.keys(monthData);
-    var months = monthKeys.map(function(monthKey) {
+    var months = monthKeys.map((monthKey) => {
       var month = monthData[monthKey];
       var monthName = moment({
         years: month.year,
-        months: month.month-1
+        months: month.month-1,
       }).format('MMM');
       var metadata = month.run_count + ' runs';
 
       var dayData = month.days;
       var dayKeys = Object.keys(dayData);
-      var days = dayKeys.map(function(dayKey) {
+      var days = dayKeys.map((dayKey) => {
         var day = dayData[dayKey];
         return (
           <BarGraphSectionUnit>
@@ -268,10 +268,9 @@ var Report = React.createClass({
   _renderWeeklyGraph: function() {
     var weekData = this.state.workoutDataByWeek.weeks;
     var keys = Object.keys(weekData).sort();
-    var weeks = keys.map(function(key) {
+    var weeks = keys.map((key) => {
       var week = weekData[key];
       var label = week.week < 10 ? '0' + week.week : '' + week.week;
-      var metadata = week.run_count + ' runs';
 
       return (
         <BarGraphSection
@@ -294,11 +293,11 @@ var Report = React.createClass({
   _renderMonthlyGraph: function() {
     var monthData = this.state.workoutData.months;
     var keys = Object.keys(monthData);
-    var months = keys.map(function(key) {
+    var months = keys.map((key) => {
       var month = monthData[key];
       var monthName = moment({
         years: month.year,
-        months: month.month-1
+        months: month.month-1,
       }).format('MMM');
       var metadata = month.run_count + ' runs';
 
@@ -317,10 +316,9 @@ var Report = React.createClass({
         </BarGraphSection>
       );
     });
-    
-    return <BarGraph>{months}</BarGraph>;
-  }
 
+    return <BarGraph>{months}</BarGraph>;
+  },
 });
 
 module.exports = Report;

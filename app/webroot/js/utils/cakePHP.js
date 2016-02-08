@@ -3,7 +3,7 @@
  *
  * Util functions for adapting JS to CakePHP quirks
  */
-var cakePHP = {
+module.exports = {
   encodeFormData: function(formData, formName) {
     var encodedData = {};
     for (var key in formData) {
@@ -22,7 +22,7 @@ var cakePHP = {
     /*string*/ name,
     /*string*/ formName
   ) /*string*/ {
-    return 'data[' + formName + '][' + name + ']';
+    return `data[${formName}][${name}]`;
   },
 
   /**
@@ -30,8 +30,6 @@ var cakePHP = {
    * the string "distance".
    */
   decodeFormFieldName: function(name) /*string*/ {
-    return name.split('[').pop().slice(0, -1)
-  }
+    return name.split('[').pop().slice(0, -1);
+  },
 };
-
-module.exports = cakePHP;

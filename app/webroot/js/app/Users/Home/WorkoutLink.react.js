@@ -1,11 +1,4 @@
 import React from 'react';
-import {
-  Button,
-  ButtonGroup,
-  Glyphicon,
-  OverlayTrigger,
-  Tooltip,
-} from 'react-bootstrap/lib';
 
 import ActivityModal from './ActivityModal.react';
 import ActivityViewModal from './ActivityViewModal.react';
@@ -21,7 +14,7 @@ const WorkoutLink = React.createClass({
   displayName: 'WorkoutLink',
 
   propTypes: {
-    workout: React.PropTypes.object.isRequired
+    workout: React.PropTypes.object.isRequired,
   },
 
   getInitialState: function() {

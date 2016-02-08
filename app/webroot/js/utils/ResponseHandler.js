@@ -43,7 +43,7 @@ ResponseHandler.prototype = {
       default:
         return 'Something went wrong. Please try again later.';
     }
-  }
+  },
 };
 
 module.exports = ResponseHandler;

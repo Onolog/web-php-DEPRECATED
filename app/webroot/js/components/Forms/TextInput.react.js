@@ -32,7 +32,7 @@ var TextInput = React.createClass({
 
   getValue: function() {
     return ReactDOM.findDOMNode(this).value;
-  }
+  },
 });
 
 module.exports = TextInput;

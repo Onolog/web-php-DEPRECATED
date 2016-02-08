@@ -18,7 +18,7 @@ var Friends = React.createClass({
 
   getInitialState: function() {
     return {
-      friends: null
+      friends: null,
     };
   },
 
@@ -62,12 +62,13 @@ var Friends = React.createClass({
   },
 
   _getFriends: function() {
+    const {FB} = window;
     FB.getLoginStatus((response) => {
       FB.api('/me/friends', (response) => {
         this.setState({friends: response.data});
       });
     });
-  }
+  },
 });
 
 module.exports = Friends;

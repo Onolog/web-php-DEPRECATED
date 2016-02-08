@@ -1,6 +1,7 @@
 var ActionTypes = require('flux/ActionTypes');
 var AppDispatcher = require('flux/AppDispatcher');
 var MicroEvent = require('lib/microevent');
+var WorkoutActions = require('flux/actions/WorkoutActions');
 
 var {find, indexOf} = require('lodash');
 
@@ -22,12 +23,10 @@ var WorkoutStore = {
   },
 
   getItem: function(/*number*/ itemId) {
-    var item = find(_collection, function(item) {
-      return item.id === itemId;
-    });
+    var item = find(_collection, (item) => item.id === itemId);
 
     if (!item) {
-      WorkoutActions.view(itemID);
+      WorkoutActions.view(itemId);
     }
     return item;
   },
@@ -38,7 +37,7 @@ var WorkoutStore = {
    */
   getIsCached: function(/*number*/ itemId) /*bool*/ {
     return indexOf(_cache, itemId) !== -1;
-  }
+  },
 };
 
 MicroEvent.mixin(WorkoutStore);

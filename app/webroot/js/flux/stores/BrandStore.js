@@ -21,10 +21,8 @@ var BrandStore = {
   },
 
   getItem: function(/*number*/ itemID) {
-    return _items.filter(function(item) {
-      return +item.id === +itemID
-    })[0];
-  }
+    return _items.filter((item) => +item.id === +itemID)[0];
+  },
 };
 
 MicroEvent.mixin(BrandStore);

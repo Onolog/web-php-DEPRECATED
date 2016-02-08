@@ -3,15 +3,12 @@ var React = require('react');
 
 var ConstrainedTextInput = require('components/Forms/ConstrainedTextInput.react');
 
-var cloneDate = require('utils/cloneDate');
-var cx = require('classnames');
-var dateToUnixTime = require('utils/dateToUnixTime');
 var pad = require('utils/pad');
 var {range} = require('lodash');
 
-var MERIDIEM = {
+const MERIDIEM = {
   AM: 'AM',
-  PM: 'PM'
+  PM: 'PM',
 };
 
 function formatter(value) {
@@ -30,13 +27,13 @@ var TimeInput = React.createClass({
   propTypes: {
     hours: React.PropTypes.number.isRequired,
     minutes: React.PropTypes.number.isRequired,
-    onChange: React.PropTypes.func.isRequired
+    onChange: React.PropTypes.func.isRequired,
   },
 
   render: function() {
     var m = moment({
       hours: this.props.hours,
-      minutes: this.props.minutes
+      minutes: this.props.minutes,
     });
 
     return (
@@ -89,17 +86,14 @@ var TimeInput = React.createClass({
   },
 
   _onMeridiemChange: function(/*string*/ meridiem) {
-    var hours = this.props.hours;
+    var {hours} = this.props;
     hours = (meridiem === MERIDIEM.PM && hours < 12) ? hours + 12 : hours - 12;
     this._onChange(hours, this.props.minutes);
   },
 
   _onChange: function(/*number*/ hours, /*number*/ minutes) {
-    this.props.onChange({
-      hours: hours,
-      minutes: minutes
-    });
-  }
+    this.props.onChange({hours, minutes});
+  },
 });
 
 module.exports = TimeInput;

@@ -14,7 +14,7 @@ var Calendar = React.createClass({
   displayName: 'Calendar',
 
   propTypes: {
-    date: React.PropTypes.instanceOf(Date).isRequired
+    date: React.PropTypes.instanceOf(Date).isRequired,
   },
 
   render: function() {
@@ -48,7 +48,7 @@ var Calendar = React.createClass({
         <CalendarDate date={date} />
       </BaseCalendarDay>
     );
-  }
+  },
 });
 
 module.exports = Calendar;

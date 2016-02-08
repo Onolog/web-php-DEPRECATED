@@ -1,5 +1,5 @@
-var React = require('react');
-var cx = require('classnames');
+import React from 'react';
+import cx from 'classnames';
 
 require('./Topline.css');
 
@@ -8,7 +8,7 @@ require('./Topline.css');
  *
  * Renders a series of labeled stats
  */
-var Topline = React.createClass({
+const Topline = React.createClass({
   displayName: 'Topline',
 
   render: function() {
@@ -21,7 +21,7 @@ var Topline = React.createClass({
 
   _renderChild: function(child, idx) {
     return <li className="toplineItem" key={idx}>{child}</li>;
-  }
+  },
 });
 
 module.exports = Topline;

@@ -7,7 +7,6 @@ var BaseCalendarWeek = require('components/Calendar/BaseCalendarWeek.react');
 var Link = require('components/Link/Link.react');
 
 var calendarGrid = require('utils/calendarGrid');
-var cloneDate = require('utils/cloneDate');
 var cx = require('classnames');
 
 /**
@@ -28,7 +27,7 @@ var DateInputCalendar = React.createClass({
     /**
      * The year being displayed by the calendar.
      */
-    year: React.PropTypes.number.isRequired
+    year: React.PropTypes.number.isRequired,
   },
 
   render: function() {
@@ -60,7 +59,7 @@ var DateInputCalendar = React.createClass({
         month={this.props.month}>
         <Link
           className={cx({
-            'selected': moment(dayDate).isSame(this.props.selectedDate, 'day')
+            'selected': moment(dayDate).isSame(this.props.selectedDate, 'day'),
           })}
           href="#"
           onClick={this._onDayClick.bind(this, dayDate)}>
@@ -75,9 +74,9 @@ var DateInputCalendar = React.createClass({
     this.props.onChange && this.props.onChange({
       date: selectedDate.getDate(),
       months: selectedDate.getMonth(),
-      years: selectedDate.getFullYear()
+      years: selectedDate.getFullYear(),
     });
-  }
+  },
 });
 
 module.exports = DateInputCalendar;

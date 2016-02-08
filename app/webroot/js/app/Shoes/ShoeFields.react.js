@@ -25,7 +25,7 @@ const ShoeFields = React.createClass({
 
   propTypes: {
     isNew: React.PropTypes.bool,
-    shoe: React.PropTypes.object.isRequired
+    shoe: React.PropTypes.object.isRequired,
   },
 
   render: function() {

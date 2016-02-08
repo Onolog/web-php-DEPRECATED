@@ -1,4 +1,4 @@
-var pad = require('./pad');
+import pad from './pad';
 
 /**
  * homeUrl
@@ -7,7 +7,7 @@ var pad = require('./pad');
  */
 function homeUrl() {
   var now = new Date();
-  return '/' + now.getFullYear() + '/' + pad(now.getMonth() + 1, 2);
+  return `/${now.getFullYear()}/${pad(now.getMonth() + 1, 2)}`;
 }
 
 module.exports = homeUrl;

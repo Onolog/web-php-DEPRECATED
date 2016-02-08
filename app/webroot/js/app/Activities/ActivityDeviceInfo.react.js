@@ -16,7 +16,7 @@ var ActivityDeviceInfo = React.createClass({
 
   propTypes: {
     deviceName: React.PropTypes.string.isRequired,
-    softwareVersion: React.PropTypes.string.isRequired
+    softwareVersion: React.PropTypes.string.isRequired,
   },
 
   render: function() {
@@ -37,7 +37,7 @@ var ActivityDeviceInfo = React.createClass({
         </div>
       </ImageBlock>
     );
-  }
+  },
 });
 
 module.exports = ActivityDeviceInfo;

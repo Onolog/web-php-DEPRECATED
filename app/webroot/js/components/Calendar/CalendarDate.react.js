@@ -1,13 +1,11 @@
-var React = require('react');
-
-var cx = require('classnames');
+import React from 'react';
 
 /**
  * CalendarDate.react
  *
  * Renders the date in a single calendar cell.
  */
-var CalendarDate = React.createClass({
+const CalendarDate = React.createClass({
   displayName: 'CalendarDate',
 
   propTypes: {
@@ -21,7 +19,7 @@ var CalendarDate = React.createClass({
     return (
       <h3>{this.props.date.getDate()}</h3>
     );
-  }
+  },
 });
 
 module.exports = CalendarDate;

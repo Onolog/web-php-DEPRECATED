@@ -34,7 +34,7 @@ const ActivityCalendarDay = React.createClass({
 
   getInitialState: function() {
     return {
-      showModal: false
+      showModal: false,
     };
   },
 

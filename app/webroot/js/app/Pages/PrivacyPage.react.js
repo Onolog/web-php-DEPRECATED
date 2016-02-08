@@ -142,8 +142,7 @@ var PrivacyPage = React.createClass({
         </Panel>
       </AppPage>
     );
-  }
-
+  },
 });
 
 module.exports = PrivacyPage;

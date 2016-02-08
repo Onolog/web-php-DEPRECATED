@@ -1,25 +1,25 @@
-var React = require('react');
+import React from 'react';
 
-var Link = require('components/Link/Link.react');
+import Link from 'components/Link/Link.react';
 
 /**
  * MenuItem.react
  *
  * Single menu item in a dropdown.
  */
-var MenuItem = React.createClass({
+const MenuItem = React.createClass({
   displayName: 'MenuItem',
 
   propTypes: {
     href: React.PropTypes.string,
     label: React.PropTypes.string.isRequired,
-    onClick: React.PropTypes.func
+    onClick: React.PropTypes.func,
   },
 
   getDefaultProps: function() {
     return {
-      href: 'javascript:;'
-    }
+      href: '#',
+    };
   },
 
   render: function() {
@@ -36,7 +36,7 @@ var MenuItem = React.createClass({
 
   _handleClick: function() {
     return this.props.onClick && this.props.onClick();
-  }
+  },
 });
 
 module.exports = MenuItem;

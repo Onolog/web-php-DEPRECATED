@@ -1,11 +1,11 @@
-var React = require('react');
+import React from 'react';
 
 /**
  * Link.react
  *
  * React wrapper around standard HTML <a> tag
  */
-var Link = React.createClass({
+const Link = React.createClass({
   displayName: 'Link',
 
   render: function() {
@@ -21,7 +21,7 @@ var Link = React.createClass({
       e.preventDefault();
     }
     this.props.onClick && this.props.onClick(e);
-  }
+  },
 });
 
 module.exports = Link;

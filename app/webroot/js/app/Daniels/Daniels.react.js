@@ -6,8 +6,6 @@ var DistanceTable = require('./DistanceTable.react');
 var PaceTable = require('./PaceTable.react');
 var PageHeader = require('components/Page/PageHeader.react');
 
-var cx = require('classnames');
-
 require('./Daniels.css');
 
 /**
@@ -42,8 +40,7 @@ var DanielsPage = React.createClass({
         </Panel>
       </AppPage>
     );
-  }
-
+  },
 });
 
 module.exports = DanielsPage;

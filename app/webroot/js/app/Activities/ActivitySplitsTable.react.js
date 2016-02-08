@@ -14,7 +14,7 @@ var ActivitySplitsTable = React.createClass({
   displayName: 'ActivitySplitsTable',
 
   propTypes: {
-    laps: React.PropTypes.array
+    laps: React.PropTypes.array,
   },
 
   render: function() {
@@ -73,28 +73,28 @@ var ActivitySplitsTable = React.createClass({
   _getColumns: function() /*array*/ {
     return [{
       label: 'Lap',
-      key: 'lap'
+      key: 'lap',
     }, {
       formatter: this._formatDistance,
       label: 'Distance',
-      key: 'distance'
+      key: 'distance',
     }, {
       formatter: secondsToTime,
       label: 'Duration',
-      key: 'duration'
+      key: 'duration',
     }, {
       label: 'Avg. HR',
-      key: 'avg_hr'
+      key: 'avg_hr',
     }, {
       formatter: metersToFeet,
       label: 'Elev (ft)',
-      key: 'elevation_change'
+      key: 'elevation_change',
     }];
   },
 
   _formatDistance: function(distance) {
     return metersToMiles(distance) + ' mi';
-  }
+  },
 });
 
 module.exports = ActivitySplitsTable;

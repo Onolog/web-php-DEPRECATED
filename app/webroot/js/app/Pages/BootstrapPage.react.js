@@ -13,7 +13,7 @@ import {
   Navbar,
   NavbarBrand,
   Panel,
-  Table
+  Table,
 } from 'react-bootstrap/lib';
 
 var AppPage = require('components/Page/AppPage.react');
@@ -182,7 +182,7 @@ var BootstrapPage = React.createClass({
           <ListGroup>
             <ListGroupItem>Standard List Item</ListGroupItem>
             <ListGroupItem href="#">Linked List Item</ListGroupItem>
-            <ListGroupItem onClick={function() { alert('Clicked!')}}>
+            <ListGroupItem onClick={() => {alert('Clicked!');}}>
               List Item with onClick
             </ListGroupItem>
             <ListGroupItem>
@@ -345,7 +345,7 @@ var BootstrapPage = React.createClass({
         </tr>
       </tbody>
     );
-  }
+  },
 });
 
 module.exports = BootstrapPage;

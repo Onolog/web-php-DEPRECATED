@@ -8,15 +8,15 @@ function _formatTime(/*number*/ seconds) /*string|number*/ {
     return seconds;
   }
   var time = new Date(seconds * 1000);
-  var seconds = time.getSeconds();
+  seconds = time.getSeconds();
   var ss = seconds < 10 ? '0' + seconds : seconds;
   return time.getMinutes() + ':' + ss;
-};
+}
 
 var PaceTable = React.createClass({
 
   propTypes: {
-    vdot: React.PropTypes.number
+    vdot: React.PropTypes.number,
   },
 
   render: function() {
@@ -99,8 +99,7 @@ var PaceTable = React.createClass({
     cells.push(<td className="vdot" key={vdot + '-r'}>{vdot}</td>);
 
     return cells;
-  }
-
+  },
 });
 
 module.exports = PaceTable;

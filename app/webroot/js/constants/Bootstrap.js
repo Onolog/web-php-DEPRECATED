@@ -1,13 +1,12 @@
 /**
  * Bootstrap
  */
-define({
-
+module.exports = {
   SIZE: {
     LARGE: 'large',
     DEFAULT: 'default',
     SMALL: 'small',
-    XSMALL: 'xsmall'
+    XSMALL: 'xsmall',
   },
 
   USE: {
@@ -16,6 +15,6 @@ define({
     SUCCESS: 'success',
     INFO: 'info',
     WARNING: 'warning',
-    DANGER: 'danger'
-  }
-});
+    DANGER: 'danger',
+  },
+};

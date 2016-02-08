@@ -1,6 +1,5 @@
 import {forEach} from 'lodash';
 
-import TcxActivityFactory from 'lib/garmin/activity/TcxActivityFactory';
 import TCXActivityParser from './TCXActivityParser';
 import XMLParser from './XMLParser';
 
@@ -12,22 +11,20 @@ import XMLParser from './XMLParser';
  */
 class TCXParser extends XMLParser {
   parse() {
-    // return TcxActivityFactory.parseDocument(this.node);
-
-    var activityNodes = this.getByTagName('Activity');
+    let activityNodes = this.getByTagName('Activity');
 
     // TODO: Should this be an error or just an empty array/object?
     if (!activityNodes.length) {
       throw new Error('Error: Unable to parse TCX document.');
     }
     
-    var activities = [];
+    let activities = [];
     forEach(activityNodes, activityNode => {
-      var activity = (new TCXActivityParser(activityNode)).parse();
+      let activity = (new TCXActivityParser(activityNode)).parse();
       activities.push(activity);
     });
     return activities;
   }
 }
 
-module.exports = TCXParser;
+export default TCXParser;

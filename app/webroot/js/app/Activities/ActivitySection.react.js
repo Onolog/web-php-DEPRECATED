@@ -7,17 +7,17 @@ require('./ActivitySection.css');
 /**
  * ActivitySection.react
  */
-var ActivitySection = React.createClass({
+const ActivitySection = React.createClass({
   displayName: 'ActivitySection',
 
   propTypes: {
     border: React.PropTypes.bool,
-    title: React.PropTypes.string
+    title: React.PropTypes.string,
   },
 
   getDefaultProps: function() {
     return {
-      border: false
+      border: false,
     };
   },
 
@@ -25,7 +25,7 @@ var ActivitySection = React.createClass({
     return (
       <div
         className={cx('activitySection', {
-          'activitySectionBorder': this.props.border
+          'activitySectionBorder': this.props.border,
         }, this.props.className)}>
         {this._renderTitle()}
         {this.props.children}
@@ -41,7 +41,7 @@ var ActivitySection = React.createClass({
         </h4>
       );
     }
-  }
+  },
 });
 
 module.exports = ActivitySection;

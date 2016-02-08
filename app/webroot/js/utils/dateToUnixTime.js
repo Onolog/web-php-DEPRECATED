@@ -1,6 +1,6 @@
-var invariant = require('./invariant');
+import invariant from './invariant';
 
-var MS_PER_SEC = 1000;
+const MS_PER_SEC = 1000;
 
 /**
  * dateToUnixTime

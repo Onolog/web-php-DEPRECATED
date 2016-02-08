@@ -21,7 +21,7 @@ var GarminUploader = React.createClass({
 
   getInitialState: function() {
     return {
-      activity: null
+      activity: null,
     };
   },
 
@@ -58,7 +58,7 @@ var GarminUploader = React.createClass({
     var friends = [
       4280,
       700963,
-      509191417
+      509191417,
     ].join(',');
 
     var notes =
@@ -88,12 +88,12 @@ var GarminUploader = React.createClass({
       // From foreign keys
       athlete: {
         id: 517820043,
-        name: 'Eric Giovanola'
+        name: 'Eric Giovanola',
       },
       shoes: {
         id: 41,
-        name: 'ASICS DS Trainer 19.2'
-      }
+        name: 'ASICS DS Trainer 19.2',
+      },
     });
   },
 
@@ -118,13 +118,13 @@ var GarminUploader = React.createClass({
       GoogleTimezone({
         latitude: start.latitude,
         longitude: start.longitude,
-        timestamp: moment(start.time).unix()
+        timestamp: moment(start.time).unix(),
       }, (response) => {
         activity.timezone = response.timeZoneId;
         this.setState({activity: activity});
       });
     }
-  }
+  },
 });
 
 module.exports = GarminUploader;

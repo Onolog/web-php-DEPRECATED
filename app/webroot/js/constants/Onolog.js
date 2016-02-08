@@ -1,7 +1,7 @@
 /**
  * Onolog-related constants
  */
-define({
+module.exports = {
   URI: 'www.onolog.com',
-  URL: 'http://www.onolog.com'
-});
+  URL: 'http://www.onolog.com',
+};

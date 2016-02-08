@@ -16,7 +16,7 @@ var Textarea = React.createClass({
         className={cx(this.props.className, 'form-control')}
       />
     );
-  }
+  },
 });
 
 module.exports = Textarea;

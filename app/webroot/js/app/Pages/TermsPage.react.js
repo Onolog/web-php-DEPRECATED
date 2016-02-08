@@ -129,8 +129,7 @@ var TermsPage = React.createClass({
         </Panel>
       </AppPage>
     );
-  }
-
+  },
 });
 
 module.exports = TermsPage;

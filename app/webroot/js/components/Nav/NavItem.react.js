@@ -11,18 +11,18 @@ var NavItem = React.createClass({
 
   propTypes: {
     active: React.PropTypes.bool,
-    disabled: React.PropTypes.bool
+    disabled: React.PropTypes.bool,
   },
 
   getDefaultProps: function() {
     return {
-      href: '#'
+      href: '#',
     };
   },
 
   getInitialState: function() {
     return {
-      menuOpen: false
+      menuOpen: false,
     };
   },
 
@@ -39,11 +39,10 @@ var NavItem = React.createClass({
   render: function() {
     return (
       <li
-        className={cx({
-          'nav-item': true,
+        className={cx('nav-item', {
           'active': this.props.active,
           'disabled': this.props.disabled,
-          'open': this.state.menuOpen
+          'open': this.state.menuOpen,
         }, this.props.className)}
         role="presentation">
         {this._renderLink()}
@@ -62,7 +61,7 @@ var NavItem = React.createClass({
     }
 
     if (this.props.menu) {
-      caret = <span className="caret" />
+      caret = <span className="caret" />;
       props.onClick = this._toggleMenu;
     }
 
@@ -89,9 +88,9 @@ var NavItem = React.createClass({
     var target = evt.target;
     var triggerNode = ReactDOM.findDOMNode(this);
     if (!(triggerNode.contains(target) || target === triggerNode)) {
-      this.setState({menuOpen: false})
+      this.setState({menuOpen: false});
     }
-  }
+  },
 });
 
 module.exports = NavItem;

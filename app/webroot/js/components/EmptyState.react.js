@@ -1,15 +1,15 @@
-var React = require('react');
+import React from 'react';
 
 /**
  * EmptyState.react
  *
  * Standardized component for when there's no data to display.
  */
-var EmptyState = React.createClass({
+const EmptyState = React.createClass({
   displayName: 'EmptyState',
 
   propTypes: {
-    message: React.PropTypes.string.isRequired
+    message: React.PropTypes.string.isRequired,
   },
 
   render: function() {
@@ -18,7 +18,7 @@ var EmptyState = React.createClass({
         {this.props.message}
       </div>
     );
-  }
+  },
 });
 
 module.exports = EmptyState;

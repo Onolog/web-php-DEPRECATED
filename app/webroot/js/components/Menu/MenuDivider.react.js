@@ -1,16 +1,16 @@
-var React = require('react');
+import React from 'react';
 
 /**
  * MenuDivider.react
  *
  * Divider used in a dropdown menu.
  */
-var MenuDivider = React.createClass({
+const MenuDivider = React.createClass({
   displayName: 'MenuDivider',
 
   render: function() {
-    return <li className="divider"></li>;
-  }
+    return <li className="divider" />;
+  },
 });
 
 module.exports = MenuDivider;

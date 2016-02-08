@@ -1,15 +1,15 @@
-var React = require('react');
+import React from 'react';
 
-var LeftRight = require('components/LeftRight/LeftRight.react');
+import LeftRight from 'components/LeftRight/LeftRight.react';
 
 /**
  * PageHeader.react
  */
-var PageHeader = React.createClass({
+const PageHeader = React.createClass({
   displayName: 'PageHeader',
 
   propTypes: {
-    title: React.PropTypes.string.isRequired
+    title: React.PropTypes.string.isRequired,
   },
 
   render: function() {
@@ -19,7 +19,7 @@ var PageHeader = React.createClass({
         {this.props.children}
       </LeftRight>
     );
-  }
+  },
 });
 
 module.exports = PageHeader;

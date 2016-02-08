@@ -3,8 +3,6 @@ var AppDispatcher = require('flux/AppDispatcher');
 var MicroEvent = require('lib/microevent');
 var UserActions = require('flux/actions/UserActions');
 
-var homeUrl = require('utils/homeUrl');
-
 var _user = window.app && window.app.user;
 
 /**
@@ -18,7 +16,7 @@ var UserStore = {
       UserActions.getSession();
     }
     return _user;
-  }
+  },
 };
 
 MicroEvent.mixin(UserStore);

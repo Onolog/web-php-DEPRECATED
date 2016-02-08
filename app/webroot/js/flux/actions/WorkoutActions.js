@@ -2,9 +2,8 @@ var $ = require('jquery');
 
 var ActionTypes = require('flux/ActionTypes');
 var ActionUtils = require('flux/actions/ActionUtils');
-var AppDispatcher = require('flux/AppDispatcher');
 
-var cakePHP = require('utils/cakePHP');
+var {encodeFormData} = require('utils/cakePHP');
 
 var {ENDPOINT, FORM_NAME} = require('constants/Workouts');
 
@@ -18,9 +17,9 @@ var WorkoutActions = {
     $.ajax({
       url: ENDPOINT.WORKOUT_ADD,
       type: 'POST',
-      data: cakePHP.encodeFormData(workout, FORM_NAME),
+      data: encodeFormData(workout, FORM_NAME),
       success: this.onAddSuccess,
-      error: this.onAddError
+      error: this.onAddError,
     });
   },
 
@@ -42,7 +41,7 @@ var WorkoutActions = {
       url: ENDPOINT.WORKOUT_DELETE + workoutID,
       type: 'POST',
       success: this.onDeleteSuccess,
-      error: this.onDeleteError
+      error: this.onDeleteError,
     });
   },
 
@@ -65,9 +64,9 @@ var WorkoutActions = {
     $.ajax({
       url: ENDPOINT.WORKOUT_EDIT + workoutData.id,
       type: 'POST',
-      data: cakePHP.encodeFormData(workoutData, FORM_NAME),
+      data: encodeFormData(workoutData, FORM_NAME),
       success: this.onSaveSuccess,
-      error: this.onSaveError
+      error: this.onSaveError,
     });
   },
 
@@ -88,7 +87,7 @@ var WorkoutActions = {
       url: ENDPOINT.WORKOUT_VIEW + workoutID,
       type: 'GET',
       success: this.onViewSuccess,
-      error: this.onViewError
+      error: this.onViewError,
     });
   },
 
@@ -102,7 +101,7 @@ var WorkoutActions = {
 
   onViewError: function(/*string|object*/ response) {
     ActionUtils.onError(response, ActionTypes.WORKOUT_VIEW_ERROR);
-  }
+  },
 };
 
 module.exports = WorkoutActions;

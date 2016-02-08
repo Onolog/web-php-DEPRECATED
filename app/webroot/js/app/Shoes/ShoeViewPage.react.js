@@ -1,16 +1,16 @@
-var React = require('react');
-var {
+import React from 'react';
+import {
   Button,
   ButtonGroup,
   Glyphicon,
   OverlayTrigger,
-  Tooltip
-} = require('react-bootstrap/lib');
+  Tooltip,
+} from 'react-bootstrap/lib';
 
-var AppPage = require('components/Page/AppPage.react');
-var PageHeader = require('components/Page/PageHeader.react');
-var Panel = require('components/Panel/Panel.react');
-var ShoeView = require('./ShoeView.react');
+import AppPage from 'components/Page/AppPage.react';
+import PageHeader from 'components/Page/PageHeader.react';
+import Panel from 'components/Panel/Panel.react';
+import ShoeView from './ShoeView.react';
 
 /**
  * ShoeViewPage.react
@@ -24,7 +24,7 @@ var ShoeViewPage = React.createClass({
     var {canEdit, shoe} = window.app;
     return {
       canEdit: canEdit,
-      shoe: shoe
+      shoe: shoe,
     };
   },
 
@@ -91,7 +91,7 @@ var ShoeViewPage = React.createClass({
     if (confirm('Are you sure you want to delete this shoe?')) {
       document.location = '/shoes/delete/' + this.state.shoe.id;
     }
-  }
+  },
 });
 
 module.exports = ShoeViewPage;

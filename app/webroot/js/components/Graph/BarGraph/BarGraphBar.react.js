@@ -18,7 +18,7 @@ var GraphBar = React.createClass({
     href: React.PropTypes.string,
     label: React.PropTypes.oneOfType([
       React.PropTypes.number,
-      React.PropTypes.string
+      React.PropTypes.string,
     ]),
     /**
      * Adjusts the scale of the graph so that it doesn't just render at
@@ -29,7 +29,7 @@ var GraphBar = React.createClass({
      * better system.
      */
     scale: React.PropTypes.number,
-    value: React.PropTypes.number.isRequired
+    value: React.PropTypes.number.isRequired,
   },
 
   componentDidMount: function() {
@@ -39,7 +39,7 @@ var GraphBar = React.createClass({
 
   getDefaultProps: function() {
     return {
-      scale: 1
+      scale: 1,
     };
   },
 
@@ -60,7 +60,7 @@ var GraphBar = React.createClass({
         </Link>
       </OverlayTrigger>
     );
-  }
+  },
 });
 
 module.exports = GraphBar;

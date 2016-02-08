@@ -12,7 +12,7 @@ function _formatTime(/*number*/ seconds) /*string*/ {
 
   var hours = date.getHours() - baseDate.getHours();
   var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
+  seconds = date.getSeconds();
 
   var mm = hours && (minutes < 10) ? '0' + minutes : minutes;
   var ss = seconds < 10 ? '0' + seconds : seconds;
@@ -22,7 +22,7 @@ function _formatTime(/*number*/ seconds) /*string*/ {
   }
 
   return time.join(':') + decimal;
-};
+}
 
 /**
  * Daniels Distance Tables
@@ -33,7 +33,7 @@ function _formatTime(/*number*/ seconds) /*string*/ {
 var DistanceTable = React.createClass({
 
   propTypes: {
-    vdot: React.PropTypes.number
+    vdot: React.PropTypes.number,
   },
 
   render: function() {
@@ -99,8 +99,7 @@ var DistanceTable = React.createClass({
     cells.push(<td className="vdot" key={vdot + '-r'}>{vdot}</td>);
 
     return cells;
-  }
-
+  },
 });
 
 module.exports = DistanceTable;

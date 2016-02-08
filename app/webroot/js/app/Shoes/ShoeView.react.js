@@ -5,8 +5,6 @@ var {Table} = require('react-bootstrap/lib');
 var ActivitySection = require('app/Activities/ActivitySection.react');
 var EmptyState = require('components/EmptyState.react');
 var LabeledStat = require('components/Data/LabeledStat.react');
-var Link = require('components/Link/Link.react');
-var Panel = require('components/Panel/Panel.react');
 var Topline = require('components/Data/Topline.react');
 
 var formatDistance = require('utils/formatDistance');
@@ -32,7 +30,7 @@ var ShoeView = React.createClass({
     /**
      * Number of miles the shoe has accumulated
      */
-    mileage: React.PropTypes.number.isRequired
+    mileage: React.PropTypes.number.isRequired,
   },
 
   render: function() {
@@ -63,17 +61,8 @@ var ShoeView = React.createClass({
       return <EmptyState message="No activities to display." />;
     }
 
-    var header =
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th className="mileage">Distance</th>
-          <th className="time">Duration</th>
-        </tr>
-      </thead>;
-
     return (
-      <Table hover={true}>
+      <Table hover>
         <tbody>
           {activities.map(this._renderRows)}
         </tbody>
@@ -93,14 +82,14 @@ var ShoeView = React.createClass({
           {date}
         </td>
         <td className="mileage">
-          {formatDistance(activity.distance) + ' mi'}
+          {`${formatDistance(activity.distance)} mi`}
         </td>
         <td className="time">
           {secondsToTime(activity.duration)}
         </td>
       </tr>
     );
-  }
+  },
 });
 
 module.exports = ShoeView;
