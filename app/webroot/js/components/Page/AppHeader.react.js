@@ -3,7 +3,6 @@ import React from 'react';
 
 import FBImage from 'components/Facebook/FBImage.react';
 import Link from 'components/Link/Link.react';
-import Menu from 'components/Navigation/Menu.react';
 
 import UserActions from 'flux/actions/UserActions';
 import UserStore from 'flux/stores/UserStore';
