@@ -35,4 +35,4 @@ const Menu = React.createClass({
   },
 });
 
-export default Menu;
+module.exports = Menu;

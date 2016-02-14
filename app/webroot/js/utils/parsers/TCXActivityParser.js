@@ -189,4 +189,4 @@ class TCXActivityParser extends XMLParser {
   }
 }
 
-export default TCXActivityParser;
+module.exports = TCXActivityParser;

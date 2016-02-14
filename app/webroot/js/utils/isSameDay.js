@@ -18,4 +18,4 @@ function isSameDay(/*Date*/ date1, /*Date*/ date2) /*bool*/ {
   );
 }
 
-export default isSameDay;
+module.exports = isSameDay;

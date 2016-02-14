@@ -47,4 +47,4 @@ class FileParser {
   }
 }
 
-export default FileParser;
+module.exports = FileParser;

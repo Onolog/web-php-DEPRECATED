@@ -38,4 +38,4 @@ const GarminDeviceUtils = {
   },
 };
 
-export default GarminDeviceUtils;
+module.exports = GarminDeviceUtils;

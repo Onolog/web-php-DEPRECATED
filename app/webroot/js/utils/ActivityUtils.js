@@ -123,7 +123,7 @@ function _groupBy(/*string*/ unit, /*array*/ activities) {
   return extend(grouped, activities);
 }
 
-export default {
+module.exports = {
   getAggregateDistance: getAggregateDistance,
   getAggregateDuration: getAggregateDuration,
   getGroupingInfo: getGroupingInfo,

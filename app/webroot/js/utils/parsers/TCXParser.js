@@ -27,4 +27,4 @@ class TCXParser extends XMLParser {
   }
 }
 
-export default TCXParser;
+module.exports = TCXParser;
