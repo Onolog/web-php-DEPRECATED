@@ -15,7 +15,7 @@ var AppFooter = React.createClass({
 
     return (
       <footer className="footer">
-        <LeftRight className="container">
+        <LeftRight className="container-fluid">
           <div>
             Copyright &copy; {date.getFullYear()} Onolog
           </div>

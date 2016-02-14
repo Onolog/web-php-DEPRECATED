@@ -119,6 +119,13 @@ a.btn-default,
 }
 
 
+/* Layout */
+.container-fluid {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+
 /* ListGroup */
 .list-group-item {
   border-color: #f5f5f5;
@@ -298,5 +305,15 @@ section + section,
   .btn-toolbar > .btn + .btn {
     margin-left: 0;
     margin-top: 5px;
+  }
+
+  .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .panel {
+    margin: 0 -16px;
+    border-radius: 0;
   }
 }

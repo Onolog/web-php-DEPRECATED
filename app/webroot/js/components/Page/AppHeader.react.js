@@ -47,6 +47,7 @@ const AppHeader = React.createClass({
       <Navbar
         className="header"
         fixedTop
+        fluid
         inverse>
         <Navbar.Header>
           <Navbar.Brand>

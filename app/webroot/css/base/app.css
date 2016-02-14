@@ -283,29 +283,15 @@ p.error em {
     width: 100%;
   }
 
-  .panel {
-    margin: 0 -16px;
-    border-radius: 0;
-  }
-
   .footer {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 15px 0;
   }
 }
 
 
 /* TABLET & SMALL SCREEN */
 @media (min-width: 768px) and (max-width: 991px) {
-/*
-  .condensed-nav {
-    display: block;
-  }
 
-  .expanded-nav {
-    display: none;
-  }
-*/
 }
 
 

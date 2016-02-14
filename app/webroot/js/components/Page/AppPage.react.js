@@ -29,7 +29,7 @@ var AppPage = React.createClass({
       <BaseAppPage className={cx({'narrow-page': narrow}, className)}>
         <AppHeader />
         <div className="main">
-          <div className="clearfix container">
+          <div className="clearfix container-fluid">
             <div id="mainCol">
               {children}
             </div>
