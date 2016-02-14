@@ -66,9 +66,25 @@ const AppHeader = React.createClass({
 
   _renderAccountMenu(user) {
     if (user && user.id) {
+      let title =
+        <span>
+          <FBImage
+            className="accountImg"
+            fbid={user.id}
+            height={24}
+            width={24}
+          />
+          <span className="accountName ellipses">
+            {user.name}
+          </span>
+        </span>;
+
       return (
         <Nav pullRight>
-          <NavDropdown id="account-menu" title={user.name}>
+          <NavDropdown
+            className="account-menu"
+            id="account-menu"
+            title={title}>
             <div className="arrow hidden-xs" />
             <MenuItem href={`/users/profile/${user.id}`}>
               Profile
@@ -81,40 +97,6 @@ const AppHeader = React.createClass({
               Sign Out
             </MenuItem>
           </NavDropdown>
-        </Nav>
-      );
-    }
-  },
-
-  _renderAccountMenu_DEPRECATED(user) {
-    if (user && user.id) {
-      let menu =
-        <Menu>
-          <MenuItem href={`/users/profile/${user.id}`}>
-            Profile
-          </MenuItem>
-          <MenuItem href="/users/settings">
-            Settings
-          </MenuItem>
-          <MenuItem divider />
-          <MenuItem onClick={UserActions.logout}>
-            Sign Out
-          </MenuItem>
-        </Menu>;
-
-      return (
-        <Nav pullRight>
-          <NavItem className="account-menu" menu={menu}>
-            <FBImage
-              className="accountImg"
-              fbid={user.id}
-              height={24}
-              width={24}
-            />
-            <span className="accountName ellipses hidden-phone">
-              {user.name}
-            </span>
-          </NavItem>
         </Nav>
       );
     }
