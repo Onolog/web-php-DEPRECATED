@@ -26,6 +26,7 @@ h5:first-child {
 .dropdown-menu,
 .form-control,
 .input-group-addon,
+.navbar-nav > li > .dropdown-menu,
 .popover,
 .progress,
 .tooltip-inner,
@@ -121,6 +122,37 @@ a.btn-default,
 /* ListGroup */
 .list-group-item {
   border-color: #f5f5f5;
+}
+
+
+/* Menu */
+.navbar-nav > li > .dropdown-menu {
+  margin-top: 12px;
+}
+
+.dropdown-menu > .arrow,
+.dropdown-menu > .arrow:after {
+  border: 11px solid transparent;
+  position: absolute;
+}
+.dropdown-menu > .arrow {
+  border-bottom-color: rgba(0, 0, 0, 0.15);
+  border-top-width: 0;
+  left: 20px;
+  margin-left: 0;
+  top: -11px;
+}
+.dropdown-menu > .arrow:after {
+  border-bottom-color: #fff;
+  border-width: 0 10px 10px;
+  content: " ";
+  margin-left: -10px;
+  top: 1px;
+}
+
+.navbar-right .dropdown-menu > .arrow {
+  left: initial;
+  right: 20px;
 }
 
 /* Modal */

@@ -69,6 +69,7 @@ const AppHeader = React.createClass({
       return (
         <Nav pullRight>
           <NavDropdown id="account-menu" title={user.name}>
+            <div className="arrow" />
             <MenuItem href={`/users/profile/${user.id}`}>
               Profile
             </MenuItem>
