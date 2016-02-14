@@ -32,7 +32,9 @@ var GarminUploader = React.createClass({
         activity={this._normalizeActivity(activity)}
         fill
       /> :
-      <EmptyState message="No activity to display. Please upload a file." />;
+      <EmptyState>
+        No activity to display. Please upload a file.
+      </EmptyState>;
 
     return (
       <AppPage className="narrow-page">

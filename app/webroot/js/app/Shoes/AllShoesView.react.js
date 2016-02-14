@@ -58,9 +58,9 @@ const AllShoesView = React.createClass({
       contents = this._renderShoeTable(activeShoes);
     } else {
       contents =
-        <EmptyState
-          message="You do not have any active shoes to display."
-        />;
+        <EmptyState>
+          You do not have any active shoes to display.
+        </EmptyState>;
     }
 
     return (

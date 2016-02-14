@@ -58,7 +58,7 @@ var ShoeView = React.createClass({
   _renderActivities: function() {
     var activities = this.props.activities;
     if (!activities || !activities.length) {
-      return <EmptyState message="No activities to display." />;
+      return <EmptyState>No activities to display.</EmptyState>;
     }
 
     return (

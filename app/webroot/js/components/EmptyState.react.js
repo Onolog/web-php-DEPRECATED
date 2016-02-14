@@ -8,14 +8,10 @@ import React from 'react';
 const EmptyState = React.createClass({
   displayName: 'EmptyState',
 
-  propTypes: {
-    message: React.PropTypes.string.isRequired,
-  },
-
   render: function() {
     return (
       <div className="emptyState">
-        {this.props.message}
+        {this.props.children}
       </div>
     );
   },
