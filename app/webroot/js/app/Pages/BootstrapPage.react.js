@@ -8,27 +8,25 @@ import {
   Label,
   ListGroup,
   ListGroupItem,
+  MenuItem,
   Nav,
+  NavDropdown,
   NavItem,
   Navbar,
-  NavbarBrand,
   Panel,
   Table,
 } from 'react-bootstrap/lib';
 
-var AppPage = require('components/Page/AppPage.react');
-var Menu = require('components/Menu/Menu.react');
-var MenuDivider = require('components/Menu/MenuDivider.react');
-var MenuHeader = require('components/Menu/MenuHeader.react');
-var MenuItem = require('components/Menu/MenuItem.react');
-var PageHeader = require('components/Page/PageHeader.react');
+import AppPage from 'components/Page/AppPage.react';
+import Menu from 'components/Navigation/Menu.react';
+import PageHeader from 'components/Page/PageHeader.react';
 
 import {values} from 'lodash';
 
 const {SIZE, USE} = require('constants/Bootstrap');
 
 /**
- * ReactPage.react
+ * BootstrapPage.react
  *
  * Displays React components
  */
@@ -67,15 +65,22 @@ var BootstrapPage = React.createClass({
 
     var menu =
       <Menu align="right">
-        <MenuHeader label="First Header" />
-        <MenuItem
-          label="Item 1 (Click me!)"
-          onClick={() => { alert('You clicked the menu item!'); }}
-        />
-        <MenuItem label="Item 2" />
-        <MenuDivider />
-        <MenuHeader label="Second Header" />
-        <MenuItem label="Item 3" />
+        <MenuItem header>
+          First Header
+        </MenuItem>
+        <MenuItem onClick={() => { alert('You clicked the menu item!'); }}>
+          Item 1 (Click me!)
+        </MenuItem>
+        <MenuItem>
+          Item 2
+        </MenuItem>
+        <MenuItem divider />
+        <MenuItem header>
+          Second Header
+        </MenuItem>
+        <MenuItem>
+          Item 3
+        </MenuItem>
       </Menu>;
 
     return (
@@ -233,15 +238,19 @@ var BootstrapPage = React.createClass({
 
         <Panel header={<h3>Navbar</h3>}>
           <Navbar fluid>
-            <NavbarBrand>Brand</NavbarBrand>
+            <Navbar.Header>
+              <Navbar.Brand>Brand</Navbar.Brand>
+            </Navbar.Header>
             <Nav>
               <NavItem active>Item 1</NavItem>
-              <NavItem menu={menu}>Item 2</NavItem>
+              <NavDropdown id="navbar-1" title="Item 2">{menu}</NavDropdown>
               <NavItem disabled>Item 3</NavItem>
             </Nav>
           </Navbar>
           <Navbar fluid inverse>
-            <NavbarBrand>Brand</NavbarBrand>
+            <Navbar.Header>
+              <Navbar.Brand>Brand</Navbar.Brand>
+            </Navbar.Header>
             <Nav>
               <NavItem active>Item 1</NavItem>
               <NavItem>Item 2</NavItem>

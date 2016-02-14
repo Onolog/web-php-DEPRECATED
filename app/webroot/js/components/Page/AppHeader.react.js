@@ -1,80 +1,108 @@
-var React = require('react');
-var UserActions = require('flux/actions/UserActions');
-var UserStore = require('flux/stores/UserStore');
+import {MenuItem, Nav, Navbar, NavDropdown, NavItem} from 'react-bootstrap';
+import React from 'react';
 
-var FBImage = require('components/Facebook/FBImage.react');
-var Link = require('components/Link/Link.react');
-var Menu = require('components/Menu/Menu.react');
-var MenuDivider = require('components/Menu/MenuDivider.react');
-var MenuItem = require('components/Menu/MenuItem.react');
-var Nav = require('components/Nav/Nav.react');
-var NavItem = require('components/Nav/NavItem.react');
-var Navbar = require('components/Navbar/Navbar.react');
+import FBImage from 'components/Facebook/FBImage.react';
+import Link from 'components/Link/Link.react';
+import Menu from 'components/Navigation/Menu.react';
 
-var {CHANGE} = require('flux/ActionTypes');
+import UserActions from 'flux/actions/UserActions';
+import UserStore from 'flux/stores/UserStore';
 
-var homeUrl = require('utils/homeUrl');
+import homeUrl from 'utils/homeUrl';
+
+import {CHANGE} from 'flux/ActionTypes';
 
 /**
  * AppHeader.react
  */
-var AppHeader = React.createClass({
+const AppHeader = React.createClass({
   displayName: 'AppHeader',
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       isLoading: true,
       user: UserStore.getUser(),
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     UserStore.bind(CHANGE, this._onUserStoreUpdate);
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     UserStore.unbind(CHANGE, this._onUserStoreUpdate);
   },
 
-  _onUserStoreUpdate: function() {
-    var user = UserStore.getUser();
+  _onUserStoreUpdate() {
+    let user = UserStore.getUser();
     this.setState({
       isLoading: !user,
-      user: user,
+      user,
     });
   },
 
-  render: function() {
-    var {user} = this.state;
+  render() {
+    const {user} = this.state;
 
     return (
       <Navbar
-        brand={<Link href={homeUrl()}>Onolog</Link>}
         className="header"
-        fixed="top"
+        fixedTop
         inverse>
-        {this._renderMainMenu(user)}
-        {this._renderAccountMenu(user)}
-        {this._renderLoginLink(user)}
+        <Navbar.Header>
+          <Navbar.Brand>
+            <Link href={homeUrl()}>Onolog</Link>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          {this._renderMainMenu(user)}
+          {this._renderAccountMenu(user)}
+          {this._renderLoginLink(user)}
+        </Navbar.Collapse>
       </Navbar>
     );
   },
 
-  _renderAccountMenu: function(user) {
+  _renderAccountMenu(user) {
     if (user && user.id) {
-      var menu =
+      return (
+        <Nav pullRight>
+          <NavDropdown id="account-menu" title={user.name}>
+            <MenuItem href={`/users/profile/${user.id}`}>
+              Profile
+            </MenuItem>
+            <MenuItem href="/users/settings">
+              Settings
+            </MenuItem>
+            <MenuItem divider />
+            <MenuItem onClick={UserActions.logout}>
+              Sign Out
+            </MenuItem>
+          </NavDropdown>
+        </Nav>
+      );
+    }
+  },
+
+  _renderAccountMenu_DEPRECATED(user) {
+    if (user && user.id) {
+      let menu =
         <Menu>
-          <MenuItem href={'/users/profile/' + user.id} label="Profile" />
-          <MenuItem href="/users/settings" label="Settings" />
-          <MenuDivider />
-          <MenuItem
-            label="Sign Out"
-            onClick={UserActions.logout}
-          />
+          <MenuItem href={`/users/profile/${user.id}`}>
+            Profile
+          </MenuItem>
+          <MenuItem href="/users/settings">
+            Settings
+          </MenuItem>
+          <MenuItem divider />
+          <MenuItem onClick={UserActions.logout}>
+            Sign Out
+          </MenuItem>
         </Menu>;
 
       return (
-        <Nav right>
+        <Nav pullRight>
           <NavItem className="account-menu" menu={menu}>
             <FBImage
               className="accountImg"
@@ -91,7 +119,7 @@ var AppHeader = React.createClass({
     }
   },
 
-  _renderMainMenu: function(user) {
+  _renderMainMenu(user) {
     if (user && user.id) {
       return (
         <Nav>
@@ -113,10 +141,10 @@ var AppHeader = React.createClass({
    * If there's no user info, it means the user isn't logged in. Prompt them
    * to do so.
    */
-  _renderLoginLink: function(user) {
+  _renderLoginLink(user) {
     if (!(user && user.id) && !this.state.isLoading) {
       return (
-        <Nav right>
+        <Nav pullRight>
           <NavItem onClick={UserActions.login}>
             Sign In
           </NavItem>
