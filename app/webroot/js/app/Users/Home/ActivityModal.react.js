@@ -51,7 +51,7 @@ const ActivityModal = React.createClass({
       primaryAction = 'Update Activity';
       title = 'Edit Activity';
     } else {
-      primaryAction = 'Create Shoe';
+      primaryAction = 'Create Activity';
       title = 'Create A New Activity';
     }
 
