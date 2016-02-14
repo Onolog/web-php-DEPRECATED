@@ -1,15 +1,15 @@
-var React = require('react');
+import {Panel} from 'react-bootstrap';
+import React from 'react';
 
-var AppPage = require('components/Page/AppPage.react');
-var PageHeader = require('components/Page/PageHeader.react');
-var Panel = require('components/Panel/Panel.react');
+import AppPage from 'components/Page/AppPage.react';
+import PageHeader from 'components/Page/PageHeader.react';
 
 /**
  * TermsPage.react
  *
  * Static page displaying the terms of service.
  */
-var TermsPage = React.createClass({
+const TermsPage = React.createClass({
   displayName: 'TermsPage',
 
   render: function() {

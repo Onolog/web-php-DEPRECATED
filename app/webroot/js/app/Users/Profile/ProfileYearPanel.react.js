@@ -52,7 +52,7 @@ var ProfileYearPanel = React.createClass({
     return (
       <Panel
         className="profileYear"
-        header={this.props.year}>
+        header={<h3>{this.props.year}</h3>}>
         <ListGroup fill>
           <ListGroupItem>
             {this._renderChart()}

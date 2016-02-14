@@ -1,4 +1,5 @@
 var moment = require('moment');
+var {Panel} = require('react-bootstrap');
 var React = require('react');
 
 var Activity = require('app/Activities/Activity.react');
@@ -6,7 +7,6 @@ var AppPage = require('components/Page/AppPage.react');
 var EmptyState = require('components/EmptyState.react');
 var FileInput = require('components/Forms/FileInput.react');
 var PageHeader = require('components/Page/PageHeader.react');
-var Panel = require('components/Panel/Panel.react');
 
 var {head} = require('lodash');
 var {metersToFeet, metersToMiles} = require('utils/distanceUtils');
@@ -26,25 +26,21 @@ var GarminUploader = React.createClass({
   },
 
   render: function() {
-    var {activity} = this.state;
-    var contents;
-
-    if (activity) {
-      contents = <Activity activity={this._normalizeActivity(activity)} />;
-    } else {
-      contents =
-        <EmptyState
-          message="No activity to display. Please upload a file."
-        />;
-    }
+    const {activity} = this.state;
+    let contents = activity ?
+      <Activity
+        activity={this._normalizeActivity(activity)}
+        fill
+      /> :
+      <EmptyState message="No activity to display. Please upload a file." />;
 
     return (
       <AppPage className="narrow-page">
         <PageHeader title="" />
-        <Panel title="Choose a .tcx file">
+        <Panel header={<h3>Choose a .tcx file</h3>}>
           <FileInput onChange={this._onChange} />
         </Panel>
-        <Panel noPadding={!!activity}>
+        <Panel>
           {contents}
         </Panel>
       </AppPage>

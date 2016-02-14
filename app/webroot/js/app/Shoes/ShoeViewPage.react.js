@@ -4,12 +4,12 @@ import {
   ButtonGroup,
   Glyphicon,
   OverlayTrigger,
+  Panel,
   Tooltip,
-} from 'react-bootstrap/lib';
+} from 'react-bootstrap';
 
 import AppPage from 'components/Page/AppPage.react';
 import PageHeader from 'components/Page/PageHeader.react';
-import Panel from 'components/Panel/Panel.react';
 import ShoeView from './ShoeView.react';
 
 /**
@@ -35,10 +35,11 @@ var ShoeViewPage = React.createClass({
         <PageHeader title={shoe.name}>
           {this._renderButtonGroup()}
         </PageHeader>
-        <Panel noPadding>
+        <Panel>
           <ShoeView
             activityCount={shoe.activity_count}
             activities={shoe.activities}
+            fill
             mileage={shoe.mileage}
           />
         </Panel>

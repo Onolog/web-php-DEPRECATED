@@ -1,3 +1,4 @@
+var {Panel} = require('react-bootstrap');
 var React = require('react');
 
 var AppPage = require('components/Page/AppPage.react');
@@ -6,7 +7,6 @@ var ImageBlock = require('components/ImageBlock/ImageBlock.react');
 var Link = require('components/Link/Link.react');
 var Loader = require('components/Loader/Loader.react');
 var PageHeader = require('components/Page/PageHeader.react');
-var Panel = require('components/Panel/Panel.react');
 
 var fbLoader = require('utils/fbLoader');
 

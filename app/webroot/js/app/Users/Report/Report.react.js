@@ -1,4 +1,5 @@
 var moment = require('moment');
+var {Panel} = require('react-bootstrap');
 var React = require('react');
 
 var BarGraph = require('components/Graph/BarGraph/BarGraph.react');
@@ -10,7 +11,6 @@ var FBImage = require('components/Facebook/FBImage.react');
 var LabeledStat = require('components/Data/LabeledStat.react');
 var Link = require('components/Link/Link.react');
 var Middot = require('components/Middot.react');
-var Panel = require('components/Panel/Panel.react');
 var Topline = require('components/Data/Topline.react');
 
 var formatDistance = require('utils/formatDistance');
@@ -51,14 +51,12 @@ var Report = React.createClass({
 
   render: function() {
     var content;
-    var workoutData = this.state.workoutData;
+    var {workoutData} = this.state;
     // Render an empty state when there's no workout data
-    if (!workoutData.run_count) {
+    if (!(workoutData && workoutData.run_count)) {
       content =
-        <Panel className="clearfix">
-          <div className="emptyState">
-            No runs this year. Get back out there!
-          </div>
+        <Panel className="clearfix emptyState">
+          No runs this year. Get back out there!
         </Panel>;
     } else {
       content =

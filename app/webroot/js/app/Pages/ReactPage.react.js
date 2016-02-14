@@ -1,6 +1,6 @@
 var moment = require('moment-timezone');
 var React = require('react');
-var {Button, ButtonGroup, Glyphicon} = require('react-bootstrap/lib');
+var {Button, ButtonGroup, Glyphicon, Panel} = require('react-bootstrap/lib');
 
 var Activity = require('app/Activities/Activity.react');
 var AppPage = require('components/Page/AppPage.react');
@@ -9,7 +9,6 @@ var DateTimePicker = require('components/DateTimePicker/DateTimePicker.react');
 var FBFriendTokenizer = require('components/Facebook/FBFriendTokenizer.react');
 var LeftRight = require('components/LeftRight/LeftRight.react');
 var PageHeader = require('components/Page/PageHeader.react');
-var Panel = require('components/Panel/Panel.react');
 var WorkoutFields = require('app/Workouts/WorkoutFields.react');
 
 var cloneDate = require('utils/cloneDate');
@@ -38,7 +37,7 @@ var ReactPage = React.createClass({
       <AppPage>
         <PageHeader title="React Component Examples" />
 
-        <Panel title="Date/Time Picker">
+        <Panel header={<h3>Date/Time Picker</h3>}>
           <DateTimePicker
             date={this.state.datePickerDate}
             onChange={(dateString, timezone) => {
@@ -56,7 +55,7 @@ var ReactPage = React.createClass({
           </div>
         </Panel>
 
-        <Panel title="Calendar">
+        <Panel header={<h3>Calendar</h3>}>
           <LeftRight style={{'marginBottom': '10px'}}>
             <h3>{moment(this.state.calendarDate).format('MMMM YYYY')}</h3>
             <ButtonGroup>
@@ -74,14 +73,14 @@ var ReactPage = React.createClass({
           <Calendar date={this.state.calendarDate} />
         </Panel>
 
-        <Panel title="Friend Typeahead">
+        <Panel header={<h3>Friend Typeahead</h3>}>
           <h4 style={{margin: '0 0 5px'}}>Initially Empty</h4>
           <FBFriendTokenizer />
           <h4 style={{margin: '15px 0 5px'}}>Pre-Populated</h4>
           <FBFriendTokenizer friends={FRIENDS} />
         </Panel>
 
-        <Panel title="Workout Fields">
+        <Panel header={<h3>Workout Fields</h3>}>
           <WorkoutFields
             action="add"
             shoes={SHOES}
@@ -89,7 +88,7 @@ var ReactPage = React.createClass({
           />
         </Panel>
 
-        <Panel title="Activity">
+        <Panel header={<h3>Activity</h3>}>
           <Activity activity={WORKOUTS['2014']['10']['21'][1]} />
         </Panel>
       </AppPage>

@@ -1,9 +1,9 @@
+var {Panel} = require('react-bootstrap');
 var React = require('react');
 
 var AppPage = require('components/Page/AppPage.react');
 var LabeledStat = require('components/Data/LabeledStat.react');
 var PageHeader = require('components/Page/PageHeader.react');
-var Panel = require('components/Panel/Panel.react');
 var ProfileYearPanel = require('./ProfileYearPanel.react');
 var Topline = require('components/Data/Topline.react');
 
@@ -43,7 +43,7 @@ var Profile = React.createClass({
     var totalRuns = activities.length;
 
     return (
-      <Panel title="Lifetime Stats">
+      <Panel header={<h3>Lifetime Stats</h3>}>
         <Topline>
           <LabeledStat
             label="Miles"

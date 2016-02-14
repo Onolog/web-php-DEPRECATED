@@ -1,22 +1,22 @@
-var React = require('react');
-var {
+import {
   Button,
   ButtonGroup,
   Glyphicon,
   OverlayTrigger,
+  Panel,
   Tooltip,
-} = require('react-bootstrap/lib');
+} from 'react-bootstrap';
+import React from 'react';
 
-var AppPage = require('components/Page/AppPage.react');
-var Activity = require('../Activities/Activity.react');
-var Panel = require('components/Panel/Panel.react');
+import Activity from 'app/Activities/Activity.react';
+import AppPage from 'components/Page/AppPage.react';
 
 /**
  * WorkoutViewPage.react
  *
  * Displays the page header and view for a single workout.
  */
-var WorkoutViewPage = React.createClass({
+const WorkoutViewPage = React.createClass({
   displayName: 'WorkoutViewPage',
 
   getInitialState: function() {
@@ -31,8 +31,8 @@ var WorkoutViewPage = React.createClass({
     var {workout} = this.state;
     return (
       <AppPage narrow>
-        <Panel footer={this._renderButtonGroup()} noPadding={true}>
-          <Activity activity={workout} />
+        <Panel footer={this._renderButtonGroup()}>
+          <Activity activity={workout} fill />
         </Panel>
       </AppPage>
     );
