@@ -2,12 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var cx = require('classnames');
 
-const KEYCODE = {
-  ESC: 27,
-  UP: 38,
-  DOWN: 40,
-};
-
+const {DOWN, UP} = require('constants/KeyCode');
 const TYPES = {
   any: 'any',
   number: 'number',
@@ -129,11 +124,11 @@ const ConstrainedTextInput = React.createClass({
     var count = this.props.values.length;
 
     switch(evt.keyCode) {
-      case KEYCODE.UP:
+      case UP:
         index++;
         index = index < count ? index : 0;
         break;
-      case KEYCODE.DOWN:
+      case DOWN:
         index--;
         index = index >= 0 ? index : count - 1;
         break;

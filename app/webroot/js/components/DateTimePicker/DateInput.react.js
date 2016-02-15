@@ -1,9 +1,9 @@
-var {Glyphicon} = require('react-bootstrap/lib');
-var moment = require('moment');
-var React = require('react');
-var ReactDOM = require('react-dom');
+import {Glyphicon} from 'react-bootstrap';
+import moment from 'moment';
+import onClickOutside from 'react-onclickoutside';
+import React from 'react';
 
-var DateInputCalendarPopover = require('./DateInputCalendarPopover.react');
+import DateInputCalendarPopover from './DateInputCalendarPopover.react';
 
 /**
  * DateInput.react
@@ -12,6 +12,8 @@ var DateInputCalendarPopover = require('./DateInputCalendarPopover.react');
  */
 const DateInput = React.createClass({
   displayName: 'DateInput',
+
+  mixins: [onClickOutside],
 
   propTypes: {
     date: React.PropTypes.number.isRequired,
@@ -24,14 +26,6 @@ const DateInput = React.createClass({
     return {
       showCalendar: false,
     };
-  },
-
-  componentDidMount: function() {
-    window.addEventListener('click', this._closeOnBlur);
-  },
-
-  componentWillUnmount: function() {
-    window.removeEventListener('click', this._closeOnBlur);
   },
 
   render: function() {
@@ -54,30 +48,30 @@ const DateInput = React.createClass({
         <DateInputCalendarPopover
           {...this.props}
           onChange={this._onChange}
+          onHide={this._hideCalendar}
           show={this.state.showCalendar}
         />
       </div>
     );
   },
 
-  /**
-   * Hide the flyout if the user clicks somewhere other than the
-   * trigger element or the flyout.
-   */
-  _closeOnBlur: function(evt) {
-    var target = evt.target;
-    var parent = ReactDOM.findDOMNode(this);
-    if (!(parent.contains(target) || target === parent)) {
-      this.setState({showCalendar: false});
-    }
+  _hideCalendar: function() {
+    this.setState({showCalendar: false});
   },
 
   _showCalendar: function() {
     this.setState({showCalendar: true});
   },
 
+  /**
+   * From `onClickOutside` mixin.
+   */
+  handleClickOutside: function(e) {
+    this._hideCalendar();
+  },
+
   _onChange: function(/*object*/ dateObject) {
-    this.setState({showCalendar: false});
+    this._hideCalendar();
     this.props.onChange(dateObject);
   },
 });

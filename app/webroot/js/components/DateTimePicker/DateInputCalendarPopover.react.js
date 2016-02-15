@@ -1,11 +1,13 @@
-var moment = require('moment');
-var React = require('react');
+import moment from 'moment';
+import React from 'react';
 
-var DateInputCalendar = require('./DateInputCalendar.react');
-var Glyphicon = require('react-bootstrap/lib/Glyphicon');
-var Link = require('components/Link/Link.react');
+import DateInputCalendar from './DateInputCalendar.react';
+import {Glyphicon} from 'react-bootstrap';
+import Link from 'components/Link/Link.react';
 
-var cx = require('classnames');
+import cx from 'classnames';
+
+import {ESC, LEFT, RIGHT} from 'constants/KeyCode';
 
 /**
  * DateInputCalendarPopover.react.js
@@ -14,13 +16,14 @@ var cx = require('classnames');
  * changing the displayed month. The visibility of the popover is controlled
  * externally.
  */
-var DateInputCalendarPopover = React.createClass({
+const DateInputCalendarPopover = React.createClass({
   displayName: 'DateInputCalendarPopover',
 
   propTypes: {
     date: React.PropTypes.number.isRequired,
     months: React.PropTypes.number.isRequired,
     onChange: React.PropTypes.func.isRequired,
+    onHide: React.PropTypes.func.isRequired,
     show: React.PropTypes.bool.isRequired,
     years: React.PropTypes.number.isRequired,
   },
@@ -31,6 +34,10 @@ var DateInputCalendarPopover = React.createClass({
     };
   },
 
+  componentDidMount: function() {
+    window.addEventListener('keydown', this._onKeydown);
+  },
+
   componentWillReceiveProps: function(nextProps) {
     // When hiding or showing the popover, the date shown by the calendar
     // should be the same as the selected date.
@@ -39,12 +46,17 @@ var DateInputCalendarPopover = React.createClass({
     }
   },
 
+  componentWillUnmount: function() {
+    window.removeEventListener('keydown', this._onKeydown);
+  },
+
   render: function() {
     if (!this.props.show) {
       return null;
     }
 
-    var {calendarMoment} = this.state;
+    const {calendarMoment} = this.state;
+
     return (
       <div className={cx('popover', 'fade', 'bottom', 'in')}>
         <div className="arrow" />
@@ -73,6 +85,22 @@ var DateInputCalendarPopover = React.createClass({
         </div>
       </div>
     );
+  },
+
+  _onKeydown: function(e) {
+    if (this.props.show) {
+      switch(e.keyCode) {
+        case ESC:
+          this.props.onHide();
+          break;
+        case LEFT:
+          this._onPrevMonthClick(e);
+          break;
+        case RIGHT:
+          this._onNextMonthClick(e);
+          break;
+      }
+    }
   },
 
   _onPrevMonthClick: function(e) {
