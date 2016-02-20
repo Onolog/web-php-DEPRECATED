@@ -115,7 +115,7 @@ const ActivityModal = React.createClass({
       return;
     }
 
-    if (!avg_hr || !isInteger(Number(avg_hr))) {
+    if (avg_hr && !isInteger(Number(avg_hr))) {
       alert('Please enter a valid heart rate.');
       return;
     }
