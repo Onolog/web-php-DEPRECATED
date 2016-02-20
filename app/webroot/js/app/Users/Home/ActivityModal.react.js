@@ -7,7 +7,7 @@ import WorkoutFields from 'app/Workouts/WorkoutFields.react';
 import WorkoutActions from 'flux/actions/WorkoutActions';
 
 import jstz from 'jstz';
-import {isEqual} from 'lodash';
+import {isEqual, isInteger} from 'lodash';
 
 /**
  * ActivityModal.react
@@ -105,11 +105,25 @@ const ActivityModal = React.createClass({
   },
 
   _handleSave: function(e) {
+    // Client-side validation of form.
+    // TODO: Better validation on server.
+    const {activity} = this.state;
+    const {distance, avg_hr} = activity;
+
+    if (!distance || isNaN(distance)) {
+      alert('Please enter a valid distance.');
+      return;
+    }
+
+    if (!avg_hr || !isInteger(Number(avg_hr))) {
+      alert('Please enter a valid heart rate.');
+      return;
+    }
+
     this.setState({isLoading: true});
     this.props.initialActivity ?
-      WorkoutActions.save(this.state.activity) :
-      WorkoutActions.add(this.state.activity);
-
+      WorkoutActions.save(activity) :
+      WorkoutActions.add(activity);
   },
 
   _getNewActivity: function() {

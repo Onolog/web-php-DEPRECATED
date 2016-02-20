@@ -1,4 +1,4 @@
-var isInt = require('./isInt');
+import {isInteger} from 'lodash';
 
 /**
  * calendarGrid
@@ -22,7 +22,7 @@ function getDate(year, month, day) {
 var DAYS_IN_WEEK = 7;
 
 function calendarGrid(/*number*/ month, /*number*/ year) {
-  if (!isInt(month) || !isInt(year)) {
+  if (!(isInteger(month) && isInteger(year))) {
     throw new Error('calendarGrid: The month and year must be integers');
   }
 
