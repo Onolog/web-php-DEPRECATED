@@ -5,33 +5,48 @@ import Select from 'components/Select/Select.react';
 import ActionTypes from 'flux/ActionTypes';
 import ShoeStore from 'flux/stores/ShoeStore';
 
-import {forEach, groupBy} from 'lodash';
+import {forEach, filter} from 'lodash';
 
 /**
  * ShoeSelector.react
  *
  * HTML selector that displays all of a user's shoes, grouped by activity state.
  */
-var ShoeSelector = React.createClass({
+const ShoeSelector = React.createClass({
   displayName: 'ShoeSelector',
 
-  componentWillMount: function() {
+  propTypes: {
+    defaultValue: React.PropTypes.oneOfType([
+      React.PropTypes.number,
+      React.PropTypes.string,
+    ]),
+  },
+
+  componentWillMount() {
     this._setShoes();
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     ShoeStore.bind(ActionTypes.CHANGE, this._setShoes);
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     ShoeStore.unbind(ActionTypes.CHANGE, this._setShoes);
   },
 
-  _setShoes: function() {
+  _setShoes() {
     this.setState({shoes: ShoeStore.getCollection()});
   },
 
-  render: function() {
+  getInitialState() {
+    return {
+      // TODO: This is kind of a hack.
+      initialSelection: this.props.defaultValue,
+      shoes: [],
+    };
+  },
+
+  render() {
     return (
       <Select
         {...this.props}
@@ -45,19 +60,22 @@ var ShoeSelector = React.createClass({
    * Group the list of shoes by active or inactive, and format the data
    * correctly.
    */
-  _getOptions: function() {
-    var shoes = groupBy(this.state.shoes, 'inactive');
-    var active = shoes['0'];
+  _getOptions() {
+    // Filter out inactive shoes unless it's the initially selected shoe.
+    let shoes = filter(this.state.shoes, (shoe) => {
+      return !shoe.inactive || shoe.id === +this.state.initialSelection;
+    });
 
     var options = [];
-    if (active && active.length) {
-      forEach(active, (shoe) => {
+    if (shoes && shoes.length) {
+      forEach(shoes, (shoe) => {
         options.push({
           label: `${shoe.name} (${shoe.mileage} miles)`,
           value: shoe.id,
         });
       });
     }
+
     return options;
   },
 });
