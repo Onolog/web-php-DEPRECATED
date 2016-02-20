@@ -3,7 +3,7 @@ var AppDispatcher = require('flux/AppDispatcher');
 var MicroEvent = require('lib/microevent');
 var ShoeActions = require('flux/actions/ShoeActions');
 
-var {contains, find, isArray, map} = require('lodash');
+var {find, isArray, map} = require('lodash');
 
 var _collection;
 
@@ -55,16 +55,14 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.SHOE_DELETE:
-      _collection = _collection.filter(function(item) {
-        return item.id !== payload.data;
-      });
+      _collection = _collection.filter((item) => item.id !== payload.data);
       ShoeStore.trigger(ActionTypes.CHANGE);
       break;
 
     case ActionTypes.SHOE_VIEW:
       var shoe = payload.data;
       var shoeIds = map(_collection, 'id');
-      if (!contains(shoeIds, shoe.id)) {
+      if (shoeIds.indexOf(shoe.id) === -1) {
         _collection.push(shoe);
       }
       ShoeStore.trigger(ActionTypes.CHANGE);
