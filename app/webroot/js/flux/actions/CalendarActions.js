@@ -8,16 +8,9 @@ var ActionUtils = require('./ActionUtils');
  */
 module.exports = {
   fetch: function(year, month) {
-    $.ajax({
-      url: '/ajax/workouts/calendar/',
-      data: {
-        year: year,
-        month: month,
-      },
-      type: 'GET',
-      success: this.onFetchSuccess,
-      error: this.onFetchError,
-    });
+    $.get('/ajax/workouts/calendar/', {month, year})
+      .done(this.onFetchSuccess)
+      .fail(this.onFetchError);
   },
 
   onFetchSuccess: function(/*string*/ response) {

@@ -1,10 +1,10 @@
-var $ = require('jquery');
-var {APP_ID} = require('constants/Facebook');
+import $ from 'jquery';
+import {APP_ID, VERSION} from 'constants/Facebook';
 
 /**
  * JS for initializing Facebook API
  */
-module.exports = function(/*function*/ callback) {
+function fbLoader(/*function*/ callback) {
   if (window.FB) {
     callback();
     return;
@@ -19,7 +19,7 @@ module.exports = function(/*function*/ callback) {
         oauth: true,
         status: true, // check login status
         cookie: true, // enable cookies to allow the server to access the session
-        version: 'v2.3',
+        version: VERSION,
       });
 
       window.FB = FB;
@@ -27,4 +27,6 @@ module.exports = function(/*function*/ callback) {
     },
     url: '//connect.facebook.net/en_US/all.js',
   });
-};
+}
+
+module.exports = fbLoader;

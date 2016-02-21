@@ -1,19 +1,16 @@
-var $ = require('jquery');
+import $ from 'jquery';
 
-var ActionTypes = require('flux/ActionTypes');
-var ActionUtils = require('./ActionUtils');
+import ActionTypes from 'flux/ActionTypes';
+import ActionUtils from './ActionUtils';
 
 /**
  * BrandActions.js
  */
-module.exports = {
+const BrandActions = {
   fetch: function() {
-    $.ajax({
-      url: '/ajax/brands/all/',
-      type: 'GET',
-      success: this.onFetchSuccess,
-      error: this.onFetchError,
-    });
+    $.get('/ajax/brands/all/')
+      .done(this.onFetchSuccess)
+      .fail(this.onFetchError);
   },
 
   onFetchSuccess: function(/*string*/ response) {
@@ -28,3 +25,5 @@ module.exports = {
     ActionUtils.onError(response, ActionTypes.BRANDS_FETCH_ERROR);
   },
 };
+
+module.exports = BrandActions;
