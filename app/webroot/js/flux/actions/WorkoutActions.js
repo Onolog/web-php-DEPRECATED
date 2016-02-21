@@ -1,26 +1,20 @@
-var $ = require('jquery');
+import $ from 'jquery';
 
-var ActionTypes = require('flux/ActionTypes');
-var ActionUtils = require('flux/actions/ActionUtils');
+import ActionTypes from 'flux/ActionTypes';
+import ActionUtils from 'flux/actions/ActionUtils';
 
-var {encodeFormData} = require('utils/cakePHP');
+import {encodeFormData} from 'utils/cakePHP';
 
-var {ENDPOINT, FORM_NAME} = require('constants/Workouts');
+const FORM_NAME = 'Workout';
 
 /**
  * WorkoutActions.js
  */
-var WorkoutActions = {
-
-  add: function(workout) {
-    // Add the new workout to the DB
-    $.ajax({
-      url: ENDPOINT.WORKOUT_ADD,
-      type: 'POST',
-      data: encodeFormData(workout, FORM_NAME),
-      success: this.onAddSuccess,
-      error: this.onAddError,
-    });
+const WorkoutActions = {
+  add: function(activity) {
+    $.post('/ajax/workouts/add/', encodeFormData(activity, FORM_NAME))
+      .done(this.onAddSuccess)
+      .fail(this.onAddError);
   },
 
   onAddSuccess: function(/*string*/ response) {
@@ -35,14 +29,10 @@ var WorkoutActions = {
     ActionUtils.onError(response, ActionTypes.WORKOUT_ADD_ERROR);
   },
 
-  delete: function(workoutID) {
-    // Delete the workout from the DB
-    $.ajax({
-      url: ENDPOINT.WORKOUT_DELETE + workoutID,
-      type: 'POST',
-      success: this.onDeleteSuccess,
-      error: this.onDeleteError,
-    });
+  delete: function(activityId) {
+    $.post(`/ajax/workouts/delete/${activityId}`)
+      .done(this.onDeleteSuccess)
+      .fail(this.onDeleteError);
   },
 
   onDeleteSuccess: function(/*string*/ response) {
@@ -60,14 +50,11 @@ var WorkoutActions = {
   /**
    * Save an edited workout to the DB
    */
-  save: function(workoutData) {
-    $.ajax({
-      url: ENDPOINT.WORKOUT_EDIT + workoutData.id,
-      type: 'POST',
-      data: encodeFormData(workoutData, FORM_NAME),
-      success: this.onSaveSuccess,
-      error: this.onSaveError,
-    });
+  save: function(activity) {
+    let data = encodeFormData(activity, FORM_NAME);
+    $.post(`/ajax/workouts/edit/${activity.id}`, data)
+      .done(this.onSaveSuccess)
+      .fail(this.onSaveError);
   },
 
   onSaveSuccess: function(/*string*/ response) {
@@ -82,13 +69,10 @@ var WorkoutActions = {
     ActionUtils.onError(response, ActionTypes.WORKOUT_UPDATE_ERROR);
   },
 
-  view: function(workoutID) {
-    $.ajax({
-      url: ENDPOINT.WORKOUT_VIEW + workoutID,
-      type: 'GET',
-      success: this.onViewSuccess,
-      error: this.onViewError,
-    });
+  view: function(activityId) {
+    $.get(`/ajax/workouts/view/${activityId}`)
+      .done(this.onViewSuccess)
+      .fail(this.onViewError);
   },
 
   onViewSuccess: function(/*string*/ response) {

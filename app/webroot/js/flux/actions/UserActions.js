@@ -28,29 +28,23 @@ var UserActions = {
         // The user is connected to Facebook but not Onolog. Create a new
         // session to log them in.
         UserActions.getFBUser(response.authResponse.accessToken);
-      } else {
-        // The user isn't connected to FB. Log them in.
-        FB.login((response) => {
-          if (isConnected(response.status)) {
-            UserActions.getFBUser(response.authResponse.accessToken);
-          } else {
-            // If we're here it means the user canceled the FB login flow.
-          }
-        }, PERMISSIONS);
+        return;
       }
+
+      // The user isn't connected to FB. Log them in.
+      FB.login((response) => {
+        if (isConnected(response.status)) {
+          UserActions.getFBUser(response.authResponse.accessToken);
+        }
+        // If we're here it means the user canceled the FB login flow.
+      }, PERMISSIONS);
     });
   },
 
   getFBUser: function(accessToken) {
     FB.api('/me', (response) => {
-      // Send info to server
       response.accessToken = accessToken;
-      $.ajax({
-        url: '/ajax/users/login',
-        type: 'POST',
-        data: response,
-        success: UserActions.onLoginSuccess,
-      });
+      $.post('/ajax/users/login', response).done(UserActions.onLoginSuccess);
     });
   },
 
@@ -68,11 +62,7 @@ var UserActions = {
    * Get the user's session from the server.
    */
   getSession: function() {
-    $.ajax({
-      url: '/ajax/users/session',
-      type: 'GET',
-      success: UserActions.onSessionSuccess,
-    });
+    $.get('/ajax/users/session').done(UserActions.onSessionSuccess);
   },
 
   onSessionSuccess: function(response) {
@@ -88,11 +78,7 @@ var UserActions = {
   },
 
   logout: function() {
-    $.ajax({
-      url: '/ajax/users/logout',
-      type: 'POST',
-      success: UserActions.onLogoutSuccess,
-    });
+    $.post('/ajax/users/logout').done(UserActions.onLogoutSuccess);
   },
 
   onLogoutSuccess: function(response) {

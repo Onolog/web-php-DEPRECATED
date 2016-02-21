@@ -1,24 +1,20 @@
-var $ = require('jquery');
+import $ from 'jquery';
 
-var ActionTypes = require('flux/ActionTypes');
-var ActionUtils = require('flux/actions/ActionUtils');
+import ActionTypes from 'flux/ActionTypes';
+import ActionUtils from 'flux/actions/ActionUtils';
 
-var {encodeFormData} = require('utils/cakePHP');
+import {encodeFormData} from 'utils/cakePHP';
 
-const {ENDPOINT, FORM_NAME} = require('constants/Shoes');
+const FORM_NAME = 'Shoe';
 
 /**
  * ShoeActions.js
  */
 module.exports = {
   add: function(data) {
-    $.ajax({
-      url: ENDPOINT.ADD,
-      type: 'POST',
-      data: encodeFormData(data, FORM_NAME),
-      success: this.onAddSuccess,
-      error: this.onAddError,
-    });
+    $.post('/ajax/shoes/add/', encodeFormData(data, FORM_NAME))
+      .done(this.onAddSuccess)
+      .fail(this.onAddError);
   },
 
   onAddSuccess: function(response) {
@@ -34,12 +30,9 @@ module.exports = {
   },
 
   delete: function(id) {
-    $.ajax({
-      url: ENDPOINT.DELETE + id,
-      type: 'POST',
-      success: this.onDeleteSuccess,
-      error: this.onDeleteError,
-    });
+    $.post(`/ajax/shoes/delete/${id}`)
+      .done(this.onDeleteSuccess)
+      .fail(this.onDeleteError);
   },
 
   onDeleteSuccess: function(response) {
@@ -55,8 +48,8 @@ module.exports = {
   },
 
   fetch: function() {
-    $.get(ENDPOINT.FETCH)
-      .then(this.onFetchSuccess)
+    $.get('/ajax/shoes/all')
+      .done(this.onFetchSuccess)
       .fail(this.onFetchError);
   },
 
@@ -73,13 +66,9 @@ module.exports = {
   },
 
   save: function(/*object*/ data) {
-    $.ajax({
-      url: ENDPOINT.EDIT + data.id,
-      type: 'POST',
-      data: encodeFormData(data, FORM_NAME),
-      success: this.onSaveSuccess,
-      error: this.onSaveError,
-    });
+    $.post(`/ajax/shoes/edit/${data.id}`, encodeFormData(data, FORM_NAME))
+      .done(this.onSaveSuccess)
+      .fail(this.onSaveError);
   },
 
   onSaveSuccess: function(/*string*/ response) {
@@ -98,12 +87,9 @@ module.exports = {
    * View an individual shoe
    */
   view: function(id) {
-    $.ajax({
-      url: ENDPOINT.VIEW + id,
-      type: 'GET',
-      success: this.onViewSuccess,
-      error: this.onViewError,
-    });
+    $.get(`/ajax/shoes/view/${id}`)
+      .done(this.onViewSuccess)
+      .fail(this.onViewError);
   },
 
   onViewSuccess: function(/*string*/ response) {
