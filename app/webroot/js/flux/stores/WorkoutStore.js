@@ -3,10 +3,9 @@ var AppDispatcher = require('flux/AppDispatcher');
 var MicroEvent = require('lib/microevent');
 var WorkoutActions = require('flux/actions/WorkoutActions');
 
-var {find, indexOf} = require('lodash');
+var {find} = require('lodash');
 
 var _collection = [];
-var _cache = [];
 
 /**
  * WorkoutStore
@@ -30,44 +29,33 @@ var WorkoutStore = {
     }
     return item;
   },
-
-  /**
-   * Checks whether all the workout data has already been fetched from the
-   * server and stored.
-   */
-  getIsCached: function(/*number*/ itemId) /*bool*/ {
-    return indexOf(_cache, itemId) !== -1;
-  },
 };
 
 MicroEvent.mixin(WorkoutStore);
 
-AppDispatcher.register(function(payload) {
-  switch(payload.eventName) {
+AppDispatcher.register(({data, eventName}) => {
+  switch(eventName) {
     case ActionTypes.WORKOUTS_FETCH:
-      _collection = payload.data;
+      _collection = data;
       WorkoutStore.trigger(ActionTypes.CHANGE);
       break;
 
     case ActionTypes.WORKOUT_ADD:
-      _collection.push(payload.data);
+      _collection.push(data.activity);
       WorkoutStore.trigger(ActionTypes.CHANGE);
       break;
 
     case ActionTypes.WORKOUT_DELETE:
-      _collection = _collection.filter(function(item) {
-        return item.id !== payload.data;
-      });
+      _collection = _collection.filter((item) => item.id !== data.id);
       WorkoutStore.trigger(ActionTypes.CHANGE);
       break;
 
     case ActionTypes.WORKOUT_UPDATE:
     case ActionTypes.WORKOUT_VIEW:
-      var itemId = payload.data.id;
-      _collection = _collection.map(function(item) {
-        return item.id === itemId ? payload.data : item;
+      let {activity} = data;
+      _collection = _collection.map((item) => {
+        return item.id === activity.id ? activity : item;
       });
-      _cache.push(itemId);
       WorkoutStore.trigger(ActionTypes.CHANGE);
       break;
   }

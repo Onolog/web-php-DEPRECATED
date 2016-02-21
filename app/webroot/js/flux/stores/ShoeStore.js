@@ -37,11 +37,10 @@ var ShoeStore = {
 
 MicroEvent.mixin(ShoeStore);
 
-AppDispatcher.register(function(payload) {
-  switch(payload.eventName) {
-
+AppDispatcher.register(({data, eventName}) => {
+  switch(eventName) {
     case ActionTypes.ALL_SHOES_FETCH:
-      _collection = payload.data;
+      _collection = data;
       ShoeStore.trigger(ActionTypes.CHANGE);
       break;
     case ActionTypes.ALL_SHOES_FETCH_ERROR:
@@ -50,33 +49,42 @@ AppDispatcher.register(function(payload) {
       break;
 
     case ActionTypes.SHOE_ADD:
-      _collection.push(payload.data);
+      _collection.push(data);
       ShoeStore.trigger(ActionTypes.CHANGE);
       break;
 
     case ActionTypes.SHOE_DELETE:
-      _collection = _collection.filter((item) => item.id !== payload.data);
+      _collection = _collection.filter((item) => item.id !== data);
       ShoeStore.trigger(ActionTypes.CHANGE);
       break;
 
     case ActionTypes.SHOE_VIEW:
-      var shoe = payload.data;
       var shoeIds = map(_collection, 'id');
-      if (shoeIds.indexOf(shoe.id) === -1) {
-        _collection.push(shoe);
+      if (shoeIds.indexOf(data.id) === -1) {
+        _collection.push(data);
       }
       ShoeStore.trigger(ActionTypes.CHANGE);
       break;
 
     case ActionTypes.SHOE_UPDATE:
-      var itemID = payload.data.id;
+      var itemId = data.id;
       if (isArray(_collection)) {
-        _collection = _collection.map(function(item) {
-          return item.id === itemID ? payload.data : item;
+        _collection = _collection.map((item) => {
+          return item.id === itemId ? data : item;
         });
       }
-      ShoeStore.trigger(ActionTypes.SHOE_UPDATE, payload.data);
+      ShoeStore.trigger(ActionTypes.SHOE_UPDATE, data);
       ShoeStore.trigger(ActionTypes.CHANGE);
+      break;
+    case ActionTypes.WORKOUT_ADD:
+    case ActionTypes.WORKOUT_DELETE:
+    case ActionTypes.WORKOUT_UPDATE:
+      // When activities are added, removed, or updated, this may affect the
+      // mileage for the shoe associated with that activity. Update the store
+      // with the new data.
+      if (data && data.shoes) {
+        _collection = data.shoes;
+      }
       break;
   }
   return true;

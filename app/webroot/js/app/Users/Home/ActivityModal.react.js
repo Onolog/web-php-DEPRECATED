@@ -40,6 +40,13 @@ const ActivityModal = React.createClass({
     };
   },
 
+  componentWillReceiveProps: function(nextProps) {
+    if (!nextProps.show) {
+      // Reset the modal if it's hidden.
+      this.setState(this.getInitialState());
+    }
+  },
+
   render: function() {
     const {initialActivity} = this.props;
     const {activity, isLoading} = this.state;

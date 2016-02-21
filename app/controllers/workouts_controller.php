@@ -95,7 +95,7 @@ class WorkoutsController extends AppController {
         $workout = $this->populateWorkoutForView($workout);
         $response
           ->setSuccess(true)
-          ->setPayload($workout['Workout'])
+          ->setPayload(array('activity' => $workout['Workout']))
           ->setField(
             'isOwner',
             $workout['User']['id'] === $this->Auth->User('id')
@@ -140,9 +140,7 @@ class WorkoutsController extends AppController {
 	}
 
   /**
-   * Lets the user add a workout via ajax from a modal or flyout
-   * 
-   * @param   int   $date   unix timestamp of the workout date
+   * Allows the user add a workout via ajax.
    */
 	public function ajax_add() {
     $this->setIsAjax();
@@ -160,9 +158,22 @@ class WorkoutsController extends AppController {
       if ($this->Workout->save($this->data)) {
 			  // Return the newly added workout in the response.
 			  $workout = $this->Workout->read(null, $this->Workout->id);
+
+        // If there was a shoe associated with the activity, re-fetch the shoe
+        // data, since it will have changed.
+        // TODO: Do this more efficiently than getting all the shoes.
+        if ($this->hasShoe($workout)) {
+          $shoes = $this->Workout->Shoe->find('all', array(
+            'conditions' => array('Shoe.user_id' => $user),
+          ));
+        }
+
 			  $response
 				  ->setSuccess(true)
-			    ->setPayload($workout['Workout'])
+			    ->setPayload(array(
+            'activity' => $workout['Workout'],
+            'shoes' => $shoes,
+          ))
 				  ->setMessage('Your workout was added');
 			} else {
 				$response->setMessage('Your workout could not be added. Please try again.');
@@ -238,27 +249,42 @@ class WorkoutsController extends AppController {
 		}
 
     // On submit, update the workout
-		if (!empty($this->data)) {
-      // Make sure users only edit their own workouts!
-      if ($this->data['Workout']['user_id'] !== $user) {
-        return $response
-          ->setMessage('You are not allowed to edit this workout.')
-          ->send();
+		if (empty($this->data)) {
+      return $response
+        ->setMessage('No data sent.')
+        ->send();
+    }
+
+    // Make sure users only edit their own workouts!
+    if ($this->data['Workout']['user_id'] !== $user) {
+      return $response
+        ->setMessage('You are not allowed to edit this workout.')
+        ->send();
+    }
+
+    $this->formatWorkoutDataForWrite();
+
+		if ($this->Workout->save($this->data)) {
+
+      // Update shoe data if the workout had a shoe associated with it.
+      if ($this->hasShoe($this->data)) {
+        $shoes = $this->Workout->Shoe->find('all', array(
+          'conditions' => array('Shoe.user_id' => $user),
+        ));
       }
 
-      $this->formatWorkoutDataForWrite();
+      $response
+        ->setSuccess(true)
+			  ->setMessage('Your workout was successfully updated.')
+			  ->setPayload(array(
+          'activity' => $this->data['Workout'],
+          'shoes' => $shoes,
+        ));
 
-			if ($this->Workout->save($this->data)) {
-        $response
-          ->setSuccess(true)
-				  ->setMessage('Your workout was successfully updated.')
-				  ->setPayload($this->data['Workout']);
-
-			} else {
-        $response->setMessage(
-          'The workout could not be saved. Please try again.'
-        );
-			}
+		} else {
+      $response->setMessage(
+        'The workout could not be saved. Please try again.'
+      );
 		}
 
 		return $response->send();
@@ -296,7 +322,7 @@ class WorkoutsController extends AppController {
 		$this->goHome(__('Workout was not deleted', true));
 	}
 
-	public function ajax_delete($wid = null) {
+	public function ajax_delete($wid) {
     $user = $this->requireLoggedInUser();
     $this->setIsAjax();
     $response = new Response();
@@ -305,21 +331,32 @@ class WorkoutsController extends AppController {
 			$this->goHome(__('Invalid id for workout', true));
 		}
 
-    $data =
-      $this->Workout->find('first', array(
-        'conditions' => array('Workout.id' => $wid),
-      ));
+    $workout = $this->Workout->find('first', array(
+      'conditions' => array('Workout.id' => $wid),
+    ));
 
     // Make sure users only delete their own workouts!
-    if ($data['User']['id'] != $user) {
-      $this->goHome(__('You are not allowed to delete this workout', true));
+    if ($workout['User']['id'] != $user) {
+      $response->setMessage('You are not allowed to delete this workout');
+      $response->send();
     }
 
     // The workout was successfully deleted
 		if ($this->Workout->delete($wid)) {
+
+      // Update shoe data if the workout had a shoe associated with it.
+      if ($this->hasShoe($workout)) {
+        $shoes = $this->Workout->Shoe->find('all', array(
+          'conditions' => array('Shoe.user_id' => $user),
+        ));
+      }
+
 		  $response
 		    ->setSuccess(true)
-		    ->setPayload($wid)
+		    ->setPayload(array(
+          'id' => $wid,
+          'shoes' => $shoes,
+        ))
 		    ->setMessage(__('Your workout was deleted', 1));
 		} else {
 		  $response->setMessage(
@@ -367,6 +404,10 @@ class WorkoutsController extends AppController {
       ENT_QUOTES,
       'UTF-8'
     );
+  }
+
+  private function hasShoe($workout) {
+    return isset($workout['Workout']['shoe_id']);
   }
 
   public function migrate_dates() {
