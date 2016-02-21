@@ -325,33 +325,40 @@ class UsersController extends AppController {
    */
 	function settings() {
     $user = $this->requireLoggedInUser();
-
-		if (!empty($this->data)) {
-      if ($this->data['User']['id'] !== $user) {
-        $this->Session->setFlash(
-          __('You may not change the settings for this user.', 1)
-        );
-        $this->redirect(array('action' => 'index'));
-      }
-
-			if ($this->User->save($this->data)) {
-				$this->Session->setFlash(
-          __('Your changes were saved.', 1)
-        );
-				// $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(
-          __('Your changes could not be saved. Please try again.', 1)
-        );
-			}
-		}
-
-		if (empty($this->data)) {
-			$this->data = $this->User->read(null, $user);
-		}
-
-    $this->set('user', $this->data['User']);
+		$data = $this->User->read(null, $user);
+    $this->set('user', $data['User']);
 	}
+
+  /**
+   * Allows the user to edit their information and modify account-specific
+   * settings.
+   */
+  function ajax_settings() {
+    $user = $this->requireLoggedInUser();
+
+    $this->setIsAjax();
+    $response = new Response();
+
+    if (empty($this->data)) {
+      return $response->send();
+    }
+
+    if ($this->data['User']['id'] !== $user) {
+      $response->setMessage('You may not change the settings for this user.');
+      return $response->send();
+    }
+
+    if ($this->User->save($this->data)) {
+      $response
+        ->setSuccess(true)
+        ->setMessage('Your changes were saved')
+        ->setPayload($this->data['User']);
+    } else {
+      $response->setMessage('Your changes could not be saved. Please try again.');
+    }
+
+    return $response->send();
+  }
 
   /**
    * Allow the user to delete their account

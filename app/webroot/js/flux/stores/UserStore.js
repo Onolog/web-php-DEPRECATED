@@ -21,16 +21,17 @@ var UserStore = {
 
 MicroEvent.mixin(UserStore);
 
-AppDispatcher.register(function(payload) {
-  switch(payload.eventName) {
+AppDispatcher.register(({data, eventName}) => {
+  switch(eventName) {
     case ActionTypes.USER_LOGIN:
       // TODO: Figure out why this action doesn't get heard.
       break;
-    case ActionTypes.USER_SESSION:
-      _user = payload.data || {};
-      break;
     case ActionTypes.USER_LOGOUT:
       _user = null;
+      break;
+    case ActionTypes.USER_SESSION:
+    case ActionTypes.USER_SETTINGS_SAVE:    
+      _user = data || {};
       break;
   }
   UserStore.trigger(ActionTypes.CHANGE);

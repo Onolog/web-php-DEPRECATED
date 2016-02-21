@@ -47,6 +47,8 @@ module.exports = {
 
   // User-related actions
   USER_LOGIN: 'user-login',
-  USER_SESSION: 'user-session',
   USER_LOGOUT: 'user-logout',
+  USER_SESSION: 'user-session',
+  USER_SETTINGS_SAVE: 'user-settings-save',
+  USER_SETTINGS_SAVE_ERROR: 'user-settings-save-error',
 };

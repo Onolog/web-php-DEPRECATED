@@ -3,7 +3,7 @@ import $ from 'jquery';
 import ActionTypes from 'flux/ActionTypes';
 import ActionUtils from 'flux/actions/ActionUtils';
 
-import {encodeFormData} from 'utils/cakePHP';
+import encodeData from 'utils/encodeData';
 
 const FORM_NAME = 'Workout';
 
@@ -12,7 +12,7 @@ const FORM_NAME = 'Workout';
  */
 const WorkoutActions = {
   add: function(activity) {
-    $.post('/ajax/workouts/add/', encodeFormData(activity, FORM_NAME))
+    $.post('/ajax/workouts/add/', encodeData(activity, FORM_NAME))
       .done(this.onAddSuccess)
       .fail(this.onAddError);
   },
@@ -51,7 +51,7 @@ const WorkoutActions = {
    * Save an edited workout to the DB
    */
   save: function(activity) {
-    let data = encodeFormData(activity, FORM_NAME);
+    let data = encodeData(activity, FORM_NAME);
     $.post(`/ajax/workouts/edit/${activity.id}`, data)
       .done(this.onSaveSuccess)
       .fail(this.onSaveError);

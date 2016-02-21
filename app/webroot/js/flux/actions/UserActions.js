@@ -4,7 +4,10 @@ var ActionTypes = require('flux/ActionTypes');
 var AppDispatcher = require('flux/AppDispatcher');
 var ResponseHandler = require('utils/ResponseHandler');
 
-var PERMISSIONS = {
+var encodeData = require('utils/encodeData');
+
+const FORM_NAME = 'User';
+const PERMISSIONS = {
   scope: [
     'email',
     'public_profile',
@@ -86,6 +89,27 @@ var UserActions = {
     AppDispatcher.dispatch({
       eventName: ActionTypes.USER_LOGOUT,
     });
+  },
+
+  saveSettings: function(data) {
+    $.post('/ajax/users/settings', encodeData(data, FORM_NAME))
+      .done(this.onSaveSettingsSuccess)
+      .fail(this.onSaveSettingsError);
+  },
+
+  onSaveSettingsSuccess: function(response) {
+    response = new ResponseHandler(response);
+    if (response.getWasSuccessful()) {
+      AppDispatcher.dispatch({
+        data: response.getPayload(),
+        eventName: ActionTypes.USER_SETTINGS_SAVE,
+      });
+    } else {
+      alert(
+        'Your settings could not be saved. Please refresh the page and try ' +
+        'again.'
+      );  
+    }
   },
 };
 

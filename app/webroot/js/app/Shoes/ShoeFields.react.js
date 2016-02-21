@@ -6,14 +6,8 @@ import FormGroup from 'components/Forms/FormGroup.react';
 import TextInput from 'components/Forms/TextInput.react';
 
 import {clone} from 'lodash';
-import {decodeFormFieldName, encodeFormFieldName} from 'utils/cakePHP';
 
 const FIELD_INACTIVE = 'inactive';
-const FORM_NAME = 'Shoe';
-
-function encodeName(name) {
-  return encodeFormFieldName(name, FORM_NAME);
-}
 
 /**
  * ShoeFields.react
@@ -36,14 +30,14 @@ const ShoeFields = React.createClass({
         <FormGroup label="Brand" className="time">
           <BrandSelector
             defaultValue={shoe.brand_id}
-            name={encodeName('brand_id')}
+            name="brand_id"
             onChange={this._handleChange}
           />
         </FormGroup>
         <FormGroup label="Model">
           <TextInput
             defaultValue={shoe.model}
-            name={encodeName('model')}
+            name="model"
             onChange={this._handleChange}
             ref="distance"
           />
@@ -54,7 +48,7 @@ const ShoeFields = React.createClass({
   },
 
   _renderInactiveCheckbox: function() {
-    var {isNew, shoe} = this.props;
+    const {isNew, shoe} = this.props;
 
     // Don't render this input when creating a new shoe, since we assume
     // that all newly created shoes are active.
@@ -63,7 +57,7 @@ const ShoeFields = React.createClass({
         <Input
           defaultChecked={!!shoe.inactive}
           label="Inactive"
-          name={encodeName(FIELD_INACTIVE)}
+          name={FIELD_INACTIVE}
           onChange={this._handleChange}
           type="checkbox"
           wrapperClassName="col-sm-9 col-sm-offset-3"
@@ -74,14 +68,12 @@ const ShoeFields = React.createClass({
 
   _handleChange: function(e) {
     var {checked, name, value} = e.target;
-    var field = decodeFormFieldName(name);
-
-    if (field === FIELD_INACTIVE) {
+    if (name === FIELD_INACTIVE) {
       value = +checked;
     }
 
     var shoe = clone(this.props.shoe);
-    shoe[field] = value;
+    shoe[name] = value;
 
     this.props.onChange && this.props.onChange(shoe);
   },
