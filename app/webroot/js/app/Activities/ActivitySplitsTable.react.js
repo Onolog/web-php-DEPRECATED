@@ -19,7 +19,7 @@ var ActivitySplitsTable = React.createClass({
 
   render: function() {
     return (
-      <Table condensed border hover>
+      <Table border condensed hover>
         {this._renderHeaderRows()}
         {this._renderBody()}
       </Table>

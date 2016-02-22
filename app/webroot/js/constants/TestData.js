@@ -4,23 +4,23 @@
 module.exports = {
 
   FRIENDS: [
-    { id: 4280, name: 'Paul McDonald'},
-    { id: 11, name: 'Soleio'},
-    { id: 509191417, name: 'Jessica Shambora'},
+    {id: 4280, name: 'Paul McDonald'},
+    {id: 11, name: 'Soleio'},
+    {id: 509191417, name: 'Jessica Shambora'},
   ],
 
   SHOES: [{
     label: 'Active',
     options: [
-      { value: '42', label: 'Mizuno Waverider 17.4'},
-      { value: '41', label: 'ASICS DS Trainer 19'},
+      {value: '42', label: 'Mizuno Waverider 17.4'},
+      {value: '41', label: 'ASICS DS Trainer 19'},
     ],
   }, {
     label: 'Inactive',
     options: [
-      { value: '40', label: 'Mizuno Waverider 17.3' },
-      { value: '39', label: 'Mizuno Waverider 17.2' },
-      { value: '34', label: 'Mizuno Waverider 16.1' },
+      {value: '40', label: 'Mizuno Waverider 17.3'},
+      {value: '39', label: 'Mizuno Waverider 17.2'},
+      {value: '34', label: 'Mizuno Waverider 16.1'},
     ],
   }],
 
@@ -100,9 +100,9 @@ module.exports = {
           distance: 6.71,
           shoe_id: 40,
           notes:
-            'Babies, Buckles & Beer (B^3). Easy run around Los Altos Hills w/some ' +
-            'of the Varsity crew and others, then lunch and beer at mexican place ' +
-            'in Los Altos.\n\n' +
+            'Babies, Buckles & Beer (B^3). Easy run around Los Altos Hills ' +
+            'w/some of the Varsity crew and others, then lunch and beer at ' +
+            'mexican place in Los Altos.\n\n' +
             'http://connect.garmin.com/modern/activity/577839638',
           date: 1404630000,
           time: 3867,
@@ -121,8 +121,8 @@ module.exports = {
             name: 'Mizuno Waverider 18.1',
           },
           notes:
-            'Last couple legs of WSER with Paul, starting from Hwy 49 crossing ' +
-            'around 5:45 and finishing in Auburn at 7:15.\n\n' +
+            'Last couple legs of WSER with Paul, starting from Hwy 49 ' +
+            'crossing around 5:45 and finishing in Auburn at 7:15.\n\n' +
             'http://connect.garmin.com/modern/activity/577839638',
           date: 1404025200,
           time: 5747,

@@ -64,7 +64,7 @@ var WorkoutFields = React.createClass({
           <span className="colon">miles</span>
         </FormGroup>
 
-        <FormGroup label="Duration" className="time">
+        <FormGroup className="time" label="Duration">
           <DurationInput
             className="timeInput"
             duration={workout.duration}

@@ -42,7 +42,7 @@ function calendarGrid(/*number*/ month, /*number*/ year) {
     for (ii = 0; ii < monthStartDay; ii++) {
       // Calculate the days from the previous month to display
       day = ii + 1 - monthStartDay;
-      weekArr.push({ date: getDate(year, month, day) });
+      weekArr.push({date: getDate(year, month, day)});
     }
   }
 
@@ -54,7 +54,7 @@ function calendarGrid(/*number*/ month, /*number*/ year) {
     }
 
     // Add the record
-    weekArr.push({ date: getDate(year, month, day) });
+    weekArr.push({date: getDate(year, month, day)});
 
     ii++;
 

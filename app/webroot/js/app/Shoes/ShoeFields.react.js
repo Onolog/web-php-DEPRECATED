@@ -27,7 +27,7 @@ const ShoeFields = React.createClass({
 
     return (
       <div className="form-horizontal workoutForm">
-        <FormGroup label="Brand" className="time">
+        <FormGroup className="time" label="Brand">
           <BrandSelector
             defaultValue={shoe.brand_id}
             name="brand_id"

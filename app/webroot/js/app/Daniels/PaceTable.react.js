@@ -30,7 +30,7 @@ var PaceTable = React.createClass({
               <th>M Pace</th>
               <th colSpan="3">T Pace</th>
               <th colSpan="4">I Pace</th>
-              <th colSpan="3" className="lastCol">R Pace</th>
+              <th className="lastCol" colSpan="3">R Pace</th>
               <th rowSpan="2">VDOT</th>
             </tr>
             <tr className="distance">

@@ -93,8 +93,6 @@ var ProfileYearPanel = React.createClass({
     return (
       <Chart
         height={200}
-        series={[{data: data}]}
-        type="column"
         options={{
           plotOptions: {
             series: {
@@ -109,6 +107,8 @@ var ProfileYearPanel = React.createClass({
             },
           },
         }}
+        series={[{data: data}]}
+        type="column"
       />
     );
   },

@@ -5,3 +5,5 @@ app/webroot/js/build/
 
 # Ignore 3rd-party libs
 app/webroot/js/lib/
+
+app/webroot/js/constants/Daniels.js

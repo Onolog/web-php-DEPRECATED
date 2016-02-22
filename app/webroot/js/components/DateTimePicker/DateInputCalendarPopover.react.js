@@ -77,9 +77,9 @@ const DateInputCalendarPopover = React.createClass({
         </div>
         <div className="popover-content">
           <DateInputCalendar
-            selectedDate={this._getMoment(this.props).toDate()}
             month={calendarMoment.month()}
             onChange={this.props.onChange}
+            selectedDate={this._getMoment(this.props).toDate()}
             year={calendarMoment.year()}
           />
         </div>

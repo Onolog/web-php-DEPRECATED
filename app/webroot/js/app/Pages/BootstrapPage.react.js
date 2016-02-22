@@ -229,7 +229,7 @@ var BootstrapPage = React.createClass({
           </Nav>
 
           <h5 style={{margin: '20px 0 10px 0'}}>Stacked Nav</h5>
-          <Nav type="pills" stacked>
+          <Nav stacked type="pills">
             <NavItem active>Item 1</NavItem>
             <NavItem menu={menu}>Item 2</NavItem>
             <NavItem disabled>Item 3</NavItem>
@@ -265,7 +265,7 @@ var BootstrapPage = React.createClass({
         </Panel>
 
         <Panel header={<h3>Panel</h3>}>
-          <Panel header="This is the title" footer="This is the footer">
+          <Panel footer="This is the footer" header="This is the title">
             This is the body
           </Panel>
         </Panel>

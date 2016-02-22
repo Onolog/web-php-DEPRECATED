@@ -82,16 +82,16 @@ const FBLikeButton = React.createClass({
 
     return (
       <iframe
-        src={`${FB_URL}?${params}`}
-        scrolling="no"
+        allowTransparency="true"
         frameBorder="0"
+        scrolling="no"
+        src={`${FB_URL}?${params}`}
         style={{
           border: 'none',
           overflow: 'hidden',
           height: `${this._getHeight()}px`,
           width: `${this.props.width}px`,
-        }}
-        allowTransparency="true">
+        }}>
       </iframe>
     );
   },

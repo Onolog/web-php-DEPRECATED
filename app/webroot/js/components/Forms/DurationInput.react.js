@@ -82,7 +82,7 @@ var DurationInput = React.createClass({
 
   _onChange: function() {
     var duration = moment.duration({
-      hours:   this.refs.hours.getValue(),
+      hours: this.refs.hours.getValue(),
       minutes: this.refs.minutes.getValue(),
       seconds: this.refs.seconds.getValue(),
     }).asSeconds();

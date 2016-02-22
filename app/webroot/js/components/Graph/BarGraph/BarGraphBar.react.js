@@ -51,8 +51,8 @@ var GraphBar = React.createClass({
         overlay={<Tooltip id={label}>{label}</Tooltip>}
         placement="top">
         <Link
-          href={this.props.href || '#'}
           className={cx('graphBar', {'noData': !value})}
+          href={this.props.href || '#'}
           style={{height: `${Math.floor(value * scale)}px`}}>
           <span className="graphBarLabel">
             {label}

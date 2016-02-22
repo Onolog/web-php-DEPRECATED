@@ -39,12 +39,12 @@ const LeftRight = React.createClass({
     var secondClass = both || dir === DIRECTION.right ? 'pull-right' : '';
 
     var firstChild =
-      <div key="left" className={firstClass}>
+      <div className={firstClass} key="left">
         {children[0]}
       </div>;
 
     var secondChild = (children.length < 2) ? null :
-      <div key="right" className={secondClass}>
+      <div className={secondClass} key="right">
         {children[1]}
       </div>;
 
@@ -53,7 +53,8 @@ const LeftRight = React.createClass({
       [firstChild, secondChild];
 
     return (
-      <div {...this.props}
+      <div
+        {...this.props}
         className={cx(this.props.className, 'clearfix')}>
         {orderedChildren}
       </div>

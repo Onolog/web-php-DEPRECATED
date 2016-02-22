@@ -90,9 +90,9 @@ var Report = React.createClass({
           stat={totalRuns}
         />
         <LabeledStat
+          annotation={'Avg. ' + avgRunDistance + ' miles/run'}
           label="Miles"
           stat={totalMiles}
-          annotation={'Avg. ' + avgRunDistance + ' miles/run'}
         />
       </Topline>
     );
@@ -125,14 +125,14 @@ var Report = React.createClass({
     return (
       <Topline>
         <LabeledStat
+          annotation={moment(runExtremes.max.date*1000).format(DATE_FORMAT)}
           label="Longest Run (Miles)"
           stat={runExtremes.max.distance}
-          annotation={moment(runExtremes.max.date*1000).format(DATE_FORMAT)}
         />
         <LabeledStat
+          annotation={moment(runExtremes.min.date*1000).format(DATE_FORMAT)}
           label="Shortest Run (Miles)"
           stat={runExtremes.min.distance}
-          annotation={moment(runExtremes.min.date*1000).format(DATE_FORMAT)}
         />
       </Topline>
     );
@@ -151,9 +151,9 @@ var Report = React.createClass({
           stat={shoeCount}
         />
         <LabeledStat
+          annotation={topBrand.count + ' pairs'}
           label="Favorite Brand"
           stat={topBrand.name}
-          annotation={topBrand.count + ' pairs'}
         />
       </Topline>
     );
@@ -240,7 +240,7 @@ var Report = React.createClass({
       var days = dayKeys.map((dayKey) => {
         var day = dayData[dayKey];
         return (
-          <BarGraphSectionUnit>
+          <BarGraphSectionUnit key={dayKey}>
             <BarGraphBar
               label={day.miles + ' miles'}
               scale={1.15}

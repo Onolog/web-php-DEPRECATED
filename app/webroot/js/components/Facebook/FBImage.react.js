@@ -43,8 +43,8 @@ const FBImage = React.createClass({
       <Image
         className={this.props.className}
         height={Math.floor(height)}
-        width={Math.floor(width)}
         src={`${GRAPH_URL}/${fbid}/picture?${params}`}
+        width={Math.floor(width)}
       />
     );
   },

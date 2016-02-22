@@ -151,7 +151,7 @@ var Activity = React.createClass({
     if (series) {
       return (
         <div className="activityMapContainer">
-          <ActivityMap series={series} className="activityMap" />
+          <ActivityMap className="activityMap" series={series} />
         </div>
       );
     }

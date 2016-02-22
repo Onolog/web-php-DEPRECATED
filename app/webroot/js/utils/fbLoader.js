@@ -17,8 +17,8 @@ function fbLoader(/*function*/ callback) {
       FB.init({
         appId: APP_ID,
         oauth: true,
-        status: true, // check login status
-        cookie: true, // enable cookies to allow the server to access the session
+        status: true,
+        cookie: true,
         version: VERSION,
       });
 

@@ -82,7 +82,7 @@ const AllShoesView = React.createClass({
 
   _renderShoeTable: function(/*array*/ shoes) {
     return (
-      <Table hover fill>
+      <Table fill hover>
         <thead>
           <tr>
             <th>Name</th>

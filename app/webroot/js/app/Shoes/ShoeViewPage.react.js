@@ -37,8 +37,8 @@ var ShoeViewPage = React.createClass({
         </PageHeader>
         <Panel>
           <ShoeView
-            activityCount={shoe.activity_count}
             activities={shoe.activities}
+            activityCount={shoe.activity_count}
             fill
             mileage={shoe.mileage}
           />

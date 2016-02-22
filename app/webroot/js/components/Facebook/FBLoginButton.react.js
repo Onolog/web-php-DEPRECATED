@@ -12,10 +12,10 @@ const FBLoginButton = React.createClass({
   render: function() {
     return (
       <Button
-        className="fbLogin"
-        onClick={this.props.onClick}
         bsSize="large"
-        bsStyle="primary">
+        bsStyle="primary"
+        className="fbLogin"
+        onClick={this.props.onClick}>
         <i className="fbIcon" /> Sign in with Facebook
       </Button>
     );

@@ -1,4 +1,3 @@
-var $ = require('jquery');
 var cx = require('classnames');
 var moment = require('moment');
 var React = require('react');
