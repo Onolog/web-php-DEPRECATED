@@ -4,6 +4,7 @@ var MicroEvent = require('lib/microevent');
 var UserActions = require('flux/actions/UserActions');
 
 var _user = window.app && window.app.user;
+var _session = null;
 
 /**
  * UserStore
@@ -11,11 +12,18 @@ var _user = window.app && window.app.user;
  * Keeps track of the user's info and login state.
  */
 var UserStore = {
-  getUser: function() {
+  getUser() {
     if (!_user) {
       UserActions.getSession();
     }
     return _user;
+  },
+
+  getSession() {
+    if (!_session) {
+      UserActions.getSession();
+    }
+    return _session;
   },
 };
 
@@ -27,10 +35,15 @@ AppDispatcher.register(({data, eventName}) => {
       // TODO: Figure out why this action doesn't get heard.
       break;
     case ActionTypes.USER_LOGOUT:
+      _session = null;
       _user = null;
       break;
     case ActionTypes.USER_SESSION:
-    case ActionTypes.USER_SETTINGS_SAVE:    
+      let {session, user} = data;
+      _session = session;
+      _user = user;
+      break;
+    case ActionTypes.USER_SETTINGS_SAVE:
       _user = data || {};
       break;
   }

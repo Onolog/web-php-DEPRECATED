@@ -113,14 +113,12 @@ class UsersController extends AppController {
   public function ajax_session() {
     $this->setIsAjax();
 
-    $user = $this->Auth->user();
-    if (isset($user)) {
-      $user = $user['User'];
-    }
-
     return id(new Response())
       ->setSuccess(true)
-      ->setPayload($user)
+      ->setPayload(array(
+        'user' => $this->Session->read('Auth.User'),
+        'session' => $this->Session->read('Config'),
+      ))
       ->send();
   }
 
