@@ -31,7 +31,7 @@ var config = {
   module: {
     loaders: [{
       test: /\.js$/,
-      loader: 'babel',
+      loader: 'babel-loader',
       exclude: /node_modules/,
       query: {
         // https://github.com/babel/babel-loader#options
