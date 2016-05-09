@@ -8,12 +8,11 @@ const FlexContainer = React.createClass({
   displayName: 'FlexContainer',
 
   propTypes: {
-    scrollable: PropTypes.bool,
     type: PropTypes.oneOf(['col', 'row']).isRequired,
   },
 
   render() {
-    const {className, scrollable, type} = this.props;
+    const {className, type} = this.props;
     const Component = type === 'row' ? Row : Col;
 
     return (
@@ -22,7 +21,6 @@ const FlexContainer = React.createClass({
         className={cx('flex-container', {
           'flex-col': type === 'col',
           'flex-row': type === 'row',
-          'scrollable': scrollable,
         }, className)}>
         {this.props.children}
       </Component>
