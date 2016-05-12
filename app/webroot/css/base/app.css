@@ -142,18 +142,6 @@ a img {
   padding: 80px 0 30px;
 }
 
-.pageHeader {
-	margin-bottom: 15px;
-}
-.pageHeader h2 {
-  float: left;
-  font-weight: 200;
-  margin: 0;
-}
-.pageHeader .auxContent {
-  float: right;
-}
-
 #mainCol {
   width: 100%;
 }

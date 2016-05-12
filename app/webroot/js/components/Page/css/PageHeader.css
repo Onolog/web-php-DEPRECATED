@@ -1,0 +1,30 @@
+/**
+ * PageHeader.css
+ */
+.app-page-header {
+  margin-bottom: 15px;
+}
+.app-page-header h2 {
+  margin: 0;
+}
+
+.app-page-header-full {
+  background-color: #fff;
+  border-bottom: 1px solid #e9e9e9;
+  flex-shrink: 0;
+  height: 51px;
+  margin: 0;
+  padding: 15px;
+}
+.app-page-header-full h2 {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.app-page-header-full .navbar-toggle {
+  float: left;
+  margin: -15px 0 -15px -15px;
+}
+.app-page-header-full .navbar-toggle .icon-bar {
+  background-color: #e97f10;
+}

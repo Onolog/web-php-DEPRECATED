@@ -1,7 +1,7 @@
 import React from 'react';
 import {Glyphicon, Nav, NavItem, OverlayTrigger, Tooltip} from 'react-bootstrap';
 
-require('../../../css/components/SideMenu.css');
+require('./css/SideMenu.css');
 
 const SideMenu = React.createClass({
   displayName: 'SideMenu',

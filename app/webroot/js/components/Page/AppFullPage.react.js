@@ -6,7 +6,7 @@ import FlexContainer from 'components/FlexContainer/FlexContainer.react';
 import NavbarToggle from 'components/Navigation/NavbarToggle.react';
 import SideMenu from 'components/Page/SideMenu.react';
 
-require('../../../css/components/AppFullPage.css');
+require('./css/AppFullPage.css');
 
 /**
  * AppFullPage.react
