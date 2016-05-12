@@ -51,4 +51,7 @@ module.exports = {
   USER_SESSION: 'user-session',
   USER_SETTINGS_SAVE: 'user-settings-save',
   USER_SETTINGS_SAVE_ERROR: 'user-settings-save-error',
+
+  // Nav
+  NAV_TOGGLE: 'nav-toggle',
 };

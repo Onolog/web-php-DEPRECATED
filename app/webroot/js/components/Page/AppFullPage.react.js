@@ -6,6 +6,10 @@ import FlexContainer from 'components/FlexContainer/FlexContainer.react';
 import NavbarToggle from 'components/Navigation/NavbarToggle.react';
 import SideMenu from 'components/Page/SideMenu.react';
 
+import {CHANGE} from 'flux/ActionTypes';
+import NavActions from 'flux/actions/NavActions';
+import NavStore from 'flux/stores/NavStore';
+
 require('./css/AppFullPage.css');
 
 /**
@@ -14,9 +18,17 @@ require('./css/AppFullPage.css');
 const AppFullPage = React.createClass({
   displayName: 'AppFullPage',
 
+  componentDidMount() {
+    NavStore.bind(CHANGE, this._navChanged);
+  },
+
+  componentWillUnmount() {
+    NavStore.unbind(CHANGE, this._navChanged);
+  },
+
   getInitialState() {
     return {
-      open: false,
+      open: NavStore.isSideNavOpen(),
     };
   },
 
@@ -43,7 +55,11 @@ const AppFullPage = React.createClass({
   },
 
   _handleSideNavToggle() {
-    this.setState({open: !this.state.open});
+    NavActions.toggleSideNav();
+  },
+
+  _navChanged() {
+    this.setState({open: NavStore.isSideNavOpen()});
   },
 });
 

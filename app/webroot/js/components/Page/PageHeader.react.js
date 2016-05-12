@@ -4,6 +4,8 @@ import React from 'react';
 import LeftRight from 'components/LeftRight/LeftRight.react';
 import NavbarToggle from 'components/Navigation/NavbarToggle.react';
 
+import NavActions from 'flux/actions/NavActions';
+
 require('./css/PageHeader.css');
 
 /**
@@ -11,7 +13,10 @@ require('./css/PageHeader.css');
  */
 const PageHeader = (props) => {
   const navbarToggle = props.full ?
-    <NavbarToggle className="visible-xs-block" /> : null;
+    <NavbarToggle
+      className="visible-xs-block"
+      onClick={NavActions.toggleSideNav}
+    /> : null;
 
   return (
     <header
