@@ -1,18 +1,13 @@
 import cx from 'classnames';
 import React from 'react';
-import {OverlayTrigger, Table, Tooltip} from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
 
-import CloseButton from 'components/Button/CloseButton.react';
 import Link from 'components/Link/Link.react';
 import ShoeModal from './ShoeModal.react';
 import ShoeViewModal from './ShoeViewModal.react';
 
-import ShoeActions from 'flux/actions/ShoeActions';
-
-const ACTION = {
-  EDIT: 'edit',
-  VIEW: 'view',
-};
+const EDIT = 'edit';
+const VIEW = 'view';
 
 const ShoeTable = React.createClass({
   displayName: 'ShoeTable',
@@ -63,7 +58,7 @@ const ShoeTable = React.createClass({
           <ShoeViewModal
             onHide={this._handleHideModal}
             shoe={shoe}
-            show={action === ACTION.VIEW && shown === shoe.id}
+            show={action === VIEW && shown === shoe.id}
           />
         </td>
         <td className="activities">
@@ -79,7 +74,7 @@ const ShoeTable = React.createClass({
           <ShoeModal
             initialShoe={shoe}
             onHide={this._handleHideModal}
-            show={action === ACTION.EDIT && shown === shoe.id}
+            show={action === EDIT && shown === shoe.id}
           />
         </td>
       </tr>
@@ -89,7 +84,7 @@ const ShoeTable = React.createClass({
   _handleEdit(shoeId, e) {
     e.preventDefault();
     this.setState({
-      action: ACTION.EDIT,
+      action: EDIT,
       shown: shoeId,
     });
   },
@@ -104,7 +99,7 @@ const ShoeTable = React.createClass({
   _handleView(shoeId, e) {
     e.preventDefault();
     this.setState({
-      action: ACTION.VIEW,
+      action: VIEW,
       shown: shoeId,
     });
   },
