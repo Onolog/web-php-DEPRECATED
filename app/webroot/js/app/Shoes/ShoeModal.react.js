@@ -1,12 +1,13 @@
 import {isEqual} from 'lodash';
-import React from 'react';
-import {Button, Modal} from 'react-bootstrap/lib';
+import React, {PropTypes} from 'react';
+import {Button, ButtonToolbar, Modal} from 'react-bootstrap';
+
+import LeftRight from 'components/LeftRight/LeftRight.react';
+import Loader from 'components/Loader/Loader.react';
 import ShoeFields from './ShoeFields.react';
 
-import Loader from 'components/Loader/Loader.react';
 import ShoeActions from 'flux/actions/ShoeActions';
 
-const {PropTypes} = React;
 const INITIAL_SHOE_DATA = {
   brand_id: '-1',
   inactive: 0,
@@ -27,25 +28,32 @@ const ShoeModal = React.createClass({
     show: PropTypes.bool,
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       isLoading: false,
       shoe: this.props.initialShoe || INITIAL_SHOE_DATA,
     };
   },
 
-  render: function() {
+  render() {
     const {initialShoe} = this.props;
     const {isLoading, shoe} = this.state;
 
+    let auxButton;
     let primaryAction;
     let title;
 
     if (initialShoe) {
-      primaryAction = 'Update Shoe';
+      auxButton =
+        <Button
+          bsStyle="danger"
+          onClick={this._handleDelete.bind(null, shoe.id)}>
+          Delete
+        </Button>;
+      primaryAction = 'Update';
       title = initialShoe.name;
     } else {
-      primaryAction = 'Create Shoe';
+      primaryAction = 'Create';
       title = 'Create A New Shoe';
     }
 
@@ -63,27 +71,32 @@ const ShoeModal = React.createClass({
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            disabled={isLoading}
-            onClick={this._handleClose}>
-            Cancel
-          </Button>
-          <Button
-            bsStyle="primary"
-            disabled={isLoading}
-            onClick={this._handleSave}>
-            {primaryAction}
-          </Button>
+          <LeftRight>
+            {auxButton}
+            <ButtonToolbar>
+              <Button
+                disabled={isLoading}
+                onClick={this._handleClose}>
+                Cancel
+              </Button>
+              <Button
+                bsStyle="primary"
+                disabled={isLoading}
+                onClick={this._handleSave}>
+                {primaryAction}
+              </Button>
+            </ButtonToolbar>
+          </LeftRight>
         </Modal.Footer>
       </Modal>
     );
   },
 
-  _handleChange: function(shoe) {
+  _handleChange(shoe) {
     this.setState({shoe});
   },
 
-  _handleClose: function() {
+  _handleClose() {
     var initialState = this.getInitialState();
     var hasChanges = !isEqual(initialState.shoe, this.state.shoe);
     var confirmed = hasChanges && confirm(
@@ -97,7 +110,13 @@ const ShoeModal = React.createClass({
     }
   },
 
-  _handleSave: function(e) {
+  _handleDelete(id, e) {
+    if (confirm('Are you sure you want to delete this shoe?')) {
+      ShoeActions.delete(id);
+    }
+  },
+
+  _handleSave(e) {
     this.setState({isLoading: true});
     this.props.initialShoe ?
       ShoeActions.save(this.state.shoe) :

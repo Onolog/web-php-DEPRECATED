@@ -43,14 +43,12 @@ var ShoeView = React.createClass({
               stat={this.props.mileage}
             />
             <LabeledStat
-              label="Runs"
+              label="Activities"
               stat={this.props.activityCount}
             />
           </Topline>
         </ActivitySection>
-        <ActivitySection title="Activities">
-          {this._renderActivities()}
-        </ActivitySection>
+        {this._renderActivities()}
       </div>
     );
   },
@@ -62,7 +60,14 @@ var ShoeView = React.createClass({
     }
 
     return (
-      <Table hover>
+      <Table fill hover>
+        <thead>
+          <tr>
+            <th>Activity Date</th>
+            <th className="mileage">Distance</th>
+            <th className="time">Duration</th>
+          </tr>
+        </thead>
         <tbody>
           {activities.map(this._renderRows)}
         </tbody>
