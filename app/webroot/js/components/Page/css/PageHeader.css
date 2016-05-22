@@ -28,3 +28,10 @@
 .app-page-header-full .navbar-toggle .icon-bar {
   background-color: #e97f10;
 }
+
+/* MOBILE */
+@media (max-width: 767px) {
+  .app-page-header h2 {
+    font-size: 24px;
+  }
+}

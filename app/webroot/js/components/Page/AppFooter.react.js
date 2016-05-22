@@ -1,20 +1,22 @@
-var React = require('react');
+import React from 'react';
 
-var LeftRight = require('components/LeftRight/LeftRight.react');
-var Link = require('components/Link/Link.react');
-var Middot = require('components/Middot.react');
+import LeftRight from 'components/LeftRight/LeftRight.react';
+import Link from 'components/Link/Link.react';
+import Middot from 'components/Middot.react';
+
+require('./css/AppFooter.css');
 
 /**
  * AppFooter.react
  */
-var AppFooter = React.createClass({
+const AppFooter = React.createClass({
   displayName: 'AppFooter',
 
-  render: function() {
-    var date = new Date();
+  render() {
+    const date = new Date();
 
     return (
-      <footer className="footer">
+      <footer className="app-footer">
         <LeftRight className="container-fluid">
           <div>
             Copyright &copy; {date.getFullYear()} Onolog

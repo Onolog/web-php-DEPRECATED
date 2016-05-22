@@ -11,6 +11,8 @@ import homeUrl from 'utils/homeUrl';
 
 import {CHANGE} from 'flux/ActionTypes';
 
+require('./css/AppHeader.css');
+
 /**
  * AppHeader.react
  */
@@ -45,7 +47,7 @@ const AppHeader = React.createClass({
 
     return (
       <Navbar
-        className="header"
+        className="app-header"
         fixedTop
         fluid
         inverse>
@@ -69,12 +71,12 @@ const AppHeader = React.createClass({
       let title =
         <span>
           <FBImage
-            className="accountImg"
+            className="account-img"
             fbid={user.id}
             height={24}
             width={24}
           />
-          <span className="accountName ellipses">
+          <span className="account-name ellipses">
             {user.name}
           </span>
         </span>;
