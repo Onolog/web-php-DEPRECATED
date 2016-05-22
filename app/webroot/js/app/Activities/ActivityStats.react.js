@@ -1,11 +1,10 @@
+var {map} = require('lodash');
 var React = require('react');
 
-var LabeledStat = require('components/Data/LabeledStat.react');
-var Topline = require('components/Data/Topline.react');
+var Topline = require('components/Topline/Topline.react');
 
 var calculatePace = require('utils/calculatePace');
 var formatDistance = require('utils/formatDistance');
-var {map} = require('lodash');
 var secondsToTime = require('utils/secondsToTime');
 
 /**
@@ -14,30 +13,30 @@ var secondsToTime = require('utils/secondsToTime');
  * Renders a series of label/stat pairings for the activity, like distance,
  * time, heart rate, etc.
  */
-var ActivityStats = React.createClass({
+const ActivityStats = React.createClass({
   displayName: 'ActivityStats',
 
   propTypes: {
     activity: React.PropTypes.object.isRequired,
   },
 
-  render: function() {
-    var items = map(this._getStats(), (stat, idx) => {
+  render() {
+    const items = map(this._getStats(), (stat, idx) => {
       return (
-        <LabeledStat
+        <Topline.Item
           annotation={stat.annotation}
           key={idx}
-          label={stat.label}
-          stat={stat.value}
-        />
+          label={stat.label}>
+          {stat.value}
+        </Topline.Item>
       );
     });
 
     return <Topline>{items}</Topline>;
   },
 
-  _getStats: function() {
-    var {
+  _getStats() {
+    const {
       avg_hr,
       calories,
       distance,
@@ -46,12 +45,12 @@ var ActivityStats = React.createClass({
       max_hr,
     } = this.props.activity;
 
-    var stats = [{
+    const stats = [{
       annotation: 'miles',
       label: 'Distance',
       value: formatDistance(distance),
     }, {
-      label: 'Time',
+      label: 'Duration',
       value: secondsToTime(duration),
     }, {
       annotation: 'per mile',

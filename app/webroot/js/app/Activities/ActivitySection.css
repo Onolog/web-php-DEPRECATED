@@ -10,7 +10,7 @@
   border-top: 1px solid #f5f5f5;
 }
 
-/* Should match labeledStatLabel from Topline.css */
+/* Should match `topline-item-label` from Topline.css */
 .activitySectionTitle {
   color: #aaa;
   font-size: 10px;

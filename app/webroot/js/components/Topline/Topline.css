@@ -1,37 +1,31 @@
 /**
- * topline.css
- *
- * Provides css for topline data summaries
+ * Topline.css
  */
-
 .topline {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.toplineItem  {
+.topline-item  {
   display: table-cell;
+  color: #aaa;
+  font-size: 10px;
+  line-height: 1em;
   text-align: center;
   width: 1%;
 }
 
-.toplineItem + .toplineItem {
+.topline-item + .topline-item {
   border-left: 1px solid #f5f5f5;
 }
 
-.labeledStat {
-  color: #aaa;
-  font-size: 10px;
-  line-height: 1em;
-}
-
-.labeledStatLabel {
+.topline-item-label {
   margin-bottom: 5px;
   text-transform: uppercase;
 }
 
-.labeledStatData {
+.topline-item-data {
   color: #333;
   font-size: 28px;
   font-weight: 200;
@@ -42,7 +36,7 @@
 
 /* Tablet & Mobile */
 @media (max-width: 767px) {
-  .labeledStatData {
+  .topline-item-data {
     font-size: 24px;
   }
 }

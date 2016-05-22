@@ -7,11 +7,10 @@ var {
   ListGroup,
   ListGroupItem,
   Panel,
-} = require('react-bootstrap/lib');
+} = require('react-bootstrap');
 
 var Chart = require('components/Chart/Chart.react');
-var LabeledStat = require('components/Data/LabeledStat.react');
-var Topline = require('components/Data/Topline.react');
+var Topline = require('components/Topline/Topline.react');
 
 var {forEach} = require('lodash');
 var {
@@ -125,9 +124,9 @@ var ProfileYearPanel = React.createClass({
 
     return (
       <Topline>
-        <LabeledStat label="Miles" stat={miles} />
-        <LabeledStat label="Runs" stat={run_count} />
-        <LabeledStat label="Time" stat={durationString} />
+        <Topline.Item label="Miles">{miles}</Topline.Item>
+        <Topline.Item label="Runs">{run_count}</Topline.Item>
+        <Topline.Item label="Time">{durationString}</Topline.Item>
       </Topline>
     );
   },

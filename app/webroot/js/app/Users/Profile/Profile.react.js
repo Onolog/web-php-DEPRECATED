@@ -2,10 +2,9 @@ var {Panel} = require('react-bootstrap');
 var React = require('react');
 
 var AppPage = require('components/Page/AppPage.react');
-var LabeledStat = require('components/Data/LabeledStat.react');
 var PageHeader = require('components/Page/PageHeader.react');
 var ProfileYearPanel = require('./ProfileYearPanel.react');
-var Topline = require('components/Data/Topline.react');
+var Topline = require('components/Topline/Topline.react');
 
 var {chain} = require('lodash');
 var {getAggregateDistance, groupActivities} = require('utils/ActivityUtils');
@@ -45,18 +44,15 @@ var Profile = React.createClass({
     return (
       <Panel header={<h3>Lifetime Stats</h3>}>
         <Topline>
-          <LabeledStat
-            label="Miles"
-            stat={totalMiles.toLocaleString()}
-          />
-          <LabeledStat
-            label="Runs"
-            stat={totalRuns.toLocaleString()}
-          />
-          <LabeledStat
-            label="Shoes"
-            stat={this.state.shoeCount}
-          />
+          <Topline.Item label="Miles">
+            {totalMiles.toLocaleString()}
+          </Topline.Item>
+          <Topline.Item label="Runs">
+            {totalRuns.toLocaleString()}
+          </Topline.Item>
+          <Topline.Item label="Shoes">
+            {this.state.shoeCount}
+          </Topline.Item>
         </Topline>
       </Panel>
     );

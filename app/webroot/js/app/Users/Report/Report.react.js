@@ -8,10 +8,9 @@ var BarGraphSection = require('components/Graph/BarGraph/BarGraphSection.react')
 var BarGraphSectionUnit = require('components/Graph/BarGraph/BarGraphSectionUnit.react');
 var BaseAppPage = require('components/Page/BaseAppPage.react');
 var FBImage = require('components/Facebook/FBImage.react');
-var LabeledStat = require('components/Data/LabeledStat.react');
 var Link = require('components/Link/Link.react');
 var Middot = require('components/Middot.react');
-var Topline = require('components/Data/Topline.react');
+var Topline = require('components/Topline/Topline.react');
 
 var formatDistance = require('utils/formatDistance');
 
@@ -85,15 +84,14 @@ var Report = React.createClass({
 
     return (
       <Topline>
-        <LabeledStat
-          label="Runs"
-          stat={totalRuns}
-        />
-        <LabeledStat
-          annotation={'Avg. ' + avgRunDistance + ' miles/run'}
-          label="Miles"
-          stat={totalMiles}
-        />
+        <Topline.Item label="Runs">
+          {totalRuns}
+        </Topline.Item>
+        <Topline.Item
+          annotation={`Avg. ${avgRunDistance} miles/run`}
+          label="Miles">
+          {totalMiles}
+        </Topline.Item>
       </Topline>
     );
   },
@@ -108,10 +106,9 @@ var Report = React.createClass({
 
     return (
       <Topline className="fullWidth">
-        <LabeledStat
-          label="Time Spent Running"
-          stat={durationString}
-        />
+        <Topline.Item label="Time Spent Running">
+          {durationString}
+        </Topline.Item>
       </Topline>
     );
   },
@@ -124,16 +121,16 @@ var Report = React.createClass({
 
     return (
       <Topline>
-        <LabeledStat
+        <Topline.Item
           annotation={moment(runExtremes.max.date*1000).format(DATE_FORMAT)}
-          label="Longest Run (Miles)"
-          stat={runExtremes.max.distance}
-        />
-        <LabeledStat
+          label="Longest Run (Miles)">
+          {runExtremes.max.distance}
+        </Topline.Item>
+        <Topline.Item
           annotation={moment(runExtremes.min.date*1000).format(DATE_FORMAT)}
-          label="Shortest Run (Miles)"
-          stat={runExtremes.min.distance}
-        />
+          label="Shortest Run (Miles)">
+          {runExtremes.min.distance}
+        </Topline.Item>
       </Topline>
     );
   },
@@ -146,15 +143,14 @@ var Report = React.createClass({
 
     return (
       <Topline>
-        <LabeledStat
-          label="Pairs of shoes used"
-          stat={shoeCount}
-        />
-        <LabeledStat
-          annotation={topBrand.count + ' pairs'}
-          label="Favorite Brand"
-          stat={topBrand.name}
-        />
+        <Topline.Item label="Pairs of shoes used">
+          {shoeCount}
+        </Topline.Item>
+        <Topline.Item
+          annotation={`${topBrand.count} pairs`}
+          label="Favorite Brand">
+          {topBrand.name}
+        </Topline.Item>
       </Topline>
     );
   },

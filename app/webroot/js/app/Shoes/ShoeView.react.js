@@ -4,8 +4,7 @@ var {Table} = require('react-bootstrap/lib');
 
 var ActivitySection = require('app/Activities/ActivitySection.react');
 var EmptyState = require('components/EmptyState.react');
-var LabeledStat = require('components/Data/LabeledStat.react');
-var Topline = require('components/Data/Topline.react');
+var Topline = require('components/Topline/Topline.react');
 
 var formatDistance = require('utils/formatDistance');
 var secondsToTime = require('utils/secondsToTime');
@@ -38,14 +37,12 @@ var ShoeView = React.createClass({
       <div className="shoeView">
         <ActivitySection>
           <Topline>
-            <LabeledStat
-              label="Miles"
-              stat={this.props.mileage}
-            />
-            <LabeledStat
-              label="Activities"
-              stat={this.props.activityCount}
-            />
+            <Topline.Item label="Miles">
+              {this.props.mileage}
+            </Topline.Item>
+            <Topline.Item label="Activities">
+              {this.props.activityCount}
+            </Topline.Item>
           </Topline>
         </ActivitySection>
         {this._renderActivities()}
