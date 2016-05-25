@@ -8,7 +8,6 @@ var PageHeader = require('components/Page/PageHeader.react');
 var ShoeModal = require('./ShoeModal.react');
 
 var ActionTypes = require('flux/ActionTypes');
-var ShoeActions = require('flux/actions/ShoeActions');
 var ShoeStore = require('flux/stores/ShoeStore');
 
 /**
@@ -21,13 +20,9 @@ var ShoesPage = React.createClass({
 
   getInitialState: function() {
     return {
-      shoes: null,
+      shoes: ShoeStore.getAll(),
       show: false,
     };
-  },
-
-  componentWillMount: function() {
-    ShoeActions.fetch();
   },
 
   componentDidMount: function() {
@@ -40,7 +35,7 @@ var ShoesPage = React.createClass({
 
   _shoesChanged: function() {
     this.setState({
-      shoes: ShoeStore.getCollection(),
+      shoes: ShoeStore.getAll(),
       show: false,
     });
   },

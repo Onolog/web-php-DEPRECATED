@@ -17,11 +17,22 @@ if (isset($title)) {
 // Render the root element on the page
 echo $this->element('loader', array('id' => 'root'));
 
-// Prepend the correct path to root JS files depending on the environment.
-$this->Html->script('build/' . $page, array('inline' => false));
+// Prepare all the data for the client.
+$appData = array(
+  'params' => $this->params,
+  'shoes' => array(),
+  'user' => $this->Session->read('Auth.User'),
+  'workouts' => array(),
+);
 
-// Set data for window
 if (isset($data)) {
-  $this->Js->set($data);
-  echo $this->Js->writeBuffer(array('onDomReady' => false));
+  $appData = array_merge($appData, $data);
 }
+
+// Write the initial page data.
+$this->Html->scriptStart(array('inline' => false));
+echo 'window.APP_DATA = ' . json_encode($appData, JSON_NUMERIC_CHECK);
+$this->Html->scriptEnd();
+
+// Finally, write the app script to the page.
+$this->Html->script('build/' . $page, array('inline' => false));

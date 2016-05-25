@@ -35,13 +35,8 @@ var Activity = React.createClass({
   getInitialState: function() {
     return {
       isHorizontal: true,
-      shoes: [],
+      shoes: ShoeStore.getAll(),
     };
-  },
-
-  componentWillMount: function() {
-    // Load all shoes into the store.
-    ShoeStore.getCollection();
   },
 
   componentDidMount: function() {
@@ -58,7 +53,7 @@ var Activity = React.createClass({
   },
 
   _setShoes: function() {
-    this.setState({shoes: ShoeStore.getCollection()});
+    this.setState({shoes: ShoeStore.getAll()});
   },
 
   render: function() {
@@ -116,7 +111,7 @@ var Activity = React.createClass({
       );
     }
 
-    let shoe = ShoeStore.getItem(shoe_id);
+    let shoe = ShoeStore.getSingle(shoe_id);
     if (shoe) {
       content.push(
         <ActivitySection key="shoe" title="Shoes">

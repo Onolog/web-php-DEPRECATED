@@ -10,7 +10,7 @@ echo $this->element('react_page', array(
   ),
   'data' => array(
     'month' => $month,
-    'year' => $year
+    'year' => $year,
   ),
   'page' => 'Home',
   'title' => $title,

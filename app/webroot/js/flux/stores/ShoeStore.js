@@ -1,37 +1,21 @@
 var ActionTypes = require('flux/ActionTypes');
 var AppDispatcher = require('flux/AppDispatcher');
 var MicroEvent = require('lib/microevent');
-var ShoeActions = require('flux/actions/ShoeActions');
 
 var {find, isArray, map} = require('lodash');
 
-var _collection;
+var _collection = window.APP_DATA.shoes || [];
 
 /**
  * ShoeStore
  */
 var ShoeStore = {
-
-  getCollection: function() {
-    if (!_collection) {
-      ShoeActions.fetch();
-      return [];
-    }
+  getAll() {
     return _collection;
   },
 
-  getItem: function(/*number*/ itemID) {
-    if (!itemID) {
-      return;
-    }
-
-    var item = find(_collection, {id: itemID});
-
-    if (!item) {
-      ShoeActions.view(itemID);
-    }
-
-    return item;
+  getSingle(/*number*/ itemId) {
+    return find(_collection, {id: itemId});
   },
 };
 

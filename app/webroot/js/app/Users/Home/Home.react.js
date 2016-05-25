@@ -28,7 +28,7 @@ var Home = React.createClass({
   displayName: 'Home',
 
   getInitialState: function() {
-    var {month, year} = window.app;
+    var {month, year} = window.APP_DATA;
 
     return {
       // Null means we haven't gotten a response back yet. An empty array
@@ -57,7 +57,7 @@ var Home = React.createClass({
 
   _workoutsChanged: function() {
     this.setState({
-      activities: WorkoutStore.getCollection(),
+      activities: WorkoutStore.getAll(),
       showModal: false,
     });
   },

@@ -70,10 +70,7 @@ class WorkoutsController extends AppController {
       $this->goHome(__('That workout doesn\'t exist', 1));
     }
 
-    $workout = $this->populateWorkoutForView($workout);
-		$viewer = $this->Auth->User('id') ?: 0;
-
-    $this->set(compact('workout', 'viewer'));
+    $this->set('workout', $this->populateWorkoutForView($workout));
 	}
 
   /**

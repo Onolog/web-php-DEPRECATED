@@ -12,28 +12,29 @@ import AppPage from 'components/Page/AppPage.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import ShoeView from './ShoeView.react';
 
+import ShoeStore from 'flux/stores/ShoeStore';
+import UserStore from 'flux/stores/UserStore';
+
+function getIdFromPath() {
+  const id = document.location.pathname.split('/').pop();
+  return parseInt(id, 10);
+}
+
 /**
  * ShoeViewPage.react
  *
  * Displays the page header and view for a single shoe
  */
-var ShoeViewPage = React.createClass({
+const ShoeViewPage = React.createClass({
   displayName: 'ShoeViewPage',
 
-  getInitialState: function() {
-    var {canEdit, shoe} = window.app;
-    return {
-      canEdit: canEdit,
-      shoe: shoe,
-    };
-  },
+  render() {
+    const shoe = ShoeStore.getSingle(getIdFromPath());
 
-  render: function() {
-    var {shoe} = this.state;
     return (
       <AppPage>
         <PageHeader title={shoe.name}>
-          {this._renderButtonGroup()}
+          {this._renderButtonGroup(shoe)}
         </PageHeader>
         <Panel>
           <ShoeView
@@ -47,9 +48,8 @@ var ShoeViewPage = React.createClass({
     );
   },
 
-  _renderButtonGroup: function() {
-    var {canEdit, shoe} = this.state;
-    if (canEdit) {
+  _renderButtonGroup(shoe) {
+    if (UserStore.getUserId() === shoe.user_id) {
       return (
         <ButtonGroup>
           <OverlayTrigger
@@ -88,9 +88,10 @@ var ShoeViewPage = React.createClass({
   /**
    * TODO: Handle this better...
    */
-  _onShoeDelete: function() {
+  _onShoeDelete() {
+    const id = getIdFromPath();
     if (confirm('Are you sure you want to delete this shoe?')) {
-      document.location = '/shoes/delete/' + this.state.shoe.id;
+      document.location = `/shoes/delete/${id}`;
     }
   },
 });

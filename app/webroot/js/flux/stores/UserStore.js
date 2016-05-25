@@ -1,22 +1,24 @@
-var ActionTypes = require('flux/ActionTypes');
-var AppDispatcher = require('flux/AppDispatcher');
-var MicroEvent = require('lib/microevent');
-var UserActions = require('flux/actions/UserActions');
+import AppDispatcher from 'flux/AppDispatcher';
+import MicroEvent from 'lib/microevent';
+import UserActions from 'flux/actions/UserActions';
 
-var _user = window.app && window.app.user;
-var _session = null;
+import {CHANGE, USER_LOGIN, USER_LOGOUT, USER_SESSION, USER_SETTINGS_SAVE} from 'flux/ActionTypes';
+
+let _user = window.APP_DATA.user || {id: 0};
+let _session = null;
 
 /**
  * UserStore
  *
  * Keeps track of the user's info and login state.
  */
-var UserStore = {
+const UserStore = {
   getUser() {
-    if (!_user) {
-      UserActions.getSession();
-    }
     return _user;
+  },
+
+  getUserId() {
+    return parseInt(_user.id, 10);
   },
 
   getSession() {
@@ -31,23 +33,23 @@ MicroEvent.mixin(UserStore);
 
 AppDispatcher.register(({data, eventName}) => {
   switch(eventName) {
-    case ActionTypes.USER_LOGIN:
+    case USER_LOGIN:
       // TODO: Figure out why this action doesn't get heard.
       break;
-    case ActionTypes.USER_LOGOUT:
+    case USER_LOGOUT:
       _session = null;
       _user = null;
       break;
-    case ActionTypes.USER_SESSION:
+    case USER_SESSION:
       let {session, user} = data;
       _session = session;
       _user = user;
       break;
-    case ActionTypes.USER_SETTINGS_SAVE:
+    case USER_SETTINGS_SAVE:
       _user = data || {};
       break;
   }
-  UserStore.trigger(ActionTypes.CHANGE);
+  UserStore.trigger(CHANGE);
   return true;
 });
 

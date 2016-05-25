@@ -6,6 +6,9 @@ var PageHeader = require('components/Page/PageHeader.react');
 var ProfileYearPanel = require('./ProfileYearPanel.react');
 var Topline = require('components/Topline/Topline.react');
 
+var UserStore = require('flux/stores/UserStore');
+var WorkoutStore = require('flux/stores/WorkoutStore');
+
 var {chain} = require('lodash');
 var {getAggregateDistance, groupActivities} = require('utils/ActivityUtils');
 
@@ -18,18 +21,14 @@ var Profile = React.createClass({
   displayName: 'Profile',
 
   componentWillMount: function() {
-    var {shoeCount, user, activities} = window.app;
-    this.setState({
-      shoeCount: shoeCount,
-      user: user,
-      activities: activities,
-    });
+    var {shoeCount} = window.APP_DATA;
+    this.setState({shoeCount});
   },
 
   render: function() {
     return (
       <AppPage className="profile">
-        <PageHeader title={this.state.user.name} />
+        <PageHeader title={UserStore.getUser().name} />
         {this._renderToplineStats()}
         {this._renderContent()}
       </AppPage>
@@ -37,7 +36,7 @@ var Profile = React.createClass({
   },
 
   _renderToplineStats: function() {
-    var {activities} = this.state;
+    var activities = WorkoutStore.getAll();
     var totalMiles = getAggregateDistance(activities);
     var totalRuns = activities.length;
 
@@ -59,7 +58,7 @@ var Profile = React.createClass({
   },
 
   _renderContent: function() {
-    var {activities} = this.state;
+    var activities = WorkoutStore.getAll();
 
     // Render an empty state when there's no data.
     if (!activities.length) {

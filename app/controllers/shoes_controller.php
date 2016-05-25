@@ -37,15 +37,8 @@ class ShoesController extends AppController {
 			$this->Session->setFlash(__('Invalid shoe', true));
 			$this->redirect(array('action' => 'index'));
 		}
-		$shoe = $this->Shoe->read(null, $id);
 
-    // Does the shoe belong to the person viewing it?
-		$can_edit = $shoe['user_id'] === $this->Auth->User('id');
-
-		$this->set(compact(
-      'can_edit',
-      'shoe'
-    ));
+		$this->set('shoe', $this->Shoe->read(null, $id));
 	}
 
   /**

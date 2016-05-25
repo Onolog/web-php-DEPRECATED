@@ -1,3 +1,4 @@
+var {isEmpty} = require('lodash');
 var React = require('react');
 var {Button, Panel} = require('react-bootstrap/lib');
 
@@ -5,6 +6,9 @@ var AppPage = require('components/Page/AppPage.react');
 var Loader = require('components/Loader/Loader.react');
 var PageHeader = require('components/Page/PageHeader.react');
 var WorkoutFields = require('./WorkoutFields.react');
+var WorkoutStore = require('flux/stores/WorkoutStore');
+
+var getIdFromPath = require('utils/getIdFromPath');
 
 /**
  * WorkoutAddEditPage.react
@@ -14,22 +18,25 @@ var WorkoutFields = require('./WorkoutFields.react');
 var WorkoutAddEditPage = React.createClass({
   displayName: 'WorkoutAddEditPage',
 
-  getInitialState: function() {
-    var {isEditing, workout} = window.app || {};
+  getInitialState() {
     return {
-      isEditing: isEditing,
       isSaving: false,
-      workout: workout,
     };
   },
 
-  render: function() {
+  render() {
+    const workout = WorkoutStore.getSingle(getIdFromPath());
+    const isEditing = !isEmpty(workout);
+
     return (
       <AppPage>
-        <PageHeader title={this._getTitle()} />
-        <Panel footer={this._renderFooter()}>
-          <form action={this._getFormAction()} method="POST" ref="form">
-            <WorkoutFields workout={this.state.workout} />
+        <PageHeader title={this._getTitle(isEditing)} />
+        <Panel footer={this._renderFooter(isEditing)}>
+          <form
+            action={this._getFormAction(workout, isEditing)}
+            method="POST"
+            ref="form">
+            <WorkoutFields workout={workout} />
           </form>
           {this.state.isSaving && <Loader background full />}
         </Panel>
@@ -37,21 +44,17 @@ var WorkoutAddEditPage = React.createClass({
     );
   },
 
-  _getFormAction: function() {
-    var {isEditing, workout} = this.state;
+  _getFormAction(workout, isEditing) {
     return isEditing ?
       `/workouts/edit/${workout.id}` :
       '/workouts/add';
   },
 
-  _getTitle: function() {
-    return this.state.isEditing ? 'Edit Activity' : 'New Activity';
+  _getTitle(isEditing) {
+    return isEditing ? 'Edit Activity' : 'New Activity';
   },
 
-  _renderFooter: function() {
-    var submitLabel =
-      this.state.isEditing ? 'Update Activity' : 'Add Activity';
-
+  _renderFooter(isEditing) {
     return (
       <div className="clearfix">
         <div className="pull-right">
@@ -65,7 +68,7 @@ var WorkoutAddEditPage = React.createClass({
             disabled={this.state.isSaving}
             onClick={this._onSubmit}
             type="submit">
-            {submitLabel}
+            {isEditing ? 'Update Activity' : 'Add Activity'}
           </Button>
         </div>
       </div>

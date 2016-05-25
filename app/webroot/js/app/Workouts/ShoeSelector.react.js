@@ -3,9 +3,8 @@ import React from 'react';
 import Select from 'components/Select/Select.react';
 
 import ActionTypes from 'flux/ActionTypes';
+import ShoeActions from 'flux/actions/ShoeActions';
 import ShoeStore from 'flux/stores/ShoeStore';
-
-import {forEach, filter} from 'lodash';
 
 /**
  * ShoeSelector.react
@@ -23,7 +22,7 @@ const ShoeSelector = React.createClass({
   },
 
   componentWillMount() {
-    this._setShoes();
+    ShoeActions.fetch();
   },
 
   componentDidMount() {
@@ -35,7 +34,7 @@ const ShoeSelector = React.createClass({
   },
 
   _setShoes() {
-    this.setState({shoes: ShoeStore.getCollection()});
+    this.setState({shoes: ShoeStore.getAll()});
   },
 
   getInitialState() {
@@ -62,13 +61,13 @@ const ShoeSelector = React.createClass({
    */
   _getOptions() {
     // Filter out inactive shoes unless it's the initially selected shoe.
-    let shoes = filter(this.state.shoes, (shoe) => {
-      return !shoe.inactive || shoe.id === +this.state.initialSelection;
-    });
+    let shoes = this.state.shoes.filter(shoe => (
+      !shoe.inactive || shoe.id === +this.state.initialSelection
+    ));
 
-    var options = [];
+    let options = [];
     if (shoes && shoes.length) {
-      forEach(shoes, (shoe) => {
+      shoes.forEach(shoe => {
         options.push({
           label: `${shoe.name} (${shoe.mileage} miles)`,
           value: shoe.id,

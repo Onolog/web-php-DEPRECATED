@@ -29,7 +29,7 @@ var Friends = React.createClass({
 
   render: function() {
     return (
-      <AppPage className="narrow-page">
+      <AppPage narrow>
         <PageHeader title="Friends" />
         <Panel>
           {this._renderContent()}

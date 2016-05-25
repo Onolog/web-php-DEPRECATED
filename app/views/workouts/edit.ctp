@@ -7,8 +7,7 @@
 echo $this->element('react_page', array(
   'css' => array('app/Workout'),
   'data' => array(
-    'isEditing' => true,
-    'workout' => $this->data['Workout']
+    'workouts' => array($this->data['Workout']),
   ),
   'page' => 'WorkoutAddEdit',
   'title' => 'Edit Activity',

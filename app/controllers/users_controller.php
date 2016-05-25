@@ -154,12 +154,6 @@ class UsersController extends AppController {
       $month = date('n');
     }
 
-    $shoes = $this->User->Shoe->find('all', array(
-		  'conditions' => array(
-        'Shoe.user_id' => $this->Auth->User('id'),
-      ),
-    ));
-
     $title = $this->Auth->User('name');
 
     $this->set(compact(
@@ -393,7 +387,14 @@ class UsersController extends AppController {
    * TODO: Should this be in the Shoe Controller?
    */
   public function shoes() {
-    $user = $this->requireLoggedInUser();
+    $user_id = $this->requireLoggedInUser();
+
+    // TODO: Don't recursively fetch all the activity data.
+    $shoes = $this->User->Shoe->find('all', array(
+      'conditions' => array('Shoe.user_id' => $user_id),
+    ));
+
+    $this->set('shoes', $shoes);
   }
 
   /**

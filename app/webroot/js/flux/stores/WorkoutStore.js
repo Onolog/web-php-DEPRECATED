@@ -1,33 +1,31 @@
-var ActionTypes = require('flux/ActionTypes');
-var AppDispatcher = require('flux/AppDispatcher');
-var MicroEvent = require('lib/microevent');
-var WorkoutActions = require('flux/actions/WorkoutActions');
+import {find} from 'lodash';
 
-var {find} = require('lodash');
+import AppDispatcher from 'flux/AppDispatcher';
+import MicroEvent from 'lib/microevent';
 
-var _collection = [];
+import {
+  CHANGE,
+  WORKOUT_ADD,
+  WORKOUT_DELETE,
+  WORKOUT_UPDATE,
+  WORKOUT_VIEW,
+  WORKOUTS_FETCH,
+} from 'flux/ActionTypes';
+
+let _collection = window.APP_DATA.workouts || [];
 
 /**
  * WorkoutStore
  *
  * Keeps track of all workouts loaded for a particular view.
- *
- * NOTE: We're currently loading the workouts into the store from the view.
- * It may be better to do this from the store directly.
  */
-var WorkoutStore = {
-
-  getCollection: function() {
+const WorkoutStore = {
+  getAll() {
     return _collection;
   },
 
-  getItem: function(/*number*/ itemId) {
-    var item = find(_collection, (item) => item.id === itemId);
-
-    if (!item) {
-      WorkoutActions.view(itemId);
-    }
-    return item;
+  getSingle(/*number*/ itemId) {
+    return find(_collection, {id: itemId});
   },
 };
 
@@ -35,28 +33,27 @@ MicroEvent.mixin(WorkoutStore);
 
 AppDispatcher.register(({data, eventName}) => {
   switch(eventName) {
-    case ActionTypes.WORKOUTS_FETCH:
+    case WORKOUTS_FETCH:
       _collection = data;
-      WorkoutStore.trigger(ActionTypes.CHANGE);
+      WorkoutStore.trigger(CHANGE);
       break;
 
-    case ActionTypes.WORKOUT_ADD:
+    case WORKOUT_ADD:
       _collection.push(data.activity);
-      WorkoutStore.trigger(ActionTypes.CHANGE);
+      WorkoutStore.trigger(CHANGE);
       break;
 
-    case ActionTypes.WORKOUT_DELETE:
+    case WORKOUT_DELETE:
       _collection = _collection.filter((item) => item.id !== data.id);
-      WorkoutStore.trigger(ActionTypes.CHANGE);
+      WorkoutStore.trigger(CHANGE);
       break;
 
-    case ActionTypes.WORKOUT_UPDATE:
-    case ActionTypes.WORKOUT_VIEW:
+    case WORKOUT_UPDATE:
+    case WORKOUT_VIEW:
       let {activity} = data;
-      _collection = _collection.map((item) => {
-        return item.id === activity.id ? activity : item;
-      });
-      WorkoutStore.trigger(ActionTypes.CHANGE);
+      _collection = _collection.filter((item) => +item.id !== +activity.id);
+      _collection.push(activity);
+      WorkoutStore.trigger(CHANGE);
       break;
   }
   return true;
