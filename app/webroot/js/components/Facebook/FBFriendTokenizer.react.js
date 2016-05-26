@@ -4,6 +4,9 @@ import Typeahead from 'react-bootstrap-typeahead';
 import fbLoader from 'utils/fbLoader';
 import {isArray, map} from 'lodash';
 
+require('react-bootstrap-typeahead/css/Token.css');
+require('react-bootstrap-typeahead/css/Typeahead.css');
+
 /**
  * FriendTokenizer.react
  *
@@ -17,18 +20,18 @@ const FBFriendTokenizer = React.createClass({
     friends: React.PropTypes.string,
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       options: [],
       selected: [],
     };
   },
 
-  componentWillMount: function() {
+  componentWillMount() {
     fbLoader(this._getFriends);
   },
 
-  render: function() {
+  render() {
     var {selected, options} = this.state;
 
     return (
@@ -43,7 +46,7 @@ const FBFriendTokenizer = React.createClass({
     );
   },
 
-  _getFriends: function() {
+  _getFriends() {
     // Get all taggable friends
     var batch = [{
       method: 'GET',
@@ -68,7 +71,7 @@ const FBFriendTokenizer = React.createClass({
   /**
    * Simulate firing an onChange event
    */
-  _handleChange: function(/*array*/ selected) {
+  _handleChange(/*array*/ selected) {
     this.setState({selected});
 
     this.props.onChange && this.props.onChange({
@@ -82,7 +85,7 @@ const FBFriendTokenizer = React.createClass({
   /**
    * Parse the batched response from the FB Graph API.
    */
-  _handleGraphResponse: function(response) {
+  _handleGraphResponse(response) {
     if (!(response && isArray(response))) {
       return;
     }
