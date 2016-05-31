@@ -1,12 +1,11 @@
 import {isEqual} from 'lodash';
 import React, {PropTypes} from 'react';
-import {Button, ButtonToolbar, Modal} from 'react-bootstrap';
+import {connect} from 'react-redux';
 
-import LeftRight from 'components/LeftRight/LeftRight.react';
-import Loader from 'components/Loader/Loader.react';
-import ShoeFields from './ShoeFields.react';
+import ShoeAddModal from 'app/Shoes/ShoeAddModal.react';
+import ShoeEditModal from 'app/Shoes/ShoeEditModal.react';
 
-import ShoeActions from 'flux/actions/ShoeActions';
+import {addShoe, deleteShoe, updateShoe} from 'actions/shoes';
 
 const INITIAL_SHOE_DATA = {
   brand_id: '-1',
@@ -36,60 +35,27 @@ const ShoeModal = React.createClass({
   },
 
   render() {
-    const {initialShoe} = this.props;
+    const {initialShoe, show} = this.props;
     const {isLoading, shoe} = this.state;
 
-    let auxButton;
-    let primaryAction;
-    let title;
+    // Common props.
+    const props = {
+      isLoading,
+      onChange: this._handleChange,
+      onHide: this._handleClose,
+      onSave: this._handleSave,
+      shoe,
+      show,
+    };
 
-    if (initialShoe) {
-      auxButton =
-        <Button
-          bsStyle="danger"
-          onClick={this._handleDelete.bind(null, shoe.id)}>
-          Delete
-        </Button>;
-      primaryAction = 'Update';
-      title = initialShoe.name;
-    } else {
-      primaryAction = 'Create';
-      title = 'Create A New Shoe';
-    }
-
-    return (
-      <Modal onHide={this._handleClose} show={this.props.show}>
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {isLoading && <Loader background full large />}
-          <ShoeFields
-            isNew={!initialShoe}
-            onChange={this._handleChange}
-            shoe={shoe}
-          />
-        </Modal.Body>
-        <Modal.Footer>
-          <LeftRight>
-            {auxButton}
-            <ButtonToolbar>
-              <Button
-                disabled={isLoading}
-                onClick={this._handleClose}>
-                Cancel
-              </Button>
-              <Button
-                bsStyle="primary"
-                disabled={isLoading}
-                onClick={this._handleSave}>
-                {primaryAction}
-              </Button>
-            </ButtonToolbar>
-          </LeftRight>
-        </Modal.Footer>
-      </Modal>
-    );
+    return initialShoe ?
+      <ShoeEditModal
+        {...props}
+        onDelete={() => this._handleDelete(shoe.id)}
+      /> :
+      <ShoeAddModal
+        {...props}
+      />;
   },
 
   _handleChange(shoe) {
@@ -97,9 +63,9 @@ const ShoeModal = React.createClass({
   },
 
   _handleClose() {
-    var initialState = this.getInitialState();
-    var hasChanges = !isEqual(initialState.shoe, this.state.shoe);
-    var confirmed = hasChanges && confirm(
+    const initialState = this.getInitialState();
+    const hasChanges = !isEqual(initialState.shoe, this.state.shoe);
+    const confirmed = hasChanges && confirm(
       'Are you sure you want to close the dialog? Your changes will not ' +
       'be saved'
     );
@@ -112,16 +78,16 @@ const ShoeModal = React.createClass({
 
   _handleDelete(id, e) {
     if (confirm('Are you sure you want to delete this shoe?')) {
-      ShoeActions.delete(id);
+      this.props.dispatch(deleteShoe(id));
     }
   },
 
   _handleSave(e) {
+    const action = this.props.initialShoe ? updateShoe : addShoe;
+
     this.setState({isLoading: true});
-    this.props.initialShoe ?
-      ShoeActions.save(this.state.shoe) :
-      ShoeActions.add(this.state.shoe);
+    this.props.dispatch(action(this.state.shoe));
   },
 });
 
-module.exports = ShoeModal;
+module.exports = connect()(ShoeModal);

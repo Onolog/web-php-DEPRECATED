@@ -1,48 +1,45 @@
-import React from 'react';
-import {Button, Glyphicon} from 'react-bootstrap/lib';
+import {isEqual} from 'lodash';
+import React, {PropTypes} from 'react';
+import {Button, Glyphicon} from 'react-bootstrap';
+import {connect} from 'react-redux';
 
-var AllShoesView = require('./AllShoesView.react');
-var AppPage = require('components/Page/AppPage.react');
-var Loader = require('components/Loader/Loader.react');
-var PageHeader = require('components/Page/PageHeader.react');
-var ShoeModal = require('./ShoeModal.react');
+import AllShoesView from './AllShoesView.react';
+import AppPage from 'components/Page/AppPage.react';
+import PageHeader from 'components/Page/PageHeader.react';
+import ShoeModal from './ShoeModal.react';
 
-var ActionTypes = require('flux/ActionTypes');
-var ShoeStore = require('flux/stores/ShoeStore');
+const mapStateToProps = ({shoes}) => {
+  return {
+    shoes,
+  };
+};
 
 /**
  * ShoesPage.react
  *
  * View controller for displaying all of a user's shoes
  */
-var ShoesPage = React.createClass({
+const ShoesPage = React.createClass({
   displayName: 'ShoesPage',
 
-  getInitialState: function() {
+  propTypes: {
+    shoes: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  },
+
+  getInitialState() {
     return {
-      shoes: ShoeStore.getAll(),
       show: false,
     };
   },
 
-  componentDidMount: function() {
-    ShoeStore.bind(ActionTypes.CHANGE, this._shoesChanged);
+  componentWillReceiveProps(nextProps) {
+    // Hide modal when shoes are modified somehow.
+    if (!isEqual(this.props.shoes, nextProps.shoes)) {
+      this.setState({show: false});
+    }
   },
 
-  componentWillUnmount: function() {
-    ShoeStore.unbind(ActionTypes.CHANGE, this._shoesChanged);
-  },
-
-  _shoesChanged: function() {
-    this.setState({
-      shoes: ShoeStore.getAll(),
-      show: false,
-    });
-  },
-
-  render: function() {
-    const {shoes, show} = this.state;
-
+  render() {
     return (
       <AppPage narrow>
         <PageHeader title="Shoes">
@@ -52,22 +49,22 @@ var ShoesPage = React.createClass({
             </Button>
             <ShoeModal
               onHide={this._handleHideModal}
-              show={show}
+              show={this.state.show}
             />
           </div>
         </PageHeader>
-        {shoes ? <AllShoesView shoes={shoes} /> : <Loader />}
+        <AllShoesView shoes={this.props.shoes} />
       </AppPage>
     );
   },
 
-  _handleHideModal: function() {
+  _handleHideModal() {
     this.setState({show: false});
   },
 
-  _handleShowModal: function() {
+  _handleShowModal() {
     this.setState({show: true});
   },
 });
 
-module.exports = ShoesPage;
+module.exports = connect(mapStateToProps)(ShoesPage);

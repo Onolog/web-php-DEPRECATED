@@ -30,7 +30,6 @@ const ShoeViewModal = React.createClass({
           {shoe ? null : <Loader background full large />}
           <ShoeView
             activities={shoe.activities}
-            activityCount={shoe.activity_count}
             mileage={shoe.mileage}
           />
         </Modal.Body>

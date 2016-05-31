@@ -1,5 +1,5 @@
-var ShoeViewPage = require('../app/Shoes/ShoeViewPage.react');
+import ShoeViewPage from 'app/Shoes/ShoeViewPage.react';
 
-var reactRender = require('../utils/reactRender');
+import reactRender from 'utils/reactRender';
 
 reactRender(ShoeViewPage);

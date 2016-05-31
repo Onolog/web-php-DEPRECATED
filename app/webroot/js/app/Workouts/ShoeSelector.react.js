@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
 
 import Select from 'components/Select/Select.react';
+import {fetchShoes} from 'actions/shoes';
 
-import ActionTypes from 'flux/ActionTypes';
-import ShoeActions from 'flux/actions/ShoeActions';
-import ShoeStore from 'flux/stores/ShoeStore';
+const mapStoreToProps = ({shoes}) => {
+  return {
+    shoes,
+  };
+};
 
 /**
  * ShoeSelector.react
@@ -19,29 +23,21 @@ const ShoeSelector = React.createClass({
       React.PropTypes.number,
       React.PropTypes.string,
     ]),
+    shoes: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      mileage: PropTypes.number.isRequired,
+      name: PropTypes.isRequired,
+    })),
   },
 
   componentWillMount() {
-    ShoeActions.fetch();
-  },
-
-  componentDidMount() {
-    ShoeStore.bind(ActionTypes.CHANGE, this._setShoes);
-  },
-
-  componentWillUnmount() {
-    ShoeStore.unbind(ActionTypes.CHANGE, this._setShoes);
-  },
-
-  _setShoes() {
-    this.setState({shoes: ShoeStore.getAll()});
+    this.props.dispatch(fetchShoes());
   },
 
   getInitialState() {
     return {
       // TODO: This is kind of a hack.
       initialSelection: this.props.defaultValue,
-      shoes: [],
     };
   },
 
@@ -61,7 +57,7 @@ const ShoeSelector = React.createClass({
    */
   _getOptions() {
     // Filter out inactive shoes unless it's the initially selected shoe.
-    let shoes = this.state.shoes.filter(shoe => (
+    let shoes = this.props.shoes.filter(shoe => (
       !shoe.inactive || shoe.id === +this.state.initialSelection
     ));
 
@@ -79,4 +75,4 @@ const ShoeSelector = React.createClass({
   },
 });
 
-module.exports = ShoeSelector;
+module.exports = connect(mapStoreToProps)(ShoeSelector);

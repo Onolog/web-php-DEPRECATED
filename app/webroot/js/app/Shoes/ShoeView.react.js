@@ -19,10 +19,6 @@ var ShoeView = React.createClass({
 
   propTypes: {
     /**
-     * Number of times the shoe has been used for an activity.
-     */
-    activityCount: React.PropTypes.number.isRequired,
-    /**
      * Array of all the activities associated with the shoe
      */
     activities: React.PropTypes.array,
@@ -30,6 +26,12 @@ var ShoeView = React.createClass({
      * Number of miles the shoe has accumulated
      */
     mileage: React.PropTypes.number.isRequired,
+  },
+
+  getDefaultProps() {
+    return {
+      activities: [],
+    };
   },
 
   render: function() {
@@ -41,7 +43,7 @@ var ShoeView = React.createClass({
               {this.props.mileage}
             </Topline.Item>
             <Topline.Item label="Activities">
-              {this.props.activityCount}
+              {this.props.activities.length}
             </Topline.Item>
           </Topline>
         </ActivitySection>

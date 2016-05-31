@@ -62,7 +62,7 @@ const ShoeTable = React.createClass({
           />
         </td>
         <td className="activities">
-          {shoe.activity_count}
+          {(shoe.activities && shoe.activities.length) || 0}
         </td>
         <td className="mileage">
           {shoe.mileage}

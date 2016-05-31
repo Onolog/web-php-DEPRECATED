@@ -1,7 +1,9 @@
-var Autolinker = require('autolinker');
-var React = require('react');
-var ReactDOM = require('react-dom');
-var {Tab, Tabs} = require('react-bootstrap/lib');
+import Autolinker from 'autolinker';
+import {find} from 'lodash';
+import React, {PropTypes} from 'react';
+import {findDOMNode} from 'react-dom';
+import {Tab, Tabs} from 'react-bootstrap';
+import {connect} from 'react-redux';
 
 var ActivityDeviceInfo = require('./ActivityDeviceInfo.react');
 var ActivityHeader = require('./ActivityHeader.react');
@@ -12,12 +14,15 @@ var ActivityStats = require('./ActivityStats.react');
 
 var FBFacepile = require('components/Facebook/FBFacepile.react');
 
-var ActionTypes = require('flux/ActionTypes');
-var ShoeStore = require('flux/stores/ShoeStore');
-
 var cx = require('classnames');
 
 require('./Activity.css');
+
+const mapStateToProps = ({shoes}) => {
+  return {
+    shoes,
+  };
+};
 
 /**
  * Activity.react
@@ -25,38 +30,33 @@ require('./Activity.css');
  * Renders a full activity view, depending on what data is passed in, like maps,
  * graphs, stats and any user-created details.
  */
-var Activity = React.createClass({
+const Activity = React.createClass({
   displayName: 'Activity',
 
   propTypes: {
-    activity: React.PropTypes.object.isRequired,
+    activity: PropTypes.object.isRequired,
+    shoes: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    }).isRequired).isRequired,
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       isHorizontal: true,
-      shoes: ShoeStore.getAll(),
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     this._setOrientation();
     window.addEventListener('resize', this._setOrientation);
-
-    ShoeStore.bind(ActionTypes.CHANGE, this._setShoes);
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     window.removeEventListener('resize', this._setOrientation);
-
-    ShoeStore.unbind(ActionTypes.CHANGE, this._setShoes);
   },
 
-  _setShoes: function() {
-    this.setState({shoes: ShoeStore.getAll()});
-  },
-
-  render: function() {
+  render() {
     const {activity} = this.props;
     const {athlete, series} = activity;
 
@@ -90,7 +90,7 @@ var Activity = React.createClass({
     );
   },
 
-  _renderDetailsContent: function(activity) {
+  _renderDetailsContent(activity) {
     const {device, friends, notes, shoe_id} = activity;
 
     let content = [];
@@ -111,7 +111,7 @@ var Activity = React.createClass({
       );
     }
 
-    let shoe = ShoeStore.getSingle(shoe_id);
+    let shoe = find(this.props.shoes, {id: shoe_id});
     if (shoe) {
       content.push(
         <ActivitySection key="shoe" title="Shoes">
@@ -166,9 +166,9 @@ var Activity = React.createClass({
 
   _setOrientation: function() {
     this.setState({
-      isHorizontal: ReactDOM.findDOMNode(this).offsetWidth > 750,
+      isHorizontal: findDOMNode(this).offsetWidth > 750,
     });
   },
 });
 
-module.exports = Activity;
+module.exports = connect(mapStateToProps)(Activity);

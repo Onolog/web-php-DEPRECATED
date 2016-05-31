@@ -1,4 +1,5 @@
-import React from 'react';
+import {find} from 'lodash';
+import React, {PropTypes} from 'react';
 import {
   Button,
   ButtonGroup,
@@ -7,18 +8,24 @@ import {
   Panel,
   Tooltip,
 } from 'react-bootstrap';
+import {connect} from 'react-redux';
 
 import AppPage from 'components/Page/AppPage.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import ShoeView from './ShoeView.react';
 
-import ShoeStore from 'flux/stores/ShoeStore';
 import UserStore from 'flux/stores/UserStore';
 
 function getIdFromPath() {
   const id = document.location.pathname.split('/').pop();
   return parseInt(id, 10);
 }
+
+const mapStoreToProps = ({shoes}) => {
+  return {
+    shoe: find(shoes, {id: getIdFromPath()}),
+  };
+};
 
 /**
  * ShoeViewPage.react
@@ -28,8 +35,18 @@ function getIdFromPath() {
 const ShoeViewPage = React.createClass({
   displayName: 'ShoeViewPage',
 
+  propTypes: {
+    shoe: PropTypes.shape({
+      activities: PropTypes.array.isRequired,
+      id: PropTypes.number.isRequired,
+      mileage: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      user_id: PropTypes.number.isRequired,
+    }).isRequired,
+  },
+
   render() {
-    const shoe = ShoeStore.getSingle(getIdFromPath());
+    const {shoe} = this.props;
 
     return (
       <AppPage>
@@ -39,7 +56,6 @@ const ShoeViewPage = React.createClass({
         <Panel>
           <ShoeView
             activities={shoe.activities}
-            activityCount={shoe.activity_count}
             fill
             mileage={shoe.mileage}
           />
@@ -48,7 +64,9 @@ const ShoeViewPage = React.createClass({
     );
   },
 
-  _renderButtonGroup(shoe) {
+  _renderButtonGroup() {
+    const {shoe} = this.props;
+
     if (UserStore.getUserId() === shoe.user_id) {
       return (
         <ButtonGroup>
@@ -89,11 +107,10 @@ const ShoeViewPage = React.createClass({
    * TODO: Handle this better...
    */
   _onShoeDelete() {
-    const id = getIdFromPath();
     if (confirm('Are you sure you want to delete this shoe?')) {
-      document.location = `/shoes/delete/${id}`;
+      document.location = `/shoes/delete/${this.props.shoe.id}`;
     }
   },
 });
 
-module.exports = ShoeViewPage;
+module.exports = connect(mapStoreToProps)(ShoeViewPage);
