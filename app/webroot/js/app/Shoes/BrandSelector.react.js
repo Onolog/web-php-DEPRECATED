@@ -1,36 +1,45 @@
-var React = require('react');
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
 
-var Select = require('components/Select/Select.react');
+import Select from 'components/Select/Select.react';
+import {fetchBrandsIfNeeded} from 'actions/brands';
 
-var {CHANGE} = require('flux/ActionTypes');
-var BrandStore = require('flux/stores/BrandStore');
+const mapStateToProps = ({brands}) => {
+  return {
+    brands,
+  };
+};
 
 /**
  * BrandSelector.react
  *
  * A selector element that displays all possible shoe brands.
  */
-var BrandSelector = React.createClass({
+const BrandSelector = React.createClass({
   displayName: 'BrandSelector',
 
-  componentWillMount: function() {
-    this._setBrands();
+  componentWillMount() {
+    this.props.dispatch(fetchBrandsIfNeeded());
   },
 
-  componentDidMount: function() {
-    BrandStore.bind(CHANGE, this._setBrands);
+  propTypes: {
+    brands: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    })).isRequired,
   },
 
-  componentWillUnmount: function() {
-    BrandStore.unbind(CHANGE, this._setBrands);
-  },
+  render() {
+    const {brands} = this.props;
+    const options = [];
 
-  _setBrands: function() {
-    this.setState({brands: BrandStore.getCollection()});
-  },
+    brands.forEach((brand) => {
+      options.push({
+        label: brand.name,
+        value: brand.id,
+      });
+    });
 
-  render: function() {
-    var options = this._getBrandOptions();
     return (
       <Select
         {...this.props}
@@ -40,23 +49,6 @@ var BrandSelector = React.createClass({
       />
     );
   },
-
-  /**
-   * Format the brand options correctly
-   */
-  _getBrandOptions: function() {
-    var brands = this.state.brands;
-    var options = [];
-
-    brands.forEach(function(brand) {
-      options.push({
-        label: brand.name,
-        value: +brand.id,
-      });
-    });
-
-    return options;
-  },
 });
 
-module.exports = BrandSelector;
+module.exports = connect(mapStateToProps)(BrandSelector);

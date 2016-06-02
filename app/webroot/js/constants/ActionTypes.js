@@ -44,8 +44,11 @@ module.exports = {
   ALL_SHOES_FETCH: 'all-shoes-fetch',
   ALL_SHOES_FETCH_ERROR: 'all-shoes-fetch-error',
   ALL_SHOES_FETCH_SUCCESS: 'all-shoes-fetch-success',
+
   BRANDS_FETCH: 'brands-fetch',
   BRANDS_FETCH_ERROR: 'brands-fetch-error',
+  BRANDS_FETCH_SUCCESS: 'brands-fetch-success',
+  
   WORKOUTS_FETCH: 'workouts-fetch',
   WORKOUTS_FETCH_ERROR: 'workouts-fetch-error',
 

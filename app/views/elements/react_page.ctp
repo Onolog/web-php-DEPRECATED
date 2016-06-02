@@ -19,10 +19,11 @@ echo $this->element('loader', array('id' => 'root'));
 
 // Prepare all the data for the client.
 $appData = array(
-  'params' => $this->params,
+  'activities' => array(),
+  'brands' => array(),
+  'session' => $this->Session->read('Config'),
   'shoes' => array(),
   'user' => $this->Session->read('Auth.User'),
-  'workouts' => array(),
 );
 
 if (isset($data)) {

@@ -11,10 +11,9 @@ import thunk from 'redux-thunk';
 
 import rootReducer from 'reducers';
 
-const initialState = {shoes: window.APP_DATA.shoes};
 const appStore = createStore(
   rootReducer,
-  initialState,
+  window.APP_DATA, // Initial state
   applyMiddleware(thunk)
 );
 
