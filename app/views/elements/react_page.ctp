@@ -18,10 +18,15 @@ if (isset($title)) {
 echo $this->element('loader', array('id' => 'root'));
 
 // Prepare all the data for the client.
+$loggedInUser = $this->Session->read('Auth.User');
+
 $appData = array(
   'activities' => array(),
   'brands' => array(),
-  'session' => $this->Session->read('Config'),
+  'session' => array_merge(
+    isset($loggedInUser) ? $loggedInUser : array(),
+    $this->Session->read('Config')
+  ),
   'shoes' => array(),
   'user' => $this->Session->read('Auth.User'),
 );

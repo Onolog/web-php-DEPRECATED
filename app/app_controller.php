@@ -64,9 +64,14 @@ class AppController extends Controller {
     $this->Auth->allowedActions = array('display');
   }
 
-  /**
-   * 
-   */
+  public function getSession() {
+    $loggedInUser = $this->Session->read('Auth.User');
+    return array_merge(
+      isset($loggedInUser) ? $loggedInUser : array(),
+      $this->Session->read('Config')
+    );
+  }
+
   public function getLoggedInUser() {
     return $this->Auth->User('id');
   }

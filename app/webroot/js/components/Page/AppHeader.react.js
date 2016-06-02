@@ -1,15 +1,18 @@
 import {MenuItem, Nav, Navbar, NavDropdown, NavItem} from 'react-bootstrap';
-import React from 'react';
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
 
 import FBImage from 'components/Facebook/FBImage.react';
 import Link from 'components/Link/Link.react';
 
-import UserActions from 'flux/actions/UserActions';
-import UserStore from 'flux/stores/UserStore';
-
+import {loginIfNeeded, logoutIfNeeded} from 'actions/session';
 import homeUrl from 'utils/homeUrl';
 
-import {CHANGE} from 'flux/ActionTypes';
+const mapStateToProps = ({session}) => {
+  return {
+    user: session,
+  };
+};
 
 require('./css/AppHeader.css');
 
@@ -19,31 +22,15 @@ require('./css/AppHeader.css');
 const AppHeader = React.createClass({
   displayName: 'AppHeader',
 
-  getInitialState() {
-    return {
-      isLoading: true,
-      user: UserStore.getUser(),
-    };
-  },
-
-  componentDidMount() {
-    UserStore.bind(CHANGE, this._onUserStoreUpdate);
-  },
-
-  componentWillUnmount() {
-    UserStore.unbind(CHANGE, this._onUserStoreUpdate);
-  },
-
-  _onUserStoreUpdate() {
-    let user = UserStore.getUser();
-    this.setState({
-      isLoading: !user,
-      user,
-    });
+  propTypes: {
+    user: PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+    }).isRequired,
   },
 
   render() {
-    const {user} = this.state;
+    const {user} = this.props;
 
     return (
       <Navbar
@@ -67,7 +54,7 @@ const AppHeader = React.createClass({
   },
 
   _renderAccountMenu(user) {
-    if (user && user.id) {
+    if (user.id) {
       let title =
         <span>
           <FBImage
@@ -95,7 +82,7 @@ const AppHeader = React.createClass({
               Settings
             </MenuItem>
             <MenuItem divider />
-            <MenuItem onClick={UserActions.logout}>
+            <MenuItem onClick={this._handleLogout}>
               Sign Out
             </MenuItem>
           </NavDropdown>
@@ -105,7 +92,7 @@ const AppHeader = React.createClass({
   },
 
   _renderMainMenu(user) {
-    if (user && user.id) {
+    if (user.id) {
       return (
         <Nav>
           <NavItem href={homeUrl()}>
@@ -114,7 +101,7 @@ const AppHeader = React.createClass({
           <NavItem href={`/users/profile/${user.id}`}>
             Profile
           </NavItem>
-          <NavItem href="/users/shoes">
+          <NavItem href="/shoes">
             Shoes
           </NavItem>
         </Nav>
@@ -127,16 +114,24 @@ const AppHeader = React.createClass({
    * to do so.
    */
   _renderLoginLink(user) {
-    if (!(user && user.id) && !this.state.isLoading) {
+    if (!user.id) {
       return (
         <Nav pullRight>
-          <NavItem onClick={UserActions.login}>
+          <NavItem onClick={this._handleLogin}>
             Sign In
           </NavItem>
         </Nav>
       );
     }
   },
+
+  _handleLogin() {
+    this.props.dispatch(loginIfNeeded());
+  },
+
+  _handleLogout() {
+    this.props.dispatch(logoutIfNeeded());
+  },
 });
 
-module.exports = AppHeader;
+module.exports = connect(mapStateToProps)(AppHeader);

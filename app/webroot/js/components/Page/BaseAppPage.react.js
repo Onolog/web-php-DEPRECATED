@@ -1,14 +1,20 @@
-var cx = require('classnames');
-var moment = require('moment');
-var React = require('react');
-var {Button, Modal} = require('react-bootstrap');
+import cx from 'classnames';
+import moment from 'moment';
+import React, {PropTypes} from 'react';
+import {Button, Modal} from 'react-bootstrap';
+import {connect} from 'react-redux';
 
-var fbLoader = require('utils/fbLoader');
-var UserActions = require('flux/actions/UserActions');
-var UserStore = require('flux/stores/UserStore');
+import {loginIfNeeded} from 'actions/session';
+import fbLoader from 'utils/fbLoader';
 
-const {CHANGE} = require('flux/ActionTypes');
-const INTERVAL = 1 * 60; // * 1000; // 1 min
+const INTERVAL = 1000 * 60; // 1 min
+const LOGIN_PATH = '/login';
+
+const mapStateToProps = ({session}) => {
+  return {
+    session,
+  };
+};
 
 /**
  * BaseAppPage.react
@@ -16,19 +22,36 @@ const INTERVAL = 1 * 60; // * 1000; // 1 min
  * Base component for rendering the app page, with code that should execute on
  * every page.
  */
-var BaseAppPage = React.createClass({
+const BaseAppPage = React.createClass({
   displayName: 'BaseAppPage',
 
+  propTypes: {
+    session: PropTypes.shape({
+      time: PropTypes.number.isRequired,
+    }),
+  },
+
+  componentWillReceiveProps(nextProps) {
+    const {session} = this.props;
+    const nextSession = nextProps.session;
+
+    // User has successfully logged in.
+    if (!session.id && nextSession.id) {
+      document.location.reload();
+    }
+
+    // User has successfully logged out.
+    if (session.id && !nextSession.id) {
+      document.location = LOGIN_PATH;
+    }
+  },
+
   componentDidMount() {
-    fbLoader(() => {
-      UserStore.bind(CHANGE, this._checkLoginStatus);
-      setInterval(this._checkLoginStatus, INTERVAL);
-    });
+    fbLoader(() => setInterval(this._checkLoginStatus, INTERVAL));
   },
 
   componentWillUnmount() {
     clearInterval();
-    UserStore.unbind(CHANGE, this._checkLoginStatus);
   },
 
   getInitialState() {
@@ -49,7 +72,7 @@ var BaseAppPage = React.createClass({
             You{"'"}ve been logged out. Please log back in.
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="primary" onClick={UserActions.login}>
+            <Button bsStyle="primary" onClick={this._handleLogin}>
               Log In
             </Button>
           </Modal.Footer>
@@ -59,16 +82,15 @@ var BaseAppPage = React.createClass({
   },
 
   _checkLoginStatus() {
-    if (document.location.pathname === '/login') {
+    if (document.location.pathname === LOGIN_PATH) {
       // If the user is on the login page, they're obviously logged out.
       clearInterval();
       return;
     }
 
-    let isLoggedOut = false;
-    let session = UserStore.getSession();
-    let time = session && session.time;
+    const {time} = this.props.session;
 
+    let isLoggedOut = false;
     FB.getLoginStatus((response) => {
       if (response.status !== 'connected') {
         isLoggedOut = true;
@@ -84,6 +106,10 @@ var BaseAppPage = React.createClass({
       }
     });
   },
+
+  _handleLogin() {
+    this.props.dispatch(loginIfNeeded());
+  },
 });
 
-module.exports = BaseAppPage;
+module.exports = connect(mapStateToProps)(BaseAppPage);

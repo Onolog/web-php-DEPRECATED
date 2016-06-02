@@ -48,14 +48,18 @@ module.exports = {
   BRANDS_FETCH: 'brands-fetch',
   BRANDS_FETCH_ERROR: 'brands-fetch-error',
   BRANDS_FETCH_SUCCESS: 'brands-fetch-success',
-  
+
   WORKOUTS_FETCH: 'workouts-fetch',
   WORKOUTS_FETCH_ERROR: 'workouts-fetch-error',
 
   // User-related actions
-  USER_LOGIN: 'user-login',
-  USER_LOGOUT: 'user-logout',
-  USER_SESSION: 'user-session',
+  SESSION_LOGIN: 'session-login',
+  SESSION_LOGIN_ERROR: 'session-login-error',
+  SESSION_LOGIN_SUCCESS: 'session-login-success',
+  SESSION_LOGOUT: 'session-logout',
+  SESSION_LOGOUT_ERROR: 'session-logout-error',
+  SESSION_LOGOUT_SUCCESS: 'session-logout-success',
+
   USER_SETTINGS_SAVE: 'user-settings-save',
   USER_SETTINGS_SAVE_ERROR: 'user-settings-save-error',
 

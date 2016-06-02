@@ -48,7 +48,7 @@ class UsersController extends AppController {
     $uid = $this->Auth->User('id');
 
     if (!$uid) {
-      // There was somekind of problem receiving the auth response from FB.
+      // There was some kind of problem receiving the auth response from FB.
       return $response
         ->setMessage(
           'Sorry, your information could not be authenticated. Please try ' .
@@ -70,6 +70,7 @@ class UsersController extends AppController {
 
       return $response
         ->setSuccess(true)
+        ->setPayload($this->getSession())
         ->send();
     }
 
@@ -96,6 +97,7 @@ class UsersController extends AppController {
 
       return $response
         ->setSuccess(true)
+        ->setPayload($this->getSession())
         ->send();
     }
 
@@ -115,10 +117,7 @@ class UsersController extends AppController {
 
     return id(new Response())
       ->setSuccess(true)
-      ->setPayload(array(
-        'user' => $this->Session->read('Auth.User'),
-        'session' => $this->Session->read('Config'),
-      ))
+      ->setPayload($this->getSession())
       ->send();
   }
 
@@ -137,6 +136,7 @@ class UsersController extends AppController {
     $response = new Response();
     return $response
       ->setSuccess(true)
+      ->setPayload($this->getSession())
       ->send();
   }
 

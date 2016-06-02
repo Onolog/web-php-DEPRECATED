@@ -1,34 +1,35 @@
-var React = require('react');
+import React from 'react';
+import {connect} from 'react-redux';
 
-var BaseAppPage = require('components/Page/BaseAppPage.react');
-var FBLoginButton = require('components/Facebook/FBLoginButton.react');
+import BaseAppPage from 'components/Page/BaseAppPage.react';
+import FBLoginButton from 'components/Facebook/FBLoginButton.react';
 
-var UserActions = require('flux/actions/UserActions');
+import {loginIfNeeded} from 'actions/session';
 
 require('../../../../css/app/Login.css');
 
 /**
  * Login.react.js
  */
-var Login = React.createClass({
+const Login = React.createClass({
   displayName: 'Login',
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       windowHeight: null,
     };
   },
 
-  componentDidMount: function() {
-    this._resize();
-    window.addEventListener('resize', this._resize);
+  componentDidMount() {
+    this._handleResize();
+    window.addEventListener('resize', this._handleResize);
   },
 
-  componentWillUnmount: function() {
-    window.removeEventListener('resize', this._resize);
+  componentWillUnmount() {
+    window.removeEventListener('resize', this._handleResize);
   },
 
-  render: function() {
+  render() {
     return (
       <BaseAppPage className="login">
         <div
@@ -39,7 +40,7 @@ var Login = React.createClass({
             <p className="lead">
               Running is better with friends.
             </p>
-            <p><FBLoginButton onClick={UserActions.login} /></p>
+            <p><FBLoginButton onClick={this._handleLogin} /></p>
           </div>
           <div className="bgImage"></div>
         </div>
@@ -47,7 +48,7 @@ var Login = React.createClass({
     ); 
   },
 
-  _renderMarketingSection: function(title) {
+  _renderMarketingSection(title) {
     return (
       <div className="marketingSection">
         <div className="container">
@@ -57,7 +58,11 @@ var Login = React.createClass({
     );
   },
 
-  _resize: function() {
+  _handleLogin() {
+    this.props.dispatch(loginIfNeeded());
+  },
+
+  _handleResize() {
     var windowHeight = Math.max(
       document.documentElement.clientHeight,
       window.innerHeight || 0
@@ -66,4 +71,4 @@ var Login = React.createClass({
   },
 });
 
-module.exports = Login;
+module.exports = connect()(Login);
