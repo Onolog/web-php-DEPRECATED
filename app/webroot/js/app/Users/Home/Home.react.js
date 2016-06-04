@@ -10,7 +10,7 @@ var {
 } = require('react-bootstrap/lib');
 
 var ActionTypes = require('flux/ActionTypes');
-var CalendarActions = require('flux/actions/CalendarActions');
+var WorkoutActions = require('flux/actions/WorkoutActions');
 var WorkoutStore = require('flux/stores/WorkoutStore');
 
 var ActivityModal = require('./ActivityModal.react');
@@ -41,7 +41,7 @@ var Home = React.createClass({
 
   componentWillMount: function() {
     // Load all the workouts into the component
-    CalendarActions.fetch(
+    WorkoutActions.fetch(
       this.state.date.getFullYear(),
       this.state.date.getMonth() + 1
     );
@@ -148,7 +148,7 @@ var Home = React.createClass({
     );
 
     // Fetch activities for the selected month
-    CalendarActions.fetch(
+    WorkoutActions.fetch(
       date.getFullYear(),
       date.getMonth() + 1
     );
