@@ -1,7 +1,7 @@
 import AppDispatcher from 'flux/AppDispatcher';
 import MicroEvent from 'lib/microevent';
 
-import {CHANGE, USER_LOGOUT, USER_SETTINGS_SAVE} from 'flux/ActionTypes';
+import {CHANGE, USER_SETTINGS_SAVE} from 'flux/ActionTypes';
 
 let _user = window.APP_DATA.user || {id: 0};
 

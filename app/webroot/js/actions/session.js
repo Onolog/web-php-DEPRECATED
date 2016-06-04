@@ -67,7 +67,7 @@ function login() {
         }
       }, PERMISSIONS);
     });
-  }
+  };
 }
 
 function getFBUser(accessToken, dispatch) {

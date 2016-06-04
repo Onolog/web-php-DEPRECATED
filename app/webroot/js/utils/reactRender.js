@@ -11,11 +11,12 @@ import thunk from 'redux-thunk';
 
 import rootReducer from 'reducers';
 
-const initialState = Object.assign({}, window.APP_DATA, {
+const initialState = {
+  ...window.APP_DATA,
   navigation: {
     sideNavOpen: JSON.parse(localStorage.getItem('sideNavOpen')),
-  }
-});
+  },
+};
 
 const appStore = createStore(
   rootReducer,

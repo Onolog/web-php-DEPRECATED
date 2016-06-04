@@ -38,14 +38,12 @@ export const addShoe = (shoe) => {
 
     $.post('/ajax/shoes/add/', encodeData(shoe, FORM_NAME))
       .done(response => {
-        let {message, payload} = JSON.parse(response);
+        const {payload} = JSON.parse(response);
         dispatch(addShoeResponse(payload));
       })
-      .fail(response => {
-        console.warn('Error');
-      });
+      .fail(response => dispatch({type: SHOE_ADD_ERROR}));
   };
-}
+};
 
 function deleteShoeRequest(id) {
   return {
@@ -67,14 +65,12 @@ export const deleteShoe = (id) => {
 
     $.post(`/ajax/shoes/delete/${id}`)
       .done(response => {
-        let {message, payload} = JSON.parse(response);
+        const {payload} = JSON.parse(response);
         dispatch(deleteShoeResponse(payload));
       })
-      .fail(response => {
-        console.warn('Error');
-      });
+      .fail(response => dispatch({type: SHOE_DELETE_ERROR}));
   };
-}
+};
 
 function fetchShoesRequest() {
   return {
@@ -95,12 +91,12 @@ export const fetchShoes = () => {
 
     $.get('/ajax/shoes/all')
       .done(response => {
-        let {message, payload} = JSON.parse(response);
+        const {payload} = JSON.parse(response);
         dispatch(fetchShoesResponse(payload));
       })
       .fail(response => dispatch({type: ALL_SHOES_FETCH_ERROR}));
   };
-}
+};
 
 function updateShoeRequest(shoe) {
   return {
@@ -122,11 +118,9 @@ export const updateShoe = (shoe) => {
 
     $.post(`/ajax/shoes/edit/${shoe.id}`, encodeData(shoe, FORM_NAME))
       .done(response => {
-        let {message, payload} = JSON.parse(response);
+        const {payload} = JSON.parse(response);
         dispatch(updateShoeResponse(payload));
       })
-      .fail(response => {
-        console.warn('Error');
-      });
+      .fail(response => dispatch({type: SHOE_UPDATE_ERROR}));
   };
-}
+};

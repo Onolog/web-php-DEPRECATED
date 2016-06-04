@@ -11,7 +11,7 @@ function fetchBrands() {
 
     $.get('/ajax/brands/all/')
       .done(response => {
-        let {message, payload} = JSON.parse(response);
+        const {payload} = JSON.parse(response);
         dispatch({
           brands: payload,
           type: BRANDS_FETCH_SUCCESS,
@@ -27,5 +27,5 @@ export function fetchBrandsIfNeeded() {
     if (!brands.length) {
       return dispatch(fetchBrands());
     }
-  }
+  };
 }

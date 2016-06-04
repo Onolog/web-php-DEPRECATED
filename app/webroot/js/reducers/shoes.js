@@ -1,3 +1,5 @@
+import {map} from 'lodash';
+
 import {
   ALL_SHOES_FETCH,
   ALL_SHOES_FETCH_ERROR,

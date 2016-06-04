@@ -8,5 +8,5 @@ export function toggleSideNav(sideNavOpen) {
       sideNavOpen,
       type: NAV_TOGGLE,
     });
-  }
+  };
 }
