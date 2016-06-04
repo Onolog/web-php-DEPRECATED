@@ -1,7 +1,7 @@
 /**
  * reactRender.js
  *
- * Convenience wrapper for instantiating and rendering React components.
+ * Instantiate and render React components onto the page.
  */
 import React from 'react'; // eslint-disable-line no-unused-vars
 import {render} from 'react-dom';
@@ -11,9 +11,15 @@ import thunk from 'redux-thunk';
 
 import rootReducer from 'reducers';
 
+const initialState = Object.assign({}, window.APP_DATA, {
+  navigation: {
+    sideNavOpen: JSON.parse(localStorage.getItem('sideNavOpen')),
+  }
+});
+
 const appStore = createStore(
   rootReducer,
-  window.APP_DATA, // Initial state
+  initialState,
   applyMiddleware(thunk)
 );
 

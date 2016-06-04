@@ -1,12 +1,19 @@
 import cx from 'classnames';
-import React from 'react';
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
 
 import LeftRight from 'components/LeftRight/LeftRight.react';
 import NavbarToggle from 'components/Navigation/NavbarToggle.react';
 
-import NavActions from 'flux/actions/NavActions';
+import {toggleSideNav} from 'actions/navigation';
 
 require('./css/PageHeader.css');
+
+const mapStateToProps = ({navigation}) => {
+  return {
+    sideNavOpen: navigation.sideNavOpen,
+  };
+};
 
 /**
  * PageHeader
@@ -15,7 +22,7 @@ const PageHeader = (props) => {
   const navbarToggle = props.full ?
     <NavbarToggle
       className="visible-xs-block"
-      onClick={NavActions.toggleSideNav}
+      onClick={() => props.dispatch(toggleSideNav(props.sideNavOpen))}
     /> : null;
 
   return (
@@ -32,4 +39,8 @@ const PageHeader = (props) => {
   );
 };
 
-module.exports = PageHeader;
+PageHeader.propTypes = {
+  sideNavOpen: PropTypes.bool.isRequired,
+},
+
+module.exports = connect(mapStateToProps)(PageHeader);

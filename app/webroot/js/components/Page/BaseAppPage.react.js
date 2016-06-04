@@ -88,20 +88,23 @@ const BaseAppPage = React.createClass({
       return;
     }
 
-    const {time} = this.props.session;
+    const {dispatch, session} = this.props;
 
     let isLoggedOut = false;
     FB.getLoginStatus((response) => {
       if (response.status !== 'connected') {
+        // Logged out from Facebook.
         isLoggedOut = true;
-      } else if (time) {
-        isLoggedOut = moment().isAfter(moment.unix(time));
+      } else if (session.time) {
+        // Session timeout.
+        isLoggedOut = moment().isAfter(moment.unix(session.time));
       }
 
       if (isLoggedOut && !this.state.show) {
         // Stop checking for login state and display a message if the user is
         // logged out.
         clearInterval();
+        // dispatch(sessionTimeout());
         this.setState({show: true});
       }
     });
