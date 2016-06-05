@@ -28,28 +28,15 @@ class WorkoutsController extends AppController {
         ->send();
     }
 
-    // Get workouts for the selected month, plus and minus a week.
-    $start = mktime(0, 0, 0, $month, -7, $year);
-    $end = mktime(0, 0, 0, $month+1, 7, $year);
-
-    $workouts = $this->Workout->find('all', array(
-      'conditions' => array(
-        'Workout.user_id' => $user,
-        'Workout.start_date >=' => date('c', $start),
-        'Workout.start_date <=' => date('c', $end),
-      ),
-      'order'  => 'Workout.start_date ASC',
-    ));
-
-    // Strip out extraneous data (User, Shoe) from the data set.
-    $data = array();
-    foreach($workouts as $workout) {
-      $data[] = $workout['Workout'];
-    }
+    $activities = $this->Workout->getWorkoutsForMonth($year, $month, $user);
+    $shoes = $this->Workout->Shoe->getShoesForActivities($activities);
 
     return $response
       ->setSuccess(true)
-      ->setPayload($data)
+      ->setPayload(array(
+        'activities' => $activities,
+        'shoes' => $shoes,
+      ))
       ->send();
   }
 
@@ -64,13 +51,13 @@ class WorkoutsController extends AppController {
 		}
 
     // Get the workout data
-		$workout = $this->Workout->read(null, $id);
-    if (empty($workout)) {
+		$activity = $this->Workout->read(null, $id);
+    if (empty($activity)) {
       // The workout doesn't exist. Redirect.
       $this->goHome(__('That workout doesn\'t exist', 1));
     }
 
-    $this->set('workout', $this->populateWorkoutForView($workout));
+    $this->set('activity', $this->populateWorkoutForView($activity));
 	}
 
   /**
@@ -92,11 +79,7 @@ class WorkoutsController extends AppController {
         $workout = $this->populateWorkoutForView($workout);
         $response
           ->setSuccess(true)
-          ->setPayload(array('activity' => $workout['Workout']))
-          ->setField(
-            'isOwner',
-            $workout['User']['id'] === $this->Auth->User('id')
-          );
+          ->setPayload(array('activity' => $workout['Workout']));
       }
 		}
     return $response->send();
@@ -159,6 +142,7 @@ class WorkoutsController extends AppController {
         // If there was a shoe associated with the activity, re-fetch the shoe
         // data, since it will have changed.
         // TODO: Do this more efficiently than getting all the shoes.
+        $shoes = array();
         if ($this->hasShoe($workout)) {
           $shoes = $this->Workout->Shoe->find('all', array(
             'conditions' => array('Shoe.user_id' => $user),
@@ -255,7 +239,7 @@ class WorkoutsController extends AppController {
     // Make sure users only edit their own workouts!
     if ($this->data['Workout']['user_id'] !== $user) {
       return $response
-        ->setMessage('You are not allowed to edit this workout.')
+        ->setMessage('You are not allowed to edit this activity.')
         ->send();
     }
 
@@ -272,7 +256,7 @@ class WorkoutsController extends AppController {
 
       $response
         ->setSuccess(true)
-			  ->setMessage('Your workout was successfully updated.')
+			  ->setMessage('Your activity was successfully updated.')
 			  ->setPayload(array(
           'activity' => $this->data['Workout'],
           'shoes' => $shoes,
@@ -280,7 +264,7 @@ class WorkoutsController extends AppController {
 
 		} else {
       $response->setMessage(
-        'The workout could not be saved. Please try again.'
+        'The activity could not be saved. Please try again.'
       );
 		}
 
@@ -334,7 +318,7 @@ class WorkoutsController extends AppController {
 
     // Make sure users only delete their own workouts!
     if ($workout['User']['id'] != $user) {
-      $response->setMessage('You are not allowed to delete this workout');
+      $response->setMessage('You are not allowed to delete this activity');
       $response->send();
     }
 
@@ -342,6 +326,7 @@ class WorkoutsController extends AppController {
 		if ($this->Workout->delete($wid)) {
 
       // Update shoe data if the workout had a shoe associated with it.
+      $shoes = array();
       if ($this->hasShoe($workout)) {
         $shoes = $this->Workout->Shoe->find('all', array(
           'conditions' => array('Shoe.user_id' => $user),
@@ -354,10 +339,11 @@ class WorkoutsController extends AppController {
           'id' => $wid,
           'shoes' => $shoes,
         ))
-		    ->setMessage(__('Your workout was deleted', 1));
+		    ->setMessage(__('Your activity was deleted', 1));
 		} else {
 		  $response->setMessage(
-		    __('Sorry, we couldn\'t delete your workout for some reason', 1)
+        'Sorry, the activity could not be deleted. Please refresh the page ' .
+        'and try again.'
 		  );
 		}
 
@@ -365,15 +351,18 @@ class WorkoutsController extends AppController {
 	}
 
   protected function populateWorkoutForView($workout) {
-    // Shoe info
-    $shoes = $this->Workout->Shoe->read(
-      null,
-      $workout['Workout']['shoes']['id']
-    );
-    $workout['Workout']['shoes'] = array(
-      'id' => $shoes['id'],
-      'name' => $shoes['name']
-    );
+    $shoeId = $workout['Workout']['shoe_id'];
+
+    if ($shoeId) {
+      $shoe = $this->Workout->Shoe->find('first', array(
+        'conditions' => array('Shoe.id' => $shoeId),
+        'recursive' => 0,
+      ));
+      $shoeData = $this->Workout->getActivityDataForShoe($shoeId);
+      $shoe = array_merge($shoe, $shoeData);
+
+      $workout['Workout']['shoes'] = $shoe;
+    }
 
     return $workout;
   }

@@ -1,69 +1,63 @@
-var moment = require('moment');
-var React = require('react');
-var {
+import moment from 'moment';
+import React, {PropTypes} from 'react';
+import {
   Button,
   ButtonGroup,
   Glyphicon,
   OverlayTrigger,
   Panel,
   Tooltip,
-} = require('react-bootstrap/lib');
+} from 'react-bootstrap';
+import {connect} from 'react-redux';
 
-var ActionTypes = require('flux/ActionTypes');
-var WorkoutActions = require('flux/actions/WorkoutActions');
-var WorkoutStore = require('flux/stores/WorkoutStore');
+import ActivityModal from './ActivityModal.react';
+import ActivityCalendar from './ActivityCalendar.react';
+import AppPage from 'components/Page/AppPage.react';
+import Loader from 'components/Loader/Loader.react';
+import PageHeader from 'components/Page/PageHeader.react';
 
-var ActivityModal = require('./ActivityModal.react');
-var ActivityCalendar = require('./ActivityCalendar.react');
-var AppPage = require('components/Page/AppPage.react');
-var Loader = require('components/Loader/Loader.react');
-var PageHeader = require('components/Page/PageHeader.react');
+import {fetchActivities} from 'actions/activities';
+import cloneDate from 'utils/cloneDate';
 
-var cloneDate = require('utils/cloneDate');
+const mapStateToProps = ({activities}) => {
+  return {
+    activities,
+  };
+};
 
 /**
  * Home.react
  */
-var Home = React.createClass({
+const Home = React.createClass({
   displayName: 'Home',
 
-  getInitialState: function() {
-    var {month, year} = window.APP_DATA;
+  propTypes: {
+    activities: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  },
+
+  getInitialState() {
+    const pathArr = document.location.pathname.split('/');
+    const date = pathArr.length === 3 ?
+      new Date(pathArr[1], pathArr[2] - 1, 1) :
+      new Date();
 
     return {
-      // Null means we haven't gotten a response back yet. An empty array
-      // means there are no workouts for that timeframe.
-      activities: null,
-      date: new Date(year, month - 1, 1),
+      date,
+      isLoading: false,
       showModal: false,
     };
   },
 
-  componentWillMount: function() {
-    // Load all the workouts into the component
-    WorkoutActions.fetch(
-      this.state.date.getFullYear(),
-      this.state.date.getMonth() + 1
-    );
-  },
-
-  componentDidMount: function() {
-    WorkoutStore.bind(ActionTypes.CHANGE, this._workoutsChanged);
-  },
-
-  componentWillUnmount: function() {
-    WorkoutStore.unbind(ActionTypes.CHANGE, this._workoutsChanged);
-  },
-
-  _workoutsChanged: function() {
+  componentWillReceiveProps(nextProps) {
     this.setState({
-      activities: WorkoutStore.getAll(),
+      isLoading: false,
       showModal: false,
     });
   },
 
-  render: function() {
-    const {activities, date} = this.state;
+  render() {
+    const {activities} = this.props;
+    const {date, isLoading} = this.state;
 
     return (
       <AppPage>
@@ -71,7 +65,7 @@ var Home = React.createClass({
           {this._renderButtonGroup()}
         </PageHeader>
         <Panel className="calendarContainer">
-          {activities ? null: <Loader background full />}
+          {isLoading && <Loader background full />}
           <ActivityCalendar
             date={date}
             workouts={activities}
@@ -81,7 +75,7 @@ var Home = React.createClass({
     );
   },
 
-  _renderButtonGroup: function() {
+  _renderButtonGroup() {
     return (
       <div>
         <ActivityModal
@@ -125,19 +119,19 @@ var Home = React.createClass({
     );
   },
 
-  _hideModal: function() {
+  _hideModal() {
     this.setState({showModal: false});
   },
 
-  _showModal: function() {
+  _showModal() {
     this.setState({showModal: true});
   },
 
-  _updateCalendar: function(/*Date*/ date) {
+  _updateCalendar(/*Date*/ date) {
     // Update component state
     this.setState({
-      date: date,
-      activities: null, // Reset activities to trigger loader
+      date,
+      isLoading: true, // Reset activities to trigger loader
     });
 
     // Update the browser state history
@@ -148,27 +142,27 @@ var Home = React.createClass({
     );
 
     // Fetch activities for the selected month
-    WorkoutActions.fetch(
+    this.props.dispatch(fetchActivities(
       date.getFullYear(),
       date.getMonth() + 1
-    );
+    ));
   },
 
-  _onLastMonthClick: function() {
+  _onLastMonthClick() {
     var date = cloneDate(this.state.date);
     date.setMonth(date.getMonth() - 1);
     this._updateCalendar(date);
   },
 
-  _onThisMonthClick: function() {
+  _onThisMonthClick() {
     this._updateCalendar(new Date());
   },
 
-  _onNextMonthClick: function() {
+  _onNextMonthClick() {
     var date = cloneDate(this.state.date);
     date.setMonth(date.getMonth() + 1);
     this._updateCalendar(date);
   },
 });
 
-module.exports = Home;
+module.exports = connect(mapStateToProps)(Home);

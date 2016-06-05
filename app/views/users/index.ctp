@@ -9,8 +9,8 @@ echo $this->element('react_page', array(
     'components/Calendar',
   ),
   'data' => array(
-    'month' => $month,
-    'year' => $year,
+    'activities' => $activities,
+    'shoes' => $shoes,
   ),
   'page' => 'Home',
   'title' => $title,

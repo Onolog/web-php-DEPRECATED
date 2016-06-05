@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
 
 import ActivityModal from './ActivityModal.react';
 import ActivityViewModal from './ActivityViewModal.react';
 import Link from 'components/Link/Link.react';
+
+import {deleteActivity} from 'actions/activities';
 
 import formatDistance from 'utils/formatDistance';
 import {isEqual} from 'lodash';
@@ -14,28 +17,29 @@ const WorkoutLink = React.createClass({
   displayName: 'WorkoutLink',
 
   propTypes: {
-    workout: React.PropTypes.object.isRequired,
+    workout: PropTypes.object.isRequired,
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       isEditing: false,
+      isLoading: false,
       showModal: false,
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     // Close the modal if the activity was successfully updated.
     if (!isEqual(nextProps.workout, this.props.workout)) {
       this._hideModal();
     }
   },
 
-  render: function() {
-    var {workout} = this.props;
-    var {isEditing, showModal} = this.state;
+  render() {
+    const {workout} = this.props;
+    const {isEditing, isLoading, showModal} = this.state;
 
-    var modal = isEditing ?
+    const modal = isEditing ?
       <ActivityModal
         animation={false}
         initialActivity={workout}
@@ -44,6 +48,8 @@ const WorkoutLink = React.createClass({
       /> :
       <ActivityViewModal
         activity={workout}
+        isLoading={isLoading}
+        onDelete={this._handleDelete}
         onEdit={this._handleEdit}
         onHide={this._hideModal}
         show={showModal}
@@ -59,20 +65,30 @@ const WorkoutLink = React.createClass({
     );
   },
 
-  _handleEdit: function() {
+  _handleDelete() {
+    if (confirm('Are you sure you want to delete this activity?')) {
+      this.setState({isLoading: true});
+
+      const {dispatch, workout} = this.props;
+      dispatch(deleteActivity(workout.id));
+    }
+  },
+
+  _handleEdit() {
     this.setState({isEditing: true});
   },
 
-  _hideModal: function() {
+  _hideModal() {
     this.setState({
       isEditing: false,
+      isLoading: false,
       showModal: false,
     });
   },
 
-  _showModal: function() {
+  _showModal() {
     this.setState({showModal: true});
   },
 });
 
-module.exports = WorkoutLink;
+module.exports = connect()(WorkoutLink);

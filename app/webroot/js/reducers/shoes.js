@@ -1,6 +1,7 @@
 import {map} from 'lodash';
 
 import {
+  ACTIVITIES_FETCH_SUCCESS,
   ALL_SHOES_FETCH,
   ALL_SHOES_FETCH_ERROR,
   ALL_SHOES_FETCH_SUCCESS,
@@ -36,6 +37,9 @@ const shoes = (shoes=[], action) => {
     case SHOE_UPDATE_SUCCESS:
       shoes = shoes.filter(shoe => shoe.id !== action.shoe.id);
       return [...shoes, action.shoe];
+    case ACTIVITIES_FETCH_SUCCESS:
+      // TODO: Is this necessary or just do an initial fetch of all shoes?
+      return action.shoes;
     case WORKOUT_ADD:
     case WORKOUT_DELETE:
     case WORKOUT_UPDATE:
@@ -44,18 +48,6 @@ const shoes = (shoes=[], action) => {
       // with the new data.
       //
       // TODO: Handle these cases...
-      return shoes;
-    case ALL_SHOES_FETCH_ERROR:
-    case SHOE_ADD_ERROR:
-    case SHOE_DELETE_ERROR:
-    case SHOE_UPDATE_ERROR:
-      // TODO: Handle error.
-      return shoes;
-    case ALL_SHOES_FETCH:
-    case SHOE_ADD:
-    case SHOE_DELETE:
-    case SHOE_UPDATE:
-      // TODO: Add `isLoading` property to app state.
       return shoes;
     default:
       return shoes;

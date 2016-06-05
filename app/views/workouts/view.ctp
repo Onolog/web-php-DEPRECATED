@@ -4,10 +4,10 @@
  *
  * File: /app/views/workouts/view.ctp
  */
-$activity = $workout['Workout'];
+$activity = $activity['Workout'];
 $page_url = 'http://www.onolog.com/workouts/view/' . $activity['id'];
-$date = date('F jS, Y', $activity['date']);
-$time = format_time($activity['time']);
+$date = date('F jS, Y', strtotime($activity['start_date']));
+$time = format_time($activity['duration']);
 $distance = number_format($activity['distance'], 2);
 
 // Set OG meta tags
@@ -23,8 +23,8 @@ $this->Meta->og('fb:app_id', FB_APP_ID);
 echo $this->element('react_page', array(
   'css' => array('app/Workout'),
   'data' => array(
+    'activities' => array($activity),
     'shoes' => array($activity['shoes']),
-    'workouts' => array($activity),
   ),
   'page' => 'Workout',
   'title' => $date,

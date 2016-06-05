@@ -171,4 +171,18 @@ class Shoe extends AppModel {
     return $top_brand;
   }
 
+  public function getShoesForActivities($activities) {
+    $shoeIds = array();
+    foreach ($activities as $activity) {
+      $id = $activity['shoe_id'];
+      if (isset($id)) {
+        $shoeIds[] = $id;
+      }
+    }
+
+    return $this->find('all', array(
+      'conditions' => array('Shoe.id' => $shoeIds),
+      'recursive' => 0,
+    ));
+  }
 }

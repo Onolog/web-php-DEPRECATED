@@ -118,4 +118,52 @@ class Workout extends AppModel {
     }
     return $data;
   }
+
+  public function getWorkoutsForMonth($year, $month, $user) {
+    // Get workouts for the selected month, plus and minus a week.
+    $start = mktime(0, 0, 0, $month, -7, $year);
+    $end = mktime(0, 0, 0, $month+1, 7, $year);
+
+    $workouts = $this->find('all', array(
+      'conditions' => array(
+        'Workout.user_id' => $user,
+        'Workout.start_date >=' => date('c', $start),
+        'Workout.start_date <=' => date('c', $end),
+      ),
+      'order'  => 'Workout.start_date ASC',
+    ));
+
+    // Strip out extraneous data (User, Shoe) from the data set.
+    $data = array();
+    foreach($workouts as $workout) {
+      $data[] = $workout['Workout'];
+    }
+
+    return $data;
+  }
+
+  public function getActivityDataForShoe($shoeId) {
+    $activities = $this->find('all', array(
+      'conditions' => array(
+        'Workout.shoe_id' => $shoeId,
+      ),
+      'fields' => array('Workout.distance', 'Workout.id'),
+      'order'  => 'Workout.start_date ASC',
+    ));
+
+    $data = array(
+      'activities' => array(),
+      'mileage' => 0,
+    );
+
+    $mileage = array();
+    foreach ($activities as $activity) {
+      $data['activities'][] = $activity['Workout']['id'];
+      $mileage[] = $activity['Workout']['distance'];
+    }
+
+    $data['mileage'] = array_sum($mileage);
+
+    return $data;
+  }
 }

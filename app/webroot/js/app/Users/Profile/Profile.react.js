@@ -1,44 +1,53 @@
-var {Panel} = require('react-bootstrap');
-var React = require('react');
+import {chain} from 'lodash';
+import React, {PropTypes} from 'react';
+import {Panel} from 'react-bootstrap';
+import {connect} from 'react-redux';
 
-var AppPage = require('components/Page/AppPage.react');
-var PageHeader = require('components/Page/PageHeader.react');
-var ProfileYearPanel = require('./ProfileYearPanel.react');
-var Topline = require('components/Topline/Topline.react');
+import AppPage from 'components/Page/AppPage.react';
+import EmptyState from 'components/EmptyState.react';
+import PageHeader from 'components/Page/PageHeader.react';
+import ProfileYearPanel from './ProfileYearPanel.react';
+import Topline from 'components/Topline/Topline.react';
 
-var UserStore = require('flux/stores/UserStore');
-var WorkoutStore = require('flux/stores/WorkoutStore');
+import UserStore from 'flux/stores/UserStore';
 
-var {chain} = require('lodash');
-var {getAggregateDistance, groupActivities} = require('utils/ActivityUtils');
+import {getAggregateDistance, groupActivities} from 'utils/ActivityUtils';
 
 require('../../../../css/app/Profile.css');
+
+const mapStateToProps = ({activities, shoes}) => {
+  return {
+    activities,
+    shoes,
+  };
+};
 
 /**
  * Profile.react
  */
-var Profile = React.createClass({
+const Profile = React.createClass({
   displayName: 'Profile',
 
-  componentWillMount: function() {
-    var {shoeCount} = window.APP_DATA;
-    this.setState({shoeCount});
+  propTypes: {
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+    shoes: PropTypes.arrayOf(PropTypes.object).isRequired,
   },
 
-  render: function() {
+  render() {
+    const {activities} = this.props;
+
     return (
       <AppPage className="profile">
         <PageHeader title={UserStore.getUser().name} />
-        {this._renderToplineStats()}
-        {this._renderContent()}
+        {this._renderToplineStats(activities)}
+        {this._renderContent(activities)}
       </AppPage>
     );
   },
 
-  _renderToplineStats: function() {
-    var activities = WorkoutStore.getAll();
-    var totalMiles = getAggregateDistance(activities);
-    var totalRuns = activities.length;
+  _renderToplineStats(activities) {
+    const totalMiles = getAggregateDistance(activities);
+    const totalRuns = activities.length;
 
     return (
       <Panel header={<h3>Lifetime Stats</h3>}>
@@ -50,23 +59,19 @@ var Profile = React.createClass({
             {totalRuns.toLocaleString()}
           </Topline.Item>
           <Topline.Item label="Shoes">
-            {this.state.shoeCount}
+            {this.props.shoes.length}
           </Topline.Item>
         </Topline>
       </Panel>
     );
   },
 
-  _renderContent: function() {
-    var activities = WorkoutStore.getAll();
-
+  _renderContent(activities) {
     // Render an empty state when there's no data.
     if (!activities.length) {
       return (
         <Panel>
-          <div className="emptyState">
-            No runs this year. Get back out there!
-          </div>
+          <EmptyState>You have no activities. Get out there!</EmptyState>
         </Panel>
       );
     }
@@ -89,4 +94,4 @@ var Profile = React.createClass({
   },
 });
 
-module.exports = Profile;
+module.exports = connect(mapStateToProps)(Profile);

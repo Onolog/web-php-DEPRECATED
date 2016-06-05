@@ -154,13 +154,17 @@ class UsersController extends AppController {
       $month = date('n');
     }
 
-    $title = $this->Auth->User('name');
+    $activities = $this->User->Workout->getWorkoutsForMonth(
+      $year,
+      $month,
+      $user
+    );
 
-    $this->set(compact(
-      'year',
-      'month',
-      'title'
-    ));
+    $shoes = $this->User->Shoe->getShoesForActivities($activities);
+
+    $this->set('activities', $activities);
+    $this->set('shoes', $shoes);
+    $this->set('title', $this->Auth->User('name'));
 	}
 
   /**
@@ -193,16 +197,14 @@ class UsersController extends AppController {
     ));
     $activities = $this->User->Workout->flattenWorkouts($workouts);
 
-    // Shoe data
     $shoes = $this->User->Shoe->find('all', array(
       'conditions' => array('Shoe.user_id' => $id),
     ));
-    $shoe_count = count($shoes);
 
 		$this->set(compact(
-      'shoe_count',
-      'user',
-      'activities'
+      'activities',
+      'shoes',
+      'user'
 		));
 	}
 

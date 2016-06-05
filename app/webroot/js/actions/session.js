@@ -100,6 +100,7 @@ function onLoginError(response, dispatch) {
 
 export function loginIfNeeded() {
   return (dispatch, getState) => {
+    debugger;
     const {session} = getState();
     if (!session.id) {
       return dispatch(login());

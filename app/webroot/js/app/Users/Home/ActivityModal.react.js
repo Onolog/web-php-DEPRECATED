@@ -1,10 +1,12 @@
 import moment from 'moment';
-import React from 'react';
-import {Button, Modal} from 'react-bootstrap/lib';
+import React, {PropTypes} from 'react';
+import {Button, Modal} from 'react-bootstrap';
+import {connect} from 'react-redux';
 
 import Loader from 'components/Loader/Loader.react';
 import WorkoutFields from 'app/Workouts/WorkoutFields.react';
-import WorkoutActions from 'flux/actions/WorkoutActions';
+
+import {addActivity, updateActivity} from 'actions/activities';
 
 import jstz from 'jstz';
 import {isEqual, isInteger} from 'lodash';
@@ -18,36 +20,36 @@ const ActivityModal = React.createClass({
   displayName: 'ActivityModal',
 
   propTypes: {
-    initialActivity: React.PropTypes.object,
+    initialActivity: PropTypes.object,
     /**
      * Date object for the given day
      */
-    date: React.PropTypes.instanceOf(Date),
-    onHide: React.PropTypes.func,
-    show: React.PropTypes.bool,
+    date: PropTypes.instanceOf(Date),
+    onHide: PropTypes.func,
+    show: PropTypes.bool,
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       date: new Date(),
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       activity: this.props.initialActivity || this._getNewActivity(),
       isLoading: false,
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (!nextProps.show) {
       // Reset the modal if it's hidden.
       this.setState(this.getInitialState());
     }
   },
 
-  render: function() {
+  render() {
     const {initialActivity} = this.props;
     const {activity, isLoading} = this.state;
 
@@ -93,11 +95,11 @@ const ActivityModal = React.createClass({
     );
   },
 
-  _handleChange: function(/*object*/ activity) {
+  _handleChange(/*object*/ activity) {
     this.setState({activity});
   },
 
-  _handleClose: function() {
+  _handleClose() {
     var initialState = this.getInitialState();
     var hasChanges = !isEqual(initialState.activity, this.state.activity);
     var confirmed = hasChanges && confirm(
@@ -111,12 +113,13 @@ const ActivityModal = React.createClass({
     }
   },
 
-  _handleSave: function(e) {
-    // Client-side validation of form.
-    // TODO: Better validation on server.
+  _handleSave(e) {
+    const {dispatch, initialActivity} = this.props;
     const {activity} = this.state;
     const {distance, avg_hr} = activity;
 
+    // Client-side validation of form.
+    // TODO: Better validation on server.
     if (!distance || isNaN(distance)) {
       alert('Please enter a valid distance.');
       return;
@@ -128,12 +131,11 @@ const ActivityModal = React.createClass({
     }
 
     this.setState({isLoading: true});
-    this.props.initialActivity ?
-      WorkoutActions.save(activity) :
-      WorkoutActions.add(activity);
+    const action = initialActivity ? updateActivity : addActivity;
+    dispatch(action(activity));
   },
 
-  _getNewActivity: function() {
+  _getNewActivity() {
     var date = this.props.date;
     var now = new Date();
 
@@ -151,4 +153,4 @@ const ActivityModal = React.createClass({
   },
 });
 
-module.exports = ActivityModal;
+module.exports = connect()(ActivityModal);

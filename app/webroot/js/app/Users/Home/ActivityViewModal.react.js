@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {
   Button,
   ButtonGroup,
@@ -6,14 +6,11 @@ import {
   Modal,
   OverlayTrigger,
   Tooltip,
-} from 'react-bootstrap/lib';
+} from 'react-bootstrap';
 
 import Activity from 'app/Activities/Activity.react';
 import LeftRight from 'components/LeftRight/LeftRight.react';
 import Loader from 'components/Loader/Loader.react';
-import WorkoutActions from 'flux/actions/WorkoutActions';
-
-const {PropTypes} = React;
 
 /**
  * ActivityViewModal.react
@@ -22,24 +19,25 @@ const ActivityViewModal = React.createClass({
   displayName: 'ActivityViewModal',
 
   propTypes: {
-    activity: PropTypes.object,
+    activity: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool,
+    onDelete: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     onHide: PropTypes.func.isRequired,
     show: PropTypes.bool,
   },
 
-  getInitialState: function() {
+  getDefaultProps() {
     return {
       isLoading: false,
     };
   },
 
-  render: function() {
-    const {activity} = this.props;
-    const {isLoading} = this.state;
+  render() {
+    const {activity, isLoading, onDelete, onEdit, onHide, show} = this.props;
 
     return (
-      <Modal onHide={this._handleClose} show={this.props.show}>
+      <Modal onHide={onHide} show={show}>
         <Modal.Body>
           {isLoading && <Loader background full large />}
           <Activity activity={activity} />
@@ -50,14 +48,14 @@ const ActivityViewModal = React.createClass({
               <OverlayTrigger
                 overlay={<Tooltip id="edit">Edit Activity</Tooltip>}
                 placement="top">
-                <Button disabled={isLoading} onClick={this._handleEdit}>
+                <Button disabled={isLoading} onClick={onEdit}>
                   <Glyphicon glyph="pencil" />
                 </Button>
               </OverlayTrigger>
               <OverlayTrigger
                 overlay={<Tooltip id="delete">Delete Activity</Tooltip>}
                 placement="top">
-                <Button disabled={isLoading} onClick={this._handleDelete}>
+                <Button disabled={isLoading} onClick={onDelete}>
                   <Glyphicon glyph="trash" />
                 </Button>
               </OverlayTrigger>
@@ -69,7 +67,7 @@ const ActivityViewModal = React.createClass({
                 </Button>
               </OverlayTrigger>
             </ButtonGroup>
-            <Button disabled={isLoading} onClick={this._handleClose}>
+            <Button disabled={isLoading} onClick={onHide}>
               Close
             </Button>
           </LeftRight>
@@ -78,23 +76,8 @@ const ActivityViewModal = React.createClass({
     );
   },
 
-  _handleDelete: function() {
-    if (confirm('Are you sure you want to delete this activity?')) {
-      this.setState({isLoading: true});
-      WorkoutActions.delete(this.props.activity.id);
-    }
-  },
-
-  _handleEdit: function() {
-    this.props.onEdit();
-  },
-
-  _handlePermalink: function() {
+  _handlePermalink() {
     document.location = `/workouts/view/${this.props.activity.id}`;
-  },
-
-  _handleClose: function() {
-    this.props.onHide();
   },
 });
 
