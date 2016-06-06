@@ -11,7 +11,6 @@ import {
   SHOE_DELETE,
   SHOE_DELETE_ERROR,
   SHOE_DELETE_SUCCESS,
-  SHOE_VIEW,
   SHOE_UPDATE,
   SHOE_UPDATE_ERROR,
   SHOE_UPDATE_SUCCESS,
@@ -20,23 +19,25 @@ import {
   WORKOUT_UPDATE,
 } from 'constants/ActionTypes';
 
-const shoes = (shoes=[], action) => {
+const shoe = (state=[], action) => {
+  switch(action.type) {
+    case SHOE_UPDATE_SUCCESS:
+      return {...state, ...action.shoe};
+    default:
+      return state;
+  }
+};
+
+const shoes = (state=[], action) => {
   switch(action.type) {
     case ALL_SHOES_FETCH_SUCCESS:
       return action.shoes;
     case SHOE_ADD_SUCCESS:
-      return [...shoes, action.shoe];
+      return [...state, action.shoe];
     case SHOE_DELETE_SUCCESS:
-      return shoes.filter(shoe => shoe.id !== action.id);
-    case SHOE_VIEW:
-      let shoeIds = map(shoes, 'id');
-      if (shoeIds.indexOf(action.shoe.id) === -1) {
-        shoes = [...shoes, action.shoe];
-      }
-      return shoes;
+      return state.filter(shoe => shoe.id !== action.id);
     case SHOE_UPDATE_SUCCESS:
-      shoes = shoes.filter(shoe => shoe.id !== action.shoe.id);
-      return [...shoes, action.shoe];
+      return state.map(s => shoe(s, action));
     case ACTIVITIES_FETCH_SUCCESS:
       // TODO: Is this necessary or just do an initial fetch of all shoes?
       return action.shoes;
@@ -48,9 +49,9 @@ const shoes = (shoes=[], action) => {
       // with the new data.
       //
       // TODO: Handle these cases...
-      return shoes;
+      return state;
     default:
-      return shoes;
+      return state;
   }
 };
 

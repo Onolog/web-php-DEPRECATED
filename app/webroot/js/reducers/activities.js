@@ -1,21 +1,29 @@
 import ActionTypes from 'constants/ActionTypes';
 
-const activities = (activities=[], action) => {
+const activity = (state={}, action) => {
+  switch (action.type) {
+    case ActionTypes.ACTIVITY_UPDATE_SUCCESS:
+      return {...state, ...action.activity};
+    default:
+      return state;
+  }
+};
+
+const activities = (state=[], action) => {
   switch (action.type) {
     case ActionTypes.ACTIVITIES_FETCH_SUCCESS:
       // TODO: Append fetched activities so we don't fetch the same ones
       // multiple times.
       return action.activities;
     case ActionTypes.ACTIVITY_ADD_SUCCESS:
-      return [...activities, action.activity];
+      return [...state, action.activity];
     case ActionTypes.ACTIVITY_DELETE_SUCCESS:
-      return activities.filter((a) => a.id !== action.id);
+      return state.filter((a) => a.id !== action.id);
     case ActionTypes.ACTIVITY_UPDATE_SUCCESS:
-      const {activity} = action;
-      return activities.slice().map(a => a.id === activity.id ? activity : a);
+      return activities.map(a => activity(a, action));
     case ActionTypes.ACTIVITY_VIEW_SUCCESS:
     default:
-      return activities;
+      return state;
   }
 };
 
