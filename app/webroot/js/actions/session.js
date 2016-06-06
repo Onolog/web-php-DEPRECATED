@@ -24,18 +24,20 @@ function isConnected(status) {
 }
 
 /* Logout */
+function logoutSuccess(response, dispatch) {
+  const {payload} = JSON.parse(response);
+  dispatch({
+    session: payload,
+    type: SESSION_LOGOUT_SUCCESS,
+  });
+}
+
 function logout() {
   return (dispatch) => {
     dispatch({type: SESSION_LOGOUT});
 
     $.post('/ajax/users/logout')
-      .done((response) => {
-        const {payload} = JSON.parse(response);
-        dispatch({
-          session: payload,
-          type: SESSION_LOGOUT_SUCCESS,
-        });
-      })
+      .done(response => logoutSuccess(response, dispatch))
       .fail(response => dispatch({type: SESSION_LOGOUT_ERROR}));
   };
 }
@@ -99,11 +101,5 @@ function onLoginError(response, dispatch) {
 }
 
 export function loginIfNeeded() {
-  return (dispatch, getState) => {
-    debugger;
-    const {session} = getState();
-    if (!session.id) {
-      return dispatch(login());
-    }
-  };
+  return (dispatch, getState) => dispatch(login());
 }
