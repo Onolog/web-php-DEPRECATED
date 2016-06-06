@@ -173,14 +173,17 @@ class UsersController extends AppController {
    */
 	function profile($id=null) {
     // Validation
-		if (!$id) {
+    $user = $this->User->find('first', array(
+      'conditions' => array('User.id' => $id),
+      'recursive' => -1,
+    ));
+
+		if (!$user) {
 			$this->Session->setFlash(__('Invalid user', true));
 			$this->redirect(array('action' => 'index'));
 		}
 
-    $user = $this->User->read();
-
-    // Password is hashed so there's no risk, but unset it anyways.
+    $user = $user['User'];
     unset($user['password']);
 
     // TODO: Why does this query return different results depending on
@@ -208,10 +211,6 @@ class UsersController extends AppController {
 		));
 	}
 
-  /**
-   * Default view for users, like a profile
-   * This view is public to everyone.
-   */
 	function report($id=null, $year=null) {
     // Validation
 		if (!$id) {
@@ -318,9 +317,9 @@ class UsersController extends AppController {
    * settings.
    */
 	function settings() {
-    $user = $this->requireLoggedInUser();
-		$data = $this->User->read(null, $user);
-    $this->set('user', $data['User']);
+    $id = $this->requireLoggedInUser();
+		$user = $this->User->read(null, $id);
+    $this->set('user', $user['User']);
 	}
 
   /**
@@ -328,7 +327,7 @@ class UsersController extends AppController {
    * settings.
    */
   function ajax_settings() {
-    $user = $this->requireLoggedInUser();
+    $id = $this->requireLoggedInUser();
 
     $this->setIsAjax();
     $response = new Response();
@@ -337,21 +336,25 @@ class UsersController extends AppController {
       return $response->send();
     }
 
-    if ($this->data['User']['id'] !== $user) {
-      $response->setMessage('You may not change the settings for this user.');
-      return $response->send();
+    if ($this->data['User']['id'] !== $id) {
+      return $response
+        ->setMessage(
+          'You do not have permission to change the settings for this user.'
+        )
+        ->send();
     }
 
     if ($this->User->save($this->data)) {
-      $response
+      return $response
         ->setSuccess(true)
         ->setMessage('Your changes were saved')
-        ->setPayload($this->data['User']);
-    } else {
-      $response->setMessage('Your changes could not be saved. Please try again.');
+        ->setPayload($this->data['User'])
+        ->send();
     }
 
-    return $response->send();
+    return $response
+      ->setMessage('Your changes could not be saved. Please try again.')
+      ->send();
   }
 
   /**

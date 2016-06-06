@@ -1,49 +1,53 @@
-var React = require('react');
-var {Button, Panel} = require('react-bootstrap/lib');
+import {find, isEqual} from 'lodash';
+import React, {PropTypes} from 'react';
+import {Button, Panel} from 'react-bootstrap';
+import {connect} from 'react-redux';
 
-var AppPage = require('components/Page/AppPage.react');
-var FormGroup = require('components/Forms/FormGroup.react');
-var Loader = require('components/Loader/Loader.react');
-var PageHeader = require('components/Page/PageHeader.react');
-var TextInput = require('components/Forms/TextInput.react');
+import AppPage from 'components/Page/AppPage.react';
+import FormGroup from 'components/Forms/FormGroup.react';
+import Loader from 'components/Loader/Loader.react';
+import PageHeader from 'components/Page/PageHeader.react';
+import TextInput from 'components/Forms/TextInput.react';
 
-var ActionTypes = require('flux/ActionTypes');
-var UserActions = require('flux/actions/UserActions');
-var UserStore = require('flux/stores/UserStore');
+import {userSaveSettings} from 'actions/users';
 
-var {isEqual} = require('lodash');
+const mapStateToProps = ({session, users}) => {
+  return {
+    user: find(users, {id: session.id}),
+  };
+};
 
 /**
  * Settings.react
  */
-var Settings = React.createClass({
+const Settings = React.createClass({
   displayName: 'Settings',
 
+  propTypes: {
+    user: PropTypes.shape({
+      email: PropTypes.string.isRequired,
+      first_name: PropTypes.string.isRequired,
+      last_name: PropTypes.string.isRequired,
+    }).isRequired
+  },
+
   getInitialState() {
-    const {email, first_name, id, last_name} = UserStore.getUser();
+    const {email, first_name, last_name} = this.props.user;
     return {
       email,
       first_name,
-      id,
       isLoading: false,
       last_name,
     };
   },
 
-  componentDidMount() {
-    UserStore.bind(ActionTypes.CHANGE, this._settingsChanged);
-  },
-
-  componentWillUnmount() {
-    UserStore.unbind(ActionTypes.CHANGE, this._settingsChanged);
-  },
-
-  _settingsChanged(user) {
-    this.setState(this.getInitialState());
+  componentWillReceiveProps(nextProps) {
+    this.setState({isLoading: false});
   },
 
   render() {
-    const {email, first_name, isLoading, last_name} = this.state;
+    const {user} = this.props;
+    const {isLoading} = this.state;
 
     return (
       <AppPage className="settings" narrow>
@@ -52,7 +56,7 @@ var Settings = React.createClass({
           {isLoading && <Loader background full />}
           <FormGroup label="First Name">
             <TextInput
-              defaultValue={first_name}
+              defaultValue={user.first_name}
               name="first_name"
               onChange={this._handleChange}
               placeholder="Enter your first name"
@@ -60,7 +64,7 @@ var Settings = React.createClass({
           </FormGroup>
           <FormGroup label="Last Name">
             <TextInput
-              defaultValue={last_name}
+              defaultValue={user.last_name}
               name="last_name"
               onChange={this._handleChange}
               placeholder="Enter your last name"
@@ -68,7 +72,7 @@ var Settings = React.createClass({
           </FormGroup>
           <FormGroup label="Email Address">
             <TextInput
-              defaultValue={email}
+              defaultValue={user.email}
               name="email"
               onChange={this._handleChange}
               placeholder="Enter your email address"
@@ -98,8 +102,11 @@ var Settings = React.createClass({
   _handleSave(e) {
     // TODO: Validation?
     this.setState({isLoading: true});
-    UserActions.saveSettings(this.state);
+    this.props.dispatch(userSaveSettings({
+      ...this.state,
+      id: this.props.user.id,
+    }));
   },
 });
 
-module.exports = Settings;
+module.exports = connect(mapStateToProps)(Settings);

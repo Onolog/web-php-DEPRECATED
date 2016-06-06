@@ -14,16 +14,12 @@ import AppPage from 'components/Page/AppPage.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import ShoeView from './ShoeView.react';
 
-import UserStore from 'flux/stores/UserStore';
+import getIdFromPath from 'utils/getIdFromPath';
 
-function getIdFromPath() {
-  const id = document.location.pathname.split('/').pop();
-  return parseInt(id, 10);
-}
-
-const mapStoreToProps = ({shoes}) => {
+const mapStoreToProps = ({session, shoes}) => {
   return {
     shoe: find(shoes, {id: getIdFromPath()}),
+    viewer: session,
   };
 };
 
@@ -43,6 +39,9 @@ const ShoeViewPage = React.createClass({
       name: PropTypes.string.isRequired,
       user_id: PropTypes.number.isRequired,
     }).isRequired,
+    viewer: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }),
   },
 
   render() {
@@ -65,9 +64,9 @@ const ShoeViewPage = React.createClass({
   },
 
   _renderButtonGroup() {
-    const {shoe} = this.props;
+    const {shoe, viewer} = this.props;
 
-    if (UserStore.getUserId() === shoe.user_id) {
+    if (viewer.id === shoe.user_id) {
       return (
         <ButtonGroup>
           <OverlayTrigger

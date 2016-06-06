@@ -28,7 +28,7 @@ $appData = array(
     $this->Session->read('Config')
   ),
   'shoes' => array(),
-  'user' => $this->Session->read('Auth.User'),
+  'users' => array(),
 );
 
 if (isset($data)) {
