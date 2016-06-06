@@ -19,6 +19,8 @@ function userSaveSettingsSuccess(response, dispatch) {
 
 export function userSaveSettings(settings) {
   return dispatch => {
+    dispatch({type: USER_SETTINGS_SAVE});
+
     $.post('/ajax/users/settings', encodeData(settings, FORM_NAME))
       .done(response => userSaveSettingsSuccess(response, dispatch))
       .fail(response => dispatch({type: USER_SETTINGS_SAVE_ERROR}));
