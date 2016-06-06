@@ -25,7 +25,6 @@ module.exports = {
     'Settings',
 
     // Workouts
-    'WorkoutAddEdit',
     'Workout',
   ],
 };

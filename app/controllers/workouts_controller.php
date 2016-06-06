@@ -68,55 +68,28 @@ class WorkoutsController extends AppController {
     $response = new Response();
 
 		if (!$id) {
-			$response->setMessage('Invalid workout.');
-		} else {
-      // Get the workout data
-  		$workout = $this->Workout->read(null, $id);
-      if (empty($workout)) {
-        // The workout doesn't exist
-        $response->setMessage('That workout doesn\'t exist.');
-      } else {
-        $workout = $this->populateWorkoutForView($workout);
-        $response
-          ->setSuccess(true)
-          ->setPayload(array('activity' => $workout['Workout']));
-      }
+			return $response
+        ->setMessage('Invalid activity.')
+        ->send();
 		}
-    return $response->send();
-	}
 
-  /**
-   * Allows the user to add a workout.
-   *
-   * TODO: Don't let the user submit an empty workout
-   * TODO: Can this somehow be combined with edit()?
-   * 
-   * @param   int   $date   unix timestamp of the workout date
-   */
-	public function add() {
-    $user = $this->requireLoggedInUser();
+    // Get the workout data
+		$workout = $this->Workout->read(null, $id);
+    if (empty($workout)) {
+      // The workout doesn't exist
+      return $response
+        ->setMessage('That activity doesn\'t exist.')
+        ->send();
+    }
 
-    // On form submission
-		if (!empty($this->data)) {
-
-      $this->formatWorkoutDataForWrite();
-
-			$this->Workout->create();
-			if ($this->Workout->save($this->data)) {
-				$this->Session->setFlash(__('Your workout was added', 1));
-
-        // Display the newly-added workout
-				$this->redirect(array(
-          'controller' => 'workouts',
-          'action' => 'view',
-          $this->Workout->id
-        ));
-			}
-
-			$this->Session->setFlash(
-        __('Your workout could not be added. Please try again.', 1)
-      );
-		}
+    // Success
+    $workout = $this->populateWorkoutForView($workout);
+    return $response
+      ->setSuccess(true)
+      ->setPayload(array(
+        'activity' => $workout['Workout']
+      ))
+      ->send();
 	}
 
   /**
@@ -164,53 +137,6 @@ class WorkoutsController extends AppController {
 	}
 
   /**
-   * Allows the user to edit the selected workout.
-   * 
-   * @param   int   $wid   Workout id
-   */
-	public function edit($wid=null) {
-    $user = $this->requireLoggedInUser();
-
-		if (!$wid && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid workout', 1));
-			$this->redirect(array(
-        'controller' => 'users',
-        'action' => 'index'
-      ));
-		}
-
-    // On submit, update the workout
-		if (!empty($this->data)) {
-
-      $this->data['Workout']['id'] = $wid;
-      $this->formatWorkoutDataForWrite();
-
-			if ($this->Workout->save($this->data)) {
-				$this->Session->setFlash(__('Activity saved.', 1));
-				$this->redirect(array(
-          'controller' => 'workouts',
-          'action' => 'view',
-          $this->Workout->id
-        ));
-			}
-
-      // Something went wrong
-			$this->Session->setFlash(
-        __('The workout could not be saved. Please try again.', 1)
-      );
-		}
-
-		if (empty($this->data)) {
-			$this->data = $this->Workout->read(null, $wid);
-
-      // Make sure users only edit their own workouts!
-      if ($this->data['User']['id'] !== $user) {
-        $this->goHome(__('You are not allowed to edit this workout', 1));
-      }
-		}
-	}
-
-  /**
    * Lets the user edit a given workout
    *
    * TODO: Can this somehow be combined with add()?
@@ -254,53 +180,19 @@ class WorkoutsController extends AppController {
         ));
       }
 
-      $response
+      return $response
         ->setSuccess(true)
 			  ->setMessage('Your activity was successfully updated.')
 			  ->setPayload(array(
           'activity' => $this->data['Workout'],
           'shoes' => $shoes,
-        ));
-
-		} else {
-      $response->setMessage(
-        'The activity could not be saved. Please try again.'
-      );
+        ))
+        ->send();
 		}
 
-		return $response->send();
-	}
-
-  /**
-   * Lets the user delete a given workout
-   * 
-   * @param   int   $wid   Workout id
-   */
-	public function delete($wid = null) {
-    $user = $this->requireLoggedInUser();
-
-		if (!$wid) {
-			$this->Session->setFlash(__('Invalid id for workout', true));
-			$this->redirect(array('action'=>'index'));
-		}
-
-    $data =
-      $this->Workout->find('first', array(
-        'conditions' => array('Workout.id' => $wid),
-      ));
-
-    // Make sure users only delete their own workouts!
-    if ($data['User']['id'] != $user) {
-      $this->goHome(__('You are not allowed to delete this workout', true));
-    }
-
-    // The workout was successfully deleted
-		if ($this->Workout->delete($wid)) {
-		  $this->goHome(__('Workout deleted', true));
-		}
-
-    // Something went wrong
-		$this->goHome(__('Workout was not deleted', true));
+    return $response
+      ->setMessage('The activity could not be saved. Please try again.')
+      ->send();
 	}
 
 	public function ajax_delete($wid) {
@@ -318,8 +210,9 @@ class WorkoutsController extends AppController {
 
     // Make sure users only delete their own workouts!
     if ($workout['User']['id'] != $user) {
-      $response->setMessage('You are not allowed to delete this activity');
-      $response->send();
+      return $response
+        ->setMessage('You are not allowed to delete this activity')
+        ->send();
     }
 
     // The workout was successfully deleted
@@ -333,21 +226,22 @@ class WorkoutsController extends AppController {
         ));
       }
 
-		  $response
+		  return $response
 		    ->setSuccess(true)
 		    ->setPayload(array(
           'id' => $wid,
           'shoes' => $shoes,
         ))
-		    ->setMessage(__('Your activity was deleted', 1));
-		} else {
-		  $response->setMessage(
-        'Sorry, the activity could not be deleted. Please refresh the page ' .
-        'and try again.'
-		  );
+		    ->setMessage(__('Your activity was deleted', 1))
+        ->send();
 		}
 
-    return $response->send();
+	  return $response
+      ->setMessage(
+        'Sorry, the activity could not be deleted. Please refresh the page ' .
+        'and try again.'
+  	  )
+      ->send();
 	}
 
   protected function populateWorkoutForView($workout) {
