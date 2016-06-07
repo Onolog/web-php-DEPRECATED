@@ -1,13 +1,13 @@
-var React = require('react');
-var {OverlayTrigger, Tooltip} = require('react-bootstrap/lib');
+import React from 'react';
+import {OverlayTrigger, Tooltip} from 'react-bootstrap/lib';
 
-var FBImage = require('./FBImage.react');
-var Link = require('components/Link/Link.react');
-var Loader = require('components/Loader/Loader.react');
+import FBImage from './FBImage.react';
+import Link from 'components/Link/Link.react';
+import Loader from 'components/Loader/Loader.react';
 
-var fbLoader = require('utils/fbLoader');
+import fbLoader from 'utils/fbLoader';
 
-require('./FBFacepile.css');
+require('./css/FBFacepile.css');
 
 /**
  * FBFacepile.react
@@ -16,7 +16,7 @@ require('./FBFacepile.css');
  * displayed via tooltip on hover and clicking on the hoto takes the user to
  * the person's profile page.
  */
-var FBFacepile = React.createClass({
+const FBFacepile = React.createClass({
   displayName: 'FBFacepile',
 
   propTypes: {
@@ -30,17 +30,17 @@ var FBFacepile = React.createClass({
     ]).isRequired,
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       friends: null,
     };
   },
 
-  componentWillMount: function() {
+  componentWillMount() {
     fbLoader(this._getFriends);
   },
 
-  render: function() {
+  render() {
     if (!this.state.friends) {
       return <Loader className="FacepileLoader" />;
     }
@@ -53,7 +53,7 @@ var FBFacepile = React.createClass({
     );
   },
 
-  _renderFace: function(friend, idx) {
+  _renderFace(friend, idx) {
     return (
       <OverlayTrigger
         key={idx}
@@ -68,7 +68,7 @@ var FBFacepile = React.createClass({
     );
   },
 
-  _getFriends: function() {
+  _getFriends() {
     var friends = this.props.friends + '';
     if (!friends) {
       return;
@@ -91,7 +91,7 @@ var FBFacepile = React.createClass({
     });
   },
 
-  _parseFriendData: function(response) {
+  _parseFriendData(response) {
     var friends = [];
     response.forEach((data) => {
       if (data.code === 200) {

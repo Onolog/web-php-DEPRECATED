@@ -23,18 +23,18 @@ const FBImage = React.createClass({
     width: React.PropTypes.number,
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       height: 50,
       width: 50,
     };
   },
 
-  render: function() {
+  render() {
     const {fbid, height, width} = this.props;
 
     // Double the height and width for retina displays
-    var params = param({
+    const params = param({
       height: height * 2,
       width: width * 2,
     });

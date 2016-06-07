@@ -1,11 +1,16 @@
 import React from 'react';
 import Typeahead from 'react-bootstrap-typeahead';
 
+import FBImage from 'components/Facebook/FBImage.react';
+
 import fbLoader from 'utils/fbLoader';
 import {isArray, map} from 'lodash';
 
+const IMG_PX = 32;
+
 require('react-bootstrap-typeahead/css/Token.css');
 require('react-bootstrap-typeahead/css/Typeahead.css');
+require('./css/FBFriendTokenizer.css');
 
 /**
  * FriendTokenizer.react
@@ -41,8 +46,27 @@ const FBFriendTokenizer = React.createClass({
         onChange={this._handleChange}
         options={options}
         placeholder="Type a friend's name..."
+        renderMenuItemChildren={this._renderMenuItemChildren}
         selected={selected}
       />
+    );
+  },
+
+  _renderMenuItemChildren(props, option, idx) {
+    return (
+      <div className="fb-friend-tokenizer-item">
+        <span className="innerBorder">
+          <FBImage
+            className="fb-friend-tokenizer-item-thumbnail"
+            fbid={+option.id}
+            height={IMG_PX}
+            width={IMG_PX}
+          />
+        </span>
+        <span className="fb-friend-tokenizer-item-name">
+          {option.name}
+        </span>
+      </div>
     );
   },
 
