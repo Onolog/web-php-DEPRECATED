@@ -1,25 +1,19 @@
 import React from 'react';
-import {Button} from 'react-bootstrap/lib';
+import {Button} from 'react-bootstrap';
 
 /**
  * FBLoginButton.react
  *
  * Renders a custom React FB login button.
  */
-const FBLoginButton = React.createClass({
-  displayName: 'FBLoginButton',
+const FBLoginButton = (props) => (
+  <Button
+    bsSize="large"
+    bsStyle="primary"
+    className="fbLogin"
+    onClick={props.onClick}>
+    <i className="fbIcon" /> Sign in with Facebook
+  </Button>
+);
 
-  render: function() {
-    return (
-      <Button
-        bsSize="large"
-        bsStyle="primary"
-        className="fbLogin"
-        onClick={this.props.onClick}>
-        <i className="fbIcon" /> Sign in with Facebook
-      </Button>
-    );
-  },
-});
-
-module.exports = FBLoginButton;
+export default FBLoginButton;
