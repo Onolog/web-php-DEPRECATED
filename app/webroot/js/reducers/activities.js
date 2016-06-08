@@ -3,7 +3,8 @@ import ActionTypes from 'constants/ActionTypes';
 const activity = (state={}, action) => {
   switch (action.type) {
     case ActionTypes.ACTIVITY_UPDATE_SUCCESS:
-      return {...state, ...action.activity};
+      const {activity} = action;
+      return state.id === activity.id ? {...state, ...activity} : state;
     default:
       return state;
   }
@@ -20,7 +21,7 @@ const activities = (state=[], action) => {
     case ActionTypes.ACTIVITY_DELETE_SUCCESS:
       return state.filter((a) => a.id !== action.id);
     case ActionTypes.ACTIVITY_UPDATE_SUCCESS:
-      return activities.map(a => activity(a, action));
+      return state.map(a => activity(a, action));
     case ActionTypes.ACTIVITY_VIEW_SUCCESS:
     default:
       return state;

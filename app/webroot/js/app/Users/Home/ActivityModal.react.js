@@ -67,6 +67,7 @@ const ActivityModal = React.createClass({
     return (
       <Modal
         {...this.props}
+        onExited={this._handleExited}
         onHide={this._handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
@@ -108,9 +109,15 @@ const ActivityModal = React.createClass({
     );
 
     if (!hasChanges || confirmed) {
-      this.setState(initialState);
       this.props.onHide && this.props.onHide();
     }
+  },
+
+  /**
+   * Reset the form when the modal closes.
+   */
+  _handleExited(e) {
+    this.setState(this.getInitialState());
   },
 
   _handleSave(e) {

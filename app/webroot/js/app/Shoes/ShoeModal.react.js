@@ -82,8 +82,10 @@ const ShoeModal = React.createClass({
     }
   },
 
+  /**
+   * Reset the form when the modal closes.
+   */
   _handleExited(e) {
-    // Reset the form.
     this.setState(this.getInitialState());
   },
 
