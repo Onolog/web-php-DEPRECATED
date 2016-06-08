@@ -1,11 +1,9 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {Input} from 'react-bootstrap';
 
 import BrandSelector from './BrandSelector.react';
 import FormGroup from 'components/Forms/FormGroup.react';
 import TextInput from 'components/Forms/TextInput.react';
-
-import {clone} from 'lodash';
 
 const FIELD_INACTIVE = 'inactive';
 
@@ -18,11 +16,12 @@ const ShoeFields = React.createClass({
   displayName: 'ShoeFields',
 
   propTypes: {
-    isNew: React.PropTypes.bool,
-    shoe: React.PropTypes.object.isRequired,
+    isNew: PropTypes.bool,
+    onChange: PropTypes.func.isRequired,
+    shoe: PropTypes.object.isRequired,
   },
 
-  render: function() {
+  render() {
     const {shoe} = this.props;
 
     return (
@@ -36,10 +35,9 @@ const ShoeFields = React.createClass({
         </FormGroup>
         <FormGroup label="Model">
           <TextInput
-            defaultValue={shoe.model}
             name="model"
             onChange={this._handleChange}
-            ref="distance"
+            value={shoe.model}
           />
         </FormGroup>
         {this._renderInactiveCheckbox()}
@@ -47,15 +45,17 @@ const ShoeFields = React.createClass({
     );
   },
 
-  _renderInactiveCheckbox: function() {
+  /**
+   * Don't render this input when creating a new shoe, since we assume
+   * that all newly created shoes are active.
+   */
+  _renderInactiveCheckbox() {
     const {isNew, shoe} = this.props;
 
-    // Don't render this input when creating a new shoe, since we assume
-    // that all newly created shoes are active.
     if (!isNew) {
       return (
         <Input
-          defaultChecked={!!shoe.inactive}
+          checked={!!shoe.inactive}
           label="Inactive"
           name={FIELD_INACTIVE}
           onChange={this._handleChange}
@@ -66,16 +66,11 @@ const ShoeFields = React.createClass({
     }
   },
 
-  _handleChange: function(e) {
-    var {checked, name, value} = e.target;
-    if (name === FIELD_INACTIVE) {
-      value = +checked;
-    }
-
-    var shoe = clone(this.props.shoe);
-    shoe[name] = value;
-
-    this.props.onChange && this.props.onChange(shoe);
+  _handleChange(e) {
+    const {checked, name, value} = e.target;
+    let shoe = {...this.props.shoe};
+    shoe[name] = name === FIELD_INACTIVE ? +checked : value;
+    this.props.onChange(shoe);
   },
 });
 

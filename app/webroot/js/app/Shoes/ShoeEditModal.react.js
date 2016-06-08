@@ -28,14 +28,13 @@ const ShoeEditModal = React.createClass({
       isLoading,
       onChange,
       onDelete,
-      onHide,
       onSave,
       shoe,
-      show,
+      ...modalProps,
     } = this.props;
 
     return (
-      <Modal onHide={onHide} show={show}>
+      <Modal {...modalProps}>
         <Modal.Header closeButton>
           <Modal.Title>{shoe.name}</Modal.Title>
         </Modal.Header>
@@ -56,7 +55,7 @@ const ShoeEditModal = React.createClass({
             <ButtonToolbar>
               <Button
                 disabled={isLoading}
-                onClick={onHide}>
+                onClick={this.props.onHide}>
                 Cancel
               </Button>
               <Button

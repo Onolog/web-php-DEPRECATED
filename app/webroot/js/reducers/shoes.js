@@ -12,7 +12,8 @@ import {
 const shoe = (state=[], action) => {
   switch(action.type) {
     case SHOE_UPDATE_SUCCESS:
-      return {...state, ...action.shoe};
+      const {shoe} = action;
+      return state.id === shoe.id ? {...state, ...shoe} : state;
     default:
       return state;
   }

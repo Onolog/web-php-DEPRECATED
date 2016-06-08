@@ -22,17 +22,10 @@ const ShoeAddModal = React.createClass({
   },
 
   render() {
-    const {
-      isLoading,
-      onChange,
-      onHide,
-      onSave,
-      shoe,
-      show,
-    } = this.props;
+    const {isLoading, onChange, onSave, shoe, ...modalProps} = this.props;
 
     return (
-      <Modal onHide={onHide} show={show}>
+      <Modal {...modalProps}>
         <Modal.Header closeButton>
           <Modal.Title>Add a New Shoe</Modal.Title>
         </Modal.Header>
@@ -47,7 +40,7 @@ const ShoeAddModal = React.createClass({
         <Modal.Footer>
           <Button
             disabled={isLoading}
-            onClick={onHide}>
+            onClick={this.props.onHide}>
             Cancel
           </Button>
           <Button

@@ -42,6 +42,7 @@ const ShoeModal = React.createClass({
     const props = {
       isLoading,
       onChange: this._handleChange,
+      onExited: this._handleExited,
       onHide: this._handleClose,
       onSave: this._handleSave,
       shoe,
@@ -63,15 +64,14 @@ const ShoeModal = React.createClass({
   },
 
   _handleClose() {
-    const initialState = this.getInitialState();
-    const hasChanges = !isEqual(initialState.shoe, this.state.shoe);
+    const {shoe} = this.getInitialState();
+    const hasChanges = !isEqual(shoe, this.state.shoe);
     const confirmed = hasChanges && confirm(
       'Are you sure you want to close the dialog? Your changes will not ' +
       'be saved'
     );
 
     if (!hasChanges || confirmed) {
-      this.setState(initialState);
       this.props.onHide && this.props.onHide();
     }
   },
@@ -82,8 +82,15 @@ const ShoeModal = React.createClass({
     }
   },
 
+  _handleExited(e) {
+    // Reset the form.
+    this.setState(this.getInitialState());
+  },
+
   _handleSave(e) {
     const action = this.props.initialShoe ? updateShoe : addShoe;
+
+    // TODO: Validate
 
     this.setState({isLoading: true});
     this.props.dispatch(action(this.state.shoe));
