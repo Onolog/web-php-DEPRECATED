@@ -159,6 +159,15 @@ a.btn-default,
 }
 
 /* Modal */
+.modal.fade .modal-dialog {
+  transform: translate(0, 0) scale(0.97);
+  transition: transform 0.2s ease-in-out;
+}
+
+.modal.in .modal-dialog {
+  transform: translate(0, 0) scale(1);
+}
+
 .modal-header,
 .modal-footer {
   border-color: #f5f5f5;
