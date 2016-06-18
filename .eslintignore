@@ -1,9 +1,9 @@
 # node_modules ignored by default
 
 # Ignore built files
-app/webroot/js/build/
+webroot/js/build/
 
 # Ignore 3rd-party libs
-app/webroot/js/lib/
+webroot/js/lib/
 
-app/webroot/js/constants/Daniels.js
+webroot/js/constants/Daniels.js

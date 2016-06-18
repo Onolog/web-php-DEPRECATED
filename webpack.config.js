@@ -3,7 +3,7 @@
 var path = require('path');
 var webpack = require('webpack');
 
-var JS_ROOT = path.join(__dirname, 'app/webroot/js');
+var JS_ROOT = path.join(__dirname, 'webroot/js');
 var WEBPACK = require(JS_ROOT + '/constants/WebpackConstants');
 
 var entryPages = {};
@@ -25,7 +25,7 @@ var config = {
   context: JS_ROOT,
   entry: entryPages,
   output: {
-    path: __dirname + '/app/webroot/js/build',
+    path: path.join(JS_ROOT, 'build'),
     filename: '[name].js'
   },
   module: {
@@ -64,7 +64,7 @@ var config = {
   ]),
   resolve: {
     root: [JS_ROOT],
-    extensions: ['', '.js', '.json', 'jsx']
+    extensions: ['', '.js', '.json', '.jsx']
   }
 };
 

@@ -1,48 +1,26 @@
-# Onolog Web
+# CakePHP Application Skeleton
 
-Repository for the Onolog web app.
+[![Build Status](https://img.shields.io/travis/cakephp/app/master.svg?style=flat-square)](https://travis-ci.org/cakephp/app)
+[![License](https://img.shields.io/packagist/l/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
+
+A skeleton for creating applications with [CakePHP](http://cakephp.org) 3.x.
+
+The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
 
 ## Installation
 
-### Get the latest code
-Make sure you're in a directory with a git repository. If not, run:
-```
-$ git init
+1. Download [Composer](http://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
+2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+
+If Composer is installed globally, run
+```bash
+composer create-project --prefer-dist cakephp/app [app_name]
 ```
 
-Add the repository as a remote:
-```
-$ git remote add origin git@github.com:Onolog/web.git
-```
+You should now be able to visit the path to where you installed the app and see
+the setup traffic lights.
 
-Pull down the latest version:
-```
-$ git pull origin master
-```
+## Configuration
 
-### Configure
-You'll need to configure the database, the app, and possibly the server itself before everything will run.
-
-First, create a database config file:
-```
-$ cp app/config/database.sample.php app/config/database.php
-```
-In that file, enter the information needed to connect to the DB (username, password, etc.)
-
-Because the app uses Facebook's API, you'll also need to set up a config file with the Facebook app info (API key and secret):
-```
-$ cp app/webroot/js/constants/Facebook.sample.js app/webroot/js/constants/Facebook.js
-```
-
-### Dependencies
-Install all the node dependencies:
-```
-$ npm install
-```
-
-Build the static assets file:
-```
-$ npm run dev
-```
-
-You should now have a working site.
+Read and edit `config/app.php` and setup the 'Datasources' and any other
+configuration relevant for your application.

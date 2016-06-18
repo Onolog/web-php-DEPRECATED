@@ -1,0 +1,47 @@
+import React, {PropTypes} from 'react';
+import {Button, Modal} from 'react-bootstrap/lib';
+
+import ShoeView from './ShoeView.react';
+
+/**
+ * ShoeViewModal.react
+ */
+const ShoeViewModal = React.createClass({
+  displayName: 'ShoeViewModal',
+
+  propTypes: {
+    onHide: PropTypes.func,
+    shoe: PropTypes.object,
+    show: PropTypes.bool,
+  },
+
+  render() {
+    const {activities, shoe} = this.props;
+
+    return (
+      <Modal onHide={this._handleClose} show={this.props.show}>
+        <Modal.Header closeButton>
+          <Modal.Title>{shoe.name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ShoeView
+            activities={activities}
+            isLoading={shoe.activity_count !== activities.length}
+            shoe={shoe}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this._handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  },
+
+  _handleClose() {
+    this.props.onHide && this.props.onHide();
+  },
+});
+
+module.exports = ShoeViewModal;
