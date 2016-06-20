@@ -1,11 +1,12 @@
 'use strict';
 
 var baseConfig = require('./webpack.config.js');
+var path = require('path');
 var webpack = require('webpack');
 
 var config = Object.create(baseConfig);
 
-config.output.path = __dirname + '/app/webroot/js/build';
+config.output.path = path.join(__dirname, 'webroot/js/build');
 config.plugins = config.commonPlugins.concat([
   new webpack.DefinePlugin({
     'process.env': {
