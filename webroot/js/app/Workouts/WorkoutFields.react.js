@@ -24,20 +24,20 @@ var WorkoutFields = React.createClass({
 
   propTypes: {
     /**
-     * An existing workout object.
+     * An existing activity object.
      */
-    workout: React.PropTypes.object,
+    activity: React.PropTypes.object,
   },
 
   getDefaultProps: function() {
     return {
-      workout: {},
+      activity: {},
     };
   },
 
   getInitialState: function() {
     return {
-      workout: this.props.workout,
+      activity: this.props.activity,
     };
   },
 
@@ -47,10 +47,10 @@ var WorkoutFields = React.createClass({
   },
 
   render: function() {
-    var {workout} = this.state;
+    var {activity} = this.state;
     var pace = calculatePace.fromSeconds(
-      workout.distance || 0,
-      workout.duration || 0
+      activity.distance || 0,
+      activity.duration || 0
     );
 
     return (
@@ -58,7 +58,7 @@ var WorkoutFields = React.createClass({
         <FormGroup label="Distance">
           <TextInput
             className="distanceInput"
-            defaultValue={workout.distance}
+            defaultValue={activity.distance}
             name="distance"
             onChange={this._onInputChange}
             ref="distance"
@@ -69,7 +69,7 @@ var WorkoutFields = React.createClass({
         <FormGroup className="time" label="Duration">
           <DurationInput
             className="timeInput"
-            duration={workout.duration}
+            duration={activity.duration}
             name="duration"
             onChange={this._onInputChange}
           />
@@ -80,16 +80,16 @@ var WorkoutFields = React.createClass({
 
         <FormGroup label="Date">
           <DateTimePicker
-            date={workout.start_date}
+            date={activity.start_date}
             onChange={this._onDateChange}
-            timezone={workout.timezone}
+            timezone={activity.timezone}
           />
         </FormGroup>
 
         <FormGroup label="Avg. Heart Rate">
           <TextInput
             className="heartRateInput"
-            defaultValue={workout.avg_hr}
+            defaultValue={activity.avg_hr}
             maxLength={3}
             name="avg_hr"
             onChange={this._onInputChange}
@@ -99,7 +99,7 @@ var WorkoutFields = React.createClass({
 
         <FormGroup label="Shoes">
           <ShoeSelector
-            defaultValue={workout.shoe_id}
+            defaultValue={activity.shoe_id}
             name="shoe_id"
             onChange={this._onInputChange}
           />
@@ -107,7 +107,7 @@ var WorkoutFields = React.createClass({
 
         <FormGroup label="Friends">
           <FBFriendTokenizer
-            friends={workout.friends}
+            friends={activity.friends}
             name="friends"
             onChange={this._onInputChange}
           />
@@ -116,7 +116,7 @@ var WorkoutFields = React.createClass({
         <FormGroup label="Notes">
           <Textarea
             className="notes"
-            defaultValue={workout.notes}
+            defaultValue={activity.notes}
             name="notes"
             onChange={this._onInputChange}
             placeholder="Add some details about your activity..."
@@ -127,28 +127,29 @@ var WorkoutFields = React.createClass({
     );
   },
 
-  _onInputChange: function(e) {
-    var {name, value} = e.target;
-    var workout = Object.assign({}, this.state.workout);
-    workout[name] = value;
+  _onInputChange(e) {
+    const {name, value} = e.target;
+    const activity = {...this.state.activity};
+    activity[name] = value;
 
-    this._onChange(workout);
+    this._onChange(activity);
   },
 
-  _onDateChange: function(/*string*/ dateString, /*string*/ timezone) {
-    var date = moment(dateString);
-    var workout = Object.assign({}, this.state.workout, {
+  _onDateChange(/*string*/ dateString, /*string*/ timezone) {
+    const date = moment(dateString);
+    const activity = {
+      ...this.state.activity,
       date: date.unix(),
       start_date: dateString,
-      timezone: timezone,
-    });
+      timezone,
+    };
 
-    this._onChange(workout);
+    this._onChange(activity);
   },
 
-  _onChange: function(/*object*/ workout) {
-    this.setState({workout: workout});
-    this.props.onChange && this.props.onChange(workout);
+  _onChange(/*object*/ activity) {
+    this.setState({activity});
+    this.props.onChange && this.props.onChange(activity);
   },
 });
 

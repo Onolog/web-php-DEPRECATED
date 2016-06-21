@@ -17,7 +17,7 @@ const WorkoutLink = React.createClass({
   displayName: 'WorkoutLink',
 
   propTypes: {
-    workout: PropTypes.object.isRequired,
+    activity: PropTypes.object.isRequired,
   },
 
   getInitialState() {
@@ -30,24 +30,24 @@ const WorkoutLink = React.createClass({
 
   componentWillReceiveProps(nextProps) {
     // Close the modal if the activity was successfully updated.
-    if (!isEqual(nextProps.workout, this.props.workout)) {
+    if (!isEqual(nextProps.activity, this.props.activity)) {
       this._hideModal();
     }
   },
 
   render() {
-    const {workout} = this.props;
+    const {activity} = this.props;
     const {isEditing, isLoading, showModal} = this.state;
 
     const modal = isEditing ?
       <ActivityModal
         animation={false}
-        initialActivity={workout}
+        initialActivity={activity}
         onHide={this._hideModal}
         show={showModal}
       /> :
       <ActivityViewModal
-        activity={workout}
+        activity={activity}
         isLoading={isLoading}
         onDelete={this._handleDelete}
         onEdit={this._handleEdit}
@@ -58,7 +58,7 @@ const WorkoutLink = React.createClass({
     return (
       <Link className="workout" href="#" onClick={this._showModal}>
         <span className="distance">
-          {formatDistance(workout.distance)}
+          {formatDistance(activity.distance)}
         </span> mi
         {modal}
       </Link>
@@ -69,8 +69,8 @@ const WorkoutLink = React.createClass({
     if (confirm('Are you sure you want to delete this activity?')) {
       this.setState({isLoading: true});
 
-      const {dispatch, workout} = this.props;
-      dispatch(deleteActivity(workout.id));
+      const {activity, dispatch} = this.props;
+      dispatch(deleteActivity(activity.id));
     }
   },
 

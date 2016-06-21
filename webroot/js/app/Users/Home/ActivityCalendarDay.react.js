@@ -1,12 +1,12 @@
-var React = require('react');
-var {Button, Glyphicon, OverlayTrigger, Tooltip} = require('react-bootstrap/lib');
+import React, {PropTypes} from 'react';
+import {Button, Glyphicon, OverlayTrigger, Tooltip} from 'react-bootstrap';
 
-var ActivityModal = require('./ActivityModal.react');
-var BaseCalendarDay = require('components/Calendar/BaseCalendarDay.react');
-var CalendarDate = require('components/Calendar/CalendarDate.react');
-var WorkoutLink = require('./WorkoutLink.react');
+import ActivityModal from './ActivityModal.react';
+import BaseCalendarDay from 'components/Calendar/BaseCalendarDay.react';
+import CalendarDate from 'components/Calendar/CalendarDate.react';
+import WorkoutLink from './WorkoutLink.react';
 
-var formatDistance = require('utils/formatDistance');
+import formatDistance from 'utils/formatDistance';
 
 const LAST_DAY_OF_WEEK = 6; // Saturday (Sunday is 0)
 
@@ -18,45 +18,45 @@ const ActivityCalendarDay = React.createClass({
 
   propTypes: {
     /**
+     * Activities for the given day
+     */
+    activities: PropTypes.array,
+    /**
      * The date object for the day being rendered
      */
-    date: React.PropTypes.instanceOf(Date),
+    date: PropTypes.instanceOf(Date),
     /**
      * UTC month, ie: August === 7
      */
-    month: React.PropTypes.number,
-    weeklyMileage: React.PropTypes.number,
-    /**
-     * Workouts for the given day
-     */
-    workouts: React.PropTypes.array,
+    month: PropTypes.number,
+    weeklyMileage: PropTypes.number,
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       showModal: false,
     };
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    var {workouts} = this.props;
-    var thisCount = workouts && workouts.length;
-    var nextCount = nextProps.workouts && nextProps.workouts.length;
+  componentWillReceiveProps(nextProps) {
+    const {activities} = this.props;
+    const thisCount = activities && activities.length;
+    const nextCount = nextProps.activities && nextProps.activities.length;
 
     if (nextCount !== thisCount) {
       this._hideModal();
     }
   },
 
-  render: function() {
-    var {date, month} = this.props;
-    var tooltip = <Tooltip id={date.toISOString()}>Add workout</Tooltip>;
+  render() {
+    const {date, month} = this.props;
+    const tooltip = <Tooltip id={date.toISOString()}>Add activity</Tooltip>;
 
     return (
       <BaseCalendarDay date={date} month={month}>
         <div className="wrapper">
           <CalendarDate date={date} />
-          {this._renderWorkouts()}
+          {this._renderActivities()}
           <OverlayTrigger overlay={tooltip} placement="right">
             <Button
               bsSize="xsmall"
@@ -77,20 +77,18 @@ const ActivityCalendarDay = React.createClass({
     );
   },
 
-  _renderWorkouts: function() /*?object*/ {
-    var {workouts} = this.props;
-    if (workouts.length) {
-      return workouts.map(this._renderWorkoutLink);
+  _renderActivities() /*?object*/ {
+    const {activities} = this.props;
+    if (activities.length) {
+      return activities.map(this._renderActivityLink);
     }
   },
 
-  _renderWorkoutLink: function(/*object*/ workout) {
-    return (
-      <WorkoutLink key={workout.id} workout={workout} />
-    );
+  _renderActivityLink(/*object*/ activity) {
+    return <WorkoutLink activity={activity} key={activity.id} />;
   },
 
-  _renderWeeklyTotal: function(dateObject) {
+  _renderWeeklyTotal(dateObject) {
     if (dateObject.getDay() === LAST_DAY_OF_WEEK) {
       return (
         <div className="total">
@@ -102,11 +100,11 @@ const ActivityCalendarDay = React.createClass({
     }
   },
 
-  _hideModal: function() {
+  _hideModal() {
     this.setState({showModal: false});
   },
 
-  _showModal: function() {
+  _showModal() {
     this.setState({showModal: true});
   },
 });

@@ -67,8 +67,8 @@ const Home = React.createClass({
         <Panel className="calendarContainer">
           {isLoading && <Loader background full />}
           <ActivityCalendar
+            activities={activities}
             date={date}
-            workouts={activities}
           />
         </Panel>
       </AppPage>

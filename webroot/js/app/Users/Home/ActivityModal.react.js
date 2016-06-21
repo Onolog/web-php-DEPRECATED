@@ -75,8 +75,8 @@ const ActivityModal = React.createClass({
         <Modal.Body>
           {isLoading && <Loader background full large />}
           <WorkoutFields
+            activity={activity}
             onChange={this._handleChange}
-            workout={activity}
           />
         </Modal.Body>
         <Modal.Footer>

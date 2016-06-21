@@ -1,25 +1,25 @@
-var moment = require('moment');
-var React = require('react');
+import moment from 'moment';
+import React from 'react';
 
-var ActivityCalendarDay = require('./ActivityCalendarDay.react');
-var BaseCalendar = require('components/Calendar/BaseCalendar.react');
-var BaseCalendarWeek = require('components/Calendar/BaseCalendarWeek.react');
+import ActivityCalendarDay from './ActivityCalendarDay.react';
+import BaseCalendar from 'components/Calendar/BaseCalendar.react';
+import BaseCalendarWeek from 'components/Calendar/BaseCalendarWeek.react';
 
-var calendarGrid = require('utils/calendarGrid');
+import calendarGrid from 'utils/calendarGrid';
 
 /**
  * ActivityCalendar.react
  */
-var ActivityCalendar = React.createClass({
+const ActivityCalendar = React.createClass({
   displayName: 'ActivityCalendar',
 
   propTypes: {
+    activities: React.PropTypes.array.isRequired,
     date: React.PropTypes.instanceOf(Date).isRequired,
-    workouts: React.PropTypes.array,
   },
 
-  render: function() {
-    var grid = calendarGrid(
+  render() {
+    const grid = calendarGrid(
       this.props.date.getMonth(),
       this.props.date.getFullYear()
     );
@@ -31,7 +31,7 @@ var ActivityCalendar = React.createClass({
     );
   },
 
-  _renderWeek: function(week, idx) {
+  _renderWeek(week, idx) {
     this._weeklyMileage = 0;
     return (
       <BaseCalendarWeek key={idx}>
@@ -40,27 +40,26 @@ var ActivityCalendar = React.createClass({
     );
   },
 
-  _renderDay: function(day, idx) {
-    var dateObject = day.date;
-    var workouts = this.props.workouts || [];
+  _renderDay(day, idx) {
+    const dateObject = day.date;
 
-    workouts = workouts.filter(function(workout) {
-      return moment(dateObject).isSame(workout.start_date, 'day');
-    });
+    let activities = this.props.activities.filter(activity => (
+      moment(dateObject).isSame(activity.start_date, 'day')
+    ));
 
-    if (workouts.length) {
-      workouts.forEach(function(workout) {
-        this._weeklyMileage += workout.distance;
-      }.bind(this));
+    if (activities.length) {
+      activities.forEach(activity => {
+        this._weeklyMileage += activity.distance;
+      });
     }
 
     return (
       <ActivityCalendarDay
+        activities={activities}
         date={dateObject}
         key={idx}
         month={this.props.date.getMonth()}
         weeklyMileage={this._weeklyMileage}
-        workouts={workouts}
       />
     );
   },
