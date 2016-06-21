@@ -3,8 +3,8 @@ import React, {PropTypes} from 'react';
 import {Button, Modal} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
+import ActivityForm from 'app/Workouts/ActivityForm.react';
 import Loader from 'components/Loader/Loader.react';
-import WorkoutFields from 'app/Workouts/WorkoutFields.react';
 
 import {addActivity, updateActivity} from 'actions/activities';
 
@@ -74,7 +74,7 @@ const ActivityModal = React.createClass({
         </Modal.Header>
         <Modal.Body>
           {isLoading && <Loader background full large />}
-          <WorkoutFields
+          <ActivityForm
             activity={activity}
             onChange={this._handleChange}
           />

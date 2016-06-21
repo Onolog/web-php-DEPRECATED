@@ -3,17 +3,17 @@ var React = require('react');
 var {Button, ButtonGroup, Glyphicon, Panel} = require('react-bootstrap/lib');
 
 var Activity = require('app/Activities/Activity.react');
+var ActivityForm = require('app/Workouts/ActivityForm.react');
 var AppPage = require('components/Page/AppPage.react');
 var Calendar = require('components/Calendar/Calendar.react');
 var DateTimePicker = require('components/DateTimePicker/DateTimePicker.react');
 var FBFriendTokenizer = require('components/Facebook/FBFriendTokenizer.react');
 var LeftRight = require('components/LeftRight/LeftRight.react');
 var PageHeader = require('components/Page/PageHeader.react');
-var WorkoutFields = require('app/Workouts/WorkoutFields.react');
 
 var cloneDate = require('utils/cloneDate');
 
-var {FRIENDS, SHOES, WORKOUTS} = require('constants/TestData');
+var {FRIENDS, WORKOUTS} = require('constants/TestData');
 
 /**
  * ReactPage.react
@@ -81,11 +81,7 @@ var ReactPage = React.createClass({
         </Panel>
 
         <Panel header={<h3>Workout Fields</h3>}>
-          <WorkoutFields
-            action="add"
-            shoes={SHOES}
-            workout={WORKOUTS['2014']['10']['21'][1]}
-          />
+          <ActivityForm activity={WORKOUTS['2014']['10']['21'][1]} />
         </Panel>
 
         <Panel header={<h3>Activity</h3>}>

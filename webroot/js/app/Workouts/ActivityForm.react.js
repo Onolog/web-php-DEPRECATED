@@ -1,43 +1,37 @@
-var moment = require('moment');
-var React = require('react');
+import React, {PropTypes} from 'react';
 
-var ShoeSelector = require('./ShoeSelector.react');
+import ShoeSelector from './ShoeSelector.react';
 
-var DateTimePicker = require('components/DateTimePicker/DateTimePicker.react');
-var DurationInput = require('components/Forms/DurationInput.react');
-var FBFriendTokenizer = require('components/Facebook/FBFriendTokenizer.react');
-var FormGroup = require('components/Forms/FormGroup.react');
-var Textarea = require('components/Forms/Textarea.react');
-var TextInput = require('components/Forms/TextInput.react');
+import DateTimePicker from 'components/DateTimePicker/DateTimePicker.react';
+import DurationInput from 'components/Forms/DurationInput.react';
+import FBFriendTokenizer from 'components/Facebook/FBFriendTokenizer.react';
+import FormGroup from 'components/Forms/FormGroup.react';
+import Textarea from 'components/Forms/Textarea.react';
+import TextInput from 'components/Forms/TextInput.react';
 
-var calculatePace = require('utils/calculatePace');
+import calculatePace from 'utils/calculatePace';
 
 require('../../../css/app/Workout.css');
 
 /**
- * WorkoutFields.react
+ * ActivityForm.react
  *
- * Displays a form with inputs for adding or editing a workout
+ * Displays a form with inputs for adding or editing an activity.
  */
-var WorkoutFields = React.createClass({
-  displayName: 'WorkoutFields',
+const ActivityForm = React.createClass({
+  displayName: 'ActivityForm',
 
   propTypes: {
     /**
      * An existing activity object.
      */
-    activity: React.PropTypes.object,
+    activity: PropTypes.object,
+    onChange: PropTypes.func.isRequired,
   },
 
   getDefaultProps: function() {
     return {
       activity: {},
-    };
-  },
-
-  getInitialState: function() {
-    return {
-      activity: this.props.activity,
     };
   },
 
@@ -47,8 +41,8 @@ var WorkoutFields = React.createClass({
   },
 
   render: function() {
-    var {activity} = this.state;
-    var pace = calculatePace.fromSeconds(
+    const {activity} = this.props;
+    const pace = calculatePace.fromSeconds(
       activity.distance || 0,
       activity.duration || 0
     );
@@ -129,18 +123,16 @@ var WorkoutFields = React.createClass({
 
   _onInputChange(e) {
     const {name, value} = e.target;
-    const activity = {...this.state.activity};
+    const activity = {...this.props.activity};
     activity[name] = value;
 
     this._onChange(activity);
   },
 
-  _onDateChange(/*string*/ dateString, /*string*/ timezone) {
-    const date = moment(dateString);
+  _onDateChange(/*string*/ start_date, /*string*/ timezone) {
     const activity = {
-      ...this.state.activity,
-      date: date.unix(),
-      start_date: dateString,
+      ...this.props.activity,
+      start_date,
       timezone,
     };
 
@@ -148,9 +140,8 @@ var WorkoutFields = React.createClass({
   },
 
   _onChange(/*object*/ activity) {
-    this.setState({activity});
-    this.props.onChange && this.props.onChange(activity);
+    this.props.onChange(activity);
   },
 });
 
-module.exports = WorkoutFields;
+module.exports = ActivityForm;
