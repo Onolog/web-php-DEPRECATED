@@ -47,16 +47,28 @@ Router::scope('/', function (RouteBuilder $routes) {
   // Allowed extensions.
   $routes->extensions(['json', 'xml', 'ajax']);
 
-  $routes->connect('/pages/*', array(
-    'controller' => 'pages',
-    'action' => 'display'
-  ));
+  $routes->connect('/pages/*', [
+      'controller' => 'pages',
+      'action' => 'display'
+    ]);
 
-  $routes->connect('/vdot', array(
+  $routes->connect('/privacy', [
+    'controller' => 'pages',
+    'action' => 'display',
+    'privacy'
+  ]);
+
+  $routes->connect('/terms', [
+    'controller' => 'pages',
+    'action' => 'display',
+    'terms'
+  ]);
+
+  $routes->connect('/vdot', [
     'controller' => 'pages',
     'action' => 'display',
     'vdot'
-  ));
+  ]);
 
   /**
    * Home Page Route
@@ -84,9 +96,29 @@ Router::scope('/', function (RouteBuilder $routes) {
     'action' => 'login',
   ]);
 
-  $routes->connect('/shoes', [
-    'controller' => 'shoes',
-    'action' => 'index',
+  // Allows /action/:id instead of /action/view/:id
+  $routes->connect('/activities/:id', [
+    'controller' => 'activities',
+    'action' => 'view',
+  ], [
+    'id' => '\d+',
+    'pass' => ['id']
+  ]);
+
+  $routes->connect('/shoes/:id', [
+    'controller' => 'Shoes',
+    'action' => 'view',
+  ], [
+    'id' => '\d+',
+    'pass' => ['id']
+  ]);
+
+  $routes->connect('/users/:id', [
+    'controller' => 'Users',
+    'action' => 'profile',
+  ], [
+    'id' => '\d+',
+    'pass' => ['id']
   ]);
 
   /**

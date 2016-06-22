@@ -130,7 +130,7 @@ a.btn-default,
 
 /* Menu */
 .navbar-nav > li > .dropdown-menu {
-  margin-top: 12px;
+  margin-top: 15px;
 }
 
 .dropdown-menu > .arrow,
@@ -151,6 +151,9 @@ a.btn-default,
   content: " ";
   margin-left: -10px;
   top: 1px;
+}
+.dropdown-menu > li > a {
+  padding: 5px 20px;
 }
 
 .navbar-right .dropdown-menu > .arrow {

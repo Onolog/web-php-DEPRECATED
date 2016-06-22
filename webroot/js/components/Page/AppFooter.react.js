@@ -22,11 +22,11 @@ const AppFooter = React.createClass({
             Copyright &copy; {date.getFullYear()} Onolog
           </div>
           <div>
-            <Link href="/pages/privacy">
+            <Link href="/privacy">
               Privacy
             </Link>
             <Middot />
-            <Link href="/pages/terms">
+            <Link href="/terms">
               Terms
             </Link>
           </div>

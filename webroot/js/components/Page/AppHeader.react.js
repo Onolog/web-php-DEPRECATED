@@ -75,7 +75,7 @@ const AppHeader = React.createClass({
             id="account-menu"
             title={title}>
             <div className="arrow hidden-xs" />
-            <MenuItem href={`/users/profile/${user.id}`}>
+            <MenuItem href={`/users/${user.id}`}>
               Profile
             </MenuItem>
             <MenuItem href="/users/settings">
@@ -98,7 +98,7 @@ const AppHeader = React.createClass({
           <NavItem href={homeUrl()}>
             Calendar
           </NavItem>
-          <NavItem href={`/users/profile/${user.id}`}>
+          <NavItem href={`/users/${user.id}`}>
             Profile
           </NavItem>
           <NavItem href="/shoes">

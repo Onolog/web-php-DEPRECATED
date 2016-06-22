@@ -77,24 +77,10 @@ const ShoeViewPage = React.createClass({
             </Button>
           </OverlayTrigger>
           <OverlayTrigger
-            overlay={<Tooltip id="edit">Delete Shoe</Tooltip>}
+            overlay={<Tooltip id="delete">Delete Shoe</Tooltip>}
             placement="top">
             <Button onClick={this._onShoeDelete}>
               <Glyphicon glyph="trash" />
-            </Button>
-          </OverlayTrigger>
-          <OverlayTrigger
-            overlay={<Tooltip id="edit">New Shoe</Tooltip>}
-            placement="top">
-            <Button href="/shoes/add/">
-              <Glyphicon glyph="plus" />
-            </Button>
-          </OverlayTrigger>
-          <OverlayTrigger
-            overlay={<Tooltip id="edit">All Shoes</Tooltip>}
-            placement="top">
-            <Button href="/shoes">
-              <Glyphicon glyph="th" />
             </Button>
           </OverlayTrigger>
         </ButtonGroup>

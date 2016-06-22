@@ -62,7 +62,9 @@ const ActivityViewModal = React.createClass({
               <OverlayTrigger
                 overlay={<Tooltip id="permalink">View Permalink</Tooltip>}
                 placement="top">
-                <Button disabled={isLoading} onClick={this._handlePermalink}>
+                <Button
+                  disabled={isLoading}
+                  href={`/activities/${activity.id}`}>
                   <Glyphicon glyph="link" />
                 </Button>
               </OverlayTrigger>
@@ -74,10 +76,6 @@ const ActivityViewModal = React.createClass({
         </Modal.Footer>
       </Modal>
     );
-  },
-
-  _handlePermalink() {
-    document.location = `/activities/view/${this.props.activity.id}`;
   },
 });
 

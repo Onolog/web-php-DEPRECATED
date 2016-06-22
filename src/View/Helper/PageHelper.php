@@ -120,8 +120,8 @@ class PageHelper extends Helper {
 
     return
       $this->Html->css('/css/base/bootstrap') .
-      $this->Html->css('/css/base/bs-override') .
       $this->Html->css('/css/base/app') .
+      $this->Html->css('/css/base/bs-override') .
       $this->Html->css('/css/base/fonts') .
       $this->Html->css('/css/base/util');
       $debugCSS;
