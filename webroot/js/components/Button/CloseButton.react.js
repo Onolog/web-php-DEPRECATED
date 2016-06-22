@@ -1,24 +1,14 @@
-var React = require('react');
+import cx from 'classnames';
+import React from 'react';
 
-var cx = require('classnames');
+const CloseButton = props => (
+  <button
+    {...this.props}
+    className={cx(this.props.className, 'close')}
+    type="button">
+    <span aria-hidden="true">&times;</span>
+    <span className="sr-only">Close</span>
+  </button>
+);
 
-/**
- * CloseButton.react
- */
-var CloseButton = React.createClass({
-  displayName: 'CloseButton',
-
-  render: function() {
-    return (
-      <button
-        {...this.props}
-        className={cx(this.props.className, 'close')}
-        type="button">
-        <span aria-hidden="true">&times;</span>
-        <span className="sr-only">Close</span>
-      </button>
-    );
-  },
-});
-
-module.exports = CloseButton;
+export default CloseButton;
