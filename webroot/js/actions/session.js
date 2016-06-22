@@ -80,15 +80,11 @@ function getFBUser(accessToken, dispatch) {
 }
 
 function onLoginSuccess(response, dispatch) {
-  const {session, success} = response;
-  if (success) {
-    dispatch({
-      session,
-      type: SESSION_LOGIN_SUCCESS,
-    });
-    return;
-  }
-  onLoginError(response, dispatch);
+  const {session} = response;
+  dispatch({
+    session,
+    type: SESSION_LOGIN_SUCCESS,
+  });
 }
 
 function onLoginError(response, dispatch) {

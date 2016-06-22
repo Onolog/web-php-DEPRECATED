@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 
 import Select from 'components/Select/Select.react';
-import {fetchBrandsIfNeeded} from 'actions/brands';
+import {fetchBrands} from 'actions/brands';
 
 const mapStateToProps = ({brands}) => {
   return {
@@ -19,7 +19,7 @@ const BrandSelector = React.createClass({
   displayName: 'BrandSelector',
 
   componentWillMount() {
-    this.props.dispatch(fetchBrandsIfNeeded());
+    this.props.dispatch(fetchBrands());
   },
 
   propTypes: {

@@ -41,7 +41,6 @@ class ShoesController extends AppController {
   public function view($id=null) {
     if (!$id) {
       throw new NotFoundException(__('Invalid id.'));
-      return;
     }
 
     $shoe = $this->Shoes->get($id, [
@@ -50,7 +49,6 @@ class ShoesController extends AppController {
 
     if (!$shoe) {
       throw new NotFoundException(__('Sorry, that shoe does not exist.'));
-      return;
     }
 
     // Get all the activities for the shoe.
@@ -87,7 +85,6 @@ class ShoesController extends AppController {
         'There was an error with your submission. Please make sure all the ' .
         'fields are correctly filled out.'
       );
-      return;
     }
 
     if (!$this->Shoes->save($shoe)) {
@@ -95,7 +92,6 @@ class ShoesController extends AppController {
         'Sorry, something went wrong and the item could not be saved. Please ' .
         'refresh the page and try again.'
       );
-      return;
     }
 
     $this->set([
@@ -117,7 +113,6 @@ class ShoesController extends AppController {
       throw new UnauthorizedException(
         'You are not allowed to modify this item.'
       );
-      return;
     }
 
     // DB expects the `inactive` field to be `0` or `1`.
@@ -141,7 +136,6 @@ class ShoesController extends AppController {
         'There was an error with your submission. Please make sure all the ' .
         'fields are correctly filled out.'
       );
-      return;
     }
 
     if (!$this->Shoes->save($shoe)) {
@@ -149,7 +143,6 @@ class ShoesController extends AppController {
         'Sorry, we could not update the item. Please refresh the page ' .
         'and try again.'
       );
-      return;
     }
 
     $this->set([
@@ -165,21 +158,20 @@ class ShoesController extends AppController {
 
     if (!$id) {
       throw new NotFoundException(__('Invalid id.'));
-      return;
     }
 
     $shoe = $this->Shoes->get($id);
 
     // Make sure users only delete their own workouts!
     if ($shoe->user_id !== $user_id) {
-      throw new UnauthorizedException('You are not allowed to delete this item.');
-      return;
+      throw new UnauthorizedException(
+        'You are not allowed to delete this item.'
+      );
     }
 
     // Couldn't delete the shoe for some reason.
     if (!$this->Shoes->delete($shoe)) {
       throw new InternalErrorException('Unable to delete.');
-      return;
     }
 
     $this->set([

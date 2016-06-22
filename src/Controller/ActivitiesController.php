@@ -77,7 +77,6 @@ class ActivitiesController extends AppController {
   public function view($id=null) {
     if (!$id) {
       throw new NotFoundException(__('Invalid id.'));
-      return;
     }
 
     // Get the activity data.
@@ -85,7 +84,6 @@ class ActivitiesController extends AppController {
 
     if (empty($activity)) {
       throw new NotFoundException(__('Sorry, that activity does not exist.'));
-      return;
     }
 
     $user_id = $activity->user_id;
@@ -133,7 +131,6 @@ class ActivitiesController extends AppController {
         'There was an error with your entry. Please make sure all the ' .
         'fields are correctly filled out.'
       );
-      return;
     }
 
     if (!$this->Activities->save($activity)) {
@@ -141,7 +138,6 @@ class ActivitiesController extends AppController {
         'Sorry, something went wrong and the item could not be saved. Please ' .
         'refresh the page and try again.'
       );
-      return;
     }
 
     $this->set([
@@ -165,7 +161,6 @@ class ActivitiesController extends AppController {
       throw new UnauthorizedException(
         'You are not allowed to modify this activity.'
       );
-      return;
     }
 
     $data = $this->formatActivityDataForWrite($this->request->data);
@@ -179,7 +174,6 @@ class ActivitiesController extends AppController {
         'There was an error with your entry. Please make sure all the ' .
         'fields are correctly filled out.'
       );
-      return;
     }
 
     if (!$this->Activities->save($activity)) {
@@ -187,7 +181,6 @@ class ActivitiesController extends AppController {
         'Sorry, we could not update the activity. Please refresh the page ' .
         'and try again.'
       );
-      return;
     }
 
     $this->set([
@@ -202,7 +195,6 @@ class ActivitiesController extends AppController {
 
     if (!$id) {
       throw new NotFoundException(__('Invalid id.'));
-      return;
     }
 
     $activity = $this->Activities->get($id);
@@ -213,7 +205,6 @@ class ActivitiesController extends AppController {
       throw new UnauthorizedException(
         'You are not allowed to delete this activity.'
       );
-      return;
     }
 
     if (!$this->Activities->delete($activity)) {
@@ -221,7 +212,6 @@ class ActivitiesController extends AppController {
         'Sorry, we could not delete the activity. Please refresh the page ' .
         'and try again.'
       );
-      return;
     }
 
     $this->set([

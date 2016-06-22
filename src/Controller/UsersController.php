@@ -5,6 +5,11 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;
 
+use Cake\Network\Exception\BadRequestException;
+use Cake\Network\Exception\InternalErrorException;
+use Cake\Network\Exception\NotFoundException;
+use Cake\Network\Exception\UnauthorizedException;
+
 /**
  * Users Controller
  *
@@ -73,7 +78,6 @@ class UsersController extends AppController {
 
       $this->set([
         'session' => $this->getSession(),
-        'success' => true,
       ]);
       return;
     }
@@ -89,25 +93,22 @@ class UsersController extends AppController {
       'last_login' => date('Y-m-d h:i:s', time())
     ]);
 
-    if ($this->Users->save($user)) {
-      // Manually add 'name' on account creation/first login only.
-      // For subsequent logins, it's added in afterFind().
-      $user->name = $data['name'];
-      $this->Auth->setUser($data);
-
-      $this->set([
-        'message' => 'Your account has been created',
-        'session' => $this->getSession(),
-        'success' => true,
-      ]);
-      return;
+    if (!$this->Users->save($user)) {
+      throw new InternalErrorException(
+        'Your account could not be created. Please refresh the page and try ' .
+        'again.'
+      );
     }
 
-    // The account couldn't be created for some reason.
+    // Manually add 'name' on account creation/first login only.
+    // For subsequent logins, it's added in afterFind().
+    $user->name = $data['name'];
+    $this->Auth->setUser($data);
+
     $this->set([
-      'message' => 'Your account could not be created. Please refresh the page and try again.',
+      'message' => 'Your account has been created',
+      'session' => $this->getSession(),
     ]);
-    return;
   }
 
   /**
@@ -122,7 +123,6 @@ class UsersController extends AppController {
 
     $this->set([
       'session' => $this->getSession(),
-      'success' => true,
     ]);
   }
 
@@ -132,31 +132,31 @@ class UsersController extends AppController {
    */
   public function profile($id=null) {
     if (!$id) {
-      $this->redirect([
-        'controller' => 'activities',
-        'action' => 'index',
-      ]);
-      return;
+      throw new NotFoundException(__('Invalid id.'));
     }
 
     $user = $this->Users->get($id);
 
-    $activityQuery = id(TableRegistry::get('Activities'))->find();
-    $activities = $activityQuery
+    if (!$user) {
+      throw new NotFoundException(__('Sorry, that user does not exist.'));
+    }
+
+    $activities = id(TableRegistry::get('Activities'))
+      ->find()
       ->where(['user_id' => $user->id])
       ->select(['distance', 'duration', 'start_date'])
       ->order(['start_date' => 'DESC']);
 
-    $shoeQuery = id(TableRegistry::get('Shoes'))->find();
-    $shoes = $shoeQuery
+    $shoes = id(TableRegistry::get('Shoes'))
+      ->find()
       ->where(['user_id' => $user->id])
       ->contain(['Activities', 'Brands']);
 
-    $this->set(compact(
-      'activities',
-      'shoes',
-      'user'
-    ));
+    $this->set([
+      'activities' => $activities,
+      'shoes' => $shoes,
+      'user' => $user,
+    ]);
   }
 
   /**
@@ -175,23 +175,29 @@ class UsersController extends AppController {
     $user_id = $this->requireLoggedInUser();
     $data = $this->request->data;
 
-    if (empty($data)) {
-      // Error handling.
-      return;
-    }
-
     $user = $this->Users->get($data['id']);
 
     // Users can only edit their own data!
     if ($user->id !== $user_id) {
-      // Error handling.
-      return;
+      throw new UnauthorizedException(
+        'You are not allowed to modify this item.'
+      );
     }
 
     $this->Users->patchEntity($user, $data);
+
+    if ($user->errors()) {
+      throw new BadRequestException(
+        'There was an error with your submission. Please make sure all the ' .
+        'fields are correctly filled out.'
+      );
+    }
+
     if (!$this->Users->save($user)) {
-      // Error handling.
-      return;
+      throw new InternalErrorException(
+        'Sorry, we could not save your changes. Please refresh the page ' .
+        'and try again.'
+      );
     }
 
     $this->set([
@@ -206,7 +212,9 @@ class UsersController extends AppController {
    */
   public function friends() {
     $user = $this->requireLoggedInUser();
-    $friends = array();
-    $this->set('friends', $friends);
+    $friends = [];
+    $this->set([
+      'friends' => $friends
+    ]);
   }
 }

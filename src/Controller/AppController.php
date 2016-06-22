@@ -78,7 +78,7 @@ class AppController extends Controller {
 
     // This should match what's in react_page.ctp
     return array_merge(
-      isset($loggedInUser) ? $loggedInUser : array(),
+      isset($loggedInUser) ? $loggedInUser : [],
       $session->read('Config')
     );
   }
@@ -105,15 +105,9 @@ class AppController extends Controller {
     if ($flash) {
       $this->Session->setFlash($flash);
     }
-    $this->redirect(array(
+    $this->redirect([
       'controller' => 'users',
       'action' => 'index'
-    ));
-  }
-
-  public function setIsAjax() {
-    $this->viewBuilder()->layout('ajax');
-    $this->RequestHandler->renderAs($this, 'json');
-    $this->RequestHandler->respondAs('json');
+    ]);
   }
 }
