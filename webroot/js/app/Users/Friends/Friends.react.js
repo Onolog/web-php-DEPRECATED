@@ -58,7 +58,7 @@ var Friends = React.createClass({
           <h4>{friend.name}</h4>
         </ImageBlock>
       );
-    }); 
+    });
   },
 
   _getFriends: function() {

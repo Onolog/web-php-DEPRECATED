@@ -24,8 +24,8 @@ module.exports = {
       y: 100,
     },
     /**
-     * 
-     */  
+     *
+     */
     plotOptions: {
       bar: {
         dataLabels: {

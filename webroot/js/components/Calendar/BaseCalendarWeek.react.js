@@ -7,7 +7,7 @@ import React from 'react';
  */
 const BaseCalendarWeek = React.createClass({
   displayName: 'BaseCalendarWeek',
-  
+
   render: function() {
     return <tr>{this.props.children}</tr>;
   },

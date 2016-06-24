@@ -17,7 +17,7 @@ class TCXParser extends XMLParser {
     if (!activityNodes.length) {
       throw new Error('Error: Unable to parse TCX document.');
     }
-    
+
     let activities = [];
     forEach(activityNodes, activityNode => {
       let activity = (new TCXActivityParser(activityNode)).parse();

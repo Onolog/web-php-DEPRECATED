@@ -19,7 +19,7 @@ const TermsPage = React.createClass({
         <Panel>
           <h3>1. Terms</h3>
           <p>
-            By accessing this web site, you are agreeing to be bound by these 
+            By accessing this web site, you are agreeing to be bound by these
             web site Terms and Conditions of Use, all applicable laws and
             regulations, and agree that you are responsible for compliance
             with any applicable local laws. If you do not agree with any of
@@ -92,7 +92,7 @@ const TermsPage = React.createClass({
             warranties, or limitations of liability for consequential or
             incidental damages, these limitations may not apply to you.
           </p>
-                
+
           <h3>5. Revisions and Errata</h3>
           <p>
             The materials appearing on Onolog's web site could include

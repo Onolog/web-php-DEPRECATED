@@ -19,7 +19,7 @@ const FB_URL = '//www.facebook.com/plugins/like.php';
  */
 const FBLikeButton = React.createClass({
   displayName: 'FBLikeButton',
-  propTypes: { 
+  propTypes: {
     href: React.PropTypes.string.isRequired,
     /**
      * Specify the label to be displayed in the button

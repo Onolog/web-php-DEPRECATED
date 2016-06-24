@@ -64,7 +64,7 @@ module.exports = {
     trackPoint: 'Trackpoint',
     trackPointCadence: 'Cadence',
     trackPointDistance: 'DistanceMeters',
-    trackPointElevation: 'AltitudeMeters',  
+    trackPointElevation: 'AltitudeMeters',
     trackPointHeartRate: 'HeartRateBpm',
     trackPointHeartRateValue: 'Value',
     trackPointSensorState: 'SensorState',

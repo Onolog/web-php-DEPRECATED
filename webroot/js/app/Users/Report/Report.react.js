@@ -255,7 +255,7 @@ var Report = React.createClass({
         </BarGraphSection>
       );
     });
-    
+
     return <BarGraph>{months}</BarGraph>;
   },
 
@@ -280,7 +280,7 @@ var Report = React.createClass({
         </BarGraphSection>
       );
     });
-    
+
     return <BarGraph>{weeks}</BarGraph>;
   },
 

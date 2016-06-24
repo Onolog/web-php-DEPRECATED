@@ -68,7 +68,7 @@ var ActivityMap = React.createClass({
 
   /**
    * Draws a simple line on the map using the Garmin.MapController.
-   * @param {Select} index - value of select widget. 
+   * @param {Select} index - value of select widget.
    */
   _displayTrack: function(series) {
     this.mc.clearOverlays();

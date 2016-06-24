@@ -45,7 +45,7 @@ const Login = React.createClass({
           <div className="bgImage"></div>
         </div>
       </BaseAppPage>
-    ); 
+    );
   },
 
   _renderMarketingSection(title) {

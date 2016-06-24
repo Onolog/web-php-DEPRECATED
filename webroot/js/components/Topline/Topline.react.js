@@ -41,7 +41,7 @@ const ToplineItem = React.createClass({
       return (
         <div className="topline-item-annotation">
           {this.props.annotation}
-        </div>      
+        </div>
       );
     }
   },

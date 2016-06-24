@@ -80,7 +80,7 @@ function fetchShoesSuccess({shoes}, dispatch) {
   return {
     shoes,
     type: ALL_SHOES_FETCH_SUCCESS,
-  }; 
+  };
 }
 
 export function fetchShoes() {
@@ -104,7 +104,7 @@ function updateShoeSuccess({shoe}, dispatch) {
   dispatch({
     shoe,
     type: SHOE_UPDATE_SUCCESS,
-  }); 
+  });
 }
 
 export const updateShoe = (shoe) => {

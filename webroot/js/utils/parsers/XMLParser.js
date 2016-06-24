@@ -63,12 +63,12 @@ class XMLParser {
 
     return new DOMParser().parseFromString(fromString, 'text/xml');
   }
-    
+
   /**
    * Converts a document to a string, and then returns the string
    * @param {Document} fromDocument is the DOM Object to convert
    * @returns {String}
-   */  
+   */
   toString(fromDocument) {
     if (window.ActiveXObject) {
       return fromDocument.xml;
