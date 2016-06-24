@@ -1,12 +1,13 @@
 import moment from 'moment';
 import React, {PropTypes} from 'react';
-import {Button, Modal} from 'react-bootstrap';
+import {Button, ButtonToolbar, Modal} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 import ActivityForm from 'app/Workouts/ActivityForm.react';
+import LeftRight from 'components/LeftRight/LeftRight.react';
 import Loader from 'components/Loader/Loader.react';
 
-import {addActivity, updateActivity} from 'actions/activities';
+import {addActivity, deleteActivity, updateActivity} from 'actions/activities';
 
 import jstz from 'jstz';
 import {isEqual, isInteger} from 'lodash';
@@ -53,10 +54,17 @@ const ActivityModal = React.createClass({
     const {initialActivity} = this.props;
     const {activity, isLoading} = this.state;
 
+    let deleteButton;
     let primaryAction;
     let title;
 
     if (initialActivity) {
+      deleteButton =
+        <Button
+          bsStyle="danger"
+          onClick={this._handleDelete}>
+          Delete
+        </Button>;
       primaryAction = 'Update Activity';
       title = 'Edit Activity';
     } else {
@@ -80,17 +88,22 @@ const ActivityModal = React.createClass({
           />
         </Modal.Body>
         <Modal.Footer>
-          <Button
-            disabled={isLoading}
-            onClick={this._handleClose}>
-            Cancel
-          </Button>
-          <Button
-            bsStyle="primary"
-            disabled={isLoading}
-            onClick={this._handleSave}>
-            {primaryAction}
-          </Button>
+          <LeftRight>
+            {deleteButton}
+            <ButtonToolbar>
+              <Button
+                disabled={isLoading}
+                onClick={this._handleClose}>
+                Cancel
+              </Button>
+              <Button
+                bsStyle="primary"
+                disabled={isLoading}
+                onClick={this._handleSave}>
+                {primaryAction}
+              </Button>
+            </ButtonToolbar>
+          </LeftRight>
         </Modal.Footer>
       </Modal>
     );
@@ -101,15 +114,23 @@ const ActivityModal = React.createClass({
   },
 
   _handleClose() {
-    var initialState = this.getInitialState();
-    var hasChanges = !isEqual(initialState.activity, this.state.activity);
-    var confirmed = hasChanges && confirm(
+    const initialState = this.getInitialState();
+    const hasChanges = !isEqual(initialState.activity, this.state.activity);
+    const confirmed = hasChanges && confirm(
       'Are you sure you want to close the dialog? Your changes will not ' +
       'be saved'
     );
 
     if (!hasChanges || confirmed) {
       this.props.onHide && this.props.onHide();
+    }
+  },
+
+  _handleDelete() {
+    const {initialActivity, dispatch} = this.props;
+    if (confirm('Are you sure you want to delete this activity?')) {
+      this.setState({isLoading: true});
+      dispatch(deleteActivity(initialActivity.id));
     }
   },
 
@@ -143,8 +164,8 @@ const ActivityModal = React.createClass({
   },
 
   _getNewActivity() {
-    var date = this.props.date;
-    var now = new Date();
+    const date = this.props.date;
+    const now = new Date();
 
     // Set time to match the current time.
     date.setHours(
@@ -160,4 +181,4 @@ const ActivityModal = React.createClass({
   },
 });
 
-module.exports = connect()(ActivityModal);
+export default connect()(ActivityModal);

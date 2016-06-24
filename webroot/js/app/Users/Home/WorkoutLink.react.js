@@ -1,11 +1,8 @@
 import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
 
 import ActivityModal from './ActivityModal.react';
 import ActivityViewModal from './ActivityViewModal.react';
 import Link from 'components/Link/Link.react';
-
-import {deleteActivity} from 'actions/activities';
 
 import formatDistance from 'utils/formatDistance';
 import {isEqual} from 'lodash';
@@ -49,7 +46,6 @@ const WorkoutLink = React.createClass({
       <ActivityViewModal
         activity={activity}
         isLoading={isLoading}
-        onDelete={this._handleDelete}
         onEdit={this._handleEdit}
         onHide={this._hideModal}
         show={showModal}
@@ -63,15 +59,6 @@ const WorkoutLink = React.createClass({
         {modal}
       </Link>
     );
-  },
-
-  _handleDelete() {
-    if (confirm('Are you sure you want to delete this activity?')) {
-      this.setState({isLoading: true});
-
-      const {activity, dispatch} = this.props;
-      dispatch(deleteActivity(activity.id));
-    }
   },
 
   _handleEdit() {
@@ -91,4 +78,4 @@ const WorkoutLink = React.createClass({
   },
 });
 
-module.exports = connect()(WorkoutLink);
+module.exports = WorkoutLink;

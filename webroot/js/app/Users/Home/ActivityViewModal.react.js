@@ -21,7 +21,6 @@ const ActivityViewModal = React.createClass({
   propTypes: {
     activity: PropTypes.object.isRequired,
     isLoading: PropTypes.bool,
-    onDelete: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     onHide: PropTypes.func.isRequired,
     show: PropTypes.bool,
@@ -34,7 +33,7 @@ const ActivityViewModal = React.createClass({
   },
 
   render() {
-    const {activity, isLoading, onDelete, onEdit, onHide, show} = this.props;
+    const {activity, isLoading, onEdit, onHide, show} = this.props;
 
     return (
       <Modal onHide={onHide} show={show}>
@@ -50,13 +49,6 @@ const ActivityViewModal = React.createClass({
                 placement="top">
                 <Button disabled={isLoading} onClick={onEdit}>
                   <Glyphicon glyph="pencil" />
-                </Button>
-              </OverlayTrigger>
-              <OverlayTrigger
-                overlay={<Tooltip id="delete">Delete Activity</Tooltip>}
-                placement="top">
-                <Button disabled={isLoading} onClick={onDelete}>
-                  <Glyphicon glyph="trash" />
                 </Button>
               </OverlayTrigger>
               <OverlayTrigger
