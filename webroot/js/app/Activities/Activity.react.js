@@ -3,16 +3,16 @@ import React, {PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
 import {Tab, Tabs} from 'react-bootstrap';
 
-var ActivityDeviceInfo = require('./ActivityDeviceInfo.react');
-var ActivityHeader = require('./ActivityHeader.react');
-var ActivityMap = require('./ActivityMap.react');
-var ActivitySection = require('./ActivitySection.react');
-var ActivitySplitsTable = require('./ActivitySplitsTable.react');
-var ActivityStats = require('./ActivityStats.react');
+import ActivityDeviceInfo from './ActivityDeviceInfo.react';
+import ActivityHeader from './ActivityHeader.react';
+import ActivitySection from './ActivitySection.react';
+import ActivitySplitsTable from './ActivitySplitsTable.react';
+import ActivityStats from './ActivityStats.react';
+import GoogleMap from 'components/Google/GoogleMap.react';
 
-var FBFacepile = require('components/Facebook/FBFacepile.react');
+import FBFacepile from 'components/Facebook/FBFacepile.react';
 
-var cx = require('classnames');
+import cx from 'classnames';
 
 require('./Activity.css');
 
@@ -51,7 +51,7 @@ const Activity = React.createClass({
 
   render() {
     const {activity} = this.props;
-    const {series} = activity;
+    const {tracks} = activity;
 
     let content = this._renderDetailsContent(activity);
     let splitsTab = this._renderSplitsTab(activity);
@@ -68,10 +68,10 @@ const Activity = React.createClass({
 
     return (
       <div className={cx('activityContainer', 'clearfix', {
-        'noMap': !(series && series.length),
+        'noMap': !(tracks && tracks.length),
         'horizontal': this.state.isHorizontal,
       })}>
-        {this._renderMap(series)}
+        {this._renderMap(tracks)}
         <div className="activityInfo">
           <ActivityHeader {...this.props} />
           {content}
@@ -132,17 +132,17 @@ const Activity = React.createClass({
     return content;
   },
 
-  _renderMap: function(series) {
-    if (series) {
+  _renderMap(tracks) {
+    if (tracks) {
       return (
         <div className="activityMapContainer">
-          <ActivityMap className="activityMap" series={series} />
+          <GoogleMap className="activityMap" path={tracks} />
         </div>
       );
     }
   },
 
-  _renderSplitsTab: function(/*array*/ {laps}) {
+  _renderSplitsTab(/*array*/ {laps}) {
     if (laps && laps.length) {
       return (
         <Tab className="activityNavPane" eventKey={2} title="Splits">
@@ -154,11 +154,11 @@ const Activity = React.createClass({
     }
   },
 
-  _setOrientation: function() {
+  _setOrientation() {
     this.setState({
       isHorizontal: findDOMNode(this).offsetWidth > 750,
     });
   },
 });
 
-module.exports = Activity;
+export default Activity;

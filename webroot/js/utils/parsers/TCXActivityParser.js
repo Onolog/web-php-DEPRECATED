@@ -1,9 +1,6 @@
-import GarminSample from 'lib/garmin/activity/GarminSample';
-import GarminSeries from 'lib/garmin/activity/GarminSeries';
-import TcxActivityFactory from 'lib/garmin/activity/TcxActivityFactory';
 import XMLParser from './XMLParser';
 
-import {chain, forEach, head, map, reduce} from 'lodash';
+import {chain, flatten, forEach, head, map, reduce} from 'lodash';
 
 import {TCX_SCHEMA_TAGS} from 'constants/Garmin';
 const TAGS = TCX_SCHEMA_TAGS;
@@ -23,9 +20,6 @@ class TCXActivityParser extends XMLParser {
     this.parseTrackpoint = this.parseTrackpoint.bind(this);
 
     this.laps = [];
-    // TODO: Remove this once we get Google maps working with just a simple
-    // array of trackpoint data.
-    this.series = new GarminSeries(GarminSeries.TYPES.course);
     this.tracks = [];
   }
 
@@ -51,8 +45,7 @@ class TCXActivityParser extends XMLParser {
       calories: this._getTotal('calories'),
       device: this.parseDevice(),
       laps: this.laps,
-      series: [this.series], // Needs to be an array...
-      tracks: this.tracks,
+      tracks: flatten(this.tracks),
     };
   }
 
@@ -83,23 +76,29 @@ class TCXActivityParser extends XMLParser {
     var trackpointNodes = trackNode.getElementsByTagName(TAGS.trackPoint);
 
     forEach(trackpointNodes, trackpointNode => {
-      track.push(this.parseTrackpoint(trackpointNode));
-
-      // TODO: Remove
-      var trackPoint = new GarminSample();
-      trackPoint.setLazyLoading(true, TcxActivityFactory, trackpointNode);
-      this.series.addSample(trackPoint);
+      let point = this.parseTrackpoint(trackpointNode);
+      if (point) {
+        track.push(point);
+      }
     });
 
     track.length && this.tracks.push(track);
   }
 
   parseTrackpoint(trackpointNode) {
+    const lat = +this.getTagValue(TAGS.positionLatitude, trackpointNode);
+    const lng = +this.getTagValue(TAGS.positionLongitude, trackpointNode);
+
+    // Omit trackpoints without lat/lng values.
+    if (!(lat && lng)) {
+      return null;
+    }
+
     return {
       altitude: this.getTagValue(TAGS.trackPointElevation, trackpointNode),
       distance: this.getTagValue(TAGS.trackPointDistance, trackpointNode),
-      latitude: this.getTagValue(TAGS.positionLatitude, trackpointNode),
-      longitude: this.getTagValue(TAGS.positionLongitude, trackpointNode),
+      lat,
+      lng,
       speed: this.getTagValue('Speed', trackpointNode),
       time: this.getTagValue(TAGS.trackPointTime, trackpointNode),
     };

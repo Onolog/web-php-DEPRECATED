@@ -6,7 +6,6 @@ import Activity from 'app/Activities/Activity.react';
 import AppPage from 'components/Page/AppPage.react';
 import EmptyState from 'components/EmptyState.react';
 import FileInput from 'components/Forms/FileInput.react';
-import PageHeader from 'components/Page/PageHeader.react';
 
 import {head} from 'lodash';
 import {metersToFeet, metersToMiles} from 'utils/distanceUtils';
@@ -48,8 +47,7 @@ const GarminUploader = React.createClass({
       </EmptyState>;
 
     return (
-      <AppPage narrow>
-        <PageHeader title="" />
+      <AppPage>
         <Panel header={<h3>Choose a .tcx file</h3>}>
           <FileInput onChange={this._handleChange} />
         </Panel>
@@ -110,12 +108,12 @@ const GarminUploader = React.createClass({
 
       // We currently only upload one file at a time
       const activity = head(activities);
-      const start = activity.tracks[0][0];
+      const start = activity.tracks[0];
 
       // Get the timezone from the activity's geodata.
       GoogleTimezone({
-        latitude: start.latitude,
-        longitude: start.longitude,
+        latitude: start.lat,
+        longitude: start.lng,
         timestamp: moment(start.time).unix(),
       }, (response) => {
         activity.timezone = response.timeZoneId;
