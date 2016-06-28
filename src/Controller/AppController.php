@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\Network\Exception\UnauthorizedException;
 
 /**
  * Application Controller
@@ -92,10 +93,18 @@ class AppController extends Controller {
    */
   public function requireLoggedInUser() {
     $uid = $this->getLoggedInUser();
-    if (!isset($uid)) {
+    if (isset($uid)) {
+      return $uid;
+    }
+
+    if ($this->request->is('ajax')) {
+      throw new UnauthorizedException(
+        'You must be logged in to complete this action. Please log in and ' .
+        'try again.'
+      );
+    } else {
       $this->redirect($this->Auth->logout());
     }
-    return $uid;
   }
 
   /**
