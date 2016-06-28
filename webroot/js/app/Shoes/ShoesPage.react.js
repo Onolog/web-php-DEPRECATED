@@ -1,12 +1,13 @@
-import {isEqual} from 'lodash';
+import {isEqual, partition} from 'lodash';
 import React, {PropTypes} from 'react';
-import {Button, Glyphicon} from 'react-bootstrap';
+import {Button, Glyphicon, Panel} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
-import AllShoesView from './AllShoesView.react';
 import AppPage from 'components/Page/AppPage.react';
+import EmptyState from 'components/EmptyState.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import ShoeModal from './ShoeModal.react';
+import ShoeTable from './ShoeTable.react';
 
 const mapStateToProps = ({shoes}) => {
   return {
@@ -40,6 +41,8 @@ const ShoesPage = React.createClass({
   },
 
   render() {
+    const shoes = partition(this.props.shoes, 'inactive');
+
     return (
       <AppPage narrow>
         <PageHeader title="Shoes">
@@ -53,9 +56,34 @@ const ShoesPage = React.createClass({
             />
           </div>
         </PageHeader>
-        <AllShoesView shoes={this.props.shoes} />
+        {this._renderActiveShoes(shoes[1])}
+        {this._renderInactiveShoes(shoes[0])}
       </AppPage>
     );
+  },
+
+  _renderActiveShoes(/*array*/ activeShoes) {
+    const contents = activeShoes && activeShoes.length ?
+      <ShoeTable fill shoes={activeShoes} /> :
+      <EmptyState>
+        You do not have any active shoes to display.
+      </EmptyState>;
+
+    return (
+      <Panel header={<h3>Active</h3>}>
+        {contents}
+      </Panel>
+    );
+  },
+
+  _renderInactiveShoes(/*array*/ inactiveShoes) {
+    if (inactiveShoes && inactiveShoes.length) {
+      return (
+        <Panel header={<h3>Inactive</h3>}>
+          <ShoeTable fill shoes={inactiveShoes} />
+        </Panel>
+      );
+    }
   },
 
   _handleHideModal() {
