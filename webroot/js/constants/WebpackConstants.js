@@ -8,6 +8,7 @@ module.exports = {
 
     // Pages
     'Bootstrap',
+    'Data',
     'Privacy',
     'React',
     'Terms',

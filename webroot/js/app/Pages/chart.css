@@ -1,0 +1,36 @@
+/**
+ * chart.css
+ */
+
+.bar {
+  fill: #95b7cf;
+  shape-rendering: crispEdges;
+}
+.bar:hover {
+  cursor: pointer;
+  fill: #7295af;
+}
+
+.axis text {
+  font-size: 10px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #e9e9e9;
+  shape-rendering: crispEdges;
+}
+.axis .domain {
+  stroke: none;
+}
+
+.y-axis text {
+  fill: #aaa;
+}
+.y-axis-background text {
+  display: none;
+}
+.y-axis-background line {
+  fill: #f9f9f9;
+}
