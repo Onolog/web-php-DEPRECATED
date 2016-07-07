@@ -7,6 +7,8 @@ import {findDOMNode} from 'react-dom';
 import Axis from 'components/D3/Axis.react';
 import Bar from 'components/D3/Bar.react';
 
+require('../../app/Pages/chart.css');
+
 const MARGIN = {
   bottom: 30,
   left: 40,
@@ -41,7 +43,7 @@ const BarChart = React.createClass({
 
   getInitialState() {
     return {
-      width: this.props.width || (MARGIN.right + MARGIN.left + 48),
+      width: this.props.width || 400,
     };
   },
 

@@ -3,7 +3,6 @@
  *
  * Styles for individual user profile
  */
-
 .profile .userImg {
   float: left;
   line-height: 0;
@@ -20,4 +19,8 @@
 .profile h2 .userName {
   float: left;
   padding-top: 2px;
+}
+
+.profile .chart-type-selector {
+  margin: -5px 0 -4px;
 }

@@ -3,12 +3,9 @@ import React from 'react';
 import {Panel} from 'react-bootstrap';
 
 import AppPage from 'components/Page/AppPage.react';
-import PageHeader from 'components/Page/PageHeader.react';
-
-import Highchart from 'components/Chart/Chart.react';
 import BarChart from 'components/D3/BarChart.react';
-
-require('./chart.css');
+import Highchart from 'components/Chart/Chart.react';
+import PageHeader from 'components/Page/PageHeader.react';
 
 const monthMiles = [
   107, 125, 156, 210, 184, 107, 125, 156, 210, 184, 30, 24

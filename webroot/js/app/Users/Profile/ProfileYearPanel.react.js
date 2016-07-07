@@ -1,27 +1,29 @@
-var moment = require('moment');
-var React = require('react');
-var {PropTypes} = React;
-var {
+import moment from 'moment';
+import React, {PropTypes} from 'react';
+import {
   Button,
   ButtonGroup,
   ListGroup,
   ListGroupItem,
   Panel,
-} = require('react-bootstrap');
+} from 'react-bootstrap';
 
-var Chart = require('components/Chart/Chart.react');
-var Topline = require('components/Topline/Topline.react');
+import BarChart from 'components/D3/BarChart.react';
+import LeftRight from 'components/LeftRight/LeftRight.react';
+import Topline from 'components/Topline/Topline.react';
 
-var {forEach} = require('lodash');
-var {
+import {forEach, map} from 'lodash';
+import {
   getGroupingInfo,
   getAggregateDistance,
   groupActivities,
-} = require('utils/ActivityUtils');
+} from 'utils/ActivityUtils';
 
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 const WEEK_IN_MS = 7 * DAY_IN_MS;
 const MONTH_IN_MS = (DAY_IN_MS * 365) / 12;
+
+const HEIGHT = 200;
 
 const DAILY = 'daily';
 const MONTHLY = 'monthly';
@@ -30,7 +32,7 @@ const WEEKLY = 'weekly';
 /**
  * ProfileYearPanel.react
  */
-var ProfileYearPanel = React.createClass({
+const ProfileYearPanel = React.createClass({
   displayName: 'ProfileYearPanel',
 
   propTypes: {
@@ -41,17 +43,24 @@ var ProfileYearPanel = React.createClass({
     ]).isRequired,
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       selectedGraph: WEEKLY,
     };
   },
 
-  render: function() {
+  render() {
     return (
       <Panel
         className="profileYear"
-        header={<h3>{this.props.year}</h3>}>
+        header={
+          <h3>
+            <LeftRight>
+              {this.props.year}
+              {this._renderActions()}
+            </LeftRight>
+          </h3>
+        }>
         <ListGroup fill>
           <ListGroupItem>
             {this._renderChart()}
@@ -64,63 +73,61 @@ var ProfileYearPanel = React.createClass({
     );
   },
 
-  _renderChart: function() {
-    var {activities, year} = this.props;
-    var groupedActivities;
-    var interval;
+  _renderChart() {
+    const {activities, year} = this.props;
+
+    let groupedActivities;
+    let interval;
+    let tooltip;
+    let xFormat;
 
     switch (this.state.selectedGraph) {
       case MONTHLY:
         groupedActivities = groupActivities.byMonth(activities);
-        interval = MONTH_IN_MS;
+        tooltip = data => (`
+          ${moment().month(data.xVal).year(year).format('MMMM YYYY')}
+          <div>${data.yVal} Miles</div>
+        `);
+        xFormat = m => moment().month(m).format('MMM');
         break;
       case WEEKLY:
         groupedActivities = groupActivities.byWeek(activities);
-        interval = WEEK_IN_MS;
+        tooltip = data => {
+          const m = moment().week(data.xVal).year(year);
+          return `
+            ${m.format('MMM D')} &ndash; ${m.add(6, 'days').format('MMM D')}
+            <div>${data.yVal} Miles</div>
+          `;
+        };
+        xFormat = w => moment().week(w).format('ww');
         break;
       case DAILY:
         groupedActivities = groupActivities.byDay(activities);
-        interval = DAY_IN_MS;
         break;
     }
 
-    var data = [];
-    forEach(groupedActivities, (activities) => {
-      data.push(getAggregateDistance(activities));
+    const data = map(groupedActivities, (activities, idx) => {
+      return {
+        xVal: idx,
+        yVal: getAggregateDistance(activities),
+      };
     });
 
     return (
-      <Chart
-        height={200}
-        options={{
-          plotOptions: {
-            series: {
-              pointStart: Date.UTC(year, 0, 1),
-              pointInterval: interval,
-            },
-          },
-          xAxis: {
-            type: 'datetime',
-            dateTimeLabelFormats: {
-              month: '%b',
-            },
-          },
-        }}
-        series={[{data: data}]}
-        type="column"
-      />
+      <BarChart
+        data={data}
+        height={HEIGHT}
+        tooltip={tooltip}
+        xFormat={xFormat}
+      />      
     );
   },
 
-  _renderToplineStats: function() {
-    var {miles, run_count, duration} = getGroupingInfo(this.props.activities);
-
-    duration = moment.duration(duration, 'seconds');
-    var durationString =
-      duration.days() + 'd ' +
-      duration.hours() + 'h ' +
-      duration.minutes() + 'm ' +
-      duration.seconds() + 's';
+  _renderToplineStats() {
+    const {miles, run_count, duration} = getGroupingInfo(this.props.activities);
+    const m = moment.duration(duration, 'seconds');
+    const durationString =
+      `${m.days()}d ${m.hours()}h ${m.minutes()}m ${m.seconds()}s`;
 
     return (
       <Topline>
@@ -131,32 +138,34 @@ var ProfileYearPanel = React.createClass({
     );
   },
 
-  _renderActions: function() {
-    var selectedGraph = this.state.selectedGraph;
+  _renderActions() {
+    const {selectedGraph} = this.state;
     return (
-      <ButtonGroup bsSize="small">
+      <ButtonGroup bsSize="xsmall" className="chart-type-selector">
+        {/*
         <Button
           active={selectedGraph === DAILY}
-          onClick={this._onChartTypeClick.bind(null, DAILY)}>
+          onClick={() => this._onChartTypeClick(DAILY)}>
           Daily
         </Button>
+        */}
         <Button
           active={selectedGraph === WEEKLY}
-          onClick={this._onChartTypeClick.bind(null, WEEKLY)}>
+          onClick={() => this._onChartTypeClick(WEEKLY)}>
           Weekly
         </Button>
         <Button
           active={selectedGraph === MONTHLY}
-          onClick={this._onChartTypeClick.bind(null, MONTHLY)}>
+          onClick={() => this._onChartTypeClick(MONTHLY)}>
           Monthly
         </Button>
       </ButtonGroup>
     );
   },
 
-  _onChartTypeClick: function(type) {
+  _onChartTypeClick(type) {
     this.setState({selectedGraph: type});
   },
 });
 
-module.exports = ProfileYearPanel;
+export default ProfileYearPanel;

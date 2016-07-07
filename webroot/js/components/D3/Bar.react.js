@@ -5,7 +5,28 @@ import {findDOMNode} from 'react-dom';
 const Bar = React.createClass({
 
   componentDidMount() {
-    const {tooltip} = this.props;
+    this._setTooltip(this.props);
+  },
+
+  componentWillReceiveProps(nextProps) {
+    this._setTooltip(nextProps);
+  },
+
+  render() {
+    const {height, onClick, width, x, y} = this.props;
+    return (
+      <rect
+        className="bar"
+        height={height}
+        onClick={(e) => onClick && onClick(e)}
+        width={width}
+        x={x}
+        y={y}
+      />
+    );
+  },
+
+  _setTooltip({tooltip}) {
     if (!tooltip) {
       return;
     }
@@ -21,20 +42,6 @@ const Bar = React.createClass({
       .call(tip)
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide);
-  },
-
-  render() {
-    const {height, onClick, width, x, y} = this.props;
-    return (
-      <rect
-        className="bar"
-        height={height}
-        onClick={(e) => onClick && onClick(e)}
-        width={width}
-        x={x}
-        y={y}
-      />
-    );
   },
 });
 
