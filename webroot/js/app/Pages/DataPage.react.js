@@ -4,11 +4,11 @@ import {Panel} from 'react-bootstrap';
 
 import AppPage from 'components/Page/AppPage.react';
 import BarChart from 'components/D3/BarChart.react';
-import Highchart from 'components/Chart/Chart.react';
 import PageHeader from 'components/Page/PageHeader.react';
 
-const monthMiles = [107, 125, 156, 210, 184, 107, 125, 156, 210, 184, 30, 24];
+const HEIGHT = 300;
 
+const monthMiles = [107, 125, 156, 210, 184, 107, 125, 156, 210, 184, 30, 24];
 const monthData = monthMiles.map((miles, month) => ({
   xVal: month,
   yVal: miles,
@@ -21,36 +21,10 @@ const weekMiles = [
   23.01, 21.02, 10.82, 20.34, 5.21, 10.03, 12.02, 17.11, 13.08, 22.04,
   29.8, 21.36, 36.51, 33.53, 37.26, 41.52, 23.08, 45.08, 47.57,
 ];
-
 const weekData = weekMiles.map((miles, week) => ({
   xVal: week + 1,
   yVal: miles,
 }));
-
-const height = 300;
-const title = 'Monthly Mileage';
-
-const props = {
-  height,
-  title,
-  series: [{data: monthMiles}],
-  type: 'column',
-  options: {
-    plotOptions: {
-      series: {
-        pointStart: Date.UTC(2014, 0, 1),
-        pointInterval: 24 * 3600 * 1000, // one day
-      },
-    },
-    xAxis: {
-      // categories: categories,
-      type: 'datetime',
-      dateTimeLabelFormats: {
-        month: '%b',
-      },
-    },
-  },
-};
 
 /**
  * TermsPage.react
@@ -64,13 +38,10 @@ const DataPage = React.createClass({
     return (
       <AppPage>
         <PageHeader title="Data" />
-        <Panel header={<h3>Highcharts</h3>}>
-          <Highchart {...props} />
-        </Panel>
-        <Panel header={<h3>D3 Month Data</h3>}>
+        <Panel header={<h3>Month Data</h3>}>
           <BarChart
             data={monthData}
-            height={height}
+            height={HEIGHT}
             tooltip={data => (`
               <strong>${moment().month(data.xVal).format('MMMM')}</strong>
               <div>${data.yVal} Miles</div>
@@ -78,10 +49,10 @@ const DataPage = React.createClass({
             xFormat={m => moment().month(m).format('MMM')}
           />
         </Panel>
-        <Panel header={<h3>D3 Week Data</h3>}>
+        <Panel header={<h3>Week Data</h3>}>
           <BarChart
             data={weekData}
-            height={height}
+            height={HEIGHT}
             tooltip={data => (`
               <strong>Week ${moment().week(data.xVal).format('w')}</strong>
               <div>${data.yVal} Miles</div>
