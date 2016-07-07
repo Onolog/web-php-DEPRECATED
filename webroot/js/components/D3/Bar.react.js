@@ -1,3 +1,4 @@
+import d3 from 'd3';
 import d3tip from 'd3-tip';
 import React from 'react';
 import {findDOMNode} from 'react-dom';
@@ -38,7 +39,7 @@ const Bar = React.createClass({
         <div class="tooltip-inner">${tooltip}</div>
       `);
 
-    const bar = d3.select(findDOMNode(this))
+    d3.select(findDOMNode(this))
       .call(tip)
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide);

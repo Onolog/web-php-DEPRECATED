@@ -12,16 +12,12 @@ import BarChart from 'components/D3/BarChart.react';
 import LeftRight from 'components/LeftRight/LeftRight.react';
 import Topline from 'components/Topline/Topline.react';
 
-import {forEach, map} from 'lodash';
+import {map} from 'lodash';
 import {
   getGroupingInfo,
   getAggregateDistance,
   groupActivities,
 } from 'utils/ActivityUtils';
-
-const DAY_IN_MS = 24 * 60 * 60 * 1000;
-const WEEK_IN_MS = 7 * DAY_IN_MS;
-const MONTH_IN_MS = (DAY_IN_MS * 365) / 12;
 
 const HEIGHT = 200;
 
@@ -77,7 +73,6 @@ const ProfileYearPanel = React.createClass({
     const {activities, year} = this.props;
 
     let groupedActivities;
-    let interval;
     let tooltip;
     let xFormat;
 
@@ -119,7 +114,7 @@ const ProfileYearPanel = React.createClass({
         height={HEIGHT}
         tooltip={tooltip}
         xFormat={xFormat}
-      />      
+      />
     );
   },
 
@@ -163,8 +158,8 @@ const ProfileYearPanel = React.createClass({
     );
   },
 
-  _onChartTypeClick(type) {
-    this.setState({selectedGraph: type});
+  _onChartTypeClick(selectedGraph) {
+    this.setState({selectedGraph});
   },
 });
 

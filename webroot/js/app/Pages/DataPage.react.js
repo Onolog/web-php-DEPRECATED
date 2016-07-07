@@ -7,9 +7,7 @@ import BarChart from 'components/D3/BarChart.react';
 import Highchart from 'components/Chart/Chart.react';
 import PageHeader from 'components/Page/PageHeader.react';
 
-const monthMiles = [
-  107, 125, 156, 210, 184, 107, 125, 156, 210, 184, 30, 24
-];
+const monthMiles = [107, 125, 156, 210, 184, 107, 125, 156, 210, 184, 30, 24];
 
 const monthData = monthMiles.map((miles, month) => ({
   xVal: month,
@@ -17,11 +15,11 @@ const monthData = monthMiles.map((miles, month) => ({
 }));
 
 const weekMiles = [
-  27.87, 1.49, 0, 18.03, 35.26, 20.43, 40.03, 14.17, 40.49, 55.03, 
+  27.87, 1.49, 0, 18.03, 35.26, 20.43, 40.03, 14.17, 40.49, 55.03,
   36.01, 33.64, 56.15, 47.86, 62.74, 51.54, 58.04, 40.05, 82.78, 0,
   22.02, 0, 6.64, 7.17, 6.33, 0, 8.37, 15.35, 0, 24.16, 0, 13.88, 18.65,
   23.01, 21.02, 10.82, 20.34, 5.21, 10.03, 12.02, 17.11, 13.08, 22.04,
-  29.8, 21.36, 36.51, 33.53, 37.26, 41.52, 23.08, 45.08, 47.57
+  29.8, 21.36, 36.51, 33.53, 37.26, 41.52, 23.08, 45.08, 47.57,
 ];
 
 const weekData = weekMiles.map((miles, week) => ({
@@ -41,17 +39,17 @@ const props = {
     plotOptions: {
       series: {
         pointStart: Date.UTC(2014, 0, 1),
-        pointInterval: 24 * 3600 * 1000 // one day
-      }
+        pointInterval: 24 * 3600 * 1000, // one day
+      },
     },
     xAxis: {
       // categories: categories,
       type: 'datetime',
       dateTimeLabelFormats: {
-        month: '%b'
+        month: '%b',
       },
-    }
-  }
+    },
+  },
 };
 
 /**

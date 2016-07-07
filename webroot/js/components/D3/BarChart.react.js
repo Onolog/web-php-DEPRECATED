@@ -1,6 +1,4 @@
-import cx from 'classnames';
 import d3 from 'd3';
-import moment from 'moment';
 import React, {PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
 
@@ -102,8 +100,8 @@ const BarChart = React.createClass({
     return (
       <Bar
         data={d}
-        key={idx}
         height={getInnerHeight(height) - y(d.yVal)}
+        key={idx}
         tooltip={tooltip && tooltip(d)}
         width={getInnerWidth(width) / data.length - 2}
         x={x(d.xVal)}
