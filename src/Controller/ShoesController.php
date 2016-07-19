@@ -54,7 +54,8 @@ class ShoesController extends AppController {
     // Get all the activities for the shoe.
     $activities = id(TableRegistry::get('Activities'))
       ->find()
-      ->where(['shoe_id' => $shoe->id]);
+      ->where(['shoe_id' => $shoe->id])
+      ->order(['Activities.start_date' =>'ASC']);
 
     if (!$this->request->is('ajax')) {
       $this->set(compact(
