@@ -11,4 +11,4 @@ npm install
 export NODE_ENV=production
 
 # Build new static files.
-./build.sh
+./scripts/build.sh

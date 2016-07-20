@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Remove existing built files.
-rm ../webroot/js/build/*.js
+rm ./webroot/js/build/*.js
 
 # Rebuild files according to environment.
 if [[ $NODE_ENV == production ]]; then
