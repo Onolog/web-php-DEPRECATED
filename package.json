@@ -45,9 +45,8 @@
     "webpack": "^1.12.11"
   },
   "scripts": {
-    "build-dev": "webpack -w --progress --colors",
-    "build-prod": "NODE_ENV=production webpack --progress --colors --config webpack.prod.config.js",
-    "deploy": "git pull origin master && npm install && npm run build-prod",
+    "build": "./scripts/build.sh",
+    "deploy": "./scripts/deploy.sh",
     "lint": "eslint webroot/js/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
