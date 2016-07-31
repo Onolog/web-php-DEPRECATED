@@ -1,6 +1,6 @@
 import XMLParser from './XMLParser';
 
-import {chain, flatten, forEach, head, map, reduce} from 'lodash';
+import {flatten, forEach, head, map, max, reduce} from 'lodash';
 
 import {TCX_SCHEMA_TAGS} from 'constants/Garmin';
 const TAGS = TCX_SCHEMA_TAGS;
@@ -140,11 +140,7 @@ class TCXActivityParser extends XMLParser {
    * Calculates total positive and negative elevation gain for the activity.
    */
   _getElevationChange() /*object*/ {
-    var altitudeValues = chain(this.tracks)
-      .flatten()
-      .map('altitude')
-      .value();
-
+    var altitudeValues = map(flatten(this.tracks), 'altitude');
     var change;
     var elevationGain = [];
     var elevationLoss = [];
@@ -174,7 +170,7 @@ class TCXActivityParser extends XMLParser {
    * Gets the maximum value for the given field.
    */
   _getMax(/*string*/ keyName) /*number*/ {
-    return +chain(this.laps).map(keyName).max().value() || 0;
+    return +max(map(this.laps, keyName)) || 0;
   }
 
   /**

@@ -1,6 +1,6 @@
 import {
-  chain,
   extend,
+  flow,
   forEach,
   groupBy,
   head,
@@ -30,21 +30,20 @@ function getGroupingInfo(/*array*/ activities) {
  * Calculates the total distance across an array of activities.
  */
 function getAggregateDistance(/*array*/ activities) {
-  return +chain(activities)
-    .map('distance')
-    .reduce((total, miles) => +total + +miles, 0)
-    .value()
-    .toFixed(2);
+  return +flow(
+    map('distance'),
+    reduce((total, miles) => +total + +miles, 0)
+  )(activities).toFixed(2);
 }
 
 /**
  * Calculates the total duration across an array of activities.
  */
 function getAggregateDuration(/*array*/ activities) {
-  return chain(activities)
-    .map('duration')
-    .reduce((total, seconds) => +total + +seconds, 0)
-    .value();
+  return flow(
+    map('duration'),
+    reduce((total, seconds) => +total + +seconds, 0)
+  )(activities);
 }
 
 /**

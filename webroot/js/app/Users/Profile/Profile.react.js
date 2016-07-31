@@ -1,4 +1,4 @@
-import {chain, find} from 'lodash';
+import {find, keys} from 'lodash';
 import React, {PropTypes} from 'react';
 import {Panel} from 'react-bootstrap';
 import {connect} from 'react-redux';
@@ -80,10 +80,7 @@ const Profile = React.createClass({
     }
 
     var activitiesByYear = groupActivities.byYear(activities);
-    var years = chain(activitiesByYear)
-      .keys()
-      .reverse()
-      .value();
+    var years = keys(activitiesByYear).reverse();
 
     return years.map((year) => {
       return (

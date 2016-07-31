@@ -1,5 +1,6 @@
 'use strict';
 
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 var path = require('path');
 var webpack = require('webpack');
 
@@ -13,6 +14,9 @@ WEBPACK.ENTRY_PAGES.forEach(function(page) {
 
 // Plugins used across dev and prod
 var commonPlugins = [
+  new LodashModuleReplacementPlugin({
+    shorthands: true,
+  }),
   // Generate a single chunk for common code
   new webpack.optimize.CommonsChunkPlugin('Common.js'),
   new webpack.optimize.OccurenceOrderPlugin(),
@@ -36,7 +40,6 @@ var config = {
       query: {
         // https://github.com/babel/babel-loader#options
         cacheDirectory: true,
-        presets: ['es2015', 'react'],
       },
     }, {
       test: /\.json$/,
