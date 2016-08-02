@@ -1,15 +1,18 @@
 'use strict';
 
+var fs = require('fs');
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 var path = require('path');
 var webpack = require('webpack');
 
 var JS_ROOT = path.join(__dirname, 'webroot/js');
-var WEBPACK = require(JS_ROOT + '/constants/WebpackConstants');
+var ENTRY_DIR = '__entry__';
 
-var entryPages = {};
-WEBPACK.ENTRY_PAGES.forEach(function(page) {
-  entryPages[page] = path.join('__entry__', page + '.js');
+// Generate entry page map
+var entry = {};
+fs.readdirSync(path.join(JS_ROOT, ENTRY_DIR)).forEach(function(filename) {
+  var name = filename.split('.')[0]; // Remove `.js`
+  entry[name] = path.join(ENTRY_DIR, filename);
 });
 
 // Plugins used across dev and prod
@@ -27,7 +30,7 @@ var commonPlugins = [
 
 var config = {
   context: JS_ROOT,
-  entry: entryPages,
+  entry: entry,
   output: {
     path: path.join(JS_ROOT, 'build'),
     filename: '[name].js'
