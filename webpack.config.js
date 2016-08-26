@@ -1,7 +1,6 @@
 'use strict';
 
 var fs = require('fs');
-var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 var path = require('path');
 var webpack = require('webpack');
 
@@ -17,9 +16,6 @@ fs.readdirSync(path.join(JS_ROOT, ENTRY_DIR)).forEach(function(filename) {
 
 // Plugins used across dev and prod
 var commonPlugins = [
-  new LodashModuleReplacementPlugin({
-    shorthands: true,
-  }),
   // Generate a single chunk for common code
   new webpack.optimize.CommonsChunkPlugin('Common.js'),
   new webpack.optimize.OccurenceOrderPlugin(),
