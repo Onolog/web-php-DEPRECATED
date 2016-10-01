@@ -221,6 +221,20 @@ Type::build('datetime')
     ->useImmutable();
 
 /**
+ * Asset names get hashed in production so look up the actual name using the
+ * Webpack-generated manifest.
+ */
+function get_asset_name($filename) {
+  if (__PROD__) {
+    $json = file_get_contents('js/build/webpack-manifest.json');
+    $manifest = json_decode($json, true);
+    return str_replace('.js', '', $manifest[$filename . '.js']);
+  }
+
+  return $filename;
+}
+
+/**
  *  Identity function. Mostly useful idiomatically, because this doesn't
  *  compile:
  *

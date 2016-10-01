@@ -42,4 +42,4 @@ echo 'window.APP_DATA = ' . json_encode($appData, JSON_NUMERIC_CHECK);
 $this->Html->scriptEnd();
 
 // Finally, write the app script to the page.
-$this->Html->script('build/' . $page, ['block' => true]);
+$this->Html->script('build/' . get_asset_name($page), ['block' => true]);

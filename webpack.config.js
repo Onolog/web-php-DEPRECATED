@@ -4,7 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var webpack = require('webpack');
 
-var JS_ROOT = path.join(__dirname, 'webroot/js');
+var JS_ROOT = path.join(__dirname, 'webroot', 'js');
 var ENTRY_DIR = '__entry__';
 
 // Generate entry page map
@@ -17,7 +17,9 @@ fs.readdirSync(path.join(JS_ROOT, ENTRY_DIR)).forEach(function(filename) {
 // Plugins used across dev and prod
 var commonPlugins = [
   // Generate a single chunk for common code
-  new webpack.optimize.CommonsChunkPlugin('Common.js'),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'Common',
+  }),
   new webpack.optimize.OccurenceOrderPlugin(),
 
   // Don't pull in all of Moment's locales

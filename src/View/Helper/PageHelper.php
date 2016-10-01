@@ -27,7 +27,7 @@ class PageHelper extends Helper {
   public function render() {
     echo
       '<!DOCTYPE html>' .
-        '<html>' .
+      '<html>' .
         '<head>' .
           $this->Html->charset() .
           '<link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">' .
@@ -137,9 +137,26 @@ class PageHelper extends Helper {
 
   protected function renderPageJS() {
     return
-      $this->Html->script('/js/build/Common') .
+      $this->renderChunkManifest() .
+      $this->Html->script('/js/build/'. get_asset_name('Common')) .
       $this->pageJS .
       $this->renderGoogleAnalyticsJS();
+  }
+
+  /**
+   * Inline the manifest so webpack can map chunks to internal module ids.
+   */
+  protected function renderChunkManifest() {
+    if (!__PROD__) {
+      return '';
+    }
+
+    $manifest = file_get_contents('js/build/chunk-manifest.json');
+
+    return
+      '<script>' .
+        'window.chunkManifest = ' . $manifest . ';' .
+      '</script>';
   }
 
   /**
