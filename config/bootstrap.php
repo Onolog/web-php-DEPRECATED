@@ -220,42 +220,6 @@ Type::build('date')
 Type::build('datetime')
     ->useImmutable();
 
-/** 
- * Define default calendar type
- * 0 or CAL_GREGORIAN - Gregorian Calendar
- * 1 or CAL_JULIAN    - Julian Calendar
- * 2 or CAL_JEWISH    - Jewish Calendar
- * 3 or CAL_FRENCH    - French Revolutionary Calendar
- */
-define('CALENDAR_TYPE', 0);
-
-/**
- * Date format for displaying a given month in the calendar view.
- */
-define('CALENDAR_URI_FORMAT', '/Y/m/');
-
-/**
- * Facebook API
- */
-define('FB_APP_ID', '192729344110082');
-define('FB_APP_SECRET', '756380338bb32d062402d8aea5b1a352');
-
-/**
- * Google Analytics ID
- */
-define('GOOGLE_ANALYTICS_CODE', 'UA-5839822-1');
-
-/**
- * Garmin Communicator API Key
- */
-define('GARMIN_API_KEY', '2b3f4a3a13900af73dd5a19c1c8f77e3');
-
-/**
- * Google API Key
- * https://code.google.com/apis/console/?pli=1#project:227714135206:access
- */
-define('GOOGLE_API_KEY', 'AIzaSyBI2oBuFbYuvwmHpNrQGjvmg7r-eIFKtEM');
-
 /**
  *  Identity function. Mostly useful idiomatically, because this doesn't
  *  compile:

@@ -1,4 +1,7 @@
 <?php
+
+use Cake\Core\Configure;
+
 /**
  * Displays a read-only view of a workout
  *
@@ -17,7 +20,7 @@ $this->Meta->og('og:site_name', 'Onolog');
 $this->Meta->og('og:description', idx($activity, 'notes'));
 $this->Meta->og('onolog:distance', $distance);
 $this->Meta->og('onolog:time', $time);
-$this->Meta->og('fb:app_id', FB_APP_ID);
+$this->Meta->og('fb:app_id', Configure::read('Facebook.appId'));
 
 echo $this->element('react_page', [
   'data' => [

@@ -148,14 +148,16 @@ class PageHelper extends Helper {
    * in init.php and can be changed on a per-site basis.
    */
   protected function renderGoogleAnalyticsJS() {
-    if (!GOOGLE_ANALYTICS_CODE) {
+    $code = Configure::read('Google.analyticsCode');
+
+    if (!$code) {
       return '';
     }
 
     $google =
       '<script type="text/javascript">' . "\n" .
         'var _gaq = _gaq || [];' . "\n" .
-        '_gaq.push(["_setAccount", "' . GOOGLE_ANALYTICS_CODE . '"]);' . "\n" .
+        '_gaq.push(["_setAccount", "' . $code . '"]);' . "\n" .
         '_gaq.push(["_trackPageview"]);' . "\n" .
         '(function() {' . "\n" .
           'var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;' . "\n" .

@@ -1,17 +1,16 @@
 # CakePHP
 /vendor/*
-/config/app.php
 /tmp/*
 /logs/*
 
 # JS
-app/webroot/js/constants/Facebook.js
+/webroot/js/constants/Facebook.js
 
 # Node + Webpack
-app/webroot/__dev__/*
 node_modules/*
 npm-debug.log
 
 .bashrc
+env.json
 
 composer.phar
