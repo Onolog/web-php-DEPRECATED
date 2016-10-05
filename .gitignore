@@ -3,9 +3,6 @@
 /tmp/*
 /logs/*
 
-# JS
-/webroot/js/constants/Facebook.js
-
 # Node + Webpack
 node_modules/*
 npm-debug.log
