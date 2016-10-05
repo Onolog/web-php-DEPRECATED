@@ -5,6 +5,7 @@ module.exports = {
   ACTIVITIES_FETCH: 'activities-fetch',
   ACTIVITIES_FETCH_ERROR: 'activities-fetch-error',
   ACTIVITIES_FETCH_SUCCESS: 'activities-fetch-success',
+
   ACTIVITY_ADD: 'activity-add',
   ACTIVITY_ADD_ERROR: 'activity-add-error',
   ACTIVITY_ADD_SUCCESS: 'activity-add-success',
@@ -21,6 +22,7 @@ module.exports = {
   ALL_SHOES_FETCH: 'all-shoes-fetch',
   ALL_SHOES_FETCH_ERROR: 'all-shoes-fetch-error',
   ALL_SHOES_FETCH_SUCCESS: 'all-shoes-fetch-success',
+
   SHOE_ADD: 'shoe-add',
   SHOE_ADD_ERROR: 'shoe-add-error',
   SHOE_ADD_SUCCESS: 'shoe-add-success',
@@ -38,12 +40,20 @@ module.exports = {
   BRANDS_FETCH_ERROR: 'brands-fetch-error',
   BRANDS_FETCH_SUCCESS: 'brands-fetch-success',
 
+  PROFILE_FETCH: 'profile-fetch',
+  PROFILE_FETCH_ERROR: 'profile-fetch-error',
+  PROFILE_FETCH_SUCCESS: 'profile-fetch-success',
+
   SESSION_LOGIN: 'session-login',
   SESSION_LOGIN_ERROR: 'session-login-error',
   SESSION_LOGIN_SUCCESS: 'session-login-success',
   SESSION_LOGOUT: 'session-logout',
   SESSION_LOGOUT_ERROR: 'session-logout-error',
   SESSION_LOGOUT_SUCCESS: 'session-logout-success',
+
+  SETTINGS_FETCH: 'settings-fetch',
+  SETTINGS_FETCH_ERROR: 'settings-fetch-error',
+  SETTINGS_FETCH_SUCCESS: 'settings-fetch-success',
 
   USER_SETTINGS_SAVE: 'user-settings-save',
   USER_SETTINGS_SAVE_ERROR: 'user-settings-save-error',

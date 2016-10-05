@@ -69,7 +69,7 @@ class AppController extends Controller {
       !array_key_exists('_serialize', $this->viewVars) &&
       in_array($this->response->type(), ['application/json', 'application/xml'])
     ) {
-        $this->set('_serialize', true);
+      $this->set('_serialize', true);
     }
   }
 
@@ -77,7 +77,7 @@ class AppController extends Controller {
     $session = $this->request->session();
     $loggedInUser = $session->read('Auth.User');
 
-    // This should match what's in react_page.ctp
+    // This should match what's in PageHelper
     return array_merge(
       isset($loggedInUser) ? $loggedInUser : [],
       $session->read('Config')

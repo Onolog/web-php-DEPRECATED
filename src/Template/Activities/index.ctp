@@ -2,16 +2,11 @@
 /**
  * Displays the calendar view of all a user's workouts
  */
-echo $this->element('react_page', [
-  'css' => [
-    'app/UserCalendar',
-    'components/Calendar',
-  ],
+$this->set([
   'data' => [
     'activities' => $activities,
     'shoes' => $shoes,
-    'users' => [$user],
+    'users' => $users,
   ],
-  'page' => 'Home',
   'title' => $title,
 ]);

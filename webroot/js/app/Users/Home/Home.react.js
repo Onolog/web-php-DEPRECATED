@@ -1,3 +1,4 @@
+import {isEqual, map} from 'lodash';
 import moment from 'moment';
 import React, {PropTypes} from 'react';
 import {
@@ -9,6 +10,7 @@ import {
   Tooltip,
 } from 'react-bootstrap';
 import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import ActivityModal from './ActivityModal.react';
 import ActivityCalendar from './ActivityCalendar.react';
@@ -18,6 +20,8 @@ import PageHeader from 'components/Page/PageHeader.react';
 
 import {fetchActivities} from 'actions/activities';
 import cloneDate from 'utils/cloneDate';
+
+const getMoment = ({month, year}) => moment({month: +month - 1, year});
 
 const mapStateToProps = ({activities}) => {
   return {
@@ -29,46 +33,68 @@ const mapStateToProps = ({activities}) => {
  * Home.react
  */
 const Home = React.createClass({
-  displayName: 'Home',
-
   propTypes: {
     activities: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   },
 
-  getInitialState() {
-    const pathArr = document.location.pathname.split('/');
-    const date = pathArr.length === 3 ?
-      new Date(pathArr[1], pathArr[2] - 1, 1) :
-      new Date();
+  componentWillMount() {
+    const {params} = this.props;
+    let m = getMoment(params);
 
+    // Set path to today if params are invalid.
+    if (!m.isValid()) {
+      m = moment();
+    }
+
+    // Load initial data.
+    this._fetchData(m);
+  },
+
+  getInitialState() {
     return {
-      date,
       isLoading: false,
       showModal: false,
     };
   },
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      isLoading: false,
-      showModal: false,
-    });
+    // This is pretty hacky. This method fires once when the history updates and
+    // again when the callback returns. Only update the second time around.
+    if (isEqual(this.props.params, nextProps.params)) {
+      this.setState(this.getInitialState());
+    }
   },
 
   render() {
-    const {activities} = this.props;
-    const {date, isLoading} = this.state;
+    const {params} = this.props;
+    const {isLoading} = this.state;
+
+    const activities = isLoading ?
+      // Don't show any activities while new ones are loading.
+      [] :
+      // Filter out activities that aren't within a couple weeks of the selected
+      // month, otherwise calendar rendering can be slow.
+      this.props.activities.filter(activity => (
+        moment(activity.start_date).isBetween(
+          // Create new moments here, since manipulating them mutates the
+          // underlying moment.
+          getMoment(params).subtract({weeks: 1}),
+          getMoment(params).add({weeks: 6})
+        )
+      ));
+
+    const m = getMoment(params);
 
     return (
       <AppPage>
-        <PageHeader title={moment(date).format('MMMM YYYY')}>
+        <PageHeader title={m.format('MMMM YYYY')}>
           {this._renderButtonGroup()}
         </PageHeader>
         <Panel className="calendarContainer">
           {isLoading && <Loader background full />}
           <ActivityCalendar
             activities={activities}
-            date={date}
+            date={m.toDate()}
           />
         </Panel>
       </AppPage>
@@ -119,6 +145,11 @@ const Home = React.createClass({
     );
   },
 
+  _fetchData(m) {
+    this.props.dispatch(fetchActivities(m.year(), m.month() + 1));
+    this.setState({isLoading: true});
+  },
+
   _hideModal() {
     this.setState({showModal: false});
   },
@@ -127,41 +158,27 @@ const Home = React.createClass({
     this.setState({showModal: true});
   },
 
-  _updateCalendar(/*Date*/ date) {
-    // Update component state
-    this.setState({
-      date,
-      isLoading: true, // Reset activities to trigger loader
-    });
+  _updateCalendar(newMoment) {
+    // Don't update if the month hasn't changed.
+    if (newMoment.isSame(getMoment(this.props.params), 'month')) {
+      return;
+    }
 
-    // Update the browser state history
-    history.pushState(
-      {}, // State object
-      '', // Title
-      moment(date).format('/YYYY/MM') // URL
-    );
+    browserHistory.push(newMoment.format('/YYYY/MM'));
 
-    // Fetch activities for the selected month
-    this.props.dispatch(fetchActivities(
-      date.getFullYear(),
-      date.getMonth() + 1
-    ));
+    this._fetchData(newMoment);
   },
 
   _onLastMonthClick() {
-    var date = cloneDate(this.state.date);
-    date.setMonth(date.getMonth() - 1);
-    this._updateCalendar(date);
+    this._updateCalendar(getMoment(this.props.params).subtract({months: 1}));
   },
 
   _onThisMonthClick() {
-    this._updateCalendar(new Date());
+    this._updateCalendar(moment());
   },
 
   _onNextMonthClick() {
-    var date = cloneDate(this.state.date);
-    date.setMonth(date.getMonth() + 1);
-    this._updateCalendar(date);
+    this._updateCalendar(getMoment(this.props.params).add({months: 1}));
   },
 });
 

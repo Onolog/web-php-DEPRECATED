@@ -1,6 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 
+import './css/Calendar.css';
+
 const ISO_DAY_OF_WEEK = 'E';
 
 /**

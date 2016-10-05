@@ -1,5 +1,2 @@
 <?php
-echo $this->element('react_page', array(
-  'page' => 'Daniels',
-  'title' => 'Daniels VDOT Resources',
-));
+$this->set('title' => 'Daniels VDOT Resources');

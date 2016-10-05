@@ -1,4 +1,5 @@
 import React from 'react';
+import {LinkContainer} from 'react-router-bootstrap';
 
 import LeftRight from 'components/LeftRight/LeftRight.react';
 import Link from 'components/Link/Link.react';
@@ -18,17 +19,15 @@ const AppFooter = React.createClass({
     return (
       <footer className="app-footer">
         <LeftRight className="container-fluid">
+          <div>Copyright &copy; {date.getFullYear()} Onolog</div>
           <div>
-            Copyright &copy; {date.getFullYear()} Onolog
-          </div>
-          <div>
-            <Link href="/privacy">
-              Privacy
-            </Link>
+            <LinkContainer to={{pathname: '/privacy'}}>
+              <Link>Privacy</Link>
+            </LinkContainer>
             <Middot />
-            <Link href="/terms">
-              Terms
-            </Link>
+            <LinkContainer to={{pathname: '/terms'}}>
+              <Link>Terms</Link>
+            </LinkContainer>
           </div>
         </LeftRight>
       </footer>

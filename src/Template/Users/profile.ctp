@@ -1,10 +1,9 @@
 <?php
-echo $this->element('react_page', array(
-  'data' => array(
+$this->set([
+  'data' => [
     'activities' => $activities,
     'shoes' => $shoes,
-    'users' => array($user),
-  ),
-  'page' => 'Profile',
+    'users' => [$user],
+  ],
   'title' => $user['name'],
-));
+]);

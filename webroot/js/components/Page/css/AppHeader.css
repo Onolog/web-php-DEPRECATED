@@ -52,6 +52,9 @@
   background-color: #f88912;
 }
 .app-header .nav > li > a:active,
+.app-header .nav > li.active > a,
+.app-header .nav > li.active > a:hover,
+.app-header .nav > li.active > a:focus,
 .app-header .navbar-brand:active,
 .app-header .navbar-nav > .open > a,
 .app-header .navbar-nav > .open > a:focus,

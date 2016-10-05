@@ -1,15 +1,11 @@
 <?php
 use View\Helper\PageHelper;
 
-if (!isset($page_classes)) {
-  $page_classes = '';
-}
+$data = isset($data) ? $data : [];
+$title = isset($title) ? $title : $this->fetch('title');
 
 $this->Page
-  ->setPageClasses($page_classes)
-  ->setPageTitle($this->fetch('title'))
-  ->setCss($this->fetch('css'))
-  ->setJs($this->fetch('script'))
+  ->setPageTitle($title)
+  ->setData($data)
   ->setMeta($this->fetch('meta'))
-  ->setView($this->fetch('content'))
   ->render();

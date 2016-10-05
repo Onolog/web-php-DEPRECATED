@@ -12,11 +12,8 @@ class PageHelper extends Helper {
   public $helpers = ['Html'];
 
   private
+    $data = [],
     $pageTitle = '',
-    $pageClasses = array(),
-    $view,
-    $pageCSS,
-    $pageJS,
     $pageMeta;
 
   /**
@@ -33,25 +30,30 @@ class PageHelper extends Helper {
           '<link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">' .
           $this->Html->meta('keywords') .
           $this->Html->meta('description') .
-          $this->Html->meta(array(
+          $this->Html->meta([
             'name' => 'viewport',
             'content' => 'width=device-width, initial-scale=1.0, user-scalable=no'
-          )) .
-          $this->getPageMeta() .
+          ]) .
+          $this->pageMeta .
           '<title>' . $this->renderPageTitle() . '</title>' .
-          $this->getBaseCSS() .
-          $this->pageCSS .
+          $this->Html->css('/css/base/bootstrap') .
+          $this->Html->css('/css/base/app') .
+          $this->Html->css('/css/base/bs-override') .
+          $this->Html->css('/css/base/fonts') .
+          $this->Html->css('/css/base/util') .
+          $this->getDebugCSS() .
         '</head>' .
-        '<body class="' . implode(' ', $this->getClasses()) . '">' .
-          $this->view .
-          $this->renderPageJS() .
+        '<body>' .
+          '<div id="root">' .
+            '<div class="react-loader"></div>' .
+          '</div>' .
+          $this->renderChunkManifest() .
+          $this->renderAppData() .
+          $this->Html->script('/js/build/'. get_asset_name('Common')) .
+          $this->Html->script('/js/build/'. get_asset_name('App')) .
+          $this->renderGoogleAnalyticsJS() .
         '</body>' .
       '</html>';
-  }
-
-  public function setPageClasses($classes) {
-    $this->addClassname($classes);
-    return $this;
   }
 
   /**
@@ -65,13 +67,8 @@ class PageHelper extends Helper {
     return $this;
   }
 
-  public function setCss($css) {
-    $this->pageCSS = $css;
-    return $this;
-  }
-
-  public function setJs($js) {
-    $this->pageJS = $js;
+  public function setData($data) {
+    $this->data = $data;
     return $this;
   }
 
@@ -80,53 +77,12 @@ class PageHelper extends Helper {
     return $this;
   }
 
-  /**
-   * Sets the view to be rendered
-   * @param str
-   */
-  public function setView($view) {
-    $this->view = $view;
-    return $this;
+  protected function getDebugCSS() {
+    return Configure::read('debug') > 0 ?
+      $this->Html->css('/css/base/debug') :
+      '';
   }
 
-  /**
-   * Add a class or multiple classes to the <body> of the page.
-   *
-   * @param   mixed   $class (raw-str or array of raw-str)
-   * @return  $this
-   */
-  public function addClassname($class) {
-    if (!empty($class)) {
-      if (is_array($class)) {
-        $this->pageClasses = array_merge($this->pageClasses, $class);
-      } else {
-        $this->pageClasses[] = $class;
-      }
-    }
-    return $this;
-  }
-
-  protected function getClasses() {
-    return $this->pageClasses;
-  }
-
-  protected function getPageMeta() {
-    return $this->pageMeta;
-  }
-
-  protected function getBaseCSS() {
-    $debugCSS = Configure::read('debug') > 0 ?
-      $this->Html->css('/css/base/debug') : '';
-
-    return
-      $this->Html->css('/css/base/bootstrap') .
-      $this->Html->css('/css/base/app') .
-      $this->Html->css('/css/base/bs-override') .
-      $this->Html->css('/css/base/fonts') .
-      $this->Html->css('/css/base/util');
-      $debugCSS;
-  }
-  
   /**
    * Renders the <title> portion of an HTML page. Simply returns the page title
    * here, but can be extended to add other things, like the site name.
@@ -135,12 +91,32 @@ class PageHelper extends Helper {
     return __('Onolog &middot; ') . $this->pageTitle;
   }
 
-  protected function renderPageJS() {
+  protected function renderAppData() {
+    // Prepare all the data for the client.
+    $session = $this->request->session();
+    $loggedInUser = $session->read('Auth.User');
+
+    $app_data = [
+      'activities' => [],
+      'brands' => [],
+      'session' => array_merge(
+        $loggedInUser ?: [],
+        $session->read('Config')
+      ),
+      'shoes' => [],
+      'users' => [],
+    ];
+
+    if (isset($this->data)) {
+      $app_data = array_merge($app_data, $this->data);
+    }
+
+    $encoded_data = json_encode($app_data, JSON_NUMERIC_CHECK);
+
     return
-      $this->renderChunkManifest() .
-      $this->Html->script('/js/build/'. get_asset_name('Common')) .
-      $this->pageJS .
-      $this->renderGoogleAnalyticsJS();
+      '<script>' .
+        "window.APP_DATA = $encoded_data;" .
+      '</script>';
   }
 
   /**

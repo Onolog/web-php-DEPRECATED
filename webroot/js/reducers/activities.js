@@ -13,7 +13,8 @@ const activity = (state={}, action) => {
 const activities = (state=[], action) => {
   switch (action.type) {
     case ActionTypes.ACTIVITIES_FETCH_SUCCESS:
-      // TODO: Append fetched activities so we don't fetch the same ones
+    case ActionTypes.PROFILE_FETCH_SUCCESS:
+      // TODO: Merge fetched activities so we don't fetch the same ones
       // multiple times.
       return action.activities;
     case ActionTypes.ACTIVITY_ADD_SUCCESS:

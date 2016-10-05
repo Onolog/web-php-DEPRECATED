@@ -77,10 +77,10 @@ export const deleteShoe = (id) => {
 };
 
 function fetchShoesSuccess({shoes}, dispatch) {
-  return {
+  dispatch({
     shoes,
     type: ALL_SHOES_FETCH_SUCCESS,
-  };
+  });
 }
 
 export function fetchShoes() {

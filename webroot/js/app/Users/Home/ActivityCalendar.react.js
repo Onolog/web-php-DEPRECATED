@@ -7,6 +7,8 @@ import BaseCalendarWeek from 'components/Calendar/BaseCalendarWeek.react';
 
 import calendarGrid from 'utils/calendarGrid';
 
+import './css/ActivityCalendar.css';
+
 /**
  * ActivityCalendar.react
  */

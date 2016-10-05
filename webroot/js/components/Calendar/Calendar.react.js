@@ -5,7 +5,7 @@ var BaseCalendarDay = require('./BaseCalendarDay.react');
 var BaseCalendarWeek = require('./BaseCalendarWeek.react');
 var CalendarDate = require('./CalendarDate.react');
 
-var calendarGrid = require('../../utils/calendarGrid');
+var calendarGrid = require('utils/calendarGrid');
 
 /**
  * Renders a calendar view for a single month

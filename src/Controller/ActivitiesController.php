@@ -67,7 +67,7 @@ class ActivitiesController extends AppController {
       'activities' => $activities,
       'shoes' => $shoes,
       'title' => $user['name'],
-      'user' => $user,
+      'users' => [$user],
     ]);
   }
 

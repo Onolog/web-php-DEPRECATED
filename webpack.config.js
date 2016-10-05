@@ -28,7 +28,9 @@ var commonPlugins = [
 
 var config = {
   context: JS_ROOT,
-  entry: entry,
+  entry: {
+    App: ['index.js'],
+  },
   output: {
     path: path.join(JS_ROOT, 'build'),
     filename: '[name].js'

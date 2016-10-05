@@ -1,9 +1,10 @@
 import {MenuItem, Nav, Navbar, NavDropdown, NavItem} from 'react-bootstrap';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
+import {LinkContainer} from 'react-router-bootstrap';
 
 import FBImage from 'components/Facebook/FBImage.react';
-import Link from 'components/Link/Link.react';
 
 import {loginIfNeeded, logoutIfNeeded} from 'actions/session';
 import homeUrl from 'utils/homeUrl';
@@ -40,7 +41,7 @@ const AppHeader = React.createClass({
         inverse>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link href={homeUrl()}>Onolog</Link>
+            <Link to={{pathname: homeUrl()}}>Onolog</Link>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
@@ -75,12 +76,12 @@ const AppHeader = React.createClass({
             id="account-menu"
             title={title}>
             <div className="arrow hidden-xs" />
-            <MenuItem href={`/users/${user.id}`}>
-              Profile
-            </MenuItem>
-            <MenuItem href="/users/settings">
-              Settings
-            </MenuItem>
+            <LinkContainer to={{pathname: `/users/${user.id}`}}>
+              <MenuItem>Profile</MenuItem>
+            </LinkContainer>
+            <LinkContainer to={{pathname: '/users/settings'}}>
+              <MenuItem>Settings</MenuItem>
+            </LinkContainer>
             <MenuItem divider />
             <MenuItem onClick={this._handleLogout}>
               Sign Out
@@ -93,17 +94,19 @@ const AppHeader = React.createClass({
 
   _renderMainMenu(user) {
     if (user.id) {
+      const links = [
+        {label: 'Calendar', pathname: homeUrl()},
+        {label: 'Profile', pathname: `/users/${user.id}`},
+        {label: 'Shoes', pathname: '/shoes'},
+      ];
+
       return (
         <Nav>
-          <NavItem href={homeUrl()}>
-            Calendar
-          </NavItem>
-          <NavItem href={`/users/${user.id}`}>
-            Profile
-          </NavItem>
-          <NavItem href="/shoes">
-            Shoes
-          </NavItem>
+          {links.map(({label, pathname}, idx) => (
+            <LinkContainer key={idx} to={{pathname}}>
+              <NavItem>{label}</NavItem>
+            </LinkContainer>
+          ))}
         </Nav>
       );
     }

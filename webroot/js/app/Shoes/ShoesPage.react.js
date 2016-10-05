@@ -5,9 +5,14 @@ import {connect} from 'react-redux';
 
 import AppPage from 'components/Page/AppPage.react';
 import EmptyState from 'components/EmptyState.react';
+import Loader from 'components/Loader/Loader.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import ShoeModal from './ShoeModal.react';
 import ShoeTable from './ShoeTable.react';
+
+import {fetchShoes} from 'actions/shoes';
+
+import './css/Shoe.css';
 
 const mapStateToProps = ({shoes}) => {
   return {
@@ -27,8 +32,13 @@ const ShoesPage = React.createClass({
     shoes: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   },
 
+  componentWillMount() {
+    this._fetchData();
+  },
+
   getInitialState() {
     return {
+      isLoading: false,
       show: false,
     };
   },
@@ -36,12 +46,22 @@ const ShoesPage = React.createClass({
   componentWillReceiveProps(nextProps) {
     // Hide modal when shoes are modified somehow.
     if (!isEqual(this.props.shoes, nextProps.shoes)) {
-      this.setState({show: false});
+      this.setState({shoe: false});
     }
+
+    this.setState({isLoading: false});
   },
 
   render() {
     const shoes = partition(this.props.shoes, 'inactive');
+
+    if (this.state.isLoading) {
+      return (
+        <AppPage>
+          <Loader />
+        </AppPage>
+      );
+    }
 
     return (
       <AppPage narrow>
@@ -92,6 +112,11 @@ const ShoesPage = React.createClass({
 
   _handleShowModal() {
     this.setState({show: true});
+  },
+
+  _fetchData() {
+    this.props.dispatch(fetchShoes());
+    this.setState({isLoading: true});
   },
 });
 

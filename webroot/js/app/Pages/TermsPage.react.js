@@ -14,7 +14,7 @@ const TermsPage = React.createClass({
 
   render: function() {
     return (
-      <AppPage>
+      <AppPage narrow>
         <PageHeader title="Terms and Conditions of Use" />
         <Panel>
           <h3>1. Terms</h3>

@@ -1,3 +1,4 @@
+import {routerReducer as routing} from 'react-router-redux';
 import {combineReducers} from 'redux';
 
 import activities from './activities';
@@ -11,6 +12,7 @@ export default combineReducers({
   activities,
   brands,
   navigation,
+  routing,
   session,
   shoes,
   users,

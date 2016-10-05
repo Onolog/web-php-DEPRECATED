@@ -5,20 +5,21 @@ import {connect} from 'react-redux';
 
 import AppPage from 'components/Page/AppPage.react';
 import EmptyState from 'components/EmptyState.react';
+import Loader from 'components/Loader/Loader.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import ProfileYearPanel from './ProfileYearPanel.react';
 import Topline from 'components/Topline/Topline.react';
 
+import {fetchProfile} from 'actions/users';
 import {getAggregateDistance, groupActivities} from 'utils/ActivityUtils';
-import getIdFromPath from 'utils/getIdFromPath';
 
-require('../../../../css/app/Profile.css');
+import '../../../../css/app/Profile.css';
 
 const mapStateToProps = ({activities, shoes, users}) => {
   return {
     activities,
     shoes,
-    user: find(users, {id: getIdFromPath()}),
+    users,
   };
 };
 
@@ -31,13 +32,36 @@ const Profile = React.createClass({
   propTypes: {
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     shoes: PropTypes.arrayOf(PropTypes.object).isRequired,
-    user: PropTypes.shape({
+    users: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
-    }).isRequired,
+    })).isRequired,
+  },
+
+  componentWillMount() {
+    this._fetchData(this.props.params.userId);
+  },
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(this.getInitialState());
+  },
+
+  getInitialState() {
+    return {
+      isLoading: false,
+    };
   },
 
   render() {
-    const {activities, user} = this.props;
+    const {activities, params, users} = this.props;
+    const user = find(users, {id: +params.userId});
+
+    if (this.state.isLoading) {
+      return (
+        <AppPage>
+          <Loader />
+        </AppPage>
+      );
+    }
 
     return (
       <AppPage className="profile">
@@ -79,8 +103,8 @@ const Profile = React.createClass({
       );
     }
 
-    var activitiesByYear = groupActivities.byYear(activities);
-    var years = keys(activitiesByYear).reverse();
+    const activitiesByYear = groupActivities.byYear(activities);
+    const years = keys(activitiesByYear).reverse();
 
     return years.map((year) => {
       return (
@@ -92,6 +116,11 @@ const Profile = React.createClass({
       );
     });
   },
+
+  _fetchData(userId) {
+    this.props.dispatch(fetchProfile(userId));
+    this.setState({isLoading: true});
+  },
 });
 
-module.exports = connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps)(Profile);

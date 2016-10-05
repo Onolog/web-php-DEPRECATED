@@ -9,11 +9,11 @@ import Loader from 'components/Loader/Loader.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import TextInput from 'components/Forms/TextInput.react';
 
-import {userSaveSettings} from 'actions/users';
+import {fetchSettings, userSaveSettings} from 'actions/users';
 
 const mapStateToProps = ({session, users}) => {
   return {
-    user: find(users, {id: session.id}),
+    user: find(users, {id: session.id}) || {},
   };
 };
 
@@ -41,6 +41,10 @@ const Settings = React.createClass({
     };
   },
 
+  componentWillMount() {
+    this.props.dispatch(fetchSettings());
+  },
+
   componentWillReceiveProps(nextProps) {
     this.setState({isLoading: false});
   },
@@ -48,6 +52,14 @@ const Settings = React.createClass({
   render() {
     const {user} = this.props;
     const {isLoading} = this.state;
+
+    if (!user) {
+      return (
+        <AppPage>
+          <Loader />
+        </AppPage>
+      );
+    }
 
     return (
       <AppPage className="settings" narrow>

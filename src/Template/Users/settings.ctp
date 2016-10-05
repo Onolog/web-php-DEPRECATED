@@ -1,8 +1,5 @@
 <?php
-echo $this->element('react_page', array(
-  'data' => array(
-    'users' => array($user),
-  ),
-  'page' => 'Settings',
+$this->set([
+  'data' => ['users' => [$user]],
   'title' => 'Settings',
-));
+]);

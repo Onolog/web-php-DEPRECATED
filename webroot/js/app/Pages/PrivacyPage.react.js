@@ -14,7 +14,7 @@ const PrivacyPage = React.createClass({
 
   render: function() {
     return (
-      <AppPage>
+      <AppPage narrow>
         <PageHeader title="Privacy Policy" />
         <Panel>
           <p>

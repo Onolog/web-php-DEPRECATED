@@ -1,7 +1,6 @@
 <?php
-echo $this->element('react_page', array(
-  'css' => array('app/Report'),
-  'data' => array(
+$this->set([
+  'data' => [
     'runExtremes' => $extremes,
     'shoeCount' => $shoe_count,
     'topBrand' => $top_brand,
@@ -11,6 +10,5 @@ echo $this->element('react_page', array(
     'totalTime' => $total_time,
     'workoutData' => $workoutData,
     'workoutDataByWeek' => $workoutDataByWeek
-  ),
-  'page' => 'Report',
-));
+  ],
+]);
