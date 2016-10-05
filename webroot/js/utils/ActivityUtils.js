@@ -1,14 +1,4 @@
-import {
-  extend,
-  flow,
-  forEach,
-  groupBy,
-  head,
-  last,
-  map,
-  range,
-  reduce,
-} from 'lodash';
+import {groupBy, head, last, range, reduce} from 'lodash';
 import moment from 'moment-timezone';
 
 /**
@@ -32,20 +22,14 @@ function getGroupingInfo(/*array*/ activities) {
  * Calculates the total distance across an array of activities.
  */
 function getAggregateDistance(/*array*/ activities) {
-  return +flow(
-    map('distance'),
-    reduce((total, miles) => +total + +miles, 0)
-  )(activities).toFixed(2);
+  return +reduce(activities, (total, a) => +total + +a.distance, 0).toFixed(2);
 }
 
 /**
  * Calculates the total duration across an array of activities.
  */
 function getAggregateDuration(/*array*/ activities) {
-  return flow(
-    map('duration'),
-    reduce((total, seconds) => +total + +seconds, 0)
-  )(activities);
+  return reduce(activities, (total, a) => +total + +a.duration, 0);
 }
 
 /**
@@ -113,15 +97,15 @@ function _getRange(/*string*/ unit, /*object*/ activities) {
  */
 function _groupBy(/*string*/ unit, /*array*/ activities) {
   // Group the activities by the desired unit of time.
-  var range = _getRange(unit, activities);
+  const range = _getRange(unit, activities);
   activities = groupBy(activities, _getDateValue.bind(null, unit));
 
   // Create the shell object keyed by unit of time.
-  var grouped = {};
-  forEach(range, value => grouped[value] = []);
+  const grouped = {};
+  range.forEach(value => grouped[value] = []);
 
   // Merge the shell object with the grouped activities.
-  return extend(grouped, activities);
+  return {...grouped, ...activities};
 }
 
 module.exports = {
@@ -129,9 +113,9 @@ module.exports = {
   getAggregateDuration: getAggregateDuration,
   getGroupingInfo: getGroupingInfo,
   groupActivities: {
-    byYear: _groupBy.bind(null, 'year'),
-    byMonth: _groupBy.bind(null, 'month'),
-    byWeek: _groupBy.bind(null, 'week'),
-    byDay: _groupBy.bind(null, 'dayOfYear'),
+    byYear:  activities => _groupBy('year', activities),
+    byMonth: activities => _groupBy('month', activities),
+    byWeek:  activities => _groupBy('week', activities),
+    byDay:   activities => _groupBy('dayOfYear', activities),
   },
 };
