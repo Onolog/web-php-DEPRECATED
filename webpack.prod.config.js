@@ -7,10 +7,13 @@ var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 var ManifestPlugin = require('webpack-manifest-plugin');
 var Md5HashPlugin = require('webpack-md5-hash');
 
-var config = Object.create(baseConfig);
-
-// Hash packages for long-term caching.
-config.output.filename ='[name]-[chunkhash:16].js';
+var config = Object.assign({}, baseConfig, {
+  output: Object.assign({}, baseConfig.output, {
+    // Hash packages for long-term caching.
+    chunkFilename: '[name]-[chunkhash:16].js',
+    filename: '[name]-[chunkhash:16].js',
+  }),
+});
 
 config.plugins = config.commonPlugins.concat([
   new webpack.DefinePlugin({
@@ -37,6 +40,7 @@ config.plugins = config.commonPlugins.concat([
     filename: 'chunk-manifest.json',
     manifestVariable: 'chunkManifest'
   }),
+  new webpack.optimize.OccurenceOrderPlugin(),
 ]);
 
 module.exports = config;

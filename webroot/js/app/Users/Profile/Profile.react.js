@@ -123,4 +123,4 @@ const Profile = React.createClass({
   },
 });
 
-export default connect(mapStateToProps)(Profile);
+module.exports = connect(mapStateToProps)(Profile);

@@ -65,4 +65,4 @@ const DataPage = React.createClass({
   },
 });
 
-export default DataPage;
+module.exports = DataPage;

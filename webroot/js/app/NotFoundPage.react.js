@@ -17,4 +17,4 @@ const NotFoundPage = props => (
   </AppPage>
 );
 
-export default NotFoundPage;
+module.exports = NotFoundPage;

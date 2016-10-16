@@ -11,9 +11,8 @@ var commonPlugins = [
   // Generate a single chunk for common code
   new webpack.optimize.CommonsChunkPlugin({
     name: 'Common',
+    minChunks: Infinity,
   }),
-  new webpack.optimize.OccurenceOrderPlugin(),
-
   // Don't pull in all of Moment's locales
   new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 ];
@@ -21,11 +20,29 @@ var commonPlugins = [
 var config = {
   context: JS_ROOT,
   entry: {
-    App: 'index.js',
+    App: 'App.js',
+    Common: [
+      'classnames',
+      'jquery',
+      'lodash',
+      'moment',
+      'react',
+      'react-bootstrap',
+      'react-dom',
+      'react-overlays',
+      'react-redux',
+      'react-router',
+      'react-router-bootstrap',
+      'react-router-redux',
+      'redux',
+      'redux-thunk',
+    ],
   },
   output: {
+    chunkFilename: '[name].js',
+    filename: '[name].js',
     path: path.join(JS_ROOT, 'build'),
-    filename: '[name].js'
+    publicPath: '/js/build/',
   },
   module: {
     loaders: [{

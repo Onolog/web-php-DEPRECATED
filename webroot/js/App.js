@@ -7,7 +7,7 @@ import {applyMiddleware, createStore} from 'redux';
 import thunk from 'redux-thunk';
 
 import rootReducer from 'reducers';
-import routes from 'app/Routes';
+import routes from 'routes';
 
 const initialState = {
   ...window.APP_DATA,
