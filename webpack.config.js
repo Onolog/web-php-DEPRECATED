@@ -5,14 +5,6 @@ var path = require('path');
 var webpack = require('webpack');
 
 var JS_ROOT = path.join(__dirname, 'webroot', 'js');
-var ENTRY_DIR = '__entry__';
-
-// Generate entry page map
-var entry = {};
-fs.readdirSync(path.join(JS_ROOT, ENTRY_DIR)).forEach(function(filename) {
-  var name = filename.split('.')[0]; // Remove `.js`
-  entry[name] = path.join(ENTRY_DIR, filename);
-});
 
 // Plugins used across dev and prod
 var commonPlugins = [
@@ -29,7 +21,7 @@ var commonPlugins = [
 var config = {
   context: JS_ROOT,
   entry: {
-    App: ['index.js'],
+    App: 'index.js',
   },
   output: {
     path: path.join(JS_ROOT, 'build'),
