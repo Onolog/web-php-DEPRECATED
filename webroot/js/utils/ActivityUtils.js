@@ -113,9 +113,9 @@ module.exports = {
   getAggregateDuration: getAggregateDuration,
   getGroupingInfo: getGroupingInfo,
   groupActivities: {
-    byYear:  activities => _groupBy('year', activities),
+    byYear: activities => _groupBy('year', activities),
     byMonth: activities => _groupBy('month', activities),
-    byWeek:  activities => _groupBy('week', activities),
-    byDay:   activities => _groupBy('dayOfYear', activities),
+    byWeek: activities => _groupBy('week', activities),
+    byDay: activities => _groupBy('dayOfYear', activities),
   },
 };

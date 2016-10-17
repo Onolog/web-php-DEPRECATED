@@ -2,8 +2,8 @@ import {values} from 'lodash';
 import React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
-import {IndexRoute, Router, Route, browserHistory} from 'react-router';
-import {routerReducer, syncHistoryWithStore} from 'react-router-redux';
+import {Router, browserHistory} from 'react-router';
+import {syncHistoryWithStore} from 'react-router-redux';
 import {applyMiddleware, createStore} from 'redux';
 import thunk from 'redux-thunk';
 

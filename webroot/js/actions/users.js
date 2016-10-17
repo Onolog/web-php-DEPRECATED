@@ -49,7 +49,7 @@ function fetchSettingsRequest() {
   return (dispatch) => {
     dispatch({type: SETTINGS_FETCH});
 
-    $.get(`/users/settings.json`)
+    $.get('/users/settings.json')
       .done(response => fetchSettingsSuccess(response, dispatch))
       .fail(response => dispatch({type: SETTINGS_FETCH_ERROR}));
   };

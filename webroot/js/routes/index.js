@@ -1,6 +1,3 @@
-import React from 'react';
-import {IndexRoute, Route} from 'react-router';
-
 const Activities = {
   childRoutes: [{
     getComponent(nextState, cb) {
@@ -151,7 +148,7 @@ export default {
   indexRoute: {
     getComponent(nextState, cb) {
       require.ensure([], (require) => {
-        done(null, require('app/Users/Home/Home.react'));
+        cb(null, require('app/Users/Home/Home.react'));
       });
     },
   },

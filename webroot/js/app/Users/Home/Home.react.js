@@ -1,4 +1,3 @@
-import {isEqual, map} from 'lodash';
 import moment from 'moment';
 import React, {PropTypes} from 'react';
 import {
@@ -18,7 +17,6 @@ import AppPage from 'components/Page/AppPage.react';
 import PageHeader from 'components/Page/PageHeader.react';
 
 import {fetchActivities} from 'actions/activities';
-import cloneDate from 'utils/cloneDate';
 
 import {ACTIVITIES_FETCH} from 'constants/ActionTypes';
 

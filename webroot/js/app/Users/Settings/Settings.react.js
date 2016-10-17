@@ -1,4 +1,4 @@
-import {find, isEmpty, isEqual} from 'lodash';
+import {find, isEmpty} from 'lodash';
 import React, {PropTypes} from 'react';
 import {Button, Panel} from 'react-bootstrap';
 import {connect} from 'react-redux';
@@ -46,7 +46,6 @@ const Settings = React.createClass({
   },
 
   render() {
-    console.log('render');
     const {pendingRequests, user} = this.props;
 
     if (isEmpty(user)) {
