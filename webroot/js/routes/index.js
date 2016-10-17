@@ -5,6 +5,7 @@ const Activities = {
         cb(null, require('app/Workouts/WorkoutViewPage.react'));
       });
     },
+    path: ':activityId',
   }],
   path: 'activities',
 };
