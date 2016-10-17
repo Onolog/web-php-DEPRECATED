@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Remove existing built files.
 rm ./webroot/build/*.js

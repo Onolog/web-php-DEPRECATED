@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Pull down new changes from remote master.
 git pull origin master
@@ -8,7 +8,7 @@ rm -rf ./node_modules
 npm install
 
 # Always deploy to prod.
-export NODE_ENV=production
+export NODE_ENV="production"
 
 # Build new static files.
 ./scripts/build.sh
