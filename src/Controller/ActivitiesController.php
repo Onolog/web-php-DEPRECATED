@@ -39,8 +39,7 @@ class ActivitiesController extends AppController {
     $month = idx($params, 'month', 0);
 
     if (!$year || !$month) {
-      $year = date('Y');
-      $month = date('n');
+      $this->redirect(date('/Y/n'));
     }
 
     $start = mktime(0, 0, 0, $month, -7, $year);
