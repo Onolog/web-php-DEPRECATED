@@ -22,6 +22,10 @@ class PageHelper extends Helper {
    * @return  str   The page markup
    */
   public function render() {
+    $manifest = json_decode(file_get_contents(
+      'build/webpack-manifest.json'
+    ), true);
+
     echo
       '<!DOCTYPE html>' .
       '<html>' .
@@ -36,11 +40,13 @@ class PageHelper extends Helper {
           ]) .
           $this->pageMeta .
           '<title>' . $this->renderPageTitle() . '</title>' .
-          $this->Html->css('/css/base/bootstrap') .
-          $this->Html->css('/css/base/app') .
-          $this->Html->css('/css/base/bs-override') .
-          $this->Html->css('/css/base/fonts') .
-          $this->Html->css('/css/base/util') .
+          $this->Html->css('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', [
+            'rel' => 'stylesheet',
+            'integrity' => 'sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u',
+            'crossorigin' => 'anonymous',
+          ]) .
+          $this->Html->css('/css/base/base') .
+          $this->Html->css('/build/' . $manifest['App.css']) .
           $this->getDebugCSS() .
         '</head>' .
         '<body>' .
@@ -49,8 +55,8 @@ class PageHelper extends Helper {
           '</div>' .
           $this->renderChunkManifest() .
           $this->renderAppData() .
-          $this->Html->script('/js/build/'. get_asset_name('Common')) .
-          $this->Html->script('/js/build/'. get_asset_name('App')) .
+          $this->Html->script('/build/'. $manifest['Common.js']) .
+          $this->Html->script('/build/'. $manifest['App.js']) .
           $this->renderGoogleAnalyticsJS() .
         '</body>' .
       '</html>';
@@ -77,7 +83,7 @@ class PageHelper extends Helper {
     return $this;
   }
 
-  protected function getDebugCSS() {
+  private function getDebugCSS() {
     return Configure::read('debug') > 0 ?
       $this->Html->css('/css/base/debug') :
       '';
@@ -87,11 +93,11 @@ class PageHelper extends Helper {
    * Renders the <title> portion of an HTML page. Simply returns the page title
    * here, but can be extended to add other things, like the site name.
    */
-  protected function renderPageTitle() {
+  private function renderPageTitle() {
     return __('Onolog &middot; ') . $this->pageTitle;
   }
 
-  protected function renderAppData() {
+  private function renderAppData() {
     // Prepare all the data for the client.
     $session = $this->request->session();
     $loggedInUser = $session->read('Auth.User');
@@ -115,23 +121,19 @@ class PageHelper extends Helper {
 
     return
       '<script>' .
-        "window.APP_DATA = $encoded_data;" .
+        "window.APP_DATA=$encoded_data;" .
       '</script>';
   }
 
   /**
    * Inline the manifest so webpack can map chunks to internal module ids.
    */
-  protected function renderChunkManifest() {
-    if (!__PROD__) {
-      return '';
-    }
-
-    $manifest = file_get_contents('js/build/chunk-manifest.json');
+  private function renderChunkManifest() {
+    $manifest = file_get_contents('build/chunk-manifest.json');
 
     return
       '<script>' .
-        'window.chunkManifest = ' . $manifest . ';' .
+        "window.chunkManifest=$manifest;" .
       '</script>';
   }
 
@@ -140,7 +142,7 @@ class PageHelper extends Helper {
    * code, except for the individual site id. This id is stored as a constant
    * in init.php and can be changed on a per-site basis.
    */
-  protected function renderGoogleAnalyticsJS() {
+  private function renderGoogleAnalyticsJS() {
     $code = Configure::read('Google.analyticsCode');
 
     if (!$code) {

@@ -1,5 +1,10 @@
 'use strict';
 
+var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var ManifestPlugin = require('webpack-manifest-plugin');
+var Md5HashPlugin = require('webpack-md5-hash');
+
 var fs = require('fs');
 var path = require('path');
 var webpack = require('webpack');
@@ -15,6 +20,18 @@ var commonPlugins = [
   }),
   // Don't pull in all of Moment's locales
   new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
+  new Md5HashPlugin(),
+  new ManifestPlugin({
+    fileName: 'webpack-manifest.json',
+  }),
+  new ChunkManifestPlugin({
+    filename: 'chunk-manifest.json',
+    manifestVariable: 'chunkManifest'
+  }),
+  new ExtractTextPlugin('app-[contenthash:16].css', {
+    allChunks: true,
+  }),
 ];
 
 var config = {
@@ -41,8 +58,8 @@ var config = {
   output: {
     chunkFilename: '[name].js',
     filename: '[name].js',
-    path: path.join(JS_ROOT, 'build'),
-    publicPath: '/js/build/',
+    path: path.join(__dirname, 'webroot', 'build'),
+    publicPath: '/build/',
   },
   module: {
     loaders: [{
@@ -58,7 +75,7 @@ var config = {
       loader: 'json-loader'
     }, {
       test: /\.css$/,
-      loader: 'style-loader!css-loader'
+      loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
     }, {
       test: /\.(eot|svg|ttf|woff|woff2)$/,
       loader: 'file-loader'
@@ -75,7 +92,7 @@ var config = {
       'process.env': {
         NODE_ENV: JSON.stringify('development')
       }
-    })
+    }),
   ]),
   resolve: {
     root: [JS_ROOT],
