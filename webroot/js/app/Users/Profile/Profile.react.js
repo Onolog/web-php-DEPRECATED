@@ -13,11 +13,14 @@ import Topline from 'components/Topline/Topline.react';
 import {fetchProfile} from 'actions/users';
 import {getAggregateDistance, groupActivities} from 'utils/ActivityUtils';
 
+import {PROFILE_FETCH} from 'constants/ActionTypes';
+
 import '../../../../css/app/Profile.css';
 
-const mapStateToProps = ({activities, shoes, users}) => {
+const mapStateToProps = ({activities, pendingRequests, shoes, users}) => {
   return {
     activities,
+    pendingRequests,
     shoes,
     users,
   };
@@ -27,8 +30,6 @@ const mapStateToProps = ({activities, shoes, users}) => {
  * Profile.react
  */
 const Profile = React.createClass({
-  displayName: 'Profile',
-
   propTypes: {
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     shoes: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -38,24 +39,14 @@ const Profile = React.createClass({
   },
 
   componentWillMount() {
-    this._fetchData(this.props.params.userId);
-  },
-
-  componentWillReceiveProps(nextProps) {
-    this.setState(this.getInitialState());
-  },
-
-  getInitialState() {
-    return {
-      isLoading: false,
-    };
+    this.props.dispatch(fetchProfile(this.props.params.userId));
   },
 
   render() {
-    const {activities, params, users} = this.props;
+    const {activities, params, pendingRequests, users} = this.props;
     const user = find(users, {id: +params.userId});
 
-    if (this.state.isLoading) {
+    if (!user || pendingRequests[PROFILE_FETCH]) {
       return (
         <AppPage>
           <Loader />
@@ -115,11 +106,6 @@ const Profile = React.createClass({
         />
       );
     });
-  },
-
-  _fetchData(userId) {
-    this.props.dispatch(fetchProfile(userId));
-    this.setState({isLoading: true});
   },
 });
 
