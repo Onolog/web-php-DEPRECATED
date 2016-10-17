@@ -4,6 +4,7 @@ import React from 'react';
 import ActivityCalendarDay from './ActivityCalendarDay.react';
 import BaseCalendar from 'components/Calendar/BaseCalendar.react';
 import BaseCalendarWeek from 'components/Calendar/BaseCalendarWeek.react';
+import Loader from 'components/Loader/Loader.react';
 
 import calendarGrid from 'utils/calendarGrid';
 
@@ -21,15 +22,16 @@ const ActivityCalendar = React.createClass({
   },
 
   render() {
-    const grid = calendarGrid(
-      this.props.date.getMonth(),
-      this.props.date.getFullYear()
-    );
+    const {date, isLoading} = this.props;
+    const grid = calendarGrid(date.getMonth(), date.getFullYear());
 
     return (
-      <BaseCalendar className="calendar">
-        {grid.map(this._renderWeek)}
-      </BaseCalendar>
+      <div>
+        {isLoading && <Loader background full />}
+        <BaseCalendar className="calendar">
+          {grid.map(this._renderWeek)}
+        </BaseCalendar>
+      </div>
     );
   },
 

@@ -15,17 +15,19 @@ import {browserHistory} from 'react-router';
 import ActivityModal from './ActivityModal.react';
 import ActivityCalendar from './ActivityCalendar.react';
 import AppPage from 'components/Page/AppPage.react';
-import Loader from 'components/Loader/Loader.react';
 import PageHeader from 'components/Page/PageHeader.react';
 
 import {fetchActivities} from 'actions/activities';
 import cloneDate from 'utils/cloneDate';
 
+import {ACTIVITIES_FETCH} from 'constants/ActionTypes';
+
 const getMoment = ({month, year}) => moment({month: +month - 1, year});
 
-const mapStateToProps = ({activities}) => {
+const mapStateToProps = ({activities, pendingRequests}) => {
   return {
     activities,
+    pendingRequests,
   };
 };
 
@@ -52,22 +54,13 @@ const Home = React.createClass({
 
   getInitialState() {
     return {
-      isLoading: false,
       showModal: false,
     };
   },
 
-  componentWillReceiveProps(nextProps) {
-    // This is pretty hacky. This method fires once when the history updates and
-    // again when the callback returns. Only update the second time around.
-    if (isEqual(this.props.params, nextProps.params)) {
-      this.setState(this.getInitialState());
-    }
-  },
-
   render() {
-    const {params} = this.props;
-    const {isLoading} = this.state;
+    const {params, pendingRequests} = this.props;
+    const isLoading = pendingRequests[ACTIVITIES_FETCH];
 
     const activities = isLoading ?
       // Don't show any activities while new ones are loading.
@@ -91,10 +84,10 @@ const Home = React.createClass({
           {this._renderButtonGroup()}
         </PageHeader>
         <Panel className="calendarContainer">
-          {isLoading && <Loader background full />}
           <ActivityCalendar
             activities={activities}
             date={m.toDate()}
+            isLoading={isLoading}
           />
         </Panel>
       </AppPage>
@@ -147,7 +140,6 @@ const Home = React.createClass({
 
   _fetchData(m) {
     this.props.dispatch(fetchActivities(m.year(), m.month() + 1));
-    this.setState({isLoading: true});
   },
 
   _hideModal() {
