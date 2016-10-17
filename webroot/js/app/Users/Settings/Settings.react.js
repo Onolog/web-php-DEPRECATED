@@ -1,4 +1,4 @@
-import {find, isEqual} from 'lodash';
+import {find, isEmpty, isEqual} from 'lodash';
 import React, {PropTypes} from 'react';
 import {Button, Panel} from 'react-bootstrap';
 import {connect} from 'react-redux';
@@ -11,8 +11,11 @@ import TextInput from 'components/Forms/TextInput.react';
 
 import {fetchSettings, userSaveSettings} from 'actions/users';
 
-const mapStateToProps = ({session, users}) => {
+import {SETTINGS_FETCH} from 'constants/ActionTypes';
+
+const mapStateToProps = ({pendingRequests, session, users}) => {
   return {
+    pendingRequests,
     user: find(users, {id: session.id}) || {},
   };
 };
@@ -21,8 +24,6 @@ const mapStateToProps = ({session, users}) => {
  * Settings.react
  */
 const Settings = React.createClass({
-  displayName: 'Settings',
-
   propTypes: {
     user: PropTypes.shape({
       email: PropTypes.string.isRequired,
@@ -36,7 +37,6 @@ const Settings = React.createClass({
     return {
       email,
       first_name,
-      isLoading: false,
       last_name,
     };
   },
@@ -45,15 +45,11 @@ const Settings = React.createClass({
     this.props.dispatch(fetchSettings());
   },
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({isLoading: false});
-  },
-
   render() {
-    const {user} = this.props;
-    const {isLoading} = this.state;
+    console.log('render');
+    const {pendingRequests, user} = this.props;
 
-    if (!user) {
+    if (isEmpty(user)) {
       return (
         <AppPage>
           <Loader />
@@ -65,7 +61,7 @@ const Settings = React.createClass({
       <AppPage className="settings" narrow>
         <PageHeader title="Settings" />
         <Panel className="form-horizontal">
-          {isLoading && <Loader background full />}
+          {pendingRequests[SETTINGS_FETCH] && <Loader background full />}
           <FormGroup label="First Name">
             <TextInput
               defaultValue={user.first_name}
@@ -93,7 +89,6 @@ const Settings = React.createClass({
           <FormGroup label="">
             <Button
               bsStyle="primary"
-              disabled={isEqual(this.state, this.getInitialState())}
               onClick={this._handleSave}>
               Save Changes
             </Button>
@@ -104,16 +99,15 @@ const Settings = React.createClass({
   },
 
   _handleChange(e) {
-    let state = {};
+    let newState = {};
     let {name, value} = e.target;
-    state[name] = value;
+    newState[name] = value;
 
-    this.setState(state);
+    this.setState(newState);
   },
 
   _handleSave(e) {
     // TODO: Validation?
-    this.setState({isLoading: true});
     this.props.dispatch(userSaveSettings({
       ...this.state,
       id: this.props.user.id,
