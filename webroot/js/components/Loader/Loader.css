@@ -2,10 +2,24 @@
  * Loader.css
  */
 .loader {
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
   display: block;
   min-height: 200px;
+}
+
+.loading-icon {
+  animation: rotate 1s infinite linear;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  border-top-color: #000;
+  display: block;
+  height: 16px;
+  margin: auto;
+  width: 16px;
+}
+
+.loading-icon-lg {
+  height: 32px;
+  width: 32px;
 }
 
 .loader-bg {
@@ -23,14 +37,23 @@
   z-index: 5;
 }
 
-.loader-lg {
-  background-image: url('/img/loaders/spinner-large-bgLight-2x.gif');
-  background-size: 24px;
+.loader-full .loading-icon {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+}
+.loader-full .loading-icon-lg {
+  margin-left: -16px;
+  margin-top: -16px;
 }
 
-.loader-sm {
-  background-image: url('/img/indicator_blue_small.gif');
-  height: 16px;
-  width: 16px;
-  vertical-align: text-bottom;
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -1,46 +1,41 @@
-var React = require('react');
-var cx = require('classnames');
+import cx from 'classnames';
+import React, {PropTypes} from 'react';
 
-require('./Loader.css');
+import './Loader.css';
 
 /**
  * Loader.react
  *
  * Displays a loading indicator.
  */
-var Loader = React.createClass({
-  displayName: 'Loader',
+const Loader = props => {
+  const {background, size, full, className} = props;
 
-  propTypes: {
-    background: React.PropTypes.bool,
-    full: React.PropTypes.bool,
-    size: React.PropTypes.oneOf([
-      'large',
-      'small',
-    ]),
-  },
-
-  getDefaultProps: function() {
-    return {
-      background: false,
-      full: false,
-      size: 'large',
-    };
-  },
-
-  render: function() {
-    var {background, size, full, className} = this.props;
-
-    return (
-      <div
-        className={cx('loader', {
-          'loader-bg': background,
-          'loader-lg': size === 'large',
-          'loader-full': full,
-        }, className)}
+  return (
+    <div
+      className={cx('loader', {
+        'loader-bg': background,
+        'loader-full': full,
+      }, className)}>
+      <i
+        className={cx('loading-icon', {
+          'loading-icon-lg': size === 'large',
+        })}
       />
-    );
-  },
-});
+    </div>
+  );
+};
 
-module.exports = Loader;
+Loader.propTypes = {
+  background: PropTypes.bool,
+  full: PropTypes.bool,
+  size: PropTypes.oneOf(['large', 'small']),
+};
+
+Loader.defaultProps = {
+  background: false,
+  full: false,
+  size: 'large',
+};
+
+export default Loader;
