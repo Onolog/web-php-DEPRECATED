@@ -9,19 +9,12 @@ import FBImage from 'components/Facebook/FBImage.react';
 import {loginIfNeeded, logoutIfNeeded} from 'actions/session';
 import homeUrl from 'utils/homeUrl';
 
-const mapStateToProps = ({session}) => {
-  return {
-    user: session,
-  };
-};
-
-require('./css/AppHeader.css');
+import './css/AppHeader.css';
 
 /**
  * AppHeader.react
  */
 const AppHeader = React.createClass({
-  displayName: 'AppHeader',
 
   propTypes: {
     user: PropTypes.shape({
@@ -137,4 +130,4 @@ const AppHeader = React.createClass({
   },
 });
 
-module.exports = connect(mapStateToProps)(AppHeader);
+export default connect()(AppHeader);

@@ -10,12 +10,6 @@ import fbLoader from 'utils/fbLoader';
 const INTERVAL = 1000 * 60; // 1 min
 const LOGIN_PATH = '/login';
 
-const mapStateToProps = ({session}) => {
-  return {
-    session,
-  };
-};
-
 /**
  * BaseAppPage.react
  *
@@ -23,7 +17,6 @@ const mapStateToProps = ({session}) => {
  * every page.
  */
 const BaseAppPage = React.createClass({
-  displayName: 'BaseAppPage',
 
   propTypes: {
     session: PropTypes.shape({
@@ -115,4 +108,4 @@ const BaseAppPage = React.createClass({
   },
 });
 
-module.exports = connect(mapStateToProps)(BaseAppPage);
+export default connect()(BaseAppPage);
