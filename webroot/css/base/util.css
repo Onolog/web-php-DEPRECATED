@@ -46,17 +46,6 @@
   padding: 0 5px;
 }
 
-.modal-loading {
-  background: #fff url(/img/loaders/spinner-large-bgLight-2x.gif) no-repeat 50% 50%;
-  background-size: 24px;
-  bottom: 0;
-  left: 0;
-  opacity: 0.7;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
 .react-loader {
   background-image: url('/img/loaders/spinner-large-bgLight-2x.gif');
   background-position: 50% 50%;

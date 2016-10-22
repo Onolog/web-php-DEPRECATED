@@ -39,20 +39,30 @@ class PageHelper extends Helper {
             'content' => 'width=device-width, initial-scale=1.0, user-scalable=no'
           ]) .
           $this->pageMeta .
-          '<title>' . $this->renderPageTitle() . '</title>' .
+
+          // Page title
+          '<title>' .
+            __('Onolog &middot; ') . $this->pageTitle .
+          '</title>' .
+
+          // CSS
           $this->Html->css('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', [
             'rel' => 'stylesheet',
             'integrity' => 'sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u',
             'crossorigin' => 'anonymous',
           ]) .
           $this->Html->css('/css/base/base') .
+          $this->Html->css('/css/base/bs-override') .
+          $this->Html->css('/css/base/fonts') .
+          $this->Html->css('/css/base/util') .
           $this->Html->css('/build/' . $manifest['App.css']) .
-          $this->getDebugCSS() .
         '</head>' .
         '<body>' .
           '<div id="root">' .
             '<div class="react-loader"></div>' .
           '</div>' .
+
+          // Javascript
           $this->renderChunkManifest() .
           $this->renderAppData() .
           $this->Html->script('/build/'. $manifest['Common.js']) .
@@ -81,20 +91,6 @@ class PageHelper extends Helper {
   public function setMeta($meta) {
     $this->pageMeta = $meta;
     return $this;
-  }
-
-  private function getDebugCSS() {
-    return Configure::read('debug') > 0 ?
-      $this->Html->css('/css/base/debug') :
-      '';
-  }
-
-  /**
-   * Renders the <title> portion of an HTML page. Simply returns the page title
-   * here, but can be extended to add other things, like the site name.
-   */
-  private function renderPageTitle() {
-    return __('Onolog &middot; ') . $this->pageTitle;
   }
 
   private function renderAppData() {
