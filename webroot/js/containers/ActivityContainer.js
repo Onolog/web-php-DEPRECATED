@@ -2,7 +2,7 @@ import {find} from 'lodash';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 
-import Activity from 'app/Activities/Activity.react';
+import Activity from 'components/Activities/Activity.react';
 
 const mapStateToProps = ({activities, shoes, users}) => {
   return {

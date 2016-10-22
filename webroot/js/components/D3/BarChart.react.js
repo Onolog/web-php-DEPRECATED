@@ -5,7 +5,7 @@ import {findDOMNode} from 'react-dom';
 import Axis from 'components/D3/Axis.react';
 import Bar from 'components/D3/Bar.react';
 
-require('../../app/Pages/chart.css');
+import './css/chart.css';
 
 const MARGIN = {
   bottom: 30,

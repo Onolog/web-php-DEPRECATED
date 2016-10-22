@@ -1,2 +1,2 @@
 <?php
-$this->set('title' => 'Garmin Uploader');
+$this->set(['title' => 'Garmin Uploader']);

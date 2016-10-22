@@ -91,9 +91,19 @@ Router::scope('/', function (RouteBuilder $routes) {
     'action' => 'index',
   ]);
 
+  $routes->connect('/friends', [
+    'controller' => 'Users',
+    'action' => 'friends',
+  ]);
+
   $routes->connect('/login', [
-    'controller' => 'users',
+    'controller' => 'Users',
     'action' => 'login',
+  ]);
+
+  $routes->connect('/settings', [
+    'controller' => 'Users',
+    'action' => 'settings',
   ]);
 
   // Allows /action/:id instead of /action/view/:id

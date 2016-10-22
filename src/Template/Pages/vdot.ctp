@@ -1,2 +1,2 @@
 <?php
-$this->set('title' => 'Daniels VDOT Resources');
+$this->set(['title' => 'Daniels VDOT Resources']);

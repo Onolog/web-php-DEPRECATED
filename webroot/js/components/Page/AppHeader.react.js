@@ -72,7 +72,7 @@ const AppHeader = React.createClass({
             <LinkContainer to={{pathname: `/users/${user.id}`}}>
               <MenuItem>Profile</MenuItem>
             </LinkContainer>
-            <LinkContainer to={{pathname: '/users/settings'}}>
+            <LinkContainer to={{pathname: '/settings'}}>
               <MenuItem>Settings</MenuItem>
             </LinkContainer>
             <MenuItem divider />
