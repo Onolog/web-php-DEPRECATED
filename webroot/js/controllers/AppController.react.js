@@ -1,11 +1,7 @@
 import React, {Children, cloneElement} from 'react';
 
-const App = React.createClass({
-  render() {
-    return (
-      cloneElement(Children.only(this.props.children), this.props)
-    );
-  },
-});
+const AppController = props => {
+  return cloneElement(Children.only(props.children), props);
+};
 
-module.exports = App;
+module.exports = AppController;

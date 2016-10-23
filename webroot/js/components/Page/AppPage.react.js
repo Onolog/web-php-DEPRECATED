@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import AppContent from './AppContent.react';
 import AppFooter from './AppFooter.react';
 import AppHeader from './AppHeader.react';
-import AppPageContent from './AppPageContent.react';
 import BaseAppPage from './BaseAppPage.react';
 
 import './css/AppPage.css';
@@ -20,9 +20,9 @@ const mapStateToProps = ({session}) => {
 const AppPage = ({children, className, narrow, session}) => (
   <BaseAppPage className={className} session={session}>
     <AppHeader user={session} />
-    <AppPageContent narrow={narrow}>
+    <AppContent narrow={narrow}>
       {children}
-    </AppPageContent>
+    </AppContent>
     <AppFooter />
   </BaseAppPage>
 );

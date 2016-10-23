@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import React, {PropTypes} from 'react';
 
-const AppPageContent = props => (
+const AppContent = props => (
   <div className={cx('app-page-content', {'narrow-page': props.narrow})}>
     <div className="clearfix container-fluid">
       {props.children}
@@ -9,12 +9,12 @@ const AppPageContent = props => (
   </div>
 );
 
-AppPageContent.propTypes = {
+AppContent.propTypes = {
   narrow: PropTypes.bool,
 };
 
-AppPageContent.defaultProps = {
+AppContent.defaultProps = {
   narrow: false,
 };
 
-export default AppPageContent;
+export default AppContent;

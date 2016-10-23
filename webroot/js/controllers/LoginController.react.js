@@ -8,6 +8,12 @@ import {loginIfNeeded} from 'actions/session';
 
 import 'components/Login/css/Login.css';
 
+const mapStateToProps = ({session}) => {
+  return {
+    session,
+  };
+};
+
 /**
  * Login.react.js
  */
@@ -30,7 +36,7 @@ const Login = React.createClass({
 
   render() {
     return (
-      <BaseAppPage className="login">
+      <BaseAppPage className="login" session={this.props.session}>
         <div
           className="jumbotronContainer"
           style={{height: this.state.windowHeight + 'px'}}>
@@ -70,4 +76,4 @@ const Login = React.createClass({
   },
 });
 
-module.exports = connect()(Login);
+module.exports = connect(mapStateToProps)(Login);
