@@ -14,13 +14,16 @@ import Activity from 'components/Activities/Activity.react';
 import ActivityModal from 'components/Activities/ActivityModal.react';
 import AppPage from 'components/Page/AppPage.react';
 
-import getIdFromPath from 'utils/getIdFromPath';
+import {ACTIVITY_UPDATE} from 'constants/ActionTypes';
 
-const mapStateToProps = ({activities, session, shoes, users}) => {
-  const activity = find(activities, {id: getIdFromPath()});
+const mapStateToProps = (state, props) => {
+  const {activities, pendingRequests, session, shoes, users} = state;
+  const activity = find(activities, {id: +props.params.activityId});
+
   return {
     activity,
     athlete: find(users, {id: activity.user_id}),
+    pendingRequests,
     shoe: find(shoes, {id: activity.shoe_id}),
     viewer: session,
   };
@@ -36,6 +39,7 @@ const ActivityController = React.createClass({
   propTypes: {
     activity: PropTypes.object.isRequired,
     athlete: PropTypes.object.isRequired,
+    pendingRequests: PropTypes.object.isRequired,
     shoe: PropTypes.object,
     viewer: PropTypes.object,
   },
@@ -47,7 +51,13 @@ const ActivityController = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    this.setState({showModal: false});
+    const {pendingRequests} = this.props;
+    if (
+      pendingRequests[ACTIVITY_UPDATE] &&
+      !nextProps.pendingRequests[ACTIVITY_UPDATE]
+    ) {
+      this.setState({showModal: false});
+    }
   },
 
   render() {

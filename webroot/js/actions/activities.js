@@ -54,11 +54,12 @@ export function deleteActivity(activityId) {
 }
 
 function fetchActivitiesSuccess(response, dispatch) {
-  const {activities, shoes} = response;
+  const {activities, shoes, users} = response;
   dispatch({
     activities,
     shoes,
     type: ACTIVITIES_FETCH_SUCCESS,
+    users,
   });
 }
 

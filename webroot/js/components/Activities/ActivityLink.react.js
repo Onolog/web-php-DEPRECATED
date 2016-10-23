@@ -8,10 +8,9 @@ import formatDistance from 'utils/formatDistance';
 import {isEqual} from 'lodash';
 
 /**
- * WorkoutLink.react
+ * ActivityLink.react
  */
-const WorkoutLink = React.createClass({
-  displayName: 'WorkoutLink',
+const ActivityLink = React.createClass({
 
   propTypes: {
     activity: PropTypes.object.isRequired,
@@ -78,4 +77,4 @@ const WorkoutLink = React.createClass({
   },
 });
 
-module.exports = WorkoutLink;
+export default ActivityLink;

@@ -1,18 +1,17 @@
-var React = require('react');
+import React from 'react';
 
-var Image = require('components/Image/Image.react');
-var ImageBlock = require('components/ImageBlock/ImageBlock.react');
-var Link = require('components/Link/Link.react');
+import Image from 'components/Image/Image.react';
+import ImageBlock from 'components/ImageBlock/ImageBlock.react';
+import Link from 'components/Link/Link.react';
 
-var GarminDeviceUtils = require('utils/GarminDeviceUtils');
+import GarminDeviceUtils from 'utils/GarminDeviceUtils';
 
 /**
  * ActivityDeviceInfo.react
  *
  * Displays the the name and software version for a given device.
  */
-var ActivityDeviceInfo = React.createClass({
-  displayName: 'ActivityDeviceInfo',
+const ActivityDeviceInfo = React.createClass({
 
   propTypes: {
     deviceName: React.PropTypes.string.isRequired,
@@ -20,8 +19,8 @@ var ActivityDeviceInfo = React.createClass({
   },
 
   render: function() {
-    var deviceName = this.props.deviceName;
-    var src = GarminDeviceUtils.getDeviceImageSrc(deviceName);
+    const {deviceName} = this.props;
+    const src = GarminDeviceUtils.getDeviceImageSrc(deviceName);
 
     return(
       <ImageBlock
@@ -40,4 +39,4 @@ var ActivityDeviceInfo = React.createClass({
   },
 });
 
-module.exports = ActivityDeviceInfo;
+export default ActivityDeviceInfo;

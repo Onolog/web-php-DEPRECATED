@@ -3,11 +3,11 @@ import React, {PropTypes} from 'react';
 import {findDOMNode} from 'react-dom';
 import {Tab, Tabs} from 'react-bootstrap';
 
-import ActivityDeviceInfo from './ActivityDeviceInfo.react';
-import ActivityHeader from './ActivityHeader.react';
-import ActivitySection from './ActivitySection.react';
-import ActivitySplitsTable from './ActivitySplitsTable.react';
-import ActivityStats from './ActivityStats.react';
+import ActivityDeviceInfo from 'components/Activities/ActivityDeviceInfo.react';
+import ActivityHeader from 'components/Activities/ActivityHeader.react';
+import ActivitySection from 'components/Activities/ActivitySection.react';
+import ActivitySplitsTable from 'components/Activities/ActivitySplitsTable.react';
+import ActivityStats from 'components/Activities/ActivityStats.react';
 import GoogleMap from 'components/Google/GoogleMap.react';
 
 import FBFacepile from 'components/Facebook/FBFacepile.react';

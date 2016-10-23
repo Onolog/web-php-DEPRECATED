@@ -7,6 +7,7 @@ import {
   OverlayTrigger,
   Tooltip,
 } from 'react-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap';
 
 import ActivityContainer from 'containers/ActivityContainer';
 import LeftRight from 'components/LeftRight/LeftRight.react';
@@ -54,11 +55,11 @@ const ActivityViewModal = React.createClass({
               <OverlayTrigger
                 overlay={<Tooltip id="permalink">View Permalink</Tooltip>}
                 placement="top">
-                <Button
-                  disabled={isLoading}
-                  href={`/activities/${activity.id}`}>
-                  <Glyphicon glyph="link" />
-                </Button>
+                <LinkContainer to={`/activities/${activity.id}`}>
+                  <Button disabled={isLoading}>
+                    <Glyphicon glyph="link" />
+                  </Button>
+                </LinkContainer>
               </OverlayTrigger>
             </ButtonGroup>
             <Button disabled={isLoading} onClick={onHide}>
@@ -71,4 +72,4 @@ const ActivityViewModal = React.createClass({
   },
 });
 
-module.exports = ActivityViewModal;
+export default ActivityViewModal;

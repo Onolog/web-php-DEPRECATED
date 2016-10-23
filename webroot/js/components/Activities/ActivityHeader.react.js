@@ -1,21 +1,19 @@
-var moment = require('moment-timezone');
-var {OverlayTrigger, Tooltip} = require('react-bootstrap/lib');
-var React = require('react');
-var {PropTypes} = React;
+import moment from 'moment-timezone';
+import {OverlayTrigger, Tooltip} from 'react-bootstrap/lib';
+import React, {PropTypes} from 'react';
 
-var ActivitySection = require('./ActivitySection.react');
-var FBImage = require('components/Facebook/FBImage.react');
-var FBLikeButton = require('components/Facebook/FBLikeButton.react');
-var ImageBlock = require('components/ImageBlock/ImageBlock.react');
-var Link = require('components/Link/Link.react');
+import ActivitySection from 'components/Activities/ActivitySection.react';
+import FBImage from 'components/Facebook/FBImage.react';
+import FBLikeButton from 'components/Facebook/FBLikeButton.react';
+import ImageBlock from 'components/ImageBlock/ImageBlock.react';
+import Link from 'components/Link/Link.react';
 
-var PHOTO_DIMENSIONS = 75; // In px
+const PHOTO_DIMENSIONS = 75; // In px
 
 /**
  * ActivityHeader.react
  */
-var ActivityHeader = React.createClass({
-  displayName: 'ActivityHeader',
+const ActivityHeader = React.createClass({
 
   propTypes: {
     activity: PropTypes.shape({
@@ -37,7 +35,7 @@ var ActivityHeader = React.createClass({
   },
 
   render: function() {
-    var {activity, athlete} = this.props;
+    const {activity, athlete} = this.props;
 
     return (
       <ActivitySection className="activityHeader">
@@ -71,8 +69,8 @@ var ActivityHeader = React.createClass({
   },
 
   _renderActivityDate: function({start_date, timezone}) {
-    var date = moment.tz(start_date, timezone);
-    var tooltip =
+    const date = moment.tz(start_date, timezone);
+    const tooltip =
       <Tooltip id={timezone}>
         {timezone + ' ('+ date.format('Z') +')'}
       </Tooltip>;
@@ -90,4 +88,4 @@ var ActivityHeader = React.createClass({
   },
 });
 
-module.exports = ActivityHeader;
+export default ActivityHeader;

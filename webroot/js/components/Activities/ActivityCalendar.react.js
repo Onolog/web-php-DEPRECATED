@@ -69,4 +69,4 @@ const ActivityCalendar = React.createClass({
   },
 });
 
-module.exports = ActivityCalendar;
+export default ActivityCalendar;

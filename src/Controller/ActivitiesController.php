@@ -26,7 +26,7 @@ class ActivitiesController extends AppController {
    * Default "Home" view. User must be logged in to see this page.
    */
   public function index() {
-    $user = $this->requireLoggedInUser();
+    $user_id = $this->requireLoggedInUser();
 
     // In a normal GET request, the year and month are passed as params in the
     // URL, (eg: '/2016/06') and are contained in the `params` object. In an
@@ -47,7 +47,7 @@ class ActivitiesController extends AppController {
 
     $activities = $this->Activities->find()
       ->where([
-        'user_id' => $user,
+        'user_id' => $user_id,
         'start_date >=' => date('c', $start),
         'start_date <=' => date('c', $end),
       ])
@@ -57,10 +57,10 @@ class ActivitiesController extends AppController {
     // TODO: Fetch only the shoe data we actually need.
     $shoeQuery = id(TableRegistry::get('Shoes'))->find();
     $shoes = $shoeQuery
-      ->where(['user_id' => $user])
+      ->where(['user_id' => $user_id])
       ->contain(['Activities', 'Brands']);
 
-    $user = $this->Auth->User();
+    $user = id(TableRegistry::get('Users'))->get($user_id);
 
     $this->set([
       'activities' => $activities,

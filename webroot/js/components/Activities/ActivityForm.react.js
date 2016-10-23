@@ -144,4 +144,4 @@ const ActivityForm = React.createClass({
   },
 });
 
-module.exports = ActivityForm;
+export default ActivityForm;
