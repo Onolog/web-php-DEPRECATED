@@ -12,27 +12,24 @@ import {connect} from 'react-redux';
 
 import AppPage from 'components/Page/AppPage.react';
 import PageHeader from 'components/Page/PageHeader.react';
-import ShoeView from './ShoeView.react';
+import ShoeView from 'components/Shoes/ShoeView.react';
 
-import getIdFromPath from 'utils/getIdFromPath';
+import 'components/Shoes/css/Shoe.css';
 
-const mapStoreToProps = ({activities, session, shoes}) => {
+const mapStoreToProps = ({activities, session, shoes}, props) => {
   return {
     activities,
-    shoe: find(shoes, {id: getIdFromPath()}),
+    shoe: find(shoes, {id: +props.params.shoeId}),
     viewer: session,
   };
 };
 
-require('../../../css/app/Shoe.css');
-
 /**
- * ShoeViewPage.react
+ * ShoeController.react
  *
- * Displays the page header and view for a single shoe
+ * Displays the view for a single shoe.
  */
-const ShoeViewPage = React.createClass({
-  displayName: 'ShoeViewPage',
+const ShoeController = React.createClass({
 
   propTypes: {
     activities: PropTypes.arrayOf(PropTypes.object.isRequired),
@@ -98,4 +95,4 @@ const ShoeViewPage = React.createClass({
   },
 });
 
-module.exports = connect(mapStoreToProps)(ShoeViewPage);
+module.exports = connect(mapStoreToProps)(ShoeController);

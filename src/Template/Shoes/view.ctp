@@ -1,5 +1,7 @@
 <?php
-$this->set('data' => [
-  'activities' => $activities,
-  'shoes' => [$shoe],
+$this->set([
+  'data' => [
+    'activities' => $activities,
+    'shoes' => [$shoe],
+  ]
 ]);

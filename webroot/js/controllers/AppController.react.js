@@ -1,4 +1,4 @@
-import React, {Children, cloneElement} from 'react';
+import {Children, cloneElement} from 'react';
 
 const AppController = props => {
   return cloneElement(Children.only(props.children), props);
