@@ -100,11 +100,12 @@ const Home = React.createClass({
           show={this.state.showModal}
         />
         <Button
+          bsSize="small"
           bsStyle="success"
           onClick={this._showModal}>
           <Glyphicon glyph="plus" />
         </Button>
-        <ButtonGroup>
+        <ButtonGroup bsSize="small">
           <OverlayTrigger
             overlay={<Tooltip id="last-month">Last month</Tooltip>}
             placement="top">
@@ -114,14 +115,9 @@ const Home = React.createClass({
               <Glyphicon glyph="triangle-left" />
             </Button>
           </OverlayTrigger>
-          <OverlayTrigger
-            overlay={<Tooltip id="this-month">This month</Tooltip>}
-            placement="top">
-            <Button
-              onClick={this._onThisMonthClick}>
-              <Glyphicon glyph="stop" />
-            </Button>
-          </OverlayTrigger>
+          <Button onClick={this._onThisMonthClick}>
+            Today
+          </Button>
           <OverlayTrigger
             overlay={<Tooltip id="next-month">Next month</Tooltip>}
             placement="top">
