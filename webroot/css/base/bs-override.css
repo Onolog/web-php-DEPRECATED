@@ -139,32 +139,58 @@ a.btn-default,
   margin-top: 15px;
 }
 
+
+/* Arrows */
 .dropdown-menu > .arrow,
-.dropdown-menu > .arrow:after {
-  border: 11px solid transparent;
+.dropdown-menu > .arrow:after,
+.popover > .arrow,
+.popover > .arrow:after {
+  border: 9px solid transparent;
   position: absolute;
 }
-.dropdown-menu > .arrow {
+.dropdown-menu > .arrow,
+.popover > .arrow {
   border-bottom-color: rgba(0, 0, 0, 0.15);
   border-top-width: 0;
   left: 20px;
   margin-left: 0;
-  top: -11px;
+  top: -10px;
 }
-.dropdown-menu > .arrow:after {
+
+/* TODO: More complete overrides for different popover positions. */
+.popover.bottom > .arrow {
+  top: -10px;
+}
+
+.dropdown-menu > .arrow:after,
+.popover > .arrow:after {
   border-bottom-color: #fff;
   border-width: 0 10px 10px;
   content: " ";
   margin-left: -10px;
   top: 1px;
 }
-.dropdown-menu > li > a {
-  padding: 5px 20px;
-}
-
 .navbar-right .dropdown-menu > .arrow {
   left: initial;
   right: 20px;
+}
+
+
+/* Layers have a consistent drop shadow */
+.dropdown-menu,
+.modal-content,
+.popover {
+  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+/* Popover */
+.popover {
+  padding: 0;
+}
+.popover-title {
+  border-radius: 3px 3px 0 0;
 }
 
 /* Modal */
@@ -196,8 +222,6 @@ a.btn-default,
   background-color: #f9f9f9;
   border-color: rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .modal-body {
@@ -229,17 +253,6 @@ a.btn-default,
 section + section,
 .panel + .panel {
   margin-top: 15px;
-}
-
-
-/* Popover */
-.popover {
-  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  padding: 0;
-}
-.popover-title {
-  border-radius: 3px 3px 0 0;
 }
 
 

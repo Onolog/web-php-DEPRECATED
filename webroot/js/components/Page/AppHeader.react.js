@@ -68,7 +68,7 @@ const AppHeader = React.createClass({
             className="account-menu"
             id="account-menu"
             title={title}>
-            <div className="arrow hidden-xs" />
+            <li className="arrow hidden-xs" />
             <LinkContainer to={{pathname: `/users/${user.id}`}}>
               <MenuItem>Profile</MenuItem>
             </LinkContainer>
