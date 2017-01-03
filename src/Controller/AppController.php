@@ -75,13 +75,11 @@ class AppController extends Controller {
 
   public function getSession() {
     $session = $this->request->session();
-    $loggedInUser = $session->read('Auth.User');
+    $loggedInUser = $session->read('Auth.User') ?: [];
+    $sessionConfig = $session->read('Config') ?: [];
 
     // This should match what's in PageHelper
-    return array_merge(
-      isset($loggedInUser) ? $loggedInUser : [],
-      $session->read('Config')
-    );
+    return array_merge($loggedInUser, $sessionConfig);
   }
 
   public function getLoggedInUser() {

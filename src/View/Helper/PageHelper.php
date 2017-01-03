@@ -96,15 +96,13 @@ class PageHelper extends Helper {
   private function renderAppData() {
     // Prepare all the data for the client.
     $session = $this->request->session();
-    $loggedInUser = $session->read('Auth.User');
+    $loggedInUser = $session->read('Auth.User') ?: [];
+    $sessionConfig = $session->read('Config') ?: [];
 
     $app_data = [
       'activities' => [],
       'brands' => [],
-      'session' => array_merge(
-        $loggedInUser ?: [],
-        $session->read('Config')
-      ),
+      'session' => array_merge($loggedInUser, $sessionConfig),
       'shoes' => [],
       'users' => [],
     ];
@@ -115,10 +113,7 @@ class PageHelper extends Helper {
 
     $encoded_data = json_encode($app_data, JSON_NUMERIC_CHECK);
 
-    return
-      '<script>' .
-        "window.APP_DATA=$encoded_data;" .
-      '</script>';
+    return "<script>window.APP_DATA=$encoded_data;</script>";
   }
 
   /**
@@ -127,10 +122,7 @@ class PageHelper extends Helper {
   private function renderChunkManifest() {
     $manifest = file_get_contents('build/chunk-manifest.json');
 
-    return
-      '<script>' .
-        "window.chunkManifest=$manifest;" .
-      '</script>';
+    return "<script>window.chunkManifest=$manifest;</script>";
   }
 
   /**

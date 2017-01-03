@@ -9,9 +9,9 @@ import PageHeader from 'components/Page/PageHeader.react';
 import 'components/Vdot/Daniels.css';
 
 /**
- * DanielsController.react
+ * VdotController.react
  *
- * Displays Daniels data
+ * Displays Daniels VDOT data.
  */
 const DanielsController = props => (
   <AppPage className="daniels">
