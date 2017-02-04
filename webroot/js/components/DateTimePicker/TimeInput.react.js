@@ -1,10 +1,10 @@
-var moment = require('moment');
-var React = require('react');
+import {range} from 'lodash';
+import moment from 'moment';
+import React from 'react';
 
-var ConstrainedTextInput = require('components/Forms/ConstrainedTextInput.react');
+import ConstrainedTextInput from 'components/Forms/ConstrainedTextInput.react';
 
-var pad = require('utils/pad');
-var {range} = require('lodash');
+import pad from 'utils/pad';
 
 const MERIDIEM = {
   AM: 'AM',
