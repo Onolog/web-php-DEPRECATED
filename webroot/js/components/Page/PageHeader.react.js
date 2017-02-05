@@ -7,7 +7,7 @@ import NavbarToggle from 'components/Navigation/NavbarToggle.react';
 
 import {toggleSideNav} from 'actions/navigation';
 
-require('./css/PageHeader.css');
+import './css/PageHeader.css';
 
 const mapStateToProps = ({navigation}) => {
   return {

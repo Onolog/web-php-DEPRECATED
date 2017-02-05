@@ -3,9 +3,6 @@
  */
 .app-full-page {
   bottom: 0;
-  display: flex;
-  flex: 1;
-  flex-direction: row;
   left: 0;
   overflow: hidden;
   position: absolute;
@@ -13,20 +10,16 @@
   top: 0;
 }
 
-.app-full-page .navbar-toggle {
-  border-radius: 0;
-  display: block;
-  margin: 0;
-  padding: 17px 18px;
-}
-.app-full-page .icon-bar {
-  border-radius: 0;
+.app-full-page-inner {
+  height: 100%;
 }
 
 /* Left Nav */
 .app-full-page .left-col {
   background: #e97f10;
   border-right: 1px solid rgba(0, 0, 0, .07);
+  float: left;
+  height: 100%;
   overflow: hidden;
   transition: width .25s ease;
   width: 60px;
@@ -48,24 +41,54 @@
 }
 
 /* Main Col */
+.app-full-page .main-col {
+  height: 100%;
+}
 .open .main-col {
   left: 200px;
 }
 
+.app-full-page .navbar-toggle {
+  border-radius: 0;
+  display: block;
+  margin: 0;
+  padding: 17px 18px;
+}
+.app-full-page .icon-bar {
+  border-radius: 0;
+}
+
+.app-full-page .main-frame {
+  position: relative;
+}
+
 
 @media (max-width: 767px) {
+  .app-full-page-inner {
+    transform: translate3d(-200px, 0, 0);
+    transition: transform .25s ease;
+  }
+  .open .app-full-page-inner {
+    transform: translate3d(0, 0, 0);
+  }
+
   .app-full-page .left-col {
-    width: 0;
-    transition: width .3s ease;
+/*    transform: translate3d(-200px, 0, 0);
+    transition: transform .25s ease;
+    transition: width .25s ease;
+*/
+    width: 200px;
+  }
+  .open .left-col {
+/*    transform: translate3d(0, 0, 0);
+    width: 200px;*/
   }
 
   .app-full-page .main-col {
-    left: 0;
-    transform: translate3d(0, 0, 0);
+/*    transform: translate3d(0, 0, 0);
+    transition: transform .25s ease;*/
   }
   .open .main-col {
-    left: 0;
-    transform: translate3d(200px, 0, 0);
-    transition: transform .3s ease;
+    /*transform: translate3d(200px, 0, 0);*/
   }
 }

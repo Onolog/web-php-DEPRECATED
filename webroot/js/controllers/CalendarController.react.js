@@ -1,19 +1,15 @@
 import moment from 'moment';
 import React, {PropTypes} from 'react';
-import {
-  Button,
-  ButtonGroup,
-  Glyphicon,
-  OverlayTrigger,
-  Panel,
-  Tooltip,
-} from 'react-bootstrap';
+import {Button, ButtonGroup, Glyphicon} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 
 import ActivityCalendar from 'components/Activities/ActivityCalendar.react';
 import ActivityModal from 'components/Activities/ActivityModal.react';
-import AppPage from 'components/Page/AppPage.react';
+
+import AppFullPage from 'components/Page/AppFullPage.react';
+import FlexContainer from 'components/FlexContainer/FlexContainer.react';
+import Loader from 'components/Loader/Loader.react';
 import PageHeader from 'components/Page/PageHeader.react';
 
 import {fetchActivities} from 'actions/activities';
@@ -28,6 +24,12 @@ const mapStateToProps = ({activities, pendingRequests}) => {
     pendingRequests,
   };
 };
+
+const PageFrame = props => (
+  <FlexContainer className="main-frame" type="row">
+    {props.children}
+  </FlexContainer>
+);
 
 /**
  * Home.react
@@ -77,18 +79,18 @@ const Home = React.createClass({
     const m = getMoment(params);
 
     return (
-      <AppPage>
-        <PageHeader title={m.format('MMMM YYYY')}>
+      <AppFullPage>
+        <PageHeader full title={m.format('MMMM YYYY')}>
           {this._renderButtonGroup()}
         </PageHeader>
-        <Panel className="calendarContainer">
+        <PageFrame>
+          {isLoading && <Loader background full />}
           <ActivityCalendar
             activities={activities}
             date={m.toDate()}
-            isLoading={isLoading}
           />
-        </Panel>
-      </AppPage>
+        </PageFrame>
+      </AppFullPage>
     );
   },
 
@@ -106,27 +108,19 @@ const Home = React.createClass({
           <Glyphicon glyph="plus" />
         </Button>
         <ButtonGroup bsSize="small">
-          <OverlayTrigger
-            overlay={<Tooltip id="last-month">Last month</Tooltip>}
-            placement="top">
-            <Button
-              className="monthArrow"
-              onClick={this._onLastMonthClick}>
-              <Glyphicon glyph="triangle-left" />
-            </Button>
-          </OverlayTrigger>
+          <Button
+            className="monthArrow"
+            onClick={this._onLastMonthClick}>
+            <Glyphicon glyph="triangle-left" />
+          </Button>
           <Button onClick={this._onThisMonthClick}>
             Today
           </Button>
-          <OverlayTrigger
-            overlay={<Tooltip id="next-month">Next month</Tooltip>}
-            placement="top">
-            <Button
-              className="monthArrow"
-              onClick={this._onNextMonthClick}>
-              <Glyphicon glyph="triangle-right" />
-            </Button>
-          </OverlayTrigger>
+          <Button
+            className="monthArrow"
+            onClick={this._onNextMonthClick}>
+            <Glyphicon glyph="triangle-right" />
+          </Button>
         </ButtonGroup>
       </div>
     );

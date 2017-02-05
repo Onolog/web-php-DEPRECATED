@@ -1,16 +1,12 @@
 /**
- * UserCalendar.css
+ * ActivityCalendar.css
  *
- * Specific CSS for UserCalendar page
+ * Specific CSS for ActivityCalendar component.
  */
 .monthArrow .glyphicon {
   top: 2px;
 }
 
-.calendarContainer {
-  position: relative;
-}
-
 .calendar td {
-  height: 115px;
+  height: auto;
 }

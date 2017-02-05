@@ -27,3 +27,7 @@
   flex-direction: column;
   padding: 0;
 }
+
+.flex-container.row {
+  margin: 0;
+}

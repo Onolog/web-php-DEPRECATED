@@ -1,7 +1,7 @@
 import React from 'react';
 import {Glyphicon, Nav, NavItem, OverlayTrigger, Tooltip} from 'react-bootstrap';
 
-require('./css/SideMenu.css');
+import './css/SideMenu.css';
 
 const SideMenu = React.createClass({
   displayName: 'SideMenu',
@@ -13,7 +13,7 @@ const SideMenu = React.createClass({
   render() {
     const navItems = [
       {
-        href: '',
+        href: '/',
         icon: 'home',
         label: 'Home',
       },
@@ -23,27 +23,27 @@ const SideMenu = React.createClass({
         label: 'Calendar',
       },
       {
-        href: '',
+        href: '/',
         icon: 'home',
         label: 'Activities',
       },
       {
-        href: 'users/profile',
+        href: '/users',
         icon: 'user',
         label: 'Profile',
       },
       {
-        href: '/users/shoes',
+        href: '/shoes',
         icon: 'fire',
         label: 'Shoes',
       },
       {
-        href: '/users/friends',
+        href: '/friends',
         icon: 'picture',
         label: 'Friends',
       },
       {
-        href: '/users/settings',
+        href: '/settings',
         icon: 'cog',
         label: 'Settings',
       },
@@ -56,7 +56,7 @@ const SideMenu = React.createClass({
     );
   },
 
-  _renderNavItem: function(item, idx) {
+  _renderNavItem(item, idx) {
     let navItem =
       <NavItem className="nav-item" href={item.href} key={idx}>
         <Glyphicon glyph={item.icon} />
@@ -75,4 +75,4 @@ const SideMenu = React.createClass({
   },
 });
 
-module.exports = SideMenu;
+export default SideMenu;
