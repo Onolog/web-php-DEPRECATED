@@ -1,5 +1,8 @@
 import React from 'react';
 import {Glyphicon, Nav, NavItem, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap';
+
+import homeUrl from 'utils/homeUrl';
 
 import './css/SideMenu.css';
 
@@ -13,19 +16,9 @@ const SideMenu = React.createClass({
   render() {
     const navItems = [
       {
-        href: '/',
-        icon: 'home',
-        label: 'Home',
-      },
-      {
-        href: '/',
+        href: homeUrl(),
         icon: 'calendar',
         label: 'Calendar',
-      },
-      {
-        href: '/',
-        icon: 'home',
-        label: 'Activities',
       },
       {
         href: '/users',
@@ -58,10 +51,12 @@ const SideMenu = React.createClass({
 
   _renderNavItem(item, idx) {
     let navItem =
-      <NavItem className="nav-item" href={item.href} key={idx}>
-        <Glyphicon glyph={item.icon} />
-        <span className="nav-item-label">{item.label}</span>
-      </NavItem>;
+      <LinkContainer key={idx} to={{pathname: item.href}}>
+        <NavItem className="nav-item">
+          <Glyphicon glyph={item.icon} />
+          <span className="nav-item-label">{item.label}</span>
+        </NavItem>
+      </LinkContainer>;
 
     // Display a tooltip on hover when the nav is collapsed.
     return this.props.open ?
