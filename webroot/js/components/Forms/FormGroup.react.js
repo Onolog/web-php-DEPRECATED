@@ -1,10 +1,11 @@
-import React from 'react';
 import cx from 'classnames';
+import React from 'react';
+import {Col, ControlLabel, FormGroup} from 'react-bootstrap';
 
 /**
  * FormGroup.react
  */
-const FormGroup = React.createClass({
+module.exports = React.createClass({
   displayName: 'FormGroup',
 
   propTypes: {
@@ -13,22 +14,18 @@ const FormGroup = React.createClass({
     hideLabel: React.PropTypes.bool,
   },
 
-  render: function() {
+  render() {
     return (
-      <div className="form-group">
-        <label
-          className={cx('control-label', 'col-sm-3', {
-            'sr-only': this.props.hideLabel,
-          })}
-          for={this.props.name}>
-          {this.props.label}
-        </label>
-        <div className="col-sm-9">
+      <FormGroup>
+        <Col sm={3}>
+          <ControlLabel for={this.props.name}>
+            {this.props.label}
+          </ControlLabel>
+        </Col>
+        <Col sm={9}>
           {this.props.children}
-        </div>
-      </div>
+        </Col>
+      </FormGroup>
     );
   },
 });
-
-module.exports = FormGroup;

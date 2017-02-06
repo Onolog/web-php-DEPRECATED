@@ -1,17 +1,19 @@
 import {find, isEmpty} from 'lodash';
 import React, {PropTypes} from 'react';
-import {Button, Panel} from 'react-bootstrap';
+import {Button, Form} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
-import AppPage from 'components/Page/AppPage.react';
+import AppFullPage from 'components/Page/AppFullPage.react';
 import FormGroup from 'components/Forms/FormGroup.react';
 import Loader from 'components/Loader/Loader.react';
+import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import TextInput from 'components/Forms/TextInput.react';
 
 import {fetchSettings, userSaveSettings} from 'actions/users';
-
 import {SETTINGS_FETCH} from 'constants/ActionTypes';
+
+import './css/Settings.css';
 
 const mapStateToProps = ({pendingRequests, session, users}) => {
   return {
@@ -46,20 +48,26 @@ const SettingsController = React.createClass({
   },
 
   render() {
+    return (
+      <AppFullPage>
+        <PageHeader full title="Settings" />
+        <PageFrame>
+          {this._renderContent()}
+        </PageFrame>
+      </AppFullPage>
+    );
+  },
+
+  _renderContent() {
     const {pendingRequests, user} = this.props;
 
     if (isEmpty(user)) {
-      return (
-        <AppPage>
-          <Loader />
-        </AppPage>
-      );
+      return <Loader background full />;
     }
 
     return (
-      <AppPage className="settings" narrow>
-        <PageHeader title="Settings" />
-        <Panel className="form-horizontal">
+      <div className="settings-page">
+        <Form horizontal>
           {pendingRequests[SETTINGS_FETCH] && <Loader background full />}
           <FormGroup label="First Name">
             <TextInput
@@ -92,8 +100,8 @@ const SettingsController = React.createClass({
               Save Changes
             </Button>
           </FormGroup>
-        </Panel>
-      </AppPage>
+        </Form>
+      </div>
     );
   },
 
