@@ -3,9 +3,12 @@ import React, {PropTypes} from 'react';
 import {Button, Glyphicon, Panel} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
+import AppFullPage from 'components/Page/AppFullPage.react';
 import AppPage from 'components/Page/AppPage.react';
 import EmptyState from 'components/EmptyState.react';
+import FlexContainer from 'components/FlexContainer/FlexContainer.react';
 import Loader from 'components/Loader/Loader.react';
+import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import ShoeModal from 'components/Shoes/ShoeModal.react';
 import ShoeTable from 'components/Shoes/ShoeTable.react';
@@ -20,13 +23,19 @@ const mapStateToProps = ({shoes}) => {
   };
 };
 
+const ScrollContainer = props => (
+  <div className="scroll-container">
+    {props.children}
+  </div>
+);
+
 /**
- * ShoesPage.react
+ * ShoesController.react
  *
  * View controller for displaying all of a user's shoes
  */
-const ShoesPage = React.createClass({
-  displayName: 'ShoesPage',
+const ShoesController = React.createClass({
+  displayName: 'ShoesController',
 
   propTypes: {
     shoes: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
@@ -53,21 +62,11 @@ const ShoesPage = React.createClass({
   },
 
   render() {
-    const shoes = partition(this.props.shoes, 'inactive');
-
-    if (this.state.isLoading) {
-      return (
-        <AppPage>
-          <Loader />
-        </AppPage>
-      );
-    }
-
     return (
-      <AppPage narrow>
-        <PageHeader title="Shoes">
+      <AppFullPage narrow>
+        <PageHeader full title="Shoes">
           <div>
-            <Button onClick={this._handleShowModal}>
+            <Button bsSize="small" onClick={this._handleShowModal}>
               <Glyphicon glyph="plus" /> New Shoe
             </Button>
             <ShoeModal
@@ -76,9 +75,25 @@ const ShoesPage = React.createClass({
             />
           </div>
         </PageHeader>
+        <PageFrame>
+          {this._renderContent()}
+        </PageFrame>
+      </AppFullPage>
+    );
+  },
+
+  _renderContent() {
+    if (this.state.isLoading) {
+      return <Loader background full />;
+    }
+
+    const shoes = partition(this.props.shoes, 'inactive');
+
+    return (
+      <ScrollContainer>
         {this._renderActiveShoes(shoes[1])}
         {this._renderInactiveShoes(shoes[0])}
-      </AppPage>
+      </ScrollContainer>
     );
   },
 
@@ -120,4 +135,4 @@ const ShoesPage = React.createClass({
   },
 });
 
-module.exports = connect(mapStateToProps)(ShoesPage);
+module.exports = connect(mapStateToProps)(ShoesController);

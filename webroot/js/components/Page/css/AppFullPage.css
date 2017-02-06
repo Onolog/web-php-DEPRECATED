@@ -58,8 +58,15 @@
   border-radius: 0;
 }
 
-.app-full-page .main-frame {
+.app-full-page .page-frame {
   position: relative;
+}
+
+.scroll-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  width: 100%;
 }
 
 

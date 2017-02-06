@@ -42,9 +42,7 @@ const AppFullPage = React.createClass({
               <NavbarToggle onClick={this._handleSideNavToggle} />
             </div>
             <FlexContainer type="col">
-              <div className="scrollable">
-                <SideMenu open={sideNavOpen} />
-              </div>
+              <SideMenu open={sideNavOpen} />
             </FlexContainer>
           </div>
           <FlexContainer className="main-col" type="col">
