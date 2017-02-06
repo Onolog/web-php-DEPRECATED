@@ -1,33 +1,33 @@
-var {Panel} = require('react-bootstrap');
-var React = require('react');
+import {Panel} from 'react-bootstrap';
+import React from'react';
 
-var AppPage = require('components/Page/AppPage.react');
-var FBImage = require('components/Facebook/FBImage.react');
-var ImageBlock = require('components/ImageBlock/ImageBlock.react');
-var Link = require('components/Link/Link.react');
-var Loader = require('components/Loader/Loader.react');
-var PageHeader = require('components/Page/PageHeader.react');
+import AppPage from 'components/Page/AppPage.react';
+import FBImage from 'components/Facebook/FBImage.react';
+import ImageBlock from 'components/ImageBlock/ImageBlock.react';
+import Link from 'components/Link/Link.react';
+import Loader from 'components/Loader/Loader.react';
+import PageHeader from 'components/Page/PageHeader.react';
 
-var fbLoader = require('utils/fbLoader');
+import fbLoader from 'utils/fbLoader';
 
 /**
  * Friends.react
  */
-var Friends = React.createClass({
+const Friends = React.createClass({
   displayName: 'Friends',
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       friends: null,
     };
   },
 
-  componentWillMount: function() {
+  componentWillMount() {
     // Get all friends who are in the system
     fbLoader(this._getFriends);
   },
 
-  render: function() {
+  render() {
     return (
       <AppPage narrow>
         <PageHeader title="Friends" />
@@ -38,11 +38,11 @@ var Friends = React.createClass({
     );
   },
 
-  _renderContent: function() {
+  _renderContent() {
     return this.state.friends ? this._renderFriendList() : <Loader />;
   },
 
-  _renderFriendList: function() {
+  _renderFriendList() {
     return this.state.friends.map(function(friend, idx) {
       return (
         <ImageBlock
@@ -61,7 +61,7 @@ var Friends = React.createClass({
     });
   },
 
-  _getFriends: function() {
+  _getFriends() {
     const {FB} = window;
     FB.getLoginStatus((response) => {
       FB.api('/me/friends', (response) => {
