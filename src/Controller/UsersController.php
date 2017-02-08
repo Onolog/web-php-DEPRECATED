@@ -68,47 +68,42 @@ class UsersController extends AppController {
     }
 
     $user = $this->Users->get($uid);
+    $response = [];
 
     if (!empty($user)) {
-      // User already exists. Save the latest login date and send back a
-      // successful response.
+      // User already exists. Save the latest login date.
       $user->last_login = date('Y-m-d h:i:s', time());
       $this->Users->save($user);
-      $this->Auth->setUser($data);
-
-      $this->set([
-        'session' => $this->getSession(),
+    } else {
+      // Create new user if no records exist.
+      $user = $this->Users->newEntity([
+        'id' => $uid,
+        'first_name' => $data['first_name'],
+        'last_name' => $data['last_name'],
+        'email' => $data['email'],
+        'password' => null, // Default pw, since FB takes care of auth
+        'created' => date('Y-m-d h:i:s', time()), // YYYY-MM-DD HH:MM:SS
+        'last_login' => date('Y-m-d h:i:s', time())
       ]);
-      return;
+
+      if (!$this->Users->save($user)) {
+        throw new InternalErrorException(
+          'Your account could not be created. Please refresh the page and ' .
+          'try again.'
+        );
+      }
+
+      // Manually add 'name' on account creation/first login only.
+      // For subsequent logins, it's added in afterFind().
+      $user->name = $data['name'];
+      $response['message'] = 'Your account has been created';
     }
 
-    // Create new user if no records exist.
-    $user = $this->Users->newEntity([
-      'id' => $uid,
-      'first_name' => $data['first_name'],
-      'last_name' => $data['last_name'],
-      'email' => $data['email'],
-      'password' => null, // Default pw, since FB takes care of auth
-      'created' => date('Y-m-d h:i:s', time()), // YYYY-MM-DD HH:MM:SS
-      'last_login' => date('Y-m-d h:i:s', time())
-    ]);
+    // Merge Onolog and FB data for the session.
+    $this->Auth->setUser(array_merge($user->toArray(), $data));
 
-    if (!$this->Users->save($user)) {
-      throw new InternalErrorException(
-        'Your account could not be created. Please refresh the page and try ' .
-        'again.'
-      );
-    }
-
-    // Manually add 'name' on account creation/first login only.
-    // For subsequent logins, it's added in afterFind().
-    $user->name = $data['name'];
-    $this->Auth->setUser($data);
-
-    $this->set([
-      'message' => 'Your account has been created',
-      'session' => $this->getSession(),
-    ]);
+    $response['session'] = $this->getSession();
+    $this->set($response);
   }
 
   /**
