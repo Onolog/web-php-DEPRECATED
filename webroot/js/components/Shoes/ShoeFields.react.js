@@ -1,7 +1,8 @@
 import {range} from 'lodash';
 import React, {PropTypes} from 'react';
-import {Checkbox, Col, Form, FormControl, FormGroup} from 'react-bootstrap';
+import {Checkbox, Col, FormControl, FormGroup} from 'react-bootstrap';
 
+import AppForm from 'components/Forms/AppForm.react';
 import BrandSelector from './BrandSelector.react';
 import FormRow from 'components/Forms/FormGroup.react';
 import TextInput from 'components/Forms/TextInput.react';
@@ -41,7 +42,7 @@ const ShoeFields = React.createClass({
     }
 
     return (
-      <Form horizontal>
+      <AppForm bordered horizontal>
         <FormRow className="time" label="Brand">
           <BrandSelector
             defaultValue={brand_id}
@@ -87,7 +88,7 @@ const ShoeFields = React.createClass({
           />
         </FormRow>
         {this._renderInactiveCheckbox()}
-      </Form>
+      </AppForm>
     );
   },
 

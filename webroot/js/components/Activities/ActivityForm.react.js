@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 
 import ShoeSelector from 'components/Shoes/ShoeSelector.react';
 
+import AppForm from 'components/Forms/AppForm.react';
 import DateTimePicker from 'components/DateTimePicker/DateTimePicker.react';
 import DurationInput from 'components/Forms/DurationInput.react';
 import FBFriendTokenizer from 'components/Facebook/FBFriendTokenizer.react';
@@ -48,7 +49,7 @@ const ActivityForm = React.createClass({
     );
 
     return (
-      <div className="form-horizontal activity-form">
+      <AppForm bordered className="activity-form" horizontal>
         <FormGroup label="Distance">
           <TextInput
             className="distanceInput"
@@ -117,7 +118,7 @@ const ActivityForm = React.createClass({
             rows="6"
           />
         </FormGroup>
-      </div>
+      </AppForm>
     );
   },
 

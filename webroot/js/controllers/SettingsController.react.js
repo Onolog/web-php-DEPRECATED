@@ -1,8 +1,9 @@
 import {find, isEmpty} from 'lodash';
 import React, {PropTypes} from 'react';
-import {Button, Form} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
+import AppForm from 'components/Forms/AppForm.react';
 import AppFullPage from 'components/Page/AppFullPage.react';
 import FormGroup from 'components/Forms/FormGroup.react';
 import Loader from 'components/Loader/Loader.react';
@@ -67,7 +68,7 @@ const SettingsController = React.createClass({
 
     return (
       <div className="settings-page">
-        <Form horizontal>
+        <AppForm horizontal>
           {pendingRequests[SETTINGS_FETCH] && <Loader background full />}
           <FormGroup label="First Name">
             <TextInput
@@ -100,7 +101,7 @@ const SettingsController = React.createClass({
               Save Changes
             </Button>
           </FormGroup>
-        </Form>
+        </AppForm>
       </div>
     );
   },
