@@ -42,7 +42,7 @@ const AppFullPage = React.createClass({
               <NavbarToggle onClick={this._handleSideNavToggle} />
             </div>
             <FlexContainer type="col">
-              <SideMenu open={sideNavOpen} />
+              <SideMenu open={sideNavOpen} user={session} />
             </FlexContainer>
           </div>
           <FlexContainer className="main-col" type="col">

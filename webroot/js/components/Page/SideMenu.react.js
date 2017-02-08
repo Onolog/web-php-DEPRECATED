@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {Glyphicon, Nav, NavItem, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 
@@ -10,7 +10,10 @@ const SideMenu = React.createClass({
   displayName: 'SideMenu',
 
   propTypes: {
-    open: React.PropTypes.bool.isRequired,
+    open: PropTypes.bool.isRequired,
+    user: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+    }).isRequired,
   },
 
   render() {
@@ -21,7 +24,7 @@ const SideMenu = React.createClass({
         label: 'Calendar',
       },
       {
-        href: '/users',
+        href: `/users/${this.props.user.id}`,
         icon: 'user',
         label: 'Profile',
       },
@@ -30,11 +33,13 @@ const SideMenu = React.createClass({
         icon: 'fire',
         label: 'Shoes',
       },
+      /*
       {
         href: '/friends',
         icon: 'picture',
         label: 'Friends',
       },
+      */
       {
         href: '/settings',
         icon: 'cog',
