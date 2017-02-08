@@ -19,10 +19,11 @@ const ShoeAddModal = React.createClass({
     onSave: PropTypes.func.isRequired,
     shoe: PropTypes.object.isRequired,
     show: PropTypes.bool,
+    user: PropTypes.object.isRequired,
   },
 
   render() {
-    const {isLoading, onChange, onSave, shoe, ...modalProps} = this.props;
+    const {isLoading, onChange, onSave, shoe, user, ...modalProps} = this.props;
 
     return (
       <Modal {...modalProps}>
@@ -35,6 +36,7 @@ const ShoeAddModal = React.createClass({
             isNew
             onChange={onChange}
             shoe={shoe}
+            user={user}
           />
         </Modal.Body>
         <Modal.Footer>

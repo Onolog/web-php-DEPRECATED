@@ -7,6 +7,12 @@ import ShoeEditModal from 'components/Shoes/ShoeEditModal.react';
 
 import {addShoe, deleteShoe, updateShoe} from 'actions/shoes';
 
+const mapStateToProps = ({session}) => {
+  return {
+    user: session,
+  };
+};
+
 const INITIAL_SHOE_DATA = {
   brand_id: '-1',
   inactive: 0,
@@ -25,6 +31,7 @@ const ShoeModal = React.createClass({
     initialShoe: PropTypes.object,
     onHide: PropTypes.func,
     show: PropTypes.bool,
+    user: PropTypes.object.isRequired,
   },
 
   getInitialState() {
@@ -35,7 +42,7 @@ const ShoeModal = React.createClass({
   },
 
   render() {
-    const {initialShoe, show} = this.props;
+    const {initialShoe, show, user} = this.props;
     const {isLoading, shoe} = this.state;
 
     // Common props.
@@ -47,6 +54,7 @@ const ShoeModal = React.createClass({
       onSave: this._handleSave,
       shoe,
       show,
+      user,
     };
 
     return initialShoe ?
@@ -108,4 +116,4 @@ const ShoeModal = React.createClass({
   },
 });
 
-module.exports = connect()(ShoeModal);
+module.exports = connect(mapStateToProps)(ShoeModal);

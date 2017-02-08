@@ -1,11 +1,21 @@
+import {range} from 'lodash';
 import React, {PropTypes} from 'react';
-import {Input} from 'react-bootstrap';
+import {Checkbox, Col, Form, FormControl, FormGroup} from 'react-bootstrap';
 
 import BrandSelector from './BrandSelector.react';
-import FormGroup from 'components/Forms/FormGroup.react';
+import FormRow from 'components/Forms/FormGroup.react';
 import TextInput from 'components/Forms/TextInput.react';
 
-const FIELD_INACTIVE = 'inactive';
+const FIELDS = {
+  INACTIVE: 'inactive',
+  SIZE: 'size',
+};
+const SIZE_TYPE = ['US', 'UK', 'Europe'];
+const SIZES = {
+  0: range(4, 16.5, 0.5).map(size => ({label: size, value: size})),
+  1: range(2, 16, 0.5).map(size => ({label: size, value: size})),
+  2: range(35, 50).map(size => ({label: size, value: size})),
+};
 
 /**
  * ShoeFields.react
@@ -19,29 +29,65 @@ const ShoeFields = React.createClass({
     isNew: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     shoe: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
   },
 
   render() {
-    const {shoe} = this.props;
+    const {brand_id, model, notes, size, size_type} = this.props.shoe;
+    const sizeType = size_type || 0;
+    const shoeSizes = SIZES[sizeType];
+    if (!size) {
+      shoeSizes.unshift({label: '--', value: -1});
+    }
 
     return (
-      <div className="form-horizontal workoutForm">
-        <FormGroup className="time" label="Brand">
+      <Form horizontal>
+        <FormRow className="time" label="Brand">
           <BrandSelector
-            defaultValue={shoe.brand_id}
+            defaultValue={brand_id}
             name="brand_id"
             onChange={this._handleChange}
           />
-        </FormGroup>
-        <FormGroup label="Model">
-          <TextInput
+        </FormRow>
+        <FormRow label="Model">
+          <FormControl
             name="model"
             onChange={this._handleChange}
-            value={shoe.model}
+            type="text"
+            value={model}
           />
-        </FormGroup>
+        </FormRow>
+        <FormRow inline label="Size">
+          <FormControl
+            componentClass="select"
+            name="size_type"
+            onChange={this._handleChange}
+            value={sizeType}>
+            {SIZE_TYPE.map((type, idx) => (
+              <option key={idx} value={idx}>{type}</option>
+            ))}
+          </FormControl>
+          {' '}
+          <FormControl
+            componentClass="select"
+            name={FIELDS.SIZE}
+            onChange={this._handleChange}
+            value={size}>
+            {shoeSizes.map(({label, value}) => (
+              <option key={value} value={value}>{label}</option>
+            ))}
+          </FormControl>
+        </FormRow>
+        <FormRow label="Notes">
+          <FormControl
+            componentClass="textarea"
+            name="notes"
+            onChange={this._handleChange}
+            value={notes}
+          />
+        </FormRow>
         {this._renderInactiveCheckbox()}
-      </div>
+      </Form>
     );
   },
 
@@ -54,14 +100,16 @@ const ShoeFields = React.createClass({
 
     if (!isNew) {
       return (
-        <Input
-          checked={!!shoe.inactive}
-          label="Inactive"
-          name={FIELD_INACTIVE}
-          onChange={this._handleChange}
-          type="checkbox"
-          wrapperClassName="col-sm-9 col-sm-offset-3"
-        />
+        <FormGroup>
+          <Col sm={9} smOffset={3}>
+            <Checkbox
+              checked={!!shoe.inactive}
+              name={FIELDS.INACTIVE}
+              onChange={this._handleChange}>
+              Inactive
+            </Checkbox>
+          </Col>
+        </FormGroup>
       );
     }
   },
@@ -69,7 +117,19 @@ const ShoeFields = React.createClass({
   _handleChange(e) {
     const {checked, name, value} = e.target;
     let shoe = {...this.props.shoe};
-    shoe[name] = name === FIELD_INACTIVE ? +checked : value;
+
+    switch (name) {
+      case FIELDS.INACTIVE:
+        shoe[name] = +checked;
+        break;
+      case FIELDS.SIZE:
+        shoe[name] = value === '-1' ? null : value;
+        break;
+      default:
+        shoe[name] = value;
+        break;
+    }
+
     this.props.onChange(shoe);
   },
 });

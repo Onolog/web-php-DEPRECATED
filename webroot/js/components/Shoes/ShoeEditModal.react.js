@@ -21,6 +21,7 @@ const ShoeEditModal = React.createClass({
     onSave: PropTypes.func.isRequired,
     shoe: PropTypes.object.isRequired,
     show: PropTypes.bool,
+    user: PropTypes.object.isRequired,
   },
 
   render() {
@@ -30,6 +31,7 @@ const ShoeEditModal = React.createClass({
       onDelete,
       onSave,
       shoe,
+      user,
       ...modalProps,
     } = this.props;
 
@@ -43,6 +45,7 @@ const ShoeEditModal = React.createClass({
           <ShoeFields
             onChange={onChange}
             shoe={shoe}
+            user={user}
           />
         </Modal.Body>
         <Modal.Footer>

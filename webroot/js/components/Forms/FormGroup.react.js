@@ -1,31 +1,35 @@
 import cx from 'classnames';
-import React from 'react';
+import React, {PropTypes} from 'react';
 import {Col, ControlLabel, FormGroup} from 'react-bootstrap';
 
 /**
- * FormGroup.react
+ * FormRow.react
  */
-module.exports = React.createClass({
-  displayName: 'FormGroup',
+const FormRow = React.createClass({
+  displayName: 'FormRow',
 
   propTypes: {
-    label: React.PropTypes.string,
-    type: React.PropTypes.string,
-    hideLabel: React.PropTypes.bool,
+    inline: PropTypes.bool,
+    label: PropTypes.string,
+    name: PropTypes.string,
   },
 
   render() {
+    const {children, inline, label, name} = this.props;
+
     return (
-      <FormGroup>
+      <FormGroup className={cx({'form-inline': inline})}>
         <Col sm={3}>
-          <ControlLabel for={this.props.name}>
-            {this.props.label}
+          <ControlLabel for={name}>
+            {label}
           </ControlLabel>
         </Col>
         <Col sm={9}>
-          {this.props.children}
+          {children}
         </Col>
       </FormGroup>
     );
   },
 });
+
+module.exports = FormRow;
