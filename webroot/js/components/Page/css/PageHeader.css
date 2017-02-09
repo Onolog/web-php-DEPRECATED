@@ -29,9 +29,8 @@
   text-align: right;
 }
 
-.app-page-header-full .navbar-toggle {
-  float: left;
-  margin: -15px 0 -15px -15px;
+.app-full-page .app-page-header-full .navbar-toggle {
+  border-right: 1px solid #e5e5e5;
 }
 .app-page-header-full .navbar-toggle .icon-bar {
   background-color: #e97f10;

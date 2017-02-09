@@ -1,9 +1,10 @@
-import {MenuItem, Nav, Navbar, NavDropdown, NavItem} from 'react-bootstrap';
+import {Nav, Navbar, NavItem} from 'react-bootstrap';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import {LinkContainer} from 'react-router-bootstrap';
 
+import AccountNavItem from 'components/Navigation/AccountNavItem.react';
 import FBImage from 'components/Facebook/FBImage.react';
 
 import {loginIfNeeded, logoutIfNeeded} from 'actions/session';
@@ -15,7 +16,6 @@ import './css/AppHeader.css';
  * AppHeader.react
  */
 const AppHeader = React.createClass({
-
   propTypes: {
     user: PropTypes.shape({
       id: PropTypes.number,
@@ -49,7 +49,7 @@ const AppHeader = React.createClass({
 
   _renderAccountMenu(user) {
     if (user.id) {
-      let title =
+      const title =
         <span>
           <FBImage
             className="account-img"
@@ -64,22 +64,13 @@ const AppHeader = React.createClass({
 
       return (
         <Nav pullRight>
-          <NavDropdown
+          <AccountNavItem
+            arrow
             className="account-menu"
-            id="account-menu"
-            title={title}>
-            <li className="arrow hidden-xs" />
-            <LinkContainer to={{pathname: `/users/${user.id}`}}>
-              <MenuItem>Profile</MenuItem>
-            </LinkContainer>
-            <LinkContainer to={{pathname: '/settings'}}>
-              <MenuItem>Settings</MenuItem>
-            </LinkContainer>
-            <MenuItem divider />
-            <MenuItem onClick={this._handleLogout}>
-              Sign Out
-            </MenuItem>
-          </NavDropdown>
+            onLogout={this._handleLogout}
+            title={title}
+            user={user}
+          />
         </Nav>
       );
     }

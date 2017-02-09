@@ -99,8 +99,8 @@
 }
 
 .app-header .account-name {
-  float: left;
-  max-width: 150px
+  max-width: 150px;
+  vertical-align: bottom;
 }
 
 /* MOBILE */

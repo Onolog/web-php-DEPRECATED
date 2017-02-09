@@ -139,14 +139,17 @@ a.btn-default,
   border-color: #f5f5f5;
 }
 
-
-/* Menu */
-.navbar-nav > li > .dropdown-menu {
-  margin-top: 15px;
+.navbar-nav > li > .dropdown-menu,
+.nav > li > .dropdown-menu {
+  margin-top: 2px;
+}
+.navbar-nav > .arrow > .dropdown-menu,
+.nav > .arrow > .dropdown-menu {
+  margin-top: 13px;
 }
 
 
-/* Arrows */
+/* Menu & Popover Arrows */
 .dropdown-menu > .arrow,
 .dropdown-menu > .arrow:after,
 .popover > .arrow,
@@ -166,6 +169,23 @@ a.btn-default,
 /* TODO: More complete overrides for different popover positions. */
 .popover.bottom > .arrow {
   top: -10px;
+}
+
+.dropup.has-arrow .dropdown-menu {
+  margin-bottom: 13px;
+  margin-top: 2px;
+}
+.dropup .dropdown-menu > .arrow {
+  bottom: -10px;
+  top: auto;
+  border-top-color: rgba(0, 0, 0, 0.15);
+  border-width: 10px 10px 0;
+}
+.dropup .dropdown-menu > .arrow:after {
+  border-top-color: #fff;
+  border-width: 10px 10px 0;
+  bottom: 1px;
+  top: auto;
 }
 
 .dropdown-menu > .arrow:after,
@@ -347,5 +367,9 @@ section + section,
   .panel {
     margin: 0 -16px;
     border-radius: 0;
+  }
+
+  .navbar-nav .arrow {
+    display: none;
   }
 }
