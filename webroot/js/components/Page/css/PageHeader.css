@@ -2,9 +2,11 @@
  * PageHeader.css
  */
 .app-page-header {
+  display: flex;
   margin-bottom: 15px;
 }
 .app-page-header h2 {
+  flex: 1;
   margin: 0;
 }
 
@@ -14,11 +16,17 @@
   flex-shrink: 0;
   height: 51px;
   margin: 0;
-  padding: 15px;
 }
 .app-page-header-full h2 {
   font-size: 20px;
   line-height: 1;
+  padding: 15px;
+}
+
+.app-page-header-aux {
+  flex: 1;
+  padding: 10px 15px 10px 0;
+  text-align: right;
 }
 
 .app-page-header-full .navbar-toggle {
@@ -33,5 +41,9 @@
 @media (max-width: 767px) {
   .app-page-header h2 {
     font-size: 24px;
+  }
+
+  .app-page-header-full h2 {
+    font-size: 20px;
   }
 }

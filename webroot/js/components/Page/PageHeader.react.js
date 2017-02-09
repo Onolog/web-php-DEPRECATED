@@ -2,7 +2,6 @@ import cx from 'classnames';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 
-import LeftRight from 'components/LeftRight/LeftRight.react';
 import NavbarToggle from 'components/Navigation/NavbarToggle.react';
 
 import {toggleSideNav} from 'actions/navigation';
@@ -20,10 +19,13 @@ const mapStateToProps = ({navigation}) => {
  */
 const PageHeader = (props) => {
   const navbarToggle = props.full ?
-    <NavbarToggle
-      className="visible-xs-block"
-      onClick={() => props.dispatch(toggleSideNav(props.sideNavOpen))}
-    /> : null;
+    <div className="app-page-header-toggle">
+      <NavbarToggle
+        className="visible-xs-block"
+        onClick={() => props.dispatch(toggleSideNav(props.sideNavOpen))}
+      />
+    </div> :
+    null;
 
   return (
     <header
@@ -31,16 +33,17 @@ const PageHeader = (props) => {
         'app-page-header-full': props.full,
       }, props.className)}>
       {navbarToggle}
-      <LeftRight>
-        <h2>{props.title}</h2>
+      <h2>{props.title}</h2>
+      <div className="app-page-header-aux">
         {props.children}
-      </LeftRight>
+      </div>
     </header>
   );
 };
 
 PageHeader.propTypes = {
   sideNavOpen: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
 },
 
 module.exports = connect(mapStateToProps)(PageHeader);
