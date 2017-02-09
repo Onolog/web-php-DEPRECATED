@@ -1,15 +1,15 @@
 import {find, isEmpty} from 'lodash';
 import React, {PropTypes} from 'react';
-import {Button} from 'react-bootstrap';
+import {Button, ControlLabel, FormControl, FormGroup} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 import AppForm from 'components/Forms/AppForm.react';
 import AppFullPage from 'components/Page/AppFullPage.react';
-import FormGroup from 'components/Forms/FormGroup.react';
 import Loader from 'components/Loader/Loader.react';
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
-import TextInput from 'components/Forms/TextInput.react';
+import ScrollContainer from 'components/ScrollContainer/ScrollContainer.react';
+import SettingsListGroup from 'components/Settings/SettingsListGroup.react';
 
 import {fetchSettings, userSaveSettings} from 'actions/users';
 import {SETTINGS_FETCH} from 'constants/ActionTypes';
@@ -67,42 +67,50 @@ const SettingsController = React.createClass({
     }
 
     return (
-      <div className="settings-page">
-        <AppForm horizontal>
-          {pendingRequests[SETTINGS_FETCH] && <Loader background full />}
-          <FormGroup label="First Name">
-            <TextInput
-              defaultValue={user.first_name}
-              name="first_name"
-              onChange={this._handleChange}
-              placeholder="Enter your first name"
-            />
-          </FormGroup>
-          <FormGroup label="Last Name">
-            <TextInput
-              defaultValue={user.last_name}
-              name="last_name"
-              onChange={this._handleChange}
-              placeholder="Enter your last name"
-            />
-          </FormGroup>
-          <FormGroup label="Email Address">
-            <TextInput
-              defaultValue={user.email}
-              name="email"
-              onChange={this._handleChange}
-              placeholder="Enter your email address"
-            />
-          </FormGroup>
-          <FormGroup label="">
-            <Button
-              bsStyle="primary"
-              onClick={this._handleSave}>
-              Save Changes
-            </Button>
-          </FormGroup>
-        </AppForm>
-      </div>
+      <ScrollContainer className="settings-page">
+        {pendingRequests[SETTINGS_FETCH] && <Loader background full />}
+        <SettingsListGroup>
+          <SettingsListGroup.Item title="Profile">
+            <AppForm>
+              <FormGroup>
+                <ControlLabel>First Name</ControlLabel>
+                <FormControl
+                  defaultValue={user.first_name}
+                  name="first_name"
+                  onChange={this._handleChange}
+                  placeholder="Enter your first name"
+                  type="text"
+                />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Last Name</ControlLabel>
+                <FormControl
+                  defaultValue={user.last_name}
+                  name="last_name"
+                  onChange={this._handleChange}
+                  placeholder="Enter your last name"
+                  type="text"
+                />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>Email Address</ControlLabel>
+                <FormControl
+                  defaultValue={user.email}
+                  name="email"
+                  onChange={this._handleChange}
+                  placeholder="Enter your email address"
+                  type="text"
+                />
+              </FormGroup>
+              <FormGroup>
+                <Button bsStyle="primary" onClick={this._handleSave}>
+                  Save Changes
+                </Button>
+              </FormGroup>
+            </AppForm>
+          </SettingsListGroup.Item>
+        </SettingsListGroup>
+      </ScrollContainer>
     );
   },
 

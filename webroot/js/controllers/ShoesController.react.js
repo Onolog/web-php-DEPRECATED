@@ -10,6 +10,7 @@ import FlexContainer from 'components/FlexContainer/FlexContainer.react';
 import Loader from 'components/Loader/Loader.react';
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
+import ScrollContainer from 'components/ScrollContainer/ScrollContainer.react';
 import ShoeModal from 'components/Shoes/ShoeModal.react';
 import ShoeTable from 'components/Shoes/ShoeTable.react';
 
@@ -22,12 +23,6 @@ const mapStateToProps = ({shoes}) => {
     shoes,
   };
 };
-
-const ScrollContainer = props => (
-  <div className="scroll-container">
-    {props.children}
-  </div>
-);
 
 /**
  * ShoesController.react

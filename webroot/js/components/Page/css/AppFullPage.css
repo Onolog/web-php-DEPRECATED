@@ -62,13 +62,6 @@
   position: relative;
 }
 
-.scroll-container {
-  overflow-x: hidden;
-  overflow-y: auto;
-  position: relative;
-  width: 100%;
-}
-
 
 @media (max-width: 767px) {
   .app-full-page-inner {
