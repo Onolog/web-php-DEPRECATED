@@ -5,7 +5,6 @@ import {Checkbox, Col, FormControl, FormGroup} from 'react-bootstrap';
 import AppForm from 'components/Forms/AppForm.react';
 import BrandSelector from './BrandSelector.react';
 import FormRow from 'components/Forms/FormGroup.react';
-import TextInput from 'components/Forms/TextInput.react';
 
 const FIELDS = {
   INACTIVE: 'inactive',

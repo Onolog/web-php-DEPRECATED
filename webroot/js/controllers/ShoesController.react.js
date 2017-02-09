@@ -4,9 +4,7 @@ import {Button, Glyphicon, Panel} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 import AppFullPage from 'components/Page/AppFullPage.react';
-import AppPage from 'components/Page/AppPage.react';
 import EmptyState from 'components/EmptyState.react';
-import FlexContainer from 'components/FlexContainer/FlexContainer.react';
 import Loader from 'components/Loader/Loader.react';
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';

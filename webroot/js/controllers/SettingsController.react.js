@@ -1,15 +1,17 @@
-import {find, isEmpty} from 'lodash';
+import {find, isEmpty, isEqual} from 'lodash';
 import React, {PropTypes} from 'react';
-import {Button, ControlLabel, FormControl, FormGroup} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
-import AppForm from 'components/Forms/AppForm.react';
 import AppFullPage from 'components/Page/AppFullPage.react';
 import Loader from 'components/Loader/Loader.react';
+import LocationSettingsSection from 'components/Settings/LocationSettingsSection.react';
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
+import ProfileSettingsSection from 'components/Settings/ProfileSettingsSection.react';
 import ScrollContainer from 'components/ScrollContainer/ScrollContainer.react';
 import SettingsListGroup from 'components/Settings/SettingsListGroup.react';
+import UnitsSettingsSection from 'components/Settings/UnitsSettingsSection.react';
 
 import {fetchSettings, userSaveSettings} from 'actions/users';
 import {SETTINGS_FETCH} from 'constants/ActionTypes';
@@ -29,19 +31,16 @@ const mapStateToProps = ({pendingRequests, session, users}) => {
 const SettingsController = React.createClass({
   propTypes: {
     user: PropTypes.shape({
+      distance_units: PropTypes.number.isRequired,
       email: PropTypes.string.isRequired,
       first_name: PropTypes.string.isRequired,
       last_name: PropTypes.string.isRequired,
+      timezone: PropTypes.string.isRequired,
     }).isRequired,
   },
 
   getInitialState() {
-    const {email, first_name, last_name} = this.props.user;
-    return {
-      email,
-      first_name,
-      last_name,
-    };
+    return {...this.props.user};
   },
 
   componentWillMount() {
@@ -51,7 +50,15 @@ const SettingsController = React.createClass({
   render() {
     return (
       <AppFullPage>
-        <PageHeader full title="Settings" />
+        <PageHeader full title="Settings">
+          <Button
+            bsSize="small"
+            bsStyle="primary"
+            disabled={isEqual(this.state, this.props.user)}
+            onClick={this._handleSave}>
+            Save Changes
+          </Button>
+        </PageHeader>
         <PageFrame>
           {this._renderContent()}
         </PageFrame>
@@ -70,60 +77,59 @@ const SettingsController = React.createClass({
       <ScrollContainer className="settings-page">
         {pendingRequests[SETTINGS_FETCH] && <Loader background full />}
         <SettingsListGroup>
-          <SettingsListGroup.Item title="Profile">
-            <AppForm>
-              <FormGroup>
-                <ControlLabel>First Name</ControlLabel>
-                <FormControl
-                  defaultValue={user.first_name}
-                  name="first_name"
-                  onChange={this._handleChange}
-                  placeholder="Enter your first name"
-                  type="text"
-                />
-              </FormGroup>
-              <FormGroup>
-                <ControlLabel>Last Name</ControlLabel>
-                <FormControl
-                  defaultValue={user.last_name}
-                  name="last_name"
-                  onChange={this._handleChange}
-                  placeholder="Enter your last name"
-                  type="text"
-                />
-              </FormGroup>
-              <FormGroup>
-                <ControlLabel>Email Address</ControlLabel>
-                <FormControl
-                  defaultValue={user.email}
-                  name="email"
-                  onChange={this._handleChange}
-                  placeholder="Enter your email address"
-                  type="text"
-                />
-              </FormGroup>
-              <FormGroup>
-                <Button bsStyle="primary" onClick={this._handleSave}>
-                  Save Changes
-                </Button>
-              </FormGroup>
-            </AppForm>
-          </SettingsListGroup.Item>
+          <ProfileSettingsSection
+            onChange={this._handleChange}
+            user={this.state}
+          />
+          <LocationSettingsSection
+            onChange={this._handleChange}
+            user={this.state}
+          />
+          <UnitsSettingsSection
+            onChange={this._handleChange}
+            user={this.state}
+          />
         </SettingsListGroup>
       </ScrollContainer>
     );
   },
 
   _handleChange(e) {
-    let newState = {};
-    let {name, value} = e.target;
-    newState[name] = value;
+    const newState = {};
+    const {name, value} = e.target;
+
+    switch (name) {
+      case 'distance_units':
+        // Cast string value to an int.
+        newState[name] = parseInt(value, 10);
+        break;
+      default:
+        newState[name] = value;
+        break;
+    }
 
     this.setState(newState);
   },
 
   _handleSave(e) {
-    // TODO: Validation?
+    const {email, first_name, last_name} = this.state;
+
+    // TODO: Better client-side validation.
+    if (!email.trim()) {
+      alert('Email cannot be empty.');
+      return;
+    }
+
+    if (!first_name.trim()) {
+      alert('First name cannot be empty.');
+      return;
+    }
+
+    if (!last_name.trim()) {
+      alert('Last name cannot be empty.');
+      return;
+    }
+
     this.props.dispatch(userSaveSettings({
       ...this.state,
       id: this.props.user.id,

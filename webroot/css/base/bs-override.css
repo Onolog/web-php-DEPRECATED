@@ -97,6 +97,7 @@ a.btn-default,
   border-width: 0 0 0 5px;
 }
 
+
 /* Forms */
 .form-control::-moz-placeholder {
   color: #bbb;
@@ -118,6 +119,11 @@ a.btn-default,
 .form-control .constrainedTextInput:focus {
   background-color: #e5e5e5;
   outline: none;
+}
+
+.checkbox,
+.radio {
+  margin-top: 0;
 }
 
 

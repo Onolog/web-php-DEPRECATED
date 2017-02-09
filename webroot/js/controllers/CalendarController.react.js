@@ -8,7 +8,6 @@ import ActivityCalendar from 'components/Activities/ActivityCalendar.react';
 import ActivityModal from 'components/Activities/ActivityModal.react';
 
 import AppFullPage from 'components/Page/AppFullPage.react';
-import FlexContainer from 'components/FlexContainer/FlexContainer.react';
 import Loader from 'components/Loader/Loader.react';
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';

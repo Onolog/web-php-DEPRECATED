@@ -12,13 +12,13 @@ const SettingsListGroup = props => (
 const SettingsListGroupItem = props => (
   <ListGroupItem className="settings-list-group-item">
     <Row>
-      <Col md={2}>
+      <Col md={3}>
         <h4 className="settings-list-group-item-title">
           {props.title}
         </h4>
-        <div className="settings-list-group-item-description">
+        <p className="settings-list-group-item-description">
           {props.description}
-        </div>
+        </p>
       </Col>
       <Col md={5}>
         {props.children}
