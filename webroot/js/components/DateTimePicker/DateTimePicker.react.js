@@ -1,20 +1,17 @@
-var jstz = require('jstz');
-var moment = require('moment-timezone');
-var React = require('react');
-var {PropTypes} = React;
+import jstz from 'jstz';
+import {assign} from 'lodash';
+import moment from 'moment-timezone';
+import React, {PropTypes} from 'react';
 
-var DateInput = require('./DateInput.react');
-var TimeInput = require('./TimeInput.react');
-var TimezoneSelector = require('./TimezoneSelector.react');
-
-var {assign} = require('lodash');
+import DateInput from './DateInput.react';
+import TimeInput from './TimeInput.react';
+import TimezoneSelector from 'components/Forms/TimezoneSelector.react';
 
 // Make a best guess as to the user's current timezone.
-// TODO: Allow users to set default timezones in Settings.
 const CURRENT_TIMEZONE = jstz.determine().name();
 const TIMEZONES = moment.tz.names();
 
-require('./DateTimePicker.css');
+import './DateTimePicker.css';
 
 /**
  * DateTimePicker.react
@@ -22,7 +19,7 @@ require('./DateTimePicker.css');
  * Form element that allows the user to select date, time and timezone.
  * Returns a date string with timezone offset and a timezone name.
  */
-var DateTimePicker = React.createClass({
+const DateTimePicker = React.createClass({
   displayName: 'DateTimePicker',
 
   propTypes: {
@@ -47,14 +44,14 @@ var DateTimePicker = React.createClass({
     timezone: PropTypes.oneOf(TIMEZONES),
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       date: new Date(),
       timezone: CURRENT_TIMEZONE,
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     var {date, timezone} = this.props;
 
     // Convert the date to individual values to keep them separate from the
@@ -67,7 +64,7 @@ var DateTimePicker = React.createClass({
     };
   },
 
-  render: function() {
+  render() {
     var {dateObject, timezone} = this.state;
 
     return (
@@ -83,15 +80,18 @@ var DateTimePicker = React.createClass({
           minutes={dateObject.minutes}
           onChange={this._onChange}
         />
-        <TimezoneSelector
-          onChange={this._onTimezoneChange}
-          timezone={timezone}
-        />
+        <div className="TimezoneSelector">
+          <TimezoneSelector
+            className="TimezoneSelector-select"
+            onChange={this._onTimezoneChange}
+            timezone={timezone}
+          />
+        </div>
       </div>
     );
   },
 
-  _onChange: function(/*object*/ values) {
+  _onChange(/*object*/ values) {
     var {dateObject, timezone} = this.state;
     dateObject = assign({}, dateObject, values);
 
@@ -103,7 +103,7 @@ var DateTimePicker = React.createClass({
     );
   },
 
-  _onTimezoneChange: function(/*string*/ timezone) {
+  _onTimezoneChange(/*string*/ timezone) {
     this.setState({timezone});
 
     this.props.onChange(
@@ -113,4 +113,4 @@ var DateTimePicker = React.createClass({
   },
 });
 
-module.exports = DateTimePicker;
+export default DateTimePicker;

@@ -3,6 +3,7 @@ import {ControlLabel, FormControl, FormGroup} from 'react-bootstrap';
 
 import AppForm from 'components/Forms/AppForm.react';
 import SettingsListGroup from 'components/Settings/SettingsListGroup.react';
+import TimezoneSelector from 'components/Forms/TimezoneSelector.react';
 
 const LocationSettingsSection = ({onChange, user}) => (
   <SettingsListGroup.Item
@@ -11,13 +12,11 @@ const LocationSettingsSection = ({onChange, user}) => (
     <AppForm>
       <FormGroup>
         <ControlLabel>Timezone</ControlLabel>
-        <FormControl
-          defaultValue={user.timezone}
-          disabled
+        <TimezoneSelector
+          className="form-control"
           name="timezone"
           onChange={onChange}
-          placeholder="Enter your timezone..."
-          type="text"
+          timezone={user.timezone}
         />
       </FormGroup>
     </AppForm>
