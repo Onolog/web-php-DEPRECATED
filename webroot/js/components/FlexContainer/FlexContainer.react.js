@@ -2,30 +2,29 @@ import cx from 'classnames';
 import React, {PropTypes} from 'react';
 import {Col, Row} from 'react-bootstrap';
 
-require('./FlexContainer.css');
+import './FlexContainer.css';
 
-const FlexContainer = React.createClass({
-  displayName: 'FlexContainer',
+const FlexContainer = props => {
+  const {className, column} = props;
+  const Component = column ? Col : Row;
 
-  propTypes: {
-    type: PropTypes.oneOf(['col', 'row']).isRequired,
-  },
+  return (
+    <Component
+      {...props}
+      className={cx('flex-container', {
+        'flex-col': column,
+        'flex-row': !column,
+      }, className)}
+    />
+  );
+};
 
-  render() {
-    const {className, type} = this.props;
-    const Component = type === 'row' ? Row : Col;
+FlexContainer.propTypes = {
+  column: PropTypes.bool,
+};
 
-    return (
-      <Component
-        {...this.props}
-        className={cx('flex-container', {
-          'flex-col': type === 'col',
-          'flex-row': type === 'row',
-        }, className)}>
-        {this.props.children}
-      </Component>
-    );
-  },
-});
+FlexContainer.defaultProps = {
+  column: false,
+};
 
-module.exports = FlexContainer;
+export default FlexContainer;
