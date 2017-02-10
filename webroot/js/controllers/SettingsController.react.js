@@ -2,6 +2,7 @@ import {find, isEmpty, isEqual} from 'lodash';
 import React, {PropTypes} from 'react';
 import {Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router';
 
 import AppFullPage from 'components/Page/AppFullPage.react';
 import Loader from 'components/Loader/Loader.react';
@@ -18,17 +19,17 @@ import {SETTINGS_FETCH} from 'constants/ActionTypes';
 
 import './css/Settings.css';
 
-const mapStateToProps = ({pendingRequests, session, users}) => {
+const mapStateToProps = ({pendingRequests, session}) => {
   return {
     pendingRequests,
-    user: find(users, {id: session.id}) || {},
+    user: session,
   };
 };
 
 /**
  * SettingsController.react
  */
-const SettingsController = React.createClass({
+const SettingsController = withRouter(React.createClass({
   propTypes: {
     user: PropTypes.shape({
       distance_units: PropTypes.number.isRequired,
@@ -45,6 +46,13 @@ const SettingsController = React.createClass({
 
   componentWillMount() {
     this.props.dispatch(fetchSettings());
+  },
+
+  componentDidMount() {
+    this.props.router.setRouteLeaveHook(
+      this.props.route,
+      this._handleNavigateAway
+    );
   },
 
   render() {
@@ -111,6 +119,14 @@ const SettingsController = React.createClass({
     this.setState(newState);
   },
 
+  _handleNavigateAway(nextLocation) {
+    if (!isEqual(this.state, this.props.user)) {
+      return (
+        'Are you sure you want to leave? Your settings have not been saved.'
+      );
+    }
+  },
+
   _handleSave(e) {
     const {email, first_name, last_name} = this.state;
 
@@ -135,6 +151,6 @@ const SettingsController = React.createClass({
       id: this.props.user.id,
     }));
   },
-});
+}));
 
 module.exports = connect(mapStateToProps)(SettingsController);

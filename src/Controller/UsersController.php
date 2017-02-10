@@ -100,7 +100,7 @@ class UsersController extends AppController {
     }
 
     // Merge Onolog and FB data for the session.
-    $this->Auth->setUser(array_merge($user->toArray(), $data));
+    $this->Auth->setUser(array_merge($data, $user->toArray()));
 
     $response['session'] = $this->getSession();
     $this->set($response);
