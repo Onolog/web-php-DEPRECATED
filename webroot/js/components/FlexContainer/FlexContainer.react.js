@@ -4,18 +4,17 @@ import {Col, Row} from 'react-bootstrap';
 
 import './FlexContainer.css';
 
-const FlexContainer = props => {
-  const {className, column} = props;
+const FlexContainer = ({children, className, column}) => {
   const Component = column ? Col : Row;
 
   return (
     <Component
-      {...props}
       className={cx('flex-container', {
         'flex-col': column,
         'flex-row': !column,
-      }, className)}
-    />
+      }, className)}>
+      {children}
+    </Component>
   );
 };
 

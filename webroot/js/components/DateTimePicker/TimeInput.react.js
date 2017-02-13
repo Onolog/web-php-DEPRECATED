@@ -30,7 +30,7 @@ var TimeInput = React.createClass({
     onChange: React.PropTypes.func.isRequired,
   },
 
-  render: function() {
+  render() {
     var m = moment({
       hours: this.props.hours,
       minutes: this.props.minutes,
@@ -40,27 +40,27 @@ var TimeInput = React.createClass({
       <div className="TimeInput">
         <div className="form-control">
           <ConstrainedTextInput
-            defaultValue={m.format('hh')}
             format={formatter}
             maxLength={2}
             onChange={this._onHoursChange}
+            value={m.format('hh')}
             values={range(1, 13)}
           />
           {':'}
           <ConstrainedTextInput
-            defaultValue={m.minutes()}
             format={formatter}
             maxLength={2}
             onChange={this._onMinutesChange}
+            value={m.minutes()}
             values={range(0, 60)}
           />
           <ConstrainedTextInput
             className="meridiem"
-            defaultValue={m.format('A')}
             maxLength={2}
             onChange={this._onMeridiemChange}
             ref="meridiem"
             type="any"
+            value={m.format('A')}
             values={Object.keys(MERIDIEM)}
           />
         </div>
@@ -68,7 +68,7 @@ var TimeInput = React.createClass({
     );
   },
 
-  _onHoursChange: function(/*number*/ hours) {
+  _onHoursChange(/*number*/ hours) {
     var meridiem = this.refs.meridiem.getValue();
 
     // Display is 12-hour, time is 24-hour. Adjust accordingly.
@@ -81,17 +81,17 @@ var TimeInput = React.createClass({
     this._onChange(hours, this.props.minutes);
   },
 
-  _onMinutesChange: function(/*number*/ minutes) {
+  _onMinutesChange(/*number*/ minutes) {
     this._onChange(this.props.hours, minutes);
   },
 
-  _onMeridiemChange: function(/*string*/ meridiem) {
+  _onMeridiemChange(/*string*/ meridiem) {
     var {hours} = this.props;
     hours = (meridiem === MERIDIEM.PM && hours < 12) ? hours + 12 : hours - 12;
     this._onChange(hours, this.props.minutes);
   },
 
-  _onChange: function(/*number*/ hours, /*number*/ minutes) {
+  _onChange(/*number*/ hours, /*number*/ minutes) {
     this.props.onChange({hours, minutes});
   },
 });

@@ -1,3 +1,4 @@
+import {omit} from 'lodash';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 
@@ -42,11 +43,15 @@ const ShoeSelector = React.createClass({
   },
 
   render() {
+    const {shoes, value, ...otherProps} = this.props;
+    const selectProps = omit(otherProps, ['dispatch']);
+
     return (
       <Select
-        {...this.props}
+        {...selectProps}
         defaultLabel="Select a shoe:"
-        options={this._getOptions()}
+        options={this._getOptions(shoes)}
+        value={value || ''}
       />
     );
   },
@@ -55,9 +60,9 @@ const ShoeSelector = React.createClass({
    * Group the list of shoes by active or inactive, and format the data
    * correctly.
    */
-  _getOptions() {
+  _getOptions(shoes) {
     // Filter out inactive shoes unless it's the initially selected shoe.
-    let shoes = this.props.shoes.filter(shoe => (
+    shoes = shoes.filter(shoe => (
       !shoe.inactive || shoe.id === +this.state.initialSelection
     ));
 

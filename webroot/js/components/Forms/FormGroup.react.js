@@ -20,7 +20,7 @@ const FormRow = React.createClass({
     return (
       <FormGroup className={cx({'form-inline': inline})}>
         <Col sm={3}>
-          <ControlLabel for={name}>
+          <ControlLabel htmlFor={name}>
             {label}
           </ControlLabel>
         </Col>

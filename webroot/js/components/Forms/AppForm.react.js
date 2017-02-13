@@ -7,13 +7,20 @@ import './css/AppForm.css';
 /**
  * Wrapper around react-bootstrap Form component for app-specific styling.
  */
-const AppForm = props => (
+const AppForm = ({bordered, className, ...otherProps}) => (
   <Form
-    {...props}
+    {...otherProps}
     className={cx('app-form', {
-      'app-form-bordered': props.bordered,
-    }, props.className)}
+      'app-form-bordered': bordered,
+    }, className)}
   />
 );
+
+AppForm.propTypes = {
+  bordered: React.PropTypes.bool,
+};
+AppForm.defaultProps = {
+  bordered: false,
+};
 
 export default AppForm;

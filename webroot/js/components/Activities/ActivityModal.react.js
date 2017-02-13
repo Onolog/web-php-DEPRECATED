@@ -1,3 +1,5 @@
+import jstz from 'jstz';
+import {isEqual, isInteger, omit} from 'lodash';
 import moment from 'moment';
 import React, {PropTypes} from 'react';
 import {Button, ButtonToolbar, Modal} from 'react-bootstrap';
@@ -8,9 +10,6 @@ import LeftRight from 'components/LeftRight/LeftRight.react';
 import Loader from 'components/Loader/Loader.react';
 
 import {addActivity, deleteActivity, updateActivity} from 'actions/activities';
-
-import jstz from 'jstz';
-import {isEqual, isInteger} from 'lodash';
 
 /**
  * ActivityModal.react
@@ -50,8 +49,9 @@ const ActivityModal = React.createClass({
   },
 
   render() {
-    const {initialActivity} = this.props;
+    const {initialActivity, ...otherProps} = this.props;
     const {activity, isLoading} = this.state;
+    const modalProps = omit(otherProps, ['date', 'dispatch']);
 
     let deleteButton;
     let primaryAction;
@@ -73,7 +73,7 @@ const ActivityModal = React.createClass({
 
     return (
       <Modal
-        {...this.props}
+        {...modalProps}
         onExited={this._handleExited}
         onHide={this._handleClose}>
         <Modal.Header closeButton>

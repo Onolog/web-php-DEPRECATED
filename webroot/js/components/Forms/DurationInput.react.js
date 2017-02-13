@@ -1,12 +1,12 @@
-var moment = require('moment');
-var React = require('react');
+import cx from 'classnames';
+import {range} from 'lodash';
+import moment from 'moment';
+import React from 'react';
 
-var ConstrainedTextInput = require('./ConstrainedTextInput.react');
-var HiddenInput = require('./HiddenInput.react');
+import ConstrainedTextInput from './ConstrainedTextInput.react';
+import HiddenInput from './HiddenInput.react';
 
-var cx = require('classnames');
-var pad = require('utils/pad');
-var {range} = require('lodash');
+import pad from 'utils/pad';
 
 function formatter(value) {
   return pad(value, 2);
@@ -18,7 +18,7 @@ function formatter(value) {
  * Input for specifying and displaying the duration of an activity, formatted
  * as `hh:mm:ss`.
  */
-var DurationInput = React.createClass({
+const DurationInput = React.createClass({
   displayName: 'DurationInput',
 
   propTypes: {
@@ -33,43 +33,49 @@ var DurationInput = React.createClass({
     onChange: React.PropTypes.func.isRequired,
   },
 
-  getInitialState: function() {
+  getDefaultProps() {
+    return {
+      duration: 0,
+    };
+  },
+
+  getInitialState() {
     return {
       duration: this.props.duration,
     };
   },
 
-  render: function() {
-    var duration = moment.duration(this.props.duration || 0, 's');
+  render() {
+    const duration = moment.duration(this.props.duration, 's');
 
     return (
       <div className={cx('form-control', this.props.className)}>
         <ConstrainedTextInput
-          defaultValue={this._getHoursValue(duration)}
           maxLength={2}
           onChange={this._onChange}
           placeholder="hh"
           ref="hours"
+          value={this._getHoursValue(duration)}
           values={range(0, 100)}
         />
         :
         <ConstrainedTextInput
-          defaultValue={duration.minutes()}
           format={formatter}
           maxLength={2}
           onChange={this._onChange}
           placeholder="mm"
           ref="minutes"
+          value={duration.minutes()}
           values={range(0, 60)}
         />
         :
         <ConstrainedTextInput
-          defaultValue={duration.seconds()}
           format={formatter}
           maxLength={2}
           onChange={this._onChange}
           placeholder="ss"
           ref="seconds"
+          value={duration.seconds()}
           values={range(0, 60)}
         />
         <HiddenInput
@@ -80,7 +86,7 @@ var DurationInput = React.createClass({
     );
   },
 
-  _onChange: function() {
+  _onChange() {
     var duration = moment.duration({
       hours: this.refs.hours.getValue(),
       minutes: this.refs.minutes.getValue(),
@@ -99,7 +105,7 @@ var DurationInput = React.createClass({
     });
   },
 
-  _getHoursValue: function(/*object*/ duration) /*?number*/ {
+  _getHoursValue(/*object*/ duration) /*?number*/ {
     if (duration) {
       return duration.days() * 24 + duration.hours();
     }

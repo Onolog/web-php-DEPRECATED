@@ -1,14 +1,16 @@
 import cx from 'classnames';
+import {omit} from 'lodash';
 import React, {PropTypes} from 'react';
 import {MenuItem, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 
 const AccountNavItem = props => {
   const {arrow, className, onLogout, user, ...otherProps} = props;
+  const dropdownProps = omit(otherProps, ['active']);
 
   return (
     <NavDropdown
-      {...otherProps}
+      {...dropdownProps}
       className={cx('account-nav-item', {'has-arrow': arrow}, className)}
       id="account-menu">
       {arrow && <li className="arrow" />}

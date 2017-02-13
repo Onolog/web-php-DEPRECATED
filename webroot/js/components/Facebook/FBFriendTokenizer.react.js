@@ -1,5 +1,5 @@
 import React from 'react';
-import Typeahead from 'react-bootstrap-typeahead';
+import {Typeahead} from 'react-bootstrap-typeahead';
 
 import FBImage from 'components/Facebook/FBImage.react';
 
@@ -8,9 +8,9 @@ import {isArray, map} from 'lodash';
 
 const IMG_PX = 32;
 
-require('react-bootstrap-typeahead/css/Token.css');
-require('react-bootstrap-typeahead/css/Typeahead.css');
-require('./css/FBFriendTokenizer.css');
+import 'react-bootstrap-typeahead/css/Token.css';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+import './css/FBFriendTokenizer.css';
 
 /**
  * FriendTokenizer.react
@@ -37,7 +37,7 @@ const FBFriendTokenizer = React.createClass({
   },
 
   render() {
-    var {selected, options} = this.state;
+    const {selected, options} = this.state;
 
     return (
       <Typeahead
@@ -52,7 +52,7 @@ const FBFriendTokenizer = React.createClass({
     );
   },
 
-  _renderMenuItemChildren(props, option, idx) {
+  _renderMenuItemChildren(option, props, idx) {
     return (
       <div className="fb-friend-tokenizer-item">
         <span className="innerBorder">

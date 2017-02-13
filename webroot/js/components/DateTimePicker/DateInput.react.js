@@ -13,8 +13,6 @@ import DateInputCalendarPopover from './DateInputCalendarPopover.react';
 const DateInput = React.createClass({
   displayName: 'DateInput',
 
-  mixins: [onClickOutside],
-
   propTypes: {
     date: React.PropTypes.number.isRequired,
     months: React.PropTypes.number.isRequired,
@@ -64,7 +62,7 @@ const DateInput = React.createClass({
   },
 
   /**
-   * From `onClickOutside` mixin.
+   * From `onClickOutside` HoC.
    */
   handleClickOutside: function(e) {
     this._hideCalendar();
@@ -76,4 +74,4 @@ const DateInput = React.createClass({
   },
 });
 
-module.exports = DateInput;
+module.exports = onClickOutside(DateInput);

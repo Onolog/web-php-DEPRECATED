@@ -94,9 +94,9 @@ const ActivityForm = React.createClass({
 
         <FormGroup label="Shoes">
           <ShoeSelector
-            defaultValue={activity.shoe_id}
             name="shoe_id"
             onChange={this._onInputChange}
+            value={activity.shoe_id}
           />
         </FormGroup>
 

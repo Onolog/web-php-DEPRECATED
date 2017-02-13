@@ -1,3 +1,4 @@
+import {omit} from 'lodash';
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 
@@ -30,7 +31,8 @@ const BrandSelector = React.createClass({
   },
 
   render() {
-    const {brands} = this.props;
+    const {brands, ...otherProps} = this.props;
+    const selectProps = omit(otherProps, ['dispatch']);
     const options = [];
 
     brands.forEach((brand) => {
@@ -42,7 +44,7 @@ const BrandSelector = React.createClass({
 
     return (
       <Select
-        {...this.props}
+        {...selectProps}
         defaultLabel="Select a brand:"
         disabled={!options.length}
         options={options}
@@ -51,4 +53,4 @@ const BrandSelector = React.createClass({
   },
 });
 
-module.exports = connect(mapStateToProps)(BrandSelector);
+export default connect(mapStateToProps)(BrandSelector);

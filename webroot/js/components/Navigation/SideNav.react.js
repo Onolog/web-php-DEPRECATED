@@ -6,7 +6,7 @@ import {LinkContainer} from 'react-router-bootstrap';
 import './css/SideNav.css';
 
 const SideNav = props => (
-  <Nav className="app-side-nav" pills stacked>
+  <Nav bsStyle="pills" className="app-side-nav" stacked>
     {props.children}
   </Nav>
 );

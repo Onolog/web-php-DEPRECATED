@@ -1,6 +1,7 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var cx = require('classnames');
+import cx from 'classnames';
+import invariant from 'invariant';
+import React from 'react';
+import {findDOMNode} from 'react-dom';
 
 const {DOWN, UP} = require('constants/KeyCode');
 const TYPES = {
@@ -42,20 +43,22 @@ const ConstrainedTextInput = React.createClass({
     values: React.PropTypes.array.isRequired,
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       type: TYPES.number,
     };
   },
 
-  getInitialState: function() {
-    var index = this._getIndex(this.props.defaultValue);
-    if (index === -1) {
-      throw new Error(
-        'ConstrainedInput: `' + this.props.defaultValue + '` must be in `' +
-        this.props.values + '`'
-      );
-    }
+  getInitialState() {
+    const {defaultValue, value, values} = this.props;
+    const index = this._getIndex(defaultValue || value);
+
+    invariant(
+      index !== -1,
+      'ConstrainedInput: `' + (defaultValue || value) + '` must be in `' +
+      values + '`'
+    );
+
     return {
       index: index,
       /**
@@ -69,14 +72,6 @@ const ConstrainedTextInput = React.createClass({
        */
       tempValue: null,
     };
-  },
-
-  componentDidMount: function() {
-    window.addEventListener('keydown', this._onKeydown);
-  },
-
-  componentWillUnmount: function() {
-    window.removeEventListener('keydown', this._onKeydown);
   },
 
   render: function() {
@@ -94,6 +89,7 @@ const ConstrainedTextInput = React.createClass({
         className={cx('constrainedTextInput', this.props.className)}
         onBlur={this._onBlur}
         onChange={this._onKeyboardEntry}
+        onKeyDown={this._onKeydown}
         size={this.props.maxLength}
         type="text"
         value={value}
@@ -101,11 +97,11 @@ const ConstrainedTextInput = React.createClass({
     );
   },
 
-  getValue: function() {
-    return ReactDOM.findDOMNode(this).value;
+  getValue() {
+    return findDOMNode(this).value;
   },
 
-  _getIndex: function(value) {
+  _getIndex(value) {
     // Explicitly check for empty string in case the user cleared the input.
     if (value !== '' && this.props.type === TYPES.number) {
       // If the values are numbers, cast the value to a number to check it.
@@ -114,16 +110,11 @@ const ConstrainedTextInput = React.createClass({
     return this.props.values.indexOf(value);
   },
 
-  _onKeydown: function(evt) {
-    // Make sure the input is selected.
-    if (ReactDOM.findDOMNode(this) !== document.activeElement) {
-      return;
-    }
+  _onKeydown(e) {
+    const count = this.props.values.length;
+    let index = +this.state.index;
 
-    var index = +this.state.index;
-    var count = this.props.values.length;
-
-    switch(evt.keyCode) {
+    switch(e.keyCode) {
       case UP:
         index++;
         index = index < count ? index : 0;
@@ -162,11 +153,11 @@ const ConstrainedTextInput = React.createClass({
   /**
    * When typing in a value, store it as a temp value until the blur event.
    */
-  _onKeyboardEntry: function(evt) {
-    this.setState({tempValue: evt.target.value});
+  _onKeyboardEntry(e) {
+    this.setState({tempValue: e.target.value});
   },
 
-  _onChange: function(index) {
+  _onChange(index) {
     this.setState({
       index,
       lastValidIndex: index,

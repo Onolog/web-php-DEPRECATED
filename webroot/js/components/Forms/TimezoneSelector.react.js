@@ -6,11 +6,11 @@ const TIMEZONES = moment.tz.names();
 /**
  * TimezoneSelector.react
  */
-const TimezoneSelector = props => (
+const TimezoneSelector = ({timezone, ...otherProps}) => (
   <select
-    {...props}
+    {...otherProps}
     onChange={e => props.onChange && props.onChange(e.target.value)}
-    value={props.timezone}>
+    value={timezone}>
     {TIMEZONES.map((zone, idx) => (
       <option key={idx} value={zone}>
         {zone}

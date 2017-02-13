@@ -1,61 +1,50 @@
-var React = require('react');
-var cx = require('classnames');
+import React, {PropTypes} from 'react';
+import cx from 'classnames';
 
 /**
  * Select.react
  *
  * React wrapper around standard HTML <select> tag
  */
-var Select = React.createClass({
+const Select = React.createClass({
   displayName: 'Select',
 
   propTypes: {
     options: React.PropTypes.array.isRequired,
-    defaultValue: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
-    ]),
     /**
      * Option to be used if there's no defaultValue
      */
     defaultLabel: React.PropTypes.string,
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       defaultLabel: '',
     };
   },
 
-  getInitialState: function() {
-    return {
-      value: this.props.defaultValue,
-    };
-  },
+  render() {
+    const {className, defaultLabel, options, ...otherProps} = this.props;
 
-  render: function() {
-    var options = this.props.options.slice();
-    options = options.map(this._renderOptions);
-
-    if (this.props.defaultLabel) {
-      options.unshift(this._renderOption({
-        label: this.props.defaultLabel,
+    let selectOptions = options.map(this._renderOptions);
+    if (defaultLabel) {
+      selectOptions.unshift(this._renderOption({
+        label: defaultLabel,
         value: -1,
       }, -1));
     }
 
     return (
       <select
-        {...this.props}
-        className={cx('form-control', this.props.className)}
-        onChange={this._onChange}
-        value={this.state.value}>
-        {options}
+        {...otherProps}
+        className={cx('form-control', className)}
+        onChange={this._onChange}>
+        {selectOptions}
       </select>
     );
   },
 
-  _renderOptions: function(/*object*/ option, /*number*/ idx) /*object*/ {
+  _renderOptions(/*object*/ option, /*number*/ idx) /*object*/ {
     // If the option contains sub-options, render an <optgroup>
     if (option.options && Array.isArray(option.options)) {
       return (
@@ -69,7 +58,7 @@ var Select = React.createClass({
     return this._renderOption(option, idx);
   },
 
-  _renderOption: function(/*object*/ option, /*number*/ idx) /*object*/ {
+  _renderOption(/*object*/ option, /*number*/ idx) /*object*/ {
     return (
       <option key={idx} value={option.value}>
         {option.label}
@@ -77,10 +66,10 @@ var Select = React.createClass({
     );
   },
 
-  _onChange: function(/*object*/ evt) {
-    this.setState({value: evt.target.value});
-    this.props.onChange && this.props.onChange(evt);
+  _onChange(/*object*/ e) {
+    // this.setState({value: e.target.value});
+    this.props.onChange && this.props.onChange(e);
   },
 });
 
-module.exports = Select;
+export default Select;

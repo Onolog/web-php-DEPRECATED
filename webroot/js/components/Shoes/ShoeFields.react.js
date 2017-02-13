@@ -44,9 +44,9 @@ const ShoeFields = React.createClass({
       <AppForm bordered horizontal>
         <FormRow className="time" label="Brand">
           <BrandSelector
-            defaultValue={brand_id}
             name="brand_id"
             onChange={this._handleChange}
+            value={brand_id}
           />
         </FormRow>
         <FormRow label="Model">
@@ -72,7 +72,7 @@ const ShoeFields = React.createClass({
             componentClass="select"
             name={FIELDS.SIZE}
             onChange={this._handleChange}
-            value={size}>
+            value={size || ''}>
             {shoeSizes.map(({label, value}) => (
               <option key={value} value={value}>{label}</option>
             ))}
@@ -83,7 +83,7 @@ const ShoeFields = React.createClass({
             componentClass="textarea"
             name="notes"
             onChange={this._handleChange}
-            value={notes}
+            value={notes || ''}
           />
         </FormRow>
         {this._renderInactiveCheckbox()}
