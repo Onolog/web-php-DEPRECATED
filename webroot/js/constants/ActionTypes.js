@@ -23,6 +23,8 @@ module.exports = {
   ALL_SHOES_FETCH_ERROR: 'all-shoes-fetch-error',
   ALL_SHOES_FETCH_SUCCESS: 'all-shoes-fetch-success',
 
+  ERROR_CLEAR: 'error-clear',
+
   SHOE_ADD: 'shoe-add',
   SHOE_ADD_ERROR: 'shoe-add-error',
   SHOE_ADD_SUCCESS: 'shoe-add-success',
