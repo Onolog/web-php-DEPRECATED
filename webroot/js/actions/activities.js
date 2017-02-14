@@ -24,13 +24,23 @@ function addActivitySuccess(response, dispatch) {
   });
 }
 
+function addActivityError(response, dispatch) {
+  const message =
+    'Your activity could not be added. Please refresh the page and try again.';
+
+  dispatch({
+    error: {message},
+    type: ACTIVITY_ADD_ERROR,
+  });
+}
+
 export function addActivity(activity) {
   return dispatch => {
     dispatch({type: ACTIVITY_ADD});
 
     $.post('/activities/add.json', activity)
       .done(response => addActivitySuccess(response, dispatch))
-      .fail(response => dispatch({type: ACTIVITY_ADD_ERROR}));
+      .fail(response => addActivityError(response, dispatch));
   };
 }
 

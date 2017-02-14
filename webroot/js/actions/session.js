@@ -23,6 +23,16 @@ function isConnected(status) {
 }
 
 /* Logout */
+function logoutError(response, dispatch) {
+  const message =
+    'Sorry, something went wrong. Please refresh the page and try again';
+
+  dispatch({
+    error: {message},
+    type: SESSION_LOGOUT_ERROR,
+  });
+}
+
 function logoutSuccess({session}, dispatch) {
   dispatch({
     session,
@@ -36,7 +46,7 @@ function logout() {
 
     $.post('/users/logout.json')
       .done(response => logoutSuccess(response, dispatch))
-      .fail(response => dispatch({type: SESSION_LOGOUT_ERROR}));
+      .fail(response => logoutError(response, dispatch));
   };
 }
 
@@ -56,21 +66,21 @@ function login() {
 
     FB.getLoginStatus(({authResponse, status}) => {
       if (isConnected(status)) {
-        getFBUser(authResponse.accessToken, dispatch);
+        loginRequest(authResponse.accessToken, dispatch);
         return;
       }
 
       // The user isn't connected to FB. Log them in.
       FB.login(({authResponse, status}) => {
         if (isConnected(status)) {
-          getFBUser(authResponse.accessToken, dispatch);
+          loginRequest(authResponse.accessToken, dispatch);
         }
       }, PERMISSIONS);
     });
   };
 }
 
-function getFBUser(accessToken, dispatch) {
+function loginRequest(accessToken, dispatch) {
   FB.api('/me', response => {
     response.accessToken = accessToken;
     $.post('/users/login.json', response)
