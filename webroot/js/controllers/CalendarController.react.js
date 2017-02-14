@@ -77,8 +77,7 @@ const Home = React.createClass({
         <PageHeader full title={m.format('MMMM YYYY')}>
           {this._renderButtonGroup()}
         </PageHeader>
-        <PageFrame>
-          {isLoading && <Loader background full />}
+        <PageFrame fill isLoading={isLoading}>
           <ActivityCalendar
             activities={activities}
             date={m.toDate()}

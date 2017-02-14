@@ -68,7 +68,7 @@ const ShoesController = React.createClass({
             />
           </div>
         </PageHeader>
-        <PageFrame>
+        <PageFrame scroll>
           {this._renderContent()}
         </PageFrame>
       </AppFullPage>
@@ -83,10 +83,10 @@ const ShoesController = React.createClass({
     const shoes = partition(this.props.shoes, 'inactive');
 
     return (
-      <ScrollContainer>
+      <div>
         {this._renderActiveShoes(shoes[1])}
         {this._renderInactiveShoes(shoes[0])}
-      </ScrollContainer>
+      </div>
     );
   },
 

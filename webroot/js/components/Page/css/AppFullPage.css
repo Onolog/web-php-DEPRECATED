@@ -58,10 +58,6 @@
   left: 200px;
 }
 
-.app-full-page .page-frame {
-  position: relative;
-}
-
 .side-col-backdrop {
   display: none;
   z-index: 1;

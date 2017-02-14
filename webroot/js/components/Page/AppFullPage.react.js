@@ -66,12 +66,12 @@ const mapStateToProps = ({navigation, session}) => {
 /**
  * AppFullPage.react
  */
-const AppFullPage = ({children, dispatch, open, session}) => {
+const AppFullPage = ({children, className, dispatch, open, session}) => {
   const handleToggle = () => dispatch(toggleSideNav(open));
 
   return (
     <BaseAppPage
-      className={cx('app-full-page', {'open': open})}
+      className={cx('app-full-page', {'open': open}, className)}
       session={session}>
       <SideColumn
         onLogout={() => dispatch(logoutIfNeeded())}

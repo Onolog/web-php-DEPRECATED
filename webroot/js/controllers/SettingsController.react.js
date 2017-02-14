@@ -10,14 +10,11 @@ import LocationSettingsSection from 'components/Settings/LocationSettingsSection
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import ProfileSettingsSection from 'components/Settings/ProfileSettingsSection.react';
-import ScrollContainer from 'components/ScrollContainer/ScrollContainer.react';
 import SettingsListGroup from 'components/Settings/SettingsListGroup.react';
 import UnitsSettingsSection from 'components/Settings/UnitsSettingsSection.react';
 
 import {fetchSettings, userSaveSettings} from 'actions/users';
 import {SETTINGS_FETCH} from 'constants/ActionTypes';
-
-import './css/Settings.css';
 
 const mapStateToProps = ({pendingRequests, session}) => {
   return {
@@ -56,18 +53,20 @@ const SettingsController = withRouter(React.createClass({
   },
 
   render() {
+    const {pendingRequests, user} = this.props;
+
     return (
       <AppFullPage>
         <PageHeader full title="Settings">
           <Button
             bsSize="small"
             bsStyle="primary"
-            disabled={isEqual(this.state, this.props.user)}
+            disabled={isEqual(this.state, user)}
             onClick={this._handleSave}>
             Save Changes
           </Button>
         </PageHeader>
-        <PageFrame>
+        <PageFrame fill isLoading={pendingRequests[SETTINGS_FETCH]} scroll>
           {this._renderContent()}
         </PageFrame>
       </AppFullPage>
@@ -75,30 +74,25 @@ const SettingsController = withRouter(React.createClass({
   },
 
   _renderContent() {
-    const {pendingRequests, user} = this.props;
-
-    if (isEmpty(user)) {
+    if (isEmpty(this.props.user)) {
       return <Loader background full />;
     }
 
     return (
-      <ScrollContainer className="settings-page">
-        {pendingRequests[SETTINGS_FETCH] && <Loader background full />}
-        <SettingsListGroup>
-          <ProfileSettingsSection
-            onChange={this._handleChange}
-            user={this.state}
-          />
-          <LocationSettingsSection
-            onChange={this._handleChange}
-            user={this.state}
-          />
-          <UnitsSettingsSection
-            onChange={this._handleChange}
-            user={this.state}
-          />
-        </SettingsListGroup>
-      </ScrollContainer>
+      <SettingsListGroup>
+        <ProfileSettingsSection
+          onChange={this._handleChange}
+          user={this.state}
+        />
+        <LocationSettingsSection
+          onChange={this._handleChange}
+          user={this.state}
+        />
+        <UnitsSettingsSection
+          onChange={this._handleChange}
+          user={this.state}
+        />
+      </SettingsListGroup>
     );
   },
 
