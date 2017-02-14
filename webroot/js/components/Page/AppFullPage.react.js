@@ -19,6 +19,7 @@ import './css/AppFullPage.css';
 const SideColumn = ({onLogout, onToggle, open, user}) => (
   <FlexContainer className="side-col" column>
     <div className="side-col-header clearfix">
+      <div className="side-col-brand">Onolog</div>
       <NavbarToggle onClick={onToggle} />
     </div>
     <ScrollContainer className="side-col-menu-container">
