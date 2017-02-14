@@ -74,6 +74,7 @@
   }
 
   .open .side-col {
+    box-shadow: 0 0 8px rgba(0,0,0, .15);
     left: 0;
   }
 
