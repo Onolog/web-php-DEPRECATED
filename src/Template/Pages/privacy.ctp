@@ -1,2 +1,2 @@
 <?php
-$this->set('title' => 'Privacy Policy');
+$this->set(['title' => 'Privacy Policy']);

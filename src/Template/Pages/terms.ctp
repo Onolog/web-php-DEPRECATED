@@ -1,2 +1,2 @@
 <?php
-$this->set('title' => 'Terms & Conditions');
+$this->set(['title' => 'Terms & Conditions']);
