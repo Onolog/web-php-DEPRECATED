@@ -1,9 +1,10 @@
 import React from 'react';
-import {Panel, Tab, Tabs} from 'react-bootstrap/lib';
+import {Tab, Tabs} from 'react-bootstrap/lib';
 
-import AppPage from 'components/Page/AppPage.react';
+import AppFullPage from 'components/Page/AppFullPage.react';
 import DistanceTable from 'components/Vdot/DistanceTable.react';
 import PaceTable from 'components/Vdot/PaceTable.react';
+import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
 
 import 'components/Vdot/Daniels.css';
@@ -14,27 +15,27 @@ import 'components/Vdot/Daniels.css';
  * Displays Daniels VDOT data.
  */
 const DanielsController = props => (
-  <AppPage className="daniels">
-    <PageHeader title="Daniels VDOT Resources" />
-    <Panel>
-      <Tabs defaultActiveKey={1}>
+  <AppFullPage className="daniels">
+    <PageHeader full title="Daniels VDOT Resources" />
+    <PageFrame scroll>
+      <Tabs defaultActiveKey={1} id="vdot">
         <Tab
           eventKey={1}
           title="Distance Table">
-          <h3>
+          <h4>
             VDOT Values Associated with Times Raced Over Popular Distances
-          </h3>
+          </h4>
           <DistanceTable />
         </Tab>
         <Tab
           eventKey={2}
           title="Training Intensities">
-          <h3>Training Intensities Based on Current VDOT</h3>
+          <h4>Training Intensities Based on Current VDOT</h4>
           <PaceTable />
         </Tab>
       </Tabs>
-    </Panel>
-  </AppPage>
+    </PageFrame>
+  </AppFullPage>
 );
 
 module.exports = DanielsController;
