@@ -5,10 +5,8 @@ import {connect} from 'react-redux';
 
 import AppFullPage from 'components/Page/AppFullPage.react';
 import EmptyState from 'components/EmptyState.react';
-import Loader from 'components/Loader/Loader.react';
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
-import ScrollContainer from 'components/ScrollContainer/ScrollContainer.react';
 import ShoeModal from 'components/Shoes/ShoeModal.react';
 import ShoeTable from 'components/Shoes/ShoeTable.react';
 
@@ -55,6 +53,8 @@ const ShoesController = React.createClass({
   },
 
   render() {
+    const {isLoading, show} = this.state;
+
     return (
       <AppFullPage narrow>
         <PageHeader full title="Shoes">
@@ -64,11 +64,11 @@ const ShoesController = React.createClass({
             </Button>
             <ShoeModal
               onHide={this._handleHideModal}
-              show={this.state.show}
+              show={show}
             />
           </div>
         </PageHeader>
-        <PageFrame scroll>
+        <PageFrame isLoading={isLoading} scroll>
           {this._renderContent()}
         </PageFrame>
       </AppFullPage>
@@ -77,7 +77,7 @@ const ShoesController = React.createClass({
 
   _renderContent() {
     if (this.state.isLoading) {
-      return <Loader background full />;
+      return;
     }
 
     const shoes = partition(this.props.shoes, 'inactive');

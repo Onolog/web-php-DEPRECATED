@@ -1,7 +1,7 @@
 module.exports = {
   childRoutes: [{
     getComponent(nextState, cb) {
-      require.ensure([], (require) => {
+      require.ensure([], require => {
         cb(null, require('controllers/ShoeController.react'));
       });
     },
@@ -9,7 +9,7 @@ module.exports = {
   }],
   indexRoute: {
     getComponent(nextState, cb) {
-      require.ensure([], (require) => {
+      require.ensure([], require => {
         cb(null, require('controllers/ShoesController.react'));
       });
     },

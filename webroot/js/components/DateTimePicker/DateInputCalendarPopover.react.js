@@ -89,7 +89,7 @@ const DateInputCalendarPopover = React.createClass({
 
   _onKeydown: function(e) {
     if (this.props.show) {
-      switch(e.keyCode) {
+      switch (e.keyCode) {
         case ESC:
           this.props.onHide();
           break;

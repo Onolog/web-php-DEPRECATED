@@ -84,7 +84,7 @@ const BaseAppPage = React.createClass({
     const {session} = this.props;
 
     let isLoggedOut = false;
-    FB.getLoginStatus((response) => {
+    FB.getLoginStatus(response => {
       if (response.status !== 'connected') {
         // Logged out from Facebook.
         isLoggedOut = true;

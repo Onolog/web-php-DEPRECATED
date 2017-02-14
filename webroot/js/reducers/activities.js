@@ -20,7 +20,7 @@ const activities = (state=[], action) => {
     case ActionTypes.ACTIVITY_ADD_SUCCESS:
       return [...state, action.activity];
     case ActionTypes.ACTIVITY_DELETE_SUCCESS:
-      return state.filter((a) => a.id !== action.id);
+      return state.filter(a => a.id !== action.id);
     case ActionTypes.ACTIVITY_UPDATE_SUCCESS:
       return state.map(a => activity(a, action));
     case ActionTypes.ACTIVITY_VIEW_SUCCESS:

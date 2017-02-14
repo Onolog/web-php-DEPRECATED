@@ -1,5 +1,5 @@
 import React from 'react';
-import {ControlLabel, FormControl, FormGroup} from 'react-bootstrap';
+import {ControlLabel, FormGroup} from 'react-bootstrap';
 
 import AppForm from 'components/Forms/AppForm.react';
 import SettingsListGroup from 'components/Settings/SettingsListGroup.react';

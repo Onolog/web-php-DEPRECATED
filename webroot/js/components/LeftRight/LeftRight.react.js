@@ -27,7 +27,7 @@ const LeftRight = React.createClass({
 
   render: function() {
     var children = [];
-    React.Children.forEach(this.props.children, (child) => {
+    React.Children.forEach(this.props.children, child => {
       children.push(child);
     });
 

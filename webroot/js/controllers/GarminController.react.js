@@ -115,7 +115,7 @@ const GarminUploader = React.createClass({
         latitude: start.lat,
         longitude: start.lng,
         timestamp: moment(start.time).unix(),
-      }, (response) => {
+      }, response => {
         activity.timezone = response.timeZoneId;
         this.setState({activity: activity});
       });

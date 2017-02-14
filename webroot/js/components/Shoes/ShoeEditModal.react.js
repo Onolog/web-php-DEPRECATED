@@ -32,7 +32,7 @@ const ShoeEditModal = React.createClass({
       onSave,
       shoe,
       user,
-      ...modalProps,
+      ...modalProps
     } = this.props;
 
     return (

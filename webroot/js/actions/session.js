@@ -31,7 +31,7 @@ function logoutSuccess({session}, dispatch) {
 }
 
 function logout() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({type: SESSION_LOGOUT});
 
     $.post('/users/logout.json')
@@ -51,7 +51,7 @@ export function logoutIfNeeded() {
 
 /* Login */
 function login() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({type: SESSION_LOGIN});
 
     FB.getLoginStatus(({authResponse, status}) => {
@@ -71,7 +71,7 @@ function login() {
 }
 
 function getFBUser(accessToken, dispatch) {
-  FB.api('/me', (response) => {
+  FB.api('/me', response => {
     response.accessToken = accessToken;
     $.post('/users/login.json', response)
       .done(response => onLoginSuccess(response, dispatch))

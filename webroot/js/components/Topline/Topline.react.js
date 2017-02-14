@@ -6,7 +6,7 @@ require('./Topline.css');
 /**
  * Topline.react
  */
-const Topline = (props) => {
+const Topline = props => {
   return (
     <ul className={cx('topline', props.className)}>
       {props.children}

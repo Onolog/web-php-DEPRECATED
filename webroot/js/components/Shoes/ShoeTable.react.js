@@ -66,7 +66,7 @@ const ShoeTable = React.createClass({
     return (
       <tr className={cx({inactive: !!shoe.inactive})} key={shoe.id}>
         <td>
-          <Link onClick={(e) => this._handleView(e, shoe)}>
+          <Link onClick={e => this._handleView(e, shoe)}>
             {shoe.name}
           </Link>
           <ShoeViewModal
@@ -83,7 +83,7 @@ const ShoeTable = React.createClass({
           {shoe.mileage}
         </td>
         <td className="actions">
-          <Link onClick={(e) => this._handleEdit(e, shoe.id)}>
+          <Link onClick={e => this._handleEdit(e, shoe.id)}>
             Edit
           </Link>
           <ShoeModal

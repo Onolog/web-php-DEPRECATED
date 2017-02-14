@@ -25,7 +25,7 @@ function addActivitySuccess(response, dispatch) {
 }
 
 export function addActivity(activity) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({type: ACTIVITY_ADD});
 
     $.post('/activities/add.json', activity)
@@ -44,7 +44,7 @@ function deleteActivitySuccess(response, dispatch) {
 }
 
 export function deleteActivity(activityId) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({type: ACTIVITY_DELETE});
 
     $.post(`/activities/delete/${activityId}.json`)
@@ -64,7 +64,7 @@ function fetchActivitiesSuccess(response, dispatch) {
 }
 
 function fetchActivitiesRequest(year, month) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({type: ACTIVITIES_FETCH});
 
     // TODO: Make this a more general fetch endoint?
@@ -89,7 +89,7 @@ function updateActivitySuccess(response, dispatch) {
 }
 
 export function updateActivity(activity) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({type: ACTIVITY_UPDATE});
 
     $.post(`/activities/edit/${activity.id}.json`, activity)

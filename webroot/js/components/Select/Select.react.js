@@ -10,11 +10,11 @@ const Select = React.createClass({
   displayName: 'Select',
 
   propTypes: {
-    options: React.PropTypes.array.isRequired,
+    options: PropTypes.array.isRequired,
     /**
      * Option to be used if there's no defaultValue
      */
-    defaultLabel: React.PropTypes.string,
+    defaultLabel: PropTypes.string,
   },
 
   getDefaultProps() {
@@ -37,8 +37,7 @@ const Select = React.createClass({
     return (
       <select
         {...otherProps}
-        className={cx('form-control', className)}
-        onChange={this._onChange}>
+        className={cx('form-control', className)}>
         {selectOptions}
       </select>
     );
@@ -48,7 +47,7 @@ const Select = React.createClass({
     // If the option contains sub-options, render an <optgroup>
     if (option.options && Array.isArray(option.options)) {
       return (
-        <optgroup key={'optgroup' + idx} label={option.label}>
+        <optgroup key={'optgroup-' + idx} label={option.label}>
           {option.options.map(this._renderOption)}
         </optgroup>
       );
@@ -64,11 +63,6 @@ const Select = React.createClass({
         {option.label}
       </option>
     );
-  },
-
-  _onChange(/*object*/ e) {
-    // this.setState({value: e.target.value});
-    this.props.onChange && this.props.onChange(e);
   },
 });
 

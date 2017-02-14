@@ -4,7 +4,7 @@ import {
 } from 'constants/ActionTypes';
 
 const session = (session={}, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case SESSION_LOGIN_SUCCESS:
     case SESSION_LOGOUT_SUCCESS:
       return action.session;

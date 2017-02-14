@@ -114,7 +114,7 @@ const ConstrainedTextInput = React.createClass({
     const count = this.props.values.length;
     let index = +this.state.index;
 
-    switch(e.keyCode) {
+    switch (e.keyCode) {
       case UP:
         index++;
         index = index < count ? index : 0;

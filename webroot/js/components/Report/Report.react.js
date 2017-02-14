@@ -1,29 +1,29 @@
-var moment = require('moment');
-var {Panel} = require('react-bootstrap');
-var React = require('react');
+import moment from 'moment';
+import {Panel} from 'react-bootstrap';
+import React from 'react';
 
-var BarGraph = require('components/Graph/BarGraph/BarGraph.react');
-var BarGraphBar = require('components/Graph/BarGraph/BarGraphBar.react');
-var BarGraphSection = require('components/Graph/BarGraph/BarGraphSection.react');
-var BarGraphSectionUnit = require('components/Graph/BarGraph/BarGraphSectionUnit.react');
-var BaseAppPage = require('components/Page/BaseAppPage.react');
-var FBImage = require('components/Facebook/FBImage.react');
-var Link = require('components/Link/Link.react');
-var Middot = require('components/Middot.react');
-var Topline = require('components/Topline/Topline.react');
+import BarGraph from 'components/Graph/BarGraph/BarGraph.react';
+import BarGraphBar from 'components/Graph/BarGraph/BarGraphBar.react';
+import BarGraphSection from 'components/Graph/BarGraph/BarGraphSection.react';
+import BarGraphSectionUnit from 'components/Graph/BarGraph/BarGraphSectionUnit.react';
+import BaseAppPage from 'components/Page/BaseAppPage.react';
+import FBImage from 'components/Facebook/FBImage.react';
+import Link from 'components/Link/Link.react';
+import Middot from 'components/Middot.react';
+import Topline from 'components/Topline/Topline.react';
 
-var formatDistance = require('utils/formatDistance');
+import formatDistance from 'utils/formatDistance';
 
-var DATE_FORMAT = 'MMMM Do';
+const DATE_FORMAT = 'MMMM Do';
 
 /**
  * Report.react
  */
-var Report = React.createClass({
+const Report = React.createClass({
   displayName: 'Report',
 
   getInitialState: function() {
-    var {
+    const {
       runExtremes,
       shoeCount,
       topBrand,
@@ -49,8 +49,8 @@ var Report = React.createClass({
   },
 
   render: function() {
-    var content;
-    var {workoutData} = this.state;
+    let content;
+    const {workoutData} = this.state;
     // Render an empty state when there's no workout data
     if (!(workoutData && workoutData.run_count)) {
       content =
@@ -78,9 +78,9 @@ var Report = React.createClass({
     );
   },
 
-  _renderTotalStats: function() {
-    var {totalMiles, totalRuns} = this.state;
-    var avgRunDistance = formatDistance(totalMiles / totalRuns);
+  _renderTotalStats() {
+    const {totalMiles, totalRuns} = this.state;
+    const avgRunDistance = formatDistance(totalMiles / totalRuns);
 
     return (
       <Topline>
@@ -96,7 +96,7 @@ var Report = React.createClass({
     );
   },
 
-  _renderTimeStats: function() {
+  _renderTimeStats() {
     var duration = moment.duration(this.state.totalTime, 'seconds');
     var durationString =
       duration.days() + 'd ' +
@@ -113,8 +113,8 @@ var Report = React.createClass({
     );
   },
 
-  _renderExtremesStats: function() {
-    var {totalRuns, runExtremes} = this.state;
+  _renderExtremesStats() {
+    const {totalRuns, runExtremes} = this.state;
     if (totalRuns < 2) {
       return;
     }
@@ -135,8 +135,8 @@ var Report = React.createClass({
     );
   },
 
-  _renderShoeStats: function() {
-    var {shoeCount, topBrand} = this.state;
+  _renderShoeStats() {
+    const {shoeCount, topBrand} = this.state;
     if (!shoeCount) {
       return;
     }
@@ -155,7 +155,7 @@ var Report = React.createClass({
     );
   },
 
-  _renderTopFriendsTable: function() {
+  _renderTopFriendsTable() {
     // Only show the top 5 friends
     var topFriends = this.state.topFriends.slice(0, 5);
     var friends = topFriends.map(function(friend) {
@@ -195,7 +195,7 @@ var Report = React.createClass({
     );
   },
 
-  _renderGraphs: function() {
+  _renderGraphs() {
     return (
       <div className="YIRGraphContainer">
         <div className="YIRGraph dailyGraph">
@@ -220,10 +220,10 @@ var Report = React.createClass({
     );
   },
 
-  _renderDailyGraph: function() {
+  _renderDailyGraph() {
     var monthData = this.state.workoutData.months;
     var monthKeys = Object.keys(monthData);
-    var months = monthKeys.map((monthKey) => {
+    var months = monthKeys.map(monthKey => {
       var month = monthData[monthKey];
       var monthName = moment({
         years: month.year,
@@ -233,7 +233,7 @@ var Report = React.createClass({
 
       var dayData = month.days;
       var dayKeys = Object.keys(dayData);
-      var days = dayKeys.map((dayKey) => {
+      var days = dayKeys.map(dayKey => {
         var day = dayData[dayKey];
         return (
           <BarGraphSectionUnit key={dayKey}>
@@ -259,10 +259,10 @@ var Report = React.createClass({
     return <BarGraph>{months}</BarGraph>;
   },
 
-  _renderWeeklyGraph: function() {
+  _renderWeeklyGraph() {
     var weekData = this.state.workoutDataByWeek.weeks;
     var keys = Object.keys(weekData).sort();
-    var weeks = keys.map((key) => {
+    var weeks = keys.map(key => {
       var week = weekData[key];
       var label = week.week < 10 ? '0' + week.week : '' + week.week;
 
@@ -284,10 +284,10 @@ var Report = React.createClass({
     return <BarGraph>{weeks}</BarGraph>;
   },
 
-  _renderMonthlyGraph: function() {
+  _renderMonthlyGraph() {
     var monthData = this.state.workoutData.months;
     var keys = Object.keys(monthData);
-    var months = keys.map((key) => {
+    var months = keys.map(key => {
       var month = monthData[key];
       var monthName = moment({
         years: month.year,

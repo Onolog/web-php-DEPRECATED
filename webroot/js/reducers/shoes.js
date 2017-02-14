@@ -11,7 +11,7 @@ import {
 } from 'constants/ActionTypes';
 
 const shoe = (state=[], action) => {
-  switch(action.type) {
+  switch (action.type) {
     case SHOE_UPDATE_SUCCESS:
     case ACTIVITY_ADD_SUCCESS:
     case ACTIVITY_DELETE_SUCCESS:
@@ -24,7 +24,7 @@ const shoe = (state=[], action) => {
 };
 
 const shoes = (state=[], action) => {
-  switch(action.type) {
+  switch (action.type) {
     case ACTIVITIES_FETCH_SUCCESS:
     case ALL_SHOES_FETCH_SUCCESS:
     case PROFILE_FETCH_SUCCESS:

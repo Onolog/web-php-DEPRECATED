@@ -1,7 +1,7 @@
 import {NAV_TOGGLE} from 'constants/ActionTypes';
 
 const navigation = (navigation={}, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case NAV_TOGGLE:
       return {
         ...navigation,

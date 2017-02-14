@@ -22,7 +22,7 @@ const ActivityDeviceInfo = React.createClass({
     const {deviceName} = this.props;
     const src = GarminDeviceUtils.getDeviceImageSrc(deviceName);
 
-    return(
+    return (
       <ImageBlock
         align="middle"
         image={<Image className="activityDeviceImage" src={src} />}>

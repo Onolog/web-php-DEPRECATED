@@ -32,7 +32,7 @@ function addShoeSuccess({shoe}, dispatch) {
   });
 }
 
-export const addShoe = (shoe) => {
+export const addShoe = shoe => {
   return dispatch => {
     dispatch({
       shoe,
@@ -66,7 +66,7 @@ function deleteShoeSuccess({id}, dispatch) {
   });
 }
 
-export const deleteShoe = (id) => {
+export const deleteShoe = id => {
   return dispatch => {
     dispatch(deleteShoeRequest(id));
 
@@ -107,7 +107,7 @@ function updateShoeSuccess({shoe}, dispatch) {
   });
 }
 
-export const updateShoe = (shoe) => {
+export const updateShoe = shoe => {
   return dispatch => {
     dispatch({
       shoe,
@@ -135,7 +135,7 @@ function viewShoeSuccess({activities, shoe}, dispatch) {
   });
 }
 
-export const viewShoe = (shoe) => {
+export const viewShoe = shoe => {
   return (dispatch, getState) => {
     dispatch({type: SHOE_VIEW});
 

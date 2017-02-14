@@ -19,7 +19,7 @@ const Bar = React.createClass({
       <rect
         className="bar"
         height={height}
-        onClick={(e) => onClick && onClick(e)}
+        onClick={e => onClick && onClick(e)}
         width={width}
         x={x}
         y={y}

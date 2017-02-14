@@ -80,7 +80,7 @@ const FBFriendTokenizer = React.createClass({
     // Get info for any already-tagged friends
     var {friends} = this.props;
     if (friends) {
-      friends.toString().split(',').forEach((fbid) => {
+      friends.toString().split(',').forEach(fbid => {
         batch.push({
           method: 'GET',
           relative_url: `${fbid}?fields=name`,
@@ -119,7 +119,7 @@ const FBFriendTokenizer = React.createClass({
     var options = JSON.parse(response.shift().body).data;
     var selected = [];
 
-    response.forEach((data) => {
+    response.forEach(data => {
       if (data.code === 200) {
         selected.push(JSON.parse(data.body));
       }

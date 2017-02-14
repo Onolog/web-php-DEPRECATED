@@ -1,4 +1,4 @@
-import {find, isEmpty, isEqual} from 'lodash';
+import {isEmpty, isEqual} from 'lodash';
 import React, {PropTypes} from 'react';
 import {Button} from 'react-bootstrap';
 import {connect} from 'react-redux';

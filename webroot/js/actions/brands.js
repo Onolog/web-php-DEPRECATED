@@ -19,7 +19,7 @@ function fetchBrandsSuccess({brands}, dispatch) {
 }
 
 function fetchBrandsRequest() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({type: BRANDS_FETCH});
 
     $.get('/brands.json')

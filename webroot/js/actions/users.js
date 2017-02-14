@@ -24,7 +24,7 @@ function fetchProfileSuccess(response, dispatch) {
 }
 
 function fetchProfileRequest(userId) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({type: PROFILE_FETCH});
 
     $.get(`/users/${userId}.json`)
@@ -46,7 +46,7 @@ function fetchSettingsSuccess({user}, dispatch) {
 }
 
 function fetchSettingsRequest() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({type: SETTINGS_FETCH});
 
     $.get('/users/settings.json')

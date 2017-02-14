@@ -1,6 +1,5 @@
 import cx from 'classnames';
 import React, {PropTypes} from 'react';
-import {MenuItem, NavDropdown} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 import AccountNavItem from 'components/Navigation/AccountNavItem.react';

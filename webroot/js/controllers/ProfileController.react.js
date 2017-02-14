@@ -97,7 +97,7 @@ const ProfileController = React.createClass({
     const activitiesByYear = groupActivities.byYear(activities);
     const years = keys(activitiesByYear).reverse();
 
-    return years.map((year) => {
+    return years.map(year => {
       return (
         <ProfileYearPanel
           activities={activitiesByYear[year]}

@@ -1,5 +1,5 @@
 import {Panel} from 'react-bootstrap';
-import React from'react';
+import React from 'react';
 
 import AppPage from 'components/Page/AppPage.react';
 import FBImage from 'components/Facebook/FBImage.react';
@@ -63,8 +63,8 @@ const Friends = React.createClass({
 
   _getFriends() {
     const {FB} = window;
-    FB.getLoginStatus((response) => {
-      FB.api('/me/friends', (response) => {
+    FB.getLoginStatus(response => {
+      FB.api('/me/friends', response => {
         this.setState({friends: response.data});
       });
     });

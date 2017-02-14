@@ -78,7 +78,7 @@ const FBFacepile = React.createClass({
     var batch = [];
 
     // Construct the batch query
-    fbids.forEach((fbid) => {
+    fbids.forEach(fbid => {
       batch.push({
         method: 'GET',
         relative_url: `${fbid}?fields=name`,
@@ -86,14 +86,14 @@ const FBFacepile = React.createClass({
     });
 
     // Retrieve the public data for each FBID
-    FB.getLoginStatus((response) => {
+    FB.getLoginStatus(response => {
       FB.api('/', 'POST', {batch}, this._parseFriendData);
     });
   },
 
   _parseFriendData(response) {
     var friends = [];
-    response.forEach((data) => {
+    response.forEach(data => {
       if (data.code === 200) {
         friends.push(JSON.parse(data.body));
       }
