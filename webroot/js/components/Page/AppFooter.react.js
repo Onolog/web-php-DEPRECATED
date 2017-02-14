@@ -1,38 +1,29 @@
 import React from 'react';
-import {LinkContainer} from 'react-router-bootstrap';
+import {Link} from 'react-router';
 
 import LeftRight from 'components/LeftRight/LeftRight.react';
-import Link from 'components/Link/Link.react';
 import Middot from 'components/Middot.react';
 
-require('./css/AppFooter.css');
+import './css/AppFooter.css';
 
 /**
  * AppFooter.react
  */
-const AppFooter = React.createClass({
-  displayName: 'AppFooter',
+const AppFooter = props => (
+  <footer className="app-footer">
+    <LeftRight className="container-fluid">
+      <div>Copyright &copy; {(new Date()).getFullYear()} Onolog</div>
+      <div>
+        <Link to={{pathname: '/privacy'}}>
+          Privacy
+        </Link>
+        <Middot />
+        <Link to={{pathname: '/terms'}}>
+          Terms
+        </Link>
+      </div>
+    </LeftRight>
+  </footer>
+);
 
-  render() {
-    const date = new Date();
-
-    return (
-      <footer className="app-footer">
-        <LeftRight className="container-fluid">
-          <div>Copyright &copy; {date.getFullYear()} Onolog</div>
-          <div>
-            <LinkContainer to={{pathname: '/privacy'}}>
-              <Link>Privacy</Link>
-            </LinkContainer>
-            <Middot />
-            <LinkContainer to={{pathname: '/terms'}}>
-              <Link>Terms</Link>
-            </LinkContainer>
-          </div>
-        </LeftRight>
-      </footer>
-    );
-  },
-});
-
-module.exports = AppFooter;
+export default AppFooter;
