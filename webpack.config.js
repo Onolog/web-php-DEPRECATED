@@ -77,6 +77,9 @@ var config = {
       test: /\.css$/,
       loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
     }, {
+      test: /\.scss$/,
+      loader: ExtractTextPlugin.extract('css!sass'),
+    }, {
       test: /\.(eot|svg|ttf|woff|woff2)$/,
       loader: 'file-loader'
     }, {

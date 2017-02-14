@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import {Alert, Modal} from 'react-bootstrap';
 
-import './css/AlertModal.css';
+import './css/AlertModal.scss';
 
 const AUTOHIDE_INTERVAL = 10 * 1000; // 10 seconds
 
