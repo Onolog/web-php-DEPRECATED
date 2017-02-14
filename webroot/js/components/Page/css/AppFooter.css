@@ -15,6 +15,10 @@
   color: #444;
 }
 
+.app-full-page .app-footer {
+  padding: 20px 0;
+}
+
 /* MOBILE */
 @media (max-width: 767px) {
   .app-footer {
