@@ -88,10 +88,13 @@ function onLoginSuccess(response, dispatch) {
 }
 
 function onLoginError(response, dispatch) {
-  dispatch({type: SESSION_LOGIN_ERROR});
+  const message =
+    'There was a problem logging in. Please refresh the page and try again.';
 
-  // TODO: This doesn't belong in an action.
-  alert('There was a problem logging in. Please try again later.');
+  dispatch({
+    error: {message},
+    type: SESSION_LOGIN_ERROR,
+  });
 }
 
 export function loginIfNeeded() {

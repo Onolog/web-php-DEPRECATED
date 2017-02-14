@@ -4,11 +4,20 @@ import React, {PropTypes} from 'react';
 import {Button, Modal} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
+import AlertModal from 'components/Modals/AlertModal.react';
+
+import {clearError} from 'actions/error';
 import {loginIfNeeded} from 'actions/session';
 import fbLoader from 'utils/fbLoader';
 
-const INTERVAL = 1000 * 60; // 1 min
+const INTERVAL = 60000; // 1 min
 const LOGIN_PATH = '/login';
+
+const mapStateToProps = ({error}) => {
+  return {
+    error,
+  };
+};
 
 /**
  * BaseAppPage.react
@@ -19,6 +28,7 @@ const LOGIN_PATH = '/login';
 const BaseAppPage = React.createClass({
 
   propTypes: {
+    error: PropTypes.object,
     session: PropTypes.shape({
       time: PropTypes.number.isRequired,
     }),
@@ -57,20 +67,41 @@ const BaseAppPage = React.createClass({
     return (
       <div className={cx('app', this.props.className)}>
         {this.props.children}
-        <Modal show={this.state.show}>
-          <Modal.Header>
-            <Modal.Title>Log In</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            You{"'"}ve been logged out. Please log back in.
-          </Modal.Body>
-          <Modal.Footer>
-            <Button bsStyle="primary" onClick={this._handleLogin}>
-              Log In
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        {this._renderErrorModal()}
+        {this._renderSessionModal()}
       </div>
+    );
+  },
+
+  _renderErrorModal() {
+    const {dispatch, error} = this.props;
+    const onHide = () => dispatch(clearError());
+
+    return (
+      <AlertModal
+        bsStyle="danger"
+        onHide={onHide}
+        show={!!error}>
+        {error && error.message}
+      </AlertModal>
+    );
+  },
+
+  _renderSessionModal() {
+    return (
+      <Modal show={this.state.show}>
+        <Modal.Header>
+          <Modal.Title>Log In</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          You{"'"}ve been logged out. Please log back in.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button bsStyle="primary" onClick={this._handleLogin}>
+            Log In
+          </Button>
+        </Modal.Footer>
+      </Modal>
     );
   },
 
@@ -108,4 +139,4 @@ const BaseAppPage = React.createClass({
   },
 });
 
-export default connect()(BaseAppPage);
+export default connect(mapStateToProps)(BaseAppPage);
