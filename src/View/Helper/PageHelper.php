@@ -51,6 +51,12 @@ class PageHelper extends Helper {
             'integrity' => 'sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u',
             'crossorigin' => 'anonymous',
           ]) .
+
+          $this->Html->css('//cdn.materialdesignicons.com/1.8.36/css/materialdesignicons.min.css', [
+            'rel' => 'stylesheet',
+            'crossorigin' => 'anonymous',
+          ]) .
+
           $this->Html->css('/css/base/base') .
           $this->Html->css('/css/base/bs-override') .
           $this->Html->css('/css/base/fonts') .
