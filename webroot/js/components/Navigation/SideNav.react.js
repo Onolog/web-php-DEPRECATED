@@ -1,7 +1,9 @@
 import cx from 'classnames';
 import React, {PropTypes} from 'react';
-import {Glyphicon, Nav, NavItem, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import {Nav, NavItem, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
+
+import MaterialIcon from 'components/Icons/MaterialIcon.react';
 
 import './css/SideNav.css';
 
@@ -38,8 +40,8 @@ const SideNavItemLabel = props => (
   </span>
 );
 
-const SideNavIcon = props => (
-  <Glyphicon className="app-side-nav-item-icon" glyph={props.icon} />
+const SideNavIcon = ({icon}) => (
+  <MaterialIcon className="app-side-nav-item-icon" icon={icon} />
 );
 
 SideNavItem.propTypes = {

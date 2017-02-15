@@ -11,24 +11,27 @@ function getNavItems(user) {
     },
     {
       href: `/users/${user.id}`,
-      icon: 'user',
+      icon: 'account',
       label: 'Profile',
     },
+    // {
+    //   href: `/users/${user.id}`,
+    //   icon: 'chart-areaspline',
+    //   label: 'Data',
+    // },
     {
       href: '/shoes',
-      icon: 'fire',
+      icon: 'run',
       label: 'Shoes',
     },
-    /*
-    {
-      href: '/friends',
-      icon: 'picture',
-      label: 'Friends',
-    },
-    */
+    // {
+    //   href: '/friends',
+    //   icon: 'account-multiple',
+    //   label: 'Friends',
+    // },
     {
       href: '/settings',
-      icon: 'cog',
+      icon: 'settings',
       label: 'Settings',
     },
   ];
