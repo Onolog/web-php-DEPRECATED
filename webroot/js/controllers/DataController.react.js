@@ -7,7 +7,7 @@ import AppPage from 'components/Page/AppPage.react';
 import EmptyState from 'components/EmptyState.react';
 import Loader from 'components/Loader/Loader.react';
 import PageHeader from 'components/Page/PageHeader.react';
-import ProfileYearPanel from 'components/Profile/ProfileYearPanel.react';
+import DataYearPanel from 'components/Data/DataYearPanel.react';
 import Topline from 'components/Topline/Topline.react';
 
 import {fetchUserData} from 'actions/users';
@@ -15,7 +15,7 @@ import {getAggregateDistance, groupActivities} from 'utils/ActivityUtils';
 
 import {USER_DATA_FETCH} from 'constants/ActionTypes';
 
-import 'components/Profile/Profile.css';
+import 'components/Data/Data.scss';
 
 const mapStateToProps = ({activities, pendingRequests, shoes, session}) => {
   return {
@@ -98,7 +98,7 @@ const DataController = React.createClass({
 
     return years.map(year => {
       return (
-        <ProfileYearPanel
+        <DataYearPanel
           activities={activitiesByYear[year]}
           key={year}
           year={year}

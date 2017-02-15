@@ -67,7 +67,7 @@ const mapStateToProps = ({navigation, session}) => {
  * AppFullPage.react
  */
 const AppFullPage = ({children, className, dispatch, open, session}) => {
-  const handleToggle = () => dispatch(toggleSideNav(open));
+  const handleToggle = () => dispatch(toggleSideNav());
 
   return (
     <BaseAppPage

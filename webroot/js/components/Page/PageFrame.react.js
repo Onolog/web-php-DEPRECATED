@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import React from 'react';
+import React, {PropTypes} from 'react';
 
 import FlexContainer from 'components/FlexContainer/FlexContainer.react';
 import Loader from 'components/Loader/Loader.react';
@@ -22,6 +22,18 @@ const PageFrame = ({children, fill, isLoading, scroll}) => {
       {contents}
     </FlexContainer>
   );
+};
+
+PageFrame.propTypes = {
+  fill: PropTypes.bool,
+  isLoading: PropTypes.bool,
+  scroll: PropTypes.bool,
+};
+
+PageFrame.defaultProps = {
+  fill: false,
+  isLoading: false,
+  scroll: false,
 };
 
 export default PageFrame;

@@ -8,12 +8,6 @@ import {toggleSideNav} from 'actions/navigation';
 
 import './css/PageHeader.css';
 
-const mapStateToProps = ({navigation}) => {
-  return {
-    sideNavOpen: navigation.sideNavOpen,
-  };
-};
-
 /**
  * PageHeader
  */
@@ -22,7 +16,7 @@ const PageHeader = props => {
     <div className="app-page-header-toggle">
       <NavbarToggle
         className="visible-xs-block"
-        onClick={() => props.dispatch(toggleSideNav(props.sideNavOpen))}
+        onClick={() => props.dispatch(toggleSideNav())}
       />
     </div> :
     null;
@@ -42,8 +36,7 @@ const PageHeader = props => {
 };
 
 PageHeader.propTypes = {
-  sideNavOpen: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
 },
 
-module.exports = connect(mapStateToProps)(PageHeader);
+module.exports = connect()(PageHeader);
