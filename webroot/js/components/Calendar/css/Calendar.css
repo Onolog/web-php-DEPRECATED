@@ -98,12 +98,12 @@
 
 .calendar .add {
   bottom: 0;
-  height: 22px;
+  height: 23px;
   left: 0;
   line-height: 21px;
   position: absolute;
   visibility: hidden;
-  width: 23px;
+  width: 24px;
 }
 .calendar td:hover .add,
 .calendar td:focus .add {

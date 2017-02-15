@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, {PropTypes} from 'react';
-import {Button, ButtonGroup, Glyphicon} from 'react-bootstrap';
+import {Button, ButtonGroup} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 
@@ -8,6 +8,7 @@ import ActivityCalendar from 'components/Activities/ActivityCalendar.react';
 import ActivityModal from 'components/Activities/ActivityModal.react';
 
 import AppFullPage from 'components/Page/AppFullPage.react';
+import MaterialIcon from 'components/Icons/MaterialIcon.react';
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
 
@@ -97,13 +98,13 @@ const Home = React.createClass({
           bsSize="small"
           bsStyle="success"
           onClick={this._showModal}>
-          <Glyphicon glyph="plus" />
+          <MaterialIcon icon="plus" />
         </Button>
         <ButtonGroup bsSize="small">
           <Button
             className="monthArrow"
             onClick={this._onLastMonthClick}>
-            <Glyphicon glyph="triangle-left" />
+            <MaterialIcon icon="arrow-left" />
           </Button>
           <Button onClick={this._onThisMonthClick}>
             Today
@@ -111,7 +112,7 @@ const Home = React.createClass({
           <Button
             className="monthArrow"
             onClick={this._onNextMonthClick}>
-            <Glyphicon glyph="triangle-right" />
+            <MaterialIcon icon="arrow-right" />
           </Button>
         </ButtonGroup>
       </div>

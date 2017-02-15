@@ -1,10 +1,11 @@
 import React, {PropTypes} from 'react';
-import {Button, Glyphicon, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import {Button, OverlayTrigger, Tooltip} from 'react-bootstrap';
 
+import ActivityLink from 'components/Activities/ActivityLink.react';
 import ActivityModal from 'components/Activities/ActivityModal.react';
 import BaseCalendarDay from 'components/Calendar/BaseCalendarDay.react';
 import CalendarDate from 'components/Calendar/CalendarDate.react';
-import ActivityLink from 'components/Activities/ActivityLink.react';
+import MaterialIcon from 'components/Icons/MaterialIcon.react';
 
 import formatDistance from 'utils/formatDistance';
 
@@ -63,7 +64,7 @@ const ActivityCalendarDay = React.createClass({
               bsStyle="default"
               className="add"
               onClick={this._showModal}>
-              <Glyphicon glyph="plus" />
+              <MaterialIcon icon="plus" />
             </Button>
           </OverlayTrigger>
           <ActivityModal
