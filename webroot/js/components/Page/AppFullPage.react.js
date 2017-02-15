@@ -14,7 +14,7 @@ import SideNav from 'components/Navigation/SideNav.react';
 import {toggleSideNav} from 'actions/navigation';
 import {logoutIfNeeded} from 'actions/session';
 
-import './css/AppFullPage.css';
+import './css/AppFullPage.scss';
 
 const SideColumn = ({onLogout, onToggle, open, user}) => (
   <FlexContainer className="side-col" column>
