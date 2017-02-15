@@ -91,6 +91,11 @@ Router::scope('/', function (RouteBuilder $routes) {
     'action' => 'index',
   ]);
 
+  $routes->connect('/data', [
+    'controller' => 'Users',
+    'action' => 'data',
+  ]);
+
   $routes->connect('/friends', [
     'controller' => 'Users',
     'action' => 'friends',

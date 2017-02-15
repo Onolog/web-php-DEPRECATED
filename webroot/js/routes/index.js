@@ -1,6 +1,7 @@
 export default {
   childRoutes: [
     require('routes/ActivitiesRoute'),
+    require('routes/DataRoute'),
     require('routes/FriendsRoute'),
     require('routes/LoginRoute'),
     require('routes/PagesRoute'),

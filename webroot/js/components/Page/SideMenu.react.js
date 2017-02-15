@@ -14,11 +14,11 @@ function getNavItems(user) {
       icon: 'account',
       label: 'Profile',
     },
-    // {
-    //   href: `/users/${user.id}`,
-    //   icon: 'chart-areaspline',
-    //   label: 'Data',
-    // },
+    {
+      href: '/data',
+      icon: 'chart-areaspline',
+      label: 'Data',
+    },
     {
       href: '/shoes',
       icon: 'run',

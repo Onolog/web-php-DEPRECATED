@@ -57,6 +57,10 @@ module.exports = {
   SETTINGS_FETCH_ERROR: 'settings-fetch-error',
   SETTINGS_FETCH_SUCCESS: 'settings-fetch-success',
 
+  USER_DATA_FETCH: 'user-data-fetch',
+  USER_DATA_FETCH_ERROR: 'user-data-fetch-error',
+  USER_DATA_FETCH_SUCCESS: 'user-data-fetch-success',
+
   USER_SETTINGS_SAVE: 'user-settings-save',
   USER_SETTINGS_SAVE_ERROR: 'user-settings-save-error',
   USER_SETTINGS_SAVE_SUCCESS: 'user-settings-save-success',

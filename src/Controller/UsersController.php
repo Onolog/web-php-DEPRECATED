@@ -130,11 +130,15 @@ class UsersController extends AppController {
       throw new NotFoundException(__('Invalid id.'));
     }
 
-    $user = $this->Users->get($id);
+    $this->set(['user' => $this->Users->get($id)]);
+  }
 
-    if (!$user) {
-      throw new NotFoundException(__('Sorry, that user does not exist.'));
-    }
+  /**
+   * Displays all the user's data in charts.
+   */
+  public function data() {
+    $id = $this->requireLoggedInUser();
+    $user = $this->Users->get($id);
 
     $activities = id(TableRegistry::get('Activities'))
       ->find()
@@ -150,7 +154,6 @@ class UsersController extends AppController {
     $this->set([
       'activities' => $activities,
       'shoes' => $shoes,
-      'user' => $user,
     ]);
   }
 

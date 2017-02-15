@@ -68,6 +68,7 @@
 /* Main Col */
 .app-full-page .main-col {
   height: 100%;
+  position: relative;
 }
 .open .main-col {
   left: 200px;

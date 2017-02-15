@@ -1,68 +1,111 @@
-import moment from 'moment';
-import React from 'react';
+import {keys} from 'lodash';
+import React, {PropTypes} from 'react';
 import {Panel} from 'react-bootstrap';
+import {connect} from 'react-redux';
 
 import AppPage from 'components/Page/AppPage.react';
-import BarChart from 'components/D3/BarChart.react';
+import EmptyState from 'components/EmptyState.react';
+import Loader from 'components/Loader/Loader.react';
 import PageHeader from 'components/Page/PageHeader.react';
+import ProfileYearPanel from 'components/Profile/ProfileYearPanel.react';
+import Topline from 'components/Topline/Topline.react';
 
-const HEIGHT = 300;
+import {fetchUserData} from 'actions/users';
+import {getAggregateDistance, groupActivities} from 'utils/ActivityUtils';
 
-const monthMiles = [107, 125, 156, 210, 184, 107, 125, 156, 210, 184, 30, 24];
-const monthData = monthMiles.map((miles, month) => ({
-  xVal: month,
-  yVal: miles,
-}));
+import {USER_DATA_FETCH} from 'constants/ActionTypes';
 
-const weekMiles = [
-  27.87, 1.49, 0, 18.03, 35.26, 20.43, 40.03, 14.17, 40.49, 55.03,
-  36.01, 33.64, 56.15, 47.86, 62.74, 51.54, 58.04, 40.05, 82.78, 0,
-  22.02, 0, 6.64, 7.17, 6.33, 0, 8.37, 15.35, 0, 24.16, 0, 13.88, 18.65,
-  23.01, 21.02, 10.82, 20.34, 5.21, 10.03, 12.02, 17.11, 13.08, 22.04,
-  29.8, 21.36, 36.51, 33.53, 37.26, 41.52, 23.08, 45.08, 47.57,
-];
-const weekData = weekMiles.map((miles, week) => ({
-  xVal: week + 1,
-  yVal: miles,
-}));
+import 'components/Profile/Profile.css';
+
+const mapStateToProps = ({activities, pendingRequests, shoes, session}) => {
+  return {
+    activities,
+    pendingRequests,
+    shoes,
+    user: session,
+  };
+};
 
 /**
- * TermsPage.react
- *
- * Static page displaying the terms of service.
+ * DataController.react
  */
-const DataPage = React.createClass({
-  displayName: 'DataPage',
+const DataController = React.createClass({
+  propTypes: {
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+    shoes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    }).isRequired,
+  },
+
+  componentWillMount() {
+    this.props.dispatch(fetchUserData());
+  },
 
   render() {
+    const {activities, pendingRequests, user} = this.props;
+
+    if (!user || pendingRequests[USER_DATA_FETCH]) {
+      return (
+        <AppPage>
+          <Loader />
+        </AppPage>
+      );
+    }
+
     return (
-      <AppPage>
-        <PageHeader title="Data" />
-        <Panel header={<h3>Month Data</h3>}>
-          <BarChart
-            data={monthData}
-            height={HEIGHT}
-            tooltip={data => (`
-              <strong>${moment().month(data.xVal).format('MMMM')}</strong>
-              <div>${data.yVal} Miles</div>
-            `)}
-            xFormat={m => moment().month(m).format('MMM')}
-          />
-        </Panel>
-        <Panel header={<h3>Week Data</h3>}>
-          <BarChart
-            data={weekData}
-            height={HEIGHT}
-            tooltip={data => (`
-              <strong>Week ${moment().week(data.xVal).format('w')}</strong>
-              <div>${data.yVal} Miles</div>
-            `)}
-            xFormat={w => moment().week(w).format('ww')}
-          />
-        </Panel>
+      <AppPage className="profile">
+        <PageHeader title={user.name} />
+        {this._renderToplineStats(activities)}
+        {this._renderContent(activities)}
       </AppPage>
     );
   },
+
+  _renderToplineStats(activities) {
+    const totalMiles = getAggregateDistance(activities);
+    const totalRuns = activities.length;
+
+    return (
+      <Panel header={<h3>Lifetime Stats</h3>}>
+        <Topline>
+          <Topline.Item label="Miles">
+            {totalMiles.toLocaleString()}
+          </Topline.Item>
+          <Topline.Item label="Runs">
+            {totalRuns.toLocaleString()}
+          </Topline.Item>
+          <Topline.Item label="Shoes">
+            {this.props.shoes.length}
+          </Topline.Item>
+        </Topline>
+      </Panel>
+    );
+  },
+
+  _renderContent(activities) {
+    // Render an empty state when there's no data.
+    if (!activities.length) {
+      return (
+        <Panel>
+          <EmptyState>You have no activities. Get out there!</EmptyState>
+        </Panel>
+      );
+    }
+
+    const activitiesByYear = groupActivities.byYear(activities);
+    const years = keys(activitiesByYear).reverse();
+
+    return years.map(year => {
+      return (
+        <ProfileYearPanel
+          activities={activitiesByYear[year]}
+          key={year}
+          year={year}
+        />
+      );
+    });
+  },
 });
 
-module.exports = DataPage;
+module.exports = connect(mapStateToProps)(DataController);

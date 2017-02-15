@@ -26,11 +26,11 @@ const mapStateToProps = ({activities, pendingRequests}) => {
 };
 
 /**
- * Home.react
+ * CalendarController.react
  */
-const Home = React.createClass({
+const CalendarController = React.createClass({
   propTypes: {
-    activities: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   },
 
   componentWillMount() {
@@ -155,4 +155,4 @@ const Home = React.createClass({
   },
 });
 
-module.exports = connect(mapStateToProps)(Home);
+module.exports = connect(mapStateToProps)(CalendarController);

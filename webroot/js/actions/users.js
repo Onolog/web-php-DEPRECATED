@@ -8,16 +8,50 @@ import {
   SETTINGS_FETCH,
   SETTINGS_FETCH_ERROR,
   SETTINGS_FETCH_SUCCESS,
+  USER_DATA_FETCH,
+  USER_DATA_FETCH_ERROR,
+  USER_DATA_FETCH_SUCCESS,
   USER_SETTINGS_SAVE,
   USER_SETTINGS_SAVE_ERROR,
   USER_SETTINGS_SAVE_SUCCESS,
 } from 'constants/ActionTypes';
 
-function fetchProfileSuccess(response, dispatch) {
-  const {activities, shoes, user} = response;
+function fetchUserDataSuccess(response, dispatch) {
+  const {activities, shoes} = response;
   dispatch({
     activities,
     shoes,
+    type: USER_DATA_FETCH_SUCCESS,
+  });
+}
+
+function fetchUserDataRequest() {
+  return dispatch => {
+    dispatch({type: USER_DATA_FETCH});
+
+    $.get('/users/data.json')
+      .done(response => fetchUserDataSuccess(response, dispatch))
+      .fail(response => dispatch({type: USER_DATA_FETCH_ERROR}));
+  };
+}
+
+export function fetchUserData() {
+  // TODO: Check if we already have the data so we don't re-fetch.
+  return (dispatch, getState) => dispatch(fetchUserDataRequest());
+}
+
+function fetchProfileError(response, dispatch) {
+  const message =
+    'Something went wrong. Please refresh the page and try again.';
+
+  dispatch({
+    error: {message},
+    type: PROFILE_FETCH_ERROR,
+  });
+}
+
+function fetchProfileSuccess({user}, dispatch) {
+  dispatch({
     users: [user],
     type: PROFILE_FETCH_SUCCESS,
   });
@@ -29,7 +63,7 @@ function fetchProfileRequest(userId) {
 
     $.get(`/users/${userId}.json`)
       .done(response => fetchProfileSuccess(response, dispatch))
-      .fail(response => dispatch({type: PROFILE_FETCH_ERROR}));
+      .fail(response => fetchProfileError(response, dispatch));
   };
 }
 

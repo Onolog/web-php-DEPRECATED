@@ -4,10 +4,10 @@ import {
   ACTIVITY_DELETE_SUCCESS,
   ACTIVITY_UPDATE_SUCCESS,
   ALL_SHOES_FETCH_SUCCESS,
-  PROFILE_FETCH_SUCCESS,
   SHOE_ADD_SUCCESS,
   SHOE_DELETE_SUCCESS,
   SHOE_UPDATE_SUCCESS,
+  USER_DATA_FETCH_SUCCESS,
 } from 'constants/ActionTypes';
 
 const shoe = (state=[], action) => {
@@ -27,7 +27,7 @@ const shoes = (state=[], action) => {
   switch (action.type) {
     case ACTIVITIES_FETCH_SUCCESS:
     case ALL_SHOES_FETCH_SUCCESS:
-    case PROFILE_FETCH_SUCCESS:
+    case USER_DATA_FETCH_SUCCESS:
       return action.shoes;
     case SHOE_ADD_SUCCESS:
       return [...state, action.shoe];
@@ -43,7 +43,7 @@ const shoes = (state=[], action) => {
       }
       return state;
     default:
-      return state;
+      return state || [];
   }
 };
 

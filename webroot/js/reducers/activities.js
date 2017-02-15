@@ -13,7 +13,7 @@ const activity = (state={}, action) => {
 const activities = (state=[], action) => {
   switch (action.type) {
     case ActionTypes.ACTIVITIES_FETCH_SUCCESS:
-    case ActionTypes.PROFILE_FETCH_SUCCESS:
+    case ActionTypes.USER_DATA_FETCH_SUCCESS:
       // TODO: Merge fetched activities so we don't fetch the same ones
       // multiple times.
       return action.activities;
@@ -28,7 +28,7 @@ const activities = (state=[], action) => {
     case ActionTypes.SHOE_VIEW_SUCCESS:
       return state.concat(action.activities);
     default:
-      return state;
+      return state || [];
   }
 };
 

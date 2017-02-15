@@ -19,6 +19,7 @@ export default (pendingRequests={}, action) => {
     case ActionTypes.SESSION_LOGIN:
     case ActionTypes.SESSION_LOGOUT:
     case ActionTypes.SETTINGS_FETCH:
+    case ActionTypes.USER_DATA_FETCH:
     case ActionTypes.USER_SETTINGS_SAVE:
       newState = {...pendingRequests};
       newState[action.type] = true;
@@ -53,6 +54,8 @@ export default (pendingRequests={}, action) => {
     case ActionTypes.SESSION_LOGOUT_SUCCESS:
     case ActionTypes.SETTINGS_FETCH_ERROR:
     case ActionTypes.SETTINGS_FETCH_SUCCESS:
+    case ActionTypes.USER_DATA_FETCH_ERROR:
+    case ActionTypes.USER_DATA_FETCH_SUCCESS:
     case ActionTypes.USER_SETTINGS_SAVE_ERROR:
     case ActionTypes.USER_SETTINGS_SAVE_SUCCESS:
       // Remove 'success' or 'error' from the action type.
