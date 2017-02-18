@@ -2,7 +2,6 @@ import moment from 'moment';
 import React from 'react';
 
 import DateInputCalendar from './DateInputCalendar.react';
-import {Glyphicon} from 'react-bootstrap';
 import Link from 'components/Link/Link.react';
 import MaterialIcon from 'components/Icons/MaterialIcon.react';
 
@@ -68,7 +67,7 @@ const DateInputCalendarPopover = React.createClass({
             onClick={this._onPrevMonthClick}>
             <MaterialIcon icon="arrow-left" />
           </Link>
-          <div>
+          <div className="DateInputCalendarControls-monthYear">
             {calendarMoment.format('MMMM YYYY')}
           </div>
           <Link

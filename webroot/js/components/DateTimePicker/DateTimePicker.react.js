@@ -11,7 +11,7 @@ import TimezoneSelector from 'components/Forms/TimezoneSelector.react';
 const CURRENT_TIMEZONE = jstz.determine().name();
 const TIMEZONES = moment.tz.names();
 
-import './DateTimePicker.css';
+import './DateTimePicker.scss';
 
 /**
  * DateTimePicker.react
