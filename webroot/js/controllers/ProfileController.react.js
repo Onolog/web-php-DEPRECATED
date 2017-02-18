@@ -1,7 +1,9 @@
+import cx from 'classnames';
 import {find} from 'lodash';
 import moment from 'moment';
 import React, {PropTypes} from 'react';
 import {Col, Row} from 'react-bootstrap';
+import {findDOMNode} from 'react-dom';
 import {connect} from 'react-redux';
 
 import AppFullPage from 'components/Page/AppFullPage.react';
@@ -10,6 +12,7 @@ import Loader from 'components/Loader/Loader.react';
 import MaterialIcon from 'components/Icons/MaterialIcon.react';
 import NavbarToggle from 'components/Navigation/NavbarToggle.react';
 import PageFrame from 'components/Page/PageFrame.react';
+import PageHeader from 'components/Page/PageHeader.react';
 
 import {toggleSideNav} from 'actions/navigation';
 import {fetchProfile} from 'actions/users';
@@ -58,6 +61,28 @@ const ProfileController = React.createClass({
 
   componentWillMount() {
     this.props.dispatch(fetchProfile(this.props.params.userId));
+
+    window.addEventListener('scroll', this._showHeaderCheck, true);
+  },
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._showHeaderCheck, true);
+  },
+
+  getInitialState() {
+    return {
+      showHeader: false,
+    };
+  },
+
+  _showHeaderCheck() {
+    const node = findDOMNode(this._profileImageName);
+    const {bottom} = node.getBoundingClientRect();
+    const showHeader = bottom <= 0;
+
+    if (showHeader !== this.state.showHeader) {
+      this.setState({showHeader});
+    }
   },
 
   render() {
@@ -76,6 +101,11 @@ const ProfileController = React.createClass({
 
     return (
       <PageFrame fill scroll>
+        <PageHeader
+          className={cx({'affix': this.state.showHeader})}
+          full
+          title={user.name}
+        />
         <div className="profile-cover">
           <NavbarToggle
             className="visible-xs-block"
@@ -85,7 +115,9 @@ const ProfileController = React.createClass({
         <Row className="profile-content">
           <Col className="profile-info-col" sm={3}>
 
-            <div className="profile-image-name-container">
+            <div
+              className="profile-image-name-container"
+              ref={r => this._profileImageName = r}>
               <div className="profile-image">
                 <FBImage fbid={user.id} height={180} width={180} />
               </div>

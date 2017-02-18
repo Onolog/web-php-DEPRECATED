@@ -5,6 +5,18 @@
  */
 .profile {
 
+  .app-page-header {
+    position: fixed;
+    top: -51px;
+    transition: top 250ms ease;
+    width: 100%;
+    z-index: 2;
+  }
+
+  .affix {
+    top: 0;
+  }
+
   &-cover {
     background-color: #e5e5e5;
     height: 200px;
