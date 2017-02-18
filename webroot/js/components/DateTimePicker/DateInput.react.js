@@ -1,9 +1,9 @@
-import {Glyphicon} from 'react-bootstrap';
 import moment from 'moment';
 import onClickOutside from 'react-onclickoutside';
 import React from 'react';
 
 import DateInputCalendarPopover from './DateInputCalendarPopover.react';
+import MaterialIcon from 'components/Icons/MaterialIcon.react';
 
 /**
  * DateInput.react
@@ -38,9 +38,9 @@ const DateInput = React.createClass({
           <div className="DateInputDisplay">
             {m.format('M/D/YYYY')}
           </div>
-          <Glyphicon
+          <MaterialIcon
             className="DateInputCalendarIcon"
-            glyph="calendar"
+            icon="calendar"
           />
         </div>
         <DateInputCalendarPopover

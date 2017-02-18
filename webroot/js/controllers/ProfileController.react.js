@@ -56,7 +56,7 @@ const ProfileController = React.createClass({
     pendingRequests: PropTypes.object.isRequired,
     user: PropTypes.shape({
       name: PropTypes.string.isRequired,
-    }).isRequired,
+    }),
   },
 
   componentWillMount() {

@@ -2,7 +2,6 @@ import React, {PropTypes} from 'react';
 import {
   Button,
   ButtonGroup,
-  Glyphicon,
   Modal,
   OverlayTrigger,
   Tooltip,
@@ -12,6 +11,7 @@ import {LinkContainer} from 'react-router-bootstrap';
 import ActivityContainer from 'containers/ActivityContainer';
 import LeftRight from 'components/LeftRight/LeftRight.react';
 import Loader from 'components/Loader/Loader.react';
+import MaterialIcon from 'components/Icons/MaterialIcon.react';
 
 /**
  * ActivityViewModal.react
@@ -49,7 +49,7 @@ const ActivityViewModal = React.createClass({
                 overlay={<Tooltip id="edit">Edit Activity</Tooltip>}
                 placement="top">
                 <Button disabled={isLoading} onClick={onEdit}>
-                  <Glyphicon glyph="pencil" />
+                  <MaterialIcon icon="pencil" />
                 </Button>
               </OverlayTrigger>
               <OverlayTrigger
@@ -57,7 +57,7 @@ const ActivityViewModal = React.createClass({
                 placement="top">
                 <LinkContainer to={`/activities/${activity.id}`}>
                   <Button disabled={isLoading}>
-                    <Glyphicon glyph="link" />
+                    <MaterialIcon icon="link-variant" />
                   </Button>
                 </LinkContainer>
               </OverlayTrigger>

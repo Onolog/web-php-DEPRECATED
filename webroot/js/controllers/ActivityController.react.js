@@ -2,7 +2,6 @@ import {find} from 'lodash';
 import {
   Button,
   ButtonGroup,
-  Glyphicon,
   OverlayTrigger,
   Panel,
   Tooltip,
@@ -13,6 +12,7 @@ import {connect} from 'react-redux';
 import Activity from 'components/Activities/Activity.react';
 import ActivityModal from 'components/Activities/ActivityModal.react';
 import AppPage from 'components/Page/AppPage.react';
+import MaterialIcon from 'components/Icons/MaterialIcon.react';
 
 import {ACTIVITY_UPDATE} from 'constants/ActionTypes';
 
@@ -87,14 +87,14 @@ const ActivityController = React.createClass({
             overlay={<Tooltip id="edit">Edit Activity</Tooltip>}
             placement="top">
             <Button onClick={this._handleActivityEdit}>
-              <Glyphicon glyph="pencil" />
+              <MaterialIcon icon="pencil" />
             </Button>
           </OverlayTrigger>
           <OverlayTrigger
             overlay={<Tooltip id="delete">Delete Activity</Tooltip>}
             placement="top">
             <Button onClick={this._handleActivityDelete}>
-              <Glyphicon glyph="trash" />
+              <MaterialIcon icon="delete" />
             </Button>
           </OverlayTrigger>
           <ActivityModal

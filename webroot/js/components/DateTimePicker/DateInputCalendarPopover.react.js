@@ -4,6 +4,7 @@ import React from 'react';
 import DateInputCalendar from './DateInputCalendar.react';
 import {Glyphicon} from 'react-bootstrap';
 import Link from 'components/Link/Link.react';
+import MaterialIcon from 'components/Icons/MaterialIcon.react';
 
 import cx from 'classnames';
 
@@ -65,14 +66,16 @@ const DateInputCalendarPopover = React.createClass({
             className="monthArrow arrowLeft"
             href="#"
             onClick={this._onPrevMonthClick}>
-            <Glyphicon glyph="triangle-left" />
+            <MaterialIcon icon="arrow-left" />
           </Link>
-          {calendarMoment.format('MMMM YYYY')}
+          <div>
+            {calendarMoment.format('MMMM YYYY')}
+          </div>
           <Link
             className="monthArrow arrowRight"
             href="#"
             onClick={this._onNextMonthClick}>
-            <Glyphicon glyph="triangle-right" />
+            <MaterialIcon icon="arrow-right" />
           </Link>
         </div>
         <div className="popover-content">

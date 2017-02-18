@@ -1,10 +1,11 @@
 import {isEqual, partition} from 'lodash';
 import React, {PropTypes} from 'react';
-import {Button, Glyphicon, Panel} from 'react-bootstrap';
+import {Button, Panel} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 import AppFullPage from 'components/Page/AppFullPage.react';
 import EmptyState from 'components/EmptyState.react';
+import MaterialIcon from 'components/Icons/MaterialIcon.react';
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import ShoeModal from 'components/Shoes/ShoeModal.react';
@@ -60,7 +61,7 @@ const ShoesController = React.createClass({
         <PageHeader full title="Shoes">
           <div>
             <Button bsSize="small" onClick={this._handleShowModal}>
-              <Glyphicon glyph="plus" /> New Shoe
+              <MaterialIcon icon="plus" /> New Shoe
             </Button>
             <ShoeModal
               onHide={this._handleHideModal}
