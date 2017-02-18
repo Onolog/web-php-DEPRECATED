@@ -1,5 +1,4 @@
 import cx from 'classnames';
-import {omit} from 'lodash';
 import React, {PropTypes} from 'react';
 import {MenuItem, NavDropdown} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
@@ -10,20 +9,22 @@ const MenuArrow = props => <li className="arrow" />;
 
 const AccountNavItem = props => {
   const {arrow, className, onLogout, user, ...otherProps} = props;
-  const dropdownProps = omit(otherProps, ['active']);
+  const items = [
+    {label: 'Profile', pathname: `/users/${user.id}`},
+    {label: 'Settings', pathname: '/settings'},
+  ];
 
   return (
     <NavDropdown
-      {...dropdownProps}
+      {...otherProps}
       className={cx('account-nav-item', {'has-arrow': arrow}, className)}
       id="account-menu">
       {arrow && <MenuArrow />}
-      <LinkContainer to={{pathname: `/users/${user.id}`}}>
-        <MenuItem>Profile</MenuItem>
-      </LinkContainer>
-      <LinkContainer to={{pathname: '/settings'}}>
-        <MenuItem>Settings</MenuItem>
-      </LinkContainer>
+      {items.map(({label, pathname}, idx) => (
+        <LinkContainer active={false} key={idx} to={{pathname}}>
+          <MenuItem>{label}</MenuItem>
+        </LinkContainer>
+      ))}
       <MenuItem divider />
       <MenuItem onClick={onLogout}>
         Sign Out
