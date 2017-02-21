@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import React from 'react';
 
-require('./Topline.css');
+import './Topline.scss';
 
 /**
  * Topline.react

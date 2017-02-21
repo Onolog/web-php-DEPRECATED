@@ -2,7 +2,7 @@ import cx from 'classnames';
 import React, {PropTypes} from 'react';
 import {Col, Row} from 'react-bootstrap';
 
-import './FlexContainer.css';
+import './FlexContainer.scss';
 
 const FlexContainer = ({children, className, column}) => {
   const Component = column ? Col : Row;

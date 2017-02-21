@@ -2,7 +2,7 @@ import cx from 'classnames';
 import React from 'react';
 import {Form} from 'react-bootstrap';
 
-import './css/AppForm.css';
+import './css/AppForm.scss';
 
 /**
  * Wrapper around react-bootstrap Form component for app-specific styling.

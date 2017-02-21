@@ -3,7 +3,7 @@ import {Panel} from 'react-bootstrap';
 import React from 'react';
 
 import Activity from 'components/Activities/Activity.react';
-import AppPage from 'components/Page/AppPage.react';
+import AppFullPage from 'components/Page/AppFullPage.react';
 import EmptyState from 'components/EmptyState.react';
 import FileInput from 'components/Forms/FileInput.react';
 
@@ -47,14 +47,14 @@ const GarminUploader = React.createClass({
       </EmptyState>;
 
     return (
-      <AppPage>
+      <AppFullPage>
         <Panel header={<h3>Choose a .tcx file</h3>}>
           <FileInput onChange={this._handleChange} />
         </Panel>
         <Panel>
           {contents}
         </Panel>
-      </AppPage>
+      </AppFullPage>
     );
   },
 

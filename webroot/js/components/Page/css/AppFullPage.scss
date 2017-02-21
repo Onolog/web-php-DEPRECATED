@@ -1,9 +1,12 @@
+@import '../../../../css/base/mixins';
+@import '../../../../css/base/variables';
+
 /**
  * App Full Page
  */
 .app-full-page {
+  @include display-flex();
   bottom: 0;
-  display: flex;
   left: 0;
   overflow: hidden;
   position: absolute;
@@ -12,7 +15,7 @@
 
   /* Side Column */
   .side-col {
-    background: #e97f10;
+    background-color: $brand-orange;
     border-right: 1px solid rgba(0, 0, 0, .07);
     flex: inherit;
     transition: width .25s ease;
