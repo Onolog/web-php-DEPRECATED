@@ -126,11 +126,13 @@ class UsersController extends AppController {
    * This view is public to everyone.
    */
   public function profile($id=null) {
-    if (!$id) {
-      throw new NotFoundException(__('Invalid id.'));
+    $user = $this->Users->get($id);
+
+    if (empty($user)) {
+      throw new NotFoundException(__("Could not find user with id {$id}."));
     }
 
-    $this->set(['user' => $this->Users->get($id)]);
+    $this->set(['user' => $user]);
   }
 
   /**
