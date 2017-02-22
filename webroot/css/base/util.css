@@ -45,6 +45,12 @@
 .middot {
   padding: 0 5px;
 }
+.middot:first-child {
+  padding-left: 0;
+}
+.middot:last-child {
+  padding-right: 0;
+}
 
 .react-loader {
   background-image: url('/img/loaders/spinner-large-bgLight-2x.gif');
