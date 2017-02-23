@@ -1,3 +1,13 @@
+@import '../../../css/base/mixins';
+@import '../../../css/base/variables';
+
+$info-col-width: 260px;
+
+.placeholder {
+  background-color: $background-color-gray;
+  height: 800px;
+}
+
 /**
  * Profile.scss
  *
@@ -5,16 +15,16 @@
  */
 .profile {
 
-  .app-page-header {
+  &-header {
     position: fixed;
     top: -51px;
     transition: top 250ms ease;
     width: 100%;
     z-index: 2;
-  }
 
-  .affix {
-    top: 0;
+    &-fixed {
+      top: 0;
+    }
   }
 
   &-cover {
@@ -25,11 +35,11 @@
       float: left;
 
       .icon-bar {
-        background-color: #fff;
+        background-color: $white;
         box-shadow: 0 0px 10px rgba(0, 0, 0, 0.15);
       }
       &:hover .icon-bar {
-        background-color: #e97f10;
+        background-color: $brand-orange;
       }
     }
   }
@@ -40,14 +50,14 @@
 
   &-info-col {
     margin-top: -200px;
-    width: 260px;
+    width: $info-col-width;
     z-index: 1;
   }
 
   &-main-col {
     width: 100%;
-    margin-left: -260px;
-    padding-left: 260px;
+    margin-left: -$info-col-width;
+    padding-left: $info-col-width;
   }
 
   &-image {
@@ -74,8 +84,8 @@
     padding: 0;
 
     li {
-      color: #808080;
-      font-size: 12px;
+      color: $text-color-gray;
+      font-size: $font-size-sm;
       margin-bottom: 5px;
     }
 
@@ -84,9 +94,8 @@
     }
   }
 
-  .placeholder {
-    background-color: #f5f5f5;
-    height: 800px;
+  h4 {
+    @include heading-tertiary();
   }
 }
 
@@ -108,8 +117,8 @@
     }
 
     &-image-name-container {
+      @include display-flex();
       align-items: center;
-      display: flex;
     }
 
     &-image {

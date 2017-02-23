@@ -6,6 +6,7 @@ import {Col, Row} from 'react-bootstrap';
 import {findDOMNode} from 'react-dom';
 import {connect} from 'react-redux';
 
+import ActivityFeed from 'components/Activities/ActivityFeed.react';
 import AppFullPage from 'components/Page/AppFullPage.react';
 import FBImage from 'components/Facebook/FBImage.react';
 import Loader from 'components/Loader/Loader.react';
@@ -41,8 +42,9 @@ const ProfileDetails = ({user}) => {
 };
 
 const mapStateToProps = (state, props) => {
-  const {pendingRequests, users} = state;
+  const {activities, pendingRequests, users} = state;
   return {
+    activities,
     pendingRequests,
     user: find(users, {id: +props.params.userId}),
   };
@@ -53,6 +55,7 @@ const mapStateToProps = (state, props) => {
  */
 const ProfileController = React.createClass({
   propTypes: {
+    activities: PropTypes.array.isRequired,
     pendingRequests: PropTypes.object.isRequired,
     user: PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -60,9 +63,15 @@ const ProfileController = React.createClass({
   },
 
   componentWillMount() {
-    this.props.dispatch(fetchProfile(this.props.params.userId));
-
+    this._fetchProfileData(this.props);
     window.addEventListener('scroll', this._showHeaderCheck, true);
+  },
+
+  componentWillReceiveProps(nextProps) {
+    // Re-fetch data when navigating to a different profile.
+    if (this.props.params.userId !== nextProps.params.userId) {
+      this._fetchProfileData(nextProps);
+    }
   },
 
   componentWillUnmount() {
@@ -94,7 +103,8 @@ const ProfileController = React.createClass({
   },
 
   _renderContents() {
-    const {dispatch, pendingRequests, user} = this.props;
+    const {activities, dispatch, pendingRequests, user} = this.props;
+
     if (!user || pendingRequests[PROFILE_FETCH]) {
       return <Loader background full />;
     }
@@ -102,7 +112,9 @@ const ProfileController = React.createClass({
     return (
       <PageFrame fill scroll>
         <PageHeader
-          className={cx({'affix': this.state.showHeader})}
+          className={cx('profile-header', {
+            'profile-header-fixed': this.state.showHeader,
+          })}
           full
           title={user.name}
         />
@@ -132,9 +144,11 @@ const ProfileController = React.createClass({
           <Col className="profile-main-col" sm={9}>
             <Row>
               <Col lg={8}>
-                <div className="placeholder" />
+                <h4>Recent Activities</h4>
+                <ActivityFeed activities={activities} />
               </Col>
               <Col lg={4}>
+                <h4>Friends</h4>
                 <div className="placeholder" />
               </Col>
             </Row>
@@ -142,6 +156,10 @@ const ProfileController = React.createClass({
         </Row>
       </PageFrame>
     );
+  },
+
+  _fetchProfileData({dispatch, params}) {
+    dispatch(fetchProfile(params.userId));
   },
 });
 
