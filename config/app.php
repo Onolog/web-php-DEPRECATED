@@ -383,6 +383,6 @@ return [
    */
   'Session' => [
     'defaults' => 'php',
-    'timeout' => '120',
+    'timeout' => '1440', // 24 hours
   ],
 ];
