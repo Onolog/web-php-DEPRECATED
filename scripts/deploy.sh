@@ -9,6 +9,9 @@ echo 'Reinstalling Node modules...'
 rm -rf ./node_modules
 npm install
 
+# TODO: Why doesn't npm automatically run this after install?
+npm run postinstall
+
 # Always deploy to prod.
 export NODE_ENV="production"
 
