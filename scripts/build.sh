@@ -1,14 +1,19 @@
 #!/bin/bash
 
-# Remove existing built files.
-echo 'Cleaning up old files...'
-rm ./webroot/build/*.js
+# Remove existing assets.
+echo 'Cleaning up old assets...'
+shopt -s extglob
+rm ./webroot/build/*.!(gitignore)
 
 # Rebuild files according to environment.
-echo 'Building assets...'
+echo 'Building new assets...'
 
 if [[ "$NODE_ENV" == "production" ]]; then
-  ./node_modules/.bin/webpack --progress --colors --config webpack.prod.config.js
+  config="webpack.prod.config.js"
+  watch=""
 else
-  ./node_modules/.bin/webpack -w --progress --colors --config webpack.config.js
+  config="webpack.config.js"
+  watch="-w"
 fi
+
+./node_modules/.bin/webpack --progress --colors ${watch} --config ${config}

@@ -56,8 +56,11 @@
   },
   "scripts": {
     "build": "./scripts/build.sh",
+    "build-dev": "export NODE_ENV=\"development\" && npm run build",
+    "build-prod": "export NODE_ENV=\"production\" && npm run build",
     "deploy": "./scripts/deploy.sh",
     "lint": "eslint webroot/js/",
+    "postinstall": "./scripts/postinstall.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
