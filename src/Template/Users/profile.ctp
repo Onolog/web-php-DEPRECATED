@@ -2,7 +2,7 @@
 $this->set([
   'data' => [
     'activities' => $activities,
-    'activitySummary' => $stats,
+    'activitySummary' => $activitySummary,
     'users' => [$user],
   ],
   'title' => $user['name'],

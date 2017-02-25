@@ -17,13 +17,20 @@ const pendingRequests = {};
 values(ActionTypes).forEach(action => pendingRequests[action] = false);
 
 const initialState = {
-  ...window.APP_DATA,
+  activities: [],
   activitySummary: {},
+  brands: [],
   error: null,
   navigation: {
     sideNavOpen: JSON.parse(localStorage.getItem('sideNavOpen')),
   },
   pendingRequests,
+  session: {},
+  shoes: [],
+  users: [],
+
+  // Merge app data from server.
+  ...window.APP_DATA,
 };
 
 const store = createStore(

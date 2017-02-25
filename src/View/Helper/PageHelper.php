@@ -105,13 +105,7 @@ class PageHelper extends Helper {
     $loggedInUser = $session->read('Auth.User') ?: [];
     $sessionConfig = $session->read('Config') ?: [];
 
-    $app_data = [
-      'activities' => [],
-      'brands' => [],
-      'session' => array_merge($loggedInUser, $sessionConfig),
-      'shoes' => [],
-      'users' => [],
-    ];
+    $app_data = ['session' => array_merge($loggedInUser, $sessionConfig)];
 
     if (isset($this->data)) {
       $app_data = array_merge($app_data, $this->data);
