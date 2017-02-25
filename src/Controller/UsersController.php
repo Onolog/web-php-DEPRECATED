@@ -132,14 +132,11 @@ class UsersController extends AppController {
       throw new NotFoundException(__("Could not find user with id {$id}."));
     }
 
-    $activities = id(TableRegistry::get('Activities'))
-      ->find()
-      ->where(['user_id' => $user->id])
-      ->order(['start_date' => 'DESC'])
-      ->limit(5);
+    $activitiesTable = TableRegistry::get('Activities');
 
     $this->set([
-      'activities' => $activities,
+      'activities' => $activitiesTable->getActivityFeed($user->id),
+      'activitySummary' => $activitiesTable->getActivitySummary($user->id),
       'user' => $user,
     ]);
   }

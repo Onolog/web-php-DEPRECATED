@@ -42,6 +42,70 @@ class ActivitiesTable extends Table {
   }
 
   /**
+   * Get recent activities for a user's Activity Feed.
+   *
+   * @param int $user_id  The user's id.
+   * @param int $limit    The number of results to return.
+   *
+   * @return array        The array of activities.
+   *
+   * TODO: Modify this to make pagination easier, so we can load new results.
+   */
+  public function getActivityFeed($user_id, $limit=10) {
+    return $this->find()
+      ->where(['user_id' => $user_id])
+      ->order(['start_date' => 'DESC'])
+      ->limit($limit);
+  }
+
+  /**
+   * For the given user, provides the activity count and total distance for:
+   *
+   *    - The current year to date.
+   *    - The current month.
+   *    - The current week.
+   *
+   * @param int $user_id  The user's id.
+   * @return array        The array of summary data.
+   */
+  public function getActivitySummary($user_id) {
+    $query = $this->find()->where([
+      'user_id' => $user_id,
+      'YEAR(Activities.start_date)' => date('Y'), // Current year
+    ]);
+
+    return [
+      'year' => $this->processStats($query),
+      'month' => $this->getMonthStats($query),
+      'week' => $this->getWeekStats($query),
+    ];
+  }
+
+  private function getMonthStats($query) {
+    return $this->processStats($query->where([
+      'MONTH(Activities.start_date)' => date('n'), // Current month
+    ]));
+  }
+
+  private function getWeekStats($query) {
+    return $this->processStats($query->where([
+      'WEEK(Activities.start_date)' => date('W'), // Current week
+    ]));
+  }
+
+  private function processStats($activities) {
+    $stats = [];
+    foreach ($activities as $activity) {
+      $stats[] = $activity['distance'];
+    }
+
+    return [
+      'activity_count' => count($stats),
+      'distance' => array_sum($stats),
+    ];
+  }
+
+  /**
    * Default validation rules.
    *
    * @param \Cake\Validation\Validator $validator Validator instance.
