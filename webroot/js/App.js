@@ -18,6 +18,7 @@ values(ActionTypes).forEach(action => pendingRequests[action] = false);
 
 const initialState = {
   ...window.APP_DATA,
+  activitySummary: {},
   error: null,
   navigation: {
     sideNavOpen: JSON.parse(localStorage.getItem('sideNavOpen')),

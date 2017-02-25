@@ -2,6 +2,7 @@ import {routerReducer as routing} from 'react-router-redux';
 import {combineReducers} from 'redux';
 
 import activities from './activities';
+import activitySummary from './activitySummary';
 import brands from './brands';
 import error from './error';
 import navigation from './navigation';
@@ -12,6 +13,7 @@ import users from './users';
 
 export default combineReducers({
   activities,
+  activitySummary,
   brands,
   error,
   navigation,

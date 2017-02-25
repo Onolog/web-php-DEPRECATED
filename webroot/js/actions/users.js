@@ -50,9 +50,10 @@ function fetchProfileError(response, dispatch) {
   });
 }
 
-function fetchProfileSuccess({activities, user}, dispatch) {
+function fetchProfileSuccess({activities, activitySummary, user}, dispatch) {
   dispatch({
     activities,
+    activitySummary,
     type: PROFILE_FETCH_SUCCESS,
     users: [user],
   });

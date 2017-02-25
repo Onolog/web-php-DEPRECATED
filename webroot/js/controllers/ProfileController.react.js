@@ -14,6 +14,7 @@ import MaterialIcon from 'components/Icons/MaterialIcon.react';
 import NavbarToggle from 'components/Navigation/NavbarToggle.react';
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
+import Topline from 'components/Topline/Topline.react';
 
 import {toggleSideNav} from 'actions/navigation';
 import {fetchProfile} from 'actions/users';
@@ -21,6 +22,11 @@ import {fetchProfile} from 'actions/users';
 import {PROFILE_FETCH} from 'constants/ActionTypes';
 
 import 'components/Profile/Profile.scss';
+
+const SummaryShape = PropTypes.shape({
+  activity_count: PropTypes.number.isRequired,
+  distance: PropTypes.number.isRequired,
+});
 
 const ProfileDetails = ({user}) => {
   const userLocation = user.location ?
@@ -42,9 +48,10 @@ const ProfileDetails = ({user}) => {
 };
 
 const mapStateToProps = (state, props) => {
-  const {activities, pendingRequests, users} = state;
+  const {activities, activitySummary, pendingRequests, users} = state;
   return {
     activities,
+    activitySummary,
     pendingRequests,
     user: find(users, {id: +props.params.userId}),
   };
@@ -56,6 +63,11 @@ const mapStateToProps = (state, props) => {
 const ProfileController = React.createClass({
   propTypes: {
     activities: PropTypes.array.isRequired,
+    activitySummary: PropTypes.shape({
+      month: SummaryShape,
+      week: SummaryShape,
+      year: SummaryShape,
+    }).isRequired,
     pendingRequests: PropTypes.object.isRequired,
     user: PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -103,7 +115,13 @@ const ProfileController = React.createClass({
   },
 
   _renderContents() {
-    const {activities, dispatch, pendingRequests, user} = this.props;
+    const {
+      activities,
+      activitySummary,
+      dispatch,
+      pendingRequests,
+      user,
+    } = this.props;
 
     if (!user || pendingRequests[PROFILE_FETCH]) {
       return <Loader background full />;
@@ -144,17 +162,49 @@ const ProfileController = React.createClass({
           <Col className="profile-main-col" sm={9}>
             <Row>
               <Col lg={8}>
+                <h4>Activity Summary</h4>
+                {this._renderActivitySummary()}
                 <h4>Recent Activities</h4>
                 <ActivityFeed activities={activities} />
               </Col>
               <Col lg={4}>
                 <h4>Friends</h4>
-                <div className="placeholder" />
               </Col>
             </Row>
           </Col>
         </Row>
       </PageFrame>
+    );
+  },
+
+  _renderActivitySummary() {
+    const {month, week, year} = this.props.activitySummary;
+
+    if (!month || !week || !year) {
+      return;
+    }
+
+    return (
+      <Topline>
+        <Topline.Item annotation="this year" label="Miles">
+          {year.distance}
+        </Topline.Item>
+        <Topline.Item annotation="this year" label="Activities">
+          {year.activity_count}
+        </Topline.Item>
+        <Topline.Item annotation="this month" label="Miles">
+          {month.distance}
+        </Topline.Item>
+        <Topline.Item annotation="this month" label="Activities">
+          {month.activity_count}
+        </Topline.Item>
+        <Topline.Item annotation="this week" label="Miles">
+          {week.distance}
+        </Topline.Item>
+        <Topline.Item annotation="this week" label="Activities">
+          {week.activity_count}
+        </Topline.Item>
+      </Topline>
     );
   },
 
