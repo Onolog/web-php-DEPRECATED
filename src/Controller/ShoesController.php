@@ -37,7 +37,6 @@ class ShoesController extends AppController {
 
     $this->set([
       'shoes' => $shoes,
-      'title' => 'Shoes',
     ]);
   }
 

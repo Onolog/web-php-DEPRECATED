@@ -73,7 +73,7 @@ const CalendarController = React.createClass({
     const m = getMoment(params);
 
     return (
-      <AppFullPage>
+      <AppFullPage title="Calendar">
         <PageHeader full title={m.format('MMMM YYYY')}>
           {this._renderButtonGroup()}
         </PageHeader>

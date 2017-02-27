@@ -65,7 +65,6 @@ class ActivitiesController extends AppController {
     $this->set([
       'activities' => $activities,
       'shoes' => $shoes,
-      'title' => $user['name'],
       'users' => [$user],
     ]);
   }

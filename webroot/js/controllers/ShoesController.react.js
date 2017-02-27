@@ -57,7 +57,7 @@ const ShoesController = React.createClass({
     const {isLoading, show} = this.state;
 
     return (
-      <AppFullPage narrow>
+      <AppFullPage title="Shoes">
         <PageHeader full title="Shoes">
           <div>
             <Button bsSize="small" onClick={this._handleShowModal}>

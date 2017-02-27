@@ -9,14 +9,16 @@ import PageHeader from 'components/Page/PageHeader.react';
 
 import 'components/Vdot/Daniels.css';
 
+const TITLE = 'Daniels VDOT Resources';
+
 /**
  * VdotController.react
  *
  * Displays Daniels VDOT data.
  */
 const DanielsController = props => (
-  <AppFullPage className="daniels">
-    <PageHeader full title="Daniels VDOT Resources" />
+  <AppFullPage className="daniels" title={TITLE}>
+    <PageHeader full title={TITLE} />
     <PageFrame scroll>
       <Tabs defaultActiveKey={1} id="vdot">
         <Tab

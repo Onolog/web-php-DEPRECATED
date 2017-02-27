@@ -13,7 +13,6 @@ class PageHelper extends Helper {
 
   private
     $data = [],
-    $pageTitle = '',
     $pageMeta;
 
   /**
@@ -40,10 +39,8 @@ class PageHelper extends Helper {
           ]) .
           $this->pageMeta .
 
-          // Page title
-          '<title>' .
-            __('Onolog &middot; ') . $this->pageTitle .
-          '</title>' .
+          // Placeholder title. Replaced on client.
+          '<title>Onolog</title>' .
 
           // CSS
           $this->Html->css('//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', [
@@ -76,17 +73,6 @@ class PageHelper extends Helper {
           $this->renderGoogleAnalyticsJS() .
         '</body>' .
       '</html>';
-  }
-
-  /**
-   * Set the <title> of the page
-   *
-   * @param   raw-str   $title
-   * @return  $this
-   */
-  public function setPageTitle($title) {
-    $this->pageTitle = $title;
-    return $this;
   }
 
   public function setData($data) {

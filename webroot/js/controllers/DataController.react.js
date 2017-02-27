@@ -54,7 +54,7 @@ const DataController = React.createClass({
     }
 
     return (
-      <AppPage className="profile">
+      <AppPage className="profile" title="Your Activity">
         <PageHeader title={user.name} />
         {this._renderToplineStats(activities)}
         {this._renderContent(activities)}

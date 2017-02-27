@@ -13,6 +13,11 @@ import fbLoader from 'utils/fbLoader';
 const INTERVAL = 60000; // 1 min
 const LOGIN_PATH = '/login';
 
+const renderTitle = title => {
+  const prefix = 'Onolog';
+  return title ? `${prefix} \u00b7 ${title}` : prefix;
+};
+
 const mapStateToProps = ({error}) => {
   return {
     error,
@@ -32,6 +37,12 @@ const BaseAppPage = React.createClass({
     session: PropTypes.shape({
       time: PropTypes.number.isRequired,
     }),
+    title: PropTypes.string,
+  },
+
+  componentWillMount() {
+    // Set the browser page title.
+    document.title = renderTitle(this.props.title);
   },
 
   componentWillReceiveProps(nextProps) {
@@ -41,11 +52,18 @@ const BaseAppPage = React.createClass({
     // User has successfully logged in.
     if (!session.id && nextSession.id) {
       document.location.reload();
+      return;
     }
 
     // User has successfully logged out.
     if (session.id && !nextSession.id) {
       document.location = LOGIN_PATH;
+      return;
+    }
+
+    // Update the browser page title on transitions.
+    if (this.props.title !== nextProps.title) {
+      document.title = renderTitle(nextProps.title);
     }
   },
 

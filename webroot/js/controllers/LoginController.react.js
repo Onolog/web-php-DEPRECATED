@@ -36,7 +36,10 @@ const Login = React.createClass({
 
   render() {
     return (
-      <BaseAppPage className="login" session={this.props.session}>
+      <BaseAppPage
+        className="login"
+        session={this.props.session}
+        title="Welcome">
         <div
           className="jumbotronContainer"
           style={{height: this.state.windowHeight + 'px'}}>

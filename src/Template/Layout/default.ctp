@@ -9,17 +9,10 @@ $data = array_intersect_key($this->viewVars, [
   'brands' => true,
   'session' => true,
   'shoes' => true,
-  'title' => true,
   'users' => true,
 ]);
 
-// Don't pass title to the client.
-// TODO: Set title on client instead of server.
-$title = idx($data, 'title', $this->fetch('title'));
-unset($data['title']);
-
 $this->Page
-  ->setPageTitle($title)
   ->setData($data)
   ->setMeta($this->fetch('meta'))
   ->render();

@@ -16,6 +16,8 @@ import UnitsSettingsSection from 'components/Settings/UnitsSettingsSection.react
 import {fetchSettings, userSaveSettings} from 'actions/users';
 import {SETTINGS_FETCH} from 'constants/ActionTypes';
 
+const TITLE = 'Settings';
+
 const mapStateToProps = ({pendingRequests, session}) => {
   return {
     pendingRequests,
@@ -56,8 +58,8 @@ const SettingsController = withRouter(React.createClass({
     const {pendingRequests, user} = this.props;
 
     return (
-      <AppFullPage>
-        <PageHeader full title="Settings">
+      <AppFullPage title={TITLE}>
+        <PageHeader full title={TITLE}>
           <Button
             bsSize="small"
             bsStyle="primary"

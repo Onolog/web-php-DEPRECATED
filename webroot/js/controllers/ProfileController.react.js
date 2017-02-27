@@ -107,8 +107,9 @@ const ProfileController = React.createClass({
   },
 
   render() {
+    const {user} = this.props;
     return (
-      <AppFullPage className="profile">
+      <AppFullPage className="profile" title={user && user.name}>
         {this._renderContents()}
       </AppFullPage>
     );

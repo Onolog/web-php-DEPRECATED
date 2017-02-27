@@ -1,4 +1,5 @@
 import {find} from 'lodash';
+import moment from 'moment-timezone';
 import {
   Button,
   ButtonGroup,
@@ -15,6 +16,8 @@ import AppPage from 'components/Page/AppPage.react';
 import MaterialIcon from 'components/Icons/MaterialIcon.react';
 
 import {ACTIVITY_UPDATE} from 'constants/ActionTypes';
+
+const DATE_FORMAT = 'dddd, MMMM Do, YYYY';
 
 const mapStateToProps = (state, props) => {
   const {activities, pendingRequests, session, shoes, users} = state;
@@ -63,7 +66,12 @@ const ActivityController = React.createClass({
   render() {
     const {activity, athlete, shoe} = this.props;
     return (
-      <AppPage narrow>
+      <AppPage
+        narrow
+        title={moment.tz(
+          activity.start_date,
+          activity.timezone
+        ).format(DATE_FORMAT)}>
         <Panel footer={this._renderButtonGroup()}>
           <Activity
             activity={activity}

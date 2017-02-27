@@ -17,8 +17,8 @@ const mapStateToProps = ({session}) => {
 /**
  * AppPage.react
  */
-const AppPage = ({children, className, narrow, session}) => (
-  <BaseAppPage className={className} session={session}>
+const AppPage = ({children, narrow, session, ...pageProps}) => (
+  <BaseAppPage {...pageProps} session={session}>
     <AppHeader user={session} />
     <AppContent narrow={narrow}>
       {children}
