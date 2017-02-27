@@ -43,31 +43,33 @@ use Cake\Routing\Router;
 Router::defaultRouteClass('DashedRoute');
 
 Router::scope('/', function (RouteBuilder $routes) {
+  // Common view to use for all actions.
+  $view = 'common';
 
   // Allowed extensions.
   $routes->extensions(['json', 'xml', 'ajax']);
 
   $routes->connect('/pages/*', [
-      'controller' => 'pages',
-      'action' => 'display'
-    ]);
+    'controller' => 'pages',
+    'action' => 'display',
+  ]);
 
   $routes->connect('/privacy', [
     'controller' => 'pages',
     'action' => 'display',
-    'privacy'
+    $view
   ]);
 
   $routes->connect('/terms', [
     'controller' => 'pages',
     'action' => 'display',
-    'terms'
+    $view
   ]);
 
   $routes->connect('/vdot', [
     'controller' => 'pages',
     'action' => 'display',
-    'vdot'
+    $view
   ]);
 
   /**

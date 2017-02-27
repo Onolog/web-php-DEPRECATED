@@ -35,7 +35,10 @@ class ShoesController extends AppController {
       return;
     }
 
-    $this->set('shoes', $shoes);
+    $this->set([
+      'shoes' => $shoes,
+      'title' => 'Shoes',
+    ]);
   }
 
   public function view($id=null) {

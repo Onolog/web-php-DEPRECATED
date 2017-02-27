@@ -74,6 +74,10 @@ class ActivitiesController extends AppController {
    * @param int   $id   Activity id
    */
   public function view($id=null) {
+    // Override the common view template to allow custom tags and data.
+    $this->viewBuilder()->templatePath('Activities');
+    $this->viewBuilder()->template('view');
+
     if (!$id) {
       throw new NotFoundException(__('Invalid id.'));
     }
@@ -105,9 +109,9 @@ class ActivitiesController extends AppController {
     $user = id(TableRegistry::get('Users'))->get($user_id);
 
     $this->set([
-      'activity' => $activity,
+      'activities' => [$activity],
       'shoes' => $shoes,
-      'user' => $user,
+      'users' => [$user],
     ]);
   }
 

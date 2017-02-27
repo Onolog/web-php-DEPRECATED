@@ -49,6 +49,7 @@ class UsersController extends AppController {
 
     if (!$this->request->is('ajax')) {
       // Just load the page.
+      $this->set(['title' => 'Welcome']);
       return;
     }
 
@@ -137,7 +138,8 @@ class UsersController extends AppController {
     $this->set([
       'activities' => $activitiesTable->getActivityFeed($user->id),
       'activitySummary' => $activitiesTable->getActivitySummary($user->id),
-      'user' => $user,
+      'title' => $user['name'],
+      'users' => [$user],
     ]);
   }
 
@@ -162,6 +164,7 @@ class UsersController extends AppController {
     $this->set([
       'activities' => $activities,
       'shoes' => $shoes,
+      'title' => 'Your Activity Data',
     ]);
   }
 
@@ -170,8 +173,10 @@ class UsersController extends AppController {
    */
   public function settings() {
     $id = $this->requireLoggedInUser();
-    $user = $this->Users->get($id);
-    $this->set('user', $user);
+    $this->set([
+      'title' => 'Settings',
+      'users' => [$this->Users->get($id)],
+    ]);
   }
 
   /**
@@ -208,7 +213,7 @@ class UsersController extends AppController {
 
     $this->set([
       'message' => 'Your changes were successfully saved.',
-      'user' => $user,
+      'users' => [$user],
     ]);
   }
 
@@ -220,7 +225,8 @@ class UsersController extends AppController {
     $user = $this->requireLoggedInUser();
     $friends = [];
     $this->set([
-      'friends' => $friends
+      'friends' => $friends,
+      'title' => 'Friends',
     ]);
   }
 }

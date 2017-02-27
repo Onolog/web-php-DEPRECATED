@@ -7,6 +7,7 @@ use Cake\Core\Configure;
  *
  * File: /app/views/workouts/view.ctp
  */
+$activity = reset($activities);
 $page_url = 'http://www.onolog.com/activity/view/' . $activity['id'];
 $date = date('F jS, Y', strtotime($activity['start_date']));
 $time = format_time($activity['duration']);
@@ -22,12 +23,3 @@ $this->Meta->og('og:description', idx($activity, 'notes'));
 $this->Meta->og('onolog:distance', $distance);
 $this->Meta->og('onolog:time', $time);
 $this->Meta->og('fb:app_id', Configure::read('Facebook.appId'));
-
-$this->set([
-  'data' => [
-    'activities' => [$activity],
-    'shoes' => $shoes,
-    'users' => [$user],
-  ],
-  'title' => $date,
-]);

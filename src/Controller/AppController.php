@@ -52,6 +52,10 @@ class AppController extends Controller {
         'action' => 'login',
       ]
     ]);
+
+    // All actions use the common view:
+    $this->viewBuilder()->templatePath('Common');
+    $this->viewBuilder()->template('common');
   }
 
   public function beforeFilter(Event $event) {

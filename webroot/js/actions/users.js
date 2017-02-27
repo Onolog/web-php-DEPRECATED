@@ -50,12 +50,12 @@ function fetchProfileError(response, dispatch) {
   });
 }
 
-function fetchProfileSuccess({activities, activitySummary, user}, dispatch) {
+function fetchProfileSuccess({activities, activitySummary, users}, dispatch) {
   dispatch({
     activities,
     activitySummary,
     type: PROFILE_FETCH_SUCCESS,
-    users: [user],
+    users,
   });
 }
 
@@ -74,9 +74,9 @@ export function fetchProfile(userId) {
   return (dispatch, getState) => dispatch(fetchProfileRequest(userId));
 }
 
-function fetchSettingsSuccess({user}, dispatch) {
+function fetchSettingsSuccess({users}, dispatch) {
   dispatch({
-    users: [user],
+    users,
     type: SETTINGS_FETCH_SUCCESS,
   });
 }
@@ -102,10 +102,9 @@ export function fetchSettings() {
 }
 
 function userSaveSettingsSuccess(response, dispatch) {
-  const {user} = response;
   dispatch({
+    ...response,
     type: USER_SETTINGS_SAVE_SUCCESS,
-    user,
   });
 }
 
