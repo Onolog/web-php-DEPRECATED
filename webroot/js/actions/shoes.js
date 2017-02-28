@@ -73,26 +73,9 @@ export function fetchShoes() {
 
     $.get('/shoes/index.json')
       .done(response => fetchShoesSuccess(response, dispatch))
-      .fail(response => dispatch({type: ALL_SHOES_FETCH_ERROR}));
+      .fail(response => dispatch({type: ActionTypes.ALL_SHOES_FETCH_ERROR}));
   };
 }
-
-// function fetchShoeSuccess({shoes}, dispatch) {
-//   dispatch({
-//     shoes,
-//     type: ActionTypes.SHOE_FETCH_SUCCESS,
-//   });
-// }
-
-// export function fetchShoe() {
-//   return dispatch => {
-//     dispatch({type: ActionTypes.SHOE_FETCH});
-
-//     $.get('/shoes/index.json')
-//       .done(response => fetchShoeSuccess(response, dispatch))
-//       .fail(response => dispatch({type: ActionTypes.SHOE_FETCH_ERROR}));
-//   };
-// }
 
 function updateShoeError({responseJSON}, dispatch) {
   dispatch({

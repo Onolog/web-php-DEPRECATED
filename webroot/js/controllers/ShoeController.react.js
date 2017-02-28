@@ -1,13 +1,6 @@
 import {find} from 'lodash';
 import React, {PropTypes} from 'react';
-import {
-  Button,
-  ButtonGroup,
-  Glyphicon,
-  OverlayTrigger,
-  Panel,
-  Tooltip,
-} from 'react-bootstrap';
+import {Button, ButtonGroup, Glyphicon, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 import AppFullPage from 'components/Page/AppFullPage.react';

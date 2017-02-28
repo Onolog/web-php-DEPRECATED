@@ -118,7 +118,6 @@ const ProfileController = React.createClass({
   _renderContents() {
     const {
       activities,
-      activitySummary,
       dispatch,
       pendingRequests,
       user,
