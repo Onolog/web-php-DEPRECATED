@@ -1,3 +1,4 @@
+import {unionBy} from 'lodash';
 import ActionTypes from 'constants/ActionTypes';
 
 const activity = (state={}, action) => {
@@ -28,7 +29,7 @@ const activities = (state=[], action) => {
       return state;
     case ActionTypes.SHOE_ACTIVITIES_FETCH_SUCCESS:
     case ActionTypes.SHOE_VIEW_SUCCESS:
-      return state.concat(action.activities);
+      return unionBy(state, action.activities, 'id');
     default:
       return state || [];
   }
