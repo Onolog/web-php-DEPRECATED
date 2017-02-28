@@ -83,6 +83,8 @@ const ShoeFields = React.createClass({
             componentClass="textarea"
             name="notes"
             onChange={this._handleChange}
+            placeholder="Add some notes about this shoe..."
+            rows={3}
             value={notes || ''}
           />
         </FormRow>

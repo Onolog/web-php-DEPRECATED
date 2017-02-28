@@ -46,6 +46,12 @@ const ShoeView = React.createClass({
   render() {
     const {shoe} = this.props;
 
+    const sizeItem = shoe.size ?
+      <Topline.Item label="Size">
+        {shoe.size}
+      </Topline.Item> :
+      null;
+
     return (
       <div className="shoeView">
         <ActivitySection>
@@ -56,11 +62,24 @@ const ShoeView = React.createClass({
             <Topline.Item label="Activities">
               {shoe.activity_count}
             </Topline.Item>
+            {sizeItem}
           </Topline>
         </ActivitySection>
+        {this._renderNotes()}
         {this._renderActivities()}
       </div>
     );
+  },
+
+  _renderNotes() {
+    const {notes} = this.props.shoe;
+    if (notes) {
+      return (
+        <ActivitySection title="Notes">
+          {notes}
+        </ActivitySection>
+      );
+    }
   },
 
   _renderActivities() {
