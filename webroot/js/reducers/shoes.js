@@ -1,21 +1,12 @@
-import {
-  ACTIVITIES_FETCH_SUCCESS,
-  ACTIVITY_ADD_SUCCESS,
-  ACTIVITY_DELETE_SUCCESS,
-  ACTIVITY_UPDATE_SUCCESS,
-  ALL_SHOES_FETCH_SUCCESS,
-  SHOE_ADD_SUCCESS,
-  SHOE_DELETE_SUCCESS,
-  SHOE_UPDATE_SUCCESS,
-  USER_DATA_FETCH_SUCCESS,
-} from 'constants/ActionTypes';
+import ActionTypes from 'constants/ActionTypes';
 
-const shoe = (state=[], action) => {
+const shoe = (state={}, action) => {
   switch (action.type) {
-    case SHOE_UPDATE_SUCCESS:
-    case ACTIVITY_ADD_SUCCESS:
-    case ACTIVITY_DELETE_SUCCESS:
-    case ACTIVITY_UPDATE_SUCCESS:
+    case ActionTypes.SHOE_UPDATE_SUCCESS:
+    case ActionTypes.ACTIVITY_ADD_SUCCESS:
+    case ActionTypes.ACTIVITY_DELETE_SUCCESS:
+    case ActionTypes.ACTIVITY_UPDATE_SUCCESS:
+    case ActionTypes.SHOE_VIEW_SUCCESS:
       const {shoe} = action;
       return state.id === shoe.id ? {...state, ...shoe} : state;
     default:
@@ -25,19 +16,20 @@ const shoe = (state=[], action) => {
 
 const shoes = (state=[], action) => {
   switch (action.type) {
-    case ACTIVITIES_FETCH_SUCCESS:
-    case ALL_SHOES_FETCH_SUCCESS:
-    case USER_DATA_FETCH_SUCCESS:
+    case ActionTypes.ACTIVITIES_FETCH_SUCCESS:
+    case ActionTypes.ALL_SHOES_FETCH_SUCCESS:
+    case ActionTypes.USER_DATA_FETCH_SUCCESS:
       return action.shoes;
-    case SHOE_ADD_SUCCESS:
+    case ActionTypes.SHOE_ADD_SUCCESS:
       return [...state, action.shoe];
-    case SHOE_DELETE_SUCCESS:
+    case ActionTypes.SHOE_DELETE_SUCCESS:
       return state.filter(shoe => shoe.id !== action.id);
-    case SHOE_UPDATE_SUCCESS:
+    case ActionTypes.SHOE_UPDATE_SUCCESS:
+    case ActionTypes.SHOE_VIEW_SUCCESS:
       return state.map(s => shoe(s, action));
-    case ACTIVITY_ADD_SUCCESS:
-    case ACTIVITY_DELETE_SUCCESS:
-    case ACTIVITY_UPDATE_SUCCESS:
+    case ActionTypes.ACTIVITY_ADD_SUCCESS:
+    case ActionTypes.ACTIVITY_DELETE_SUCCESS:
+    case ActionTypes.ACTIVITY_UPDATE_SUCCESS:
       if (action.shoe) {
         return state.map(s => shoe(s, action));
       }

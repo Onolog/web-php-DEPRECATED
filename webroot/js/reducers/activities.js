@@ -26,6 +26,7 @@ const activities = (state=[], action) => {
       return state.map(a => activity(a, action));
     case ActionTypes.ACTIVITY_VIEW_SUCCESS:
       return state;
+    case ActionTypes.SHOE_ACTIVITIES_FETCH_SUCCESS:
     case ActionTypes.SHOE_VIEW_SUCCESS:
       return state.concat(action.activities);
     default:

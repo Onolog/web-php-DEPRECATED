@@ -30,11 +30,6 @@ class ShoesController extends AppController {
       ->where(['user_id' => $user_id])
       ->contain(['Activities', 'Brands']);
 
-    if ($this->request->is('ajax')) {
-      $this->set(['shoes' => $shoes]);
-      return;
-    }
-
     $this->set([
       'shoes' => $shoes,
     ]);
@@ -59,18 +54,18 @@ class ShoesController extends AppController {
       ->where(['shoe_id' => $shoe->id])
       ->order(['Activities.start_date' =>'ASC']);
 
-    if (!$this->request->is('ajax')) {
-      $this->set(compact(
-        'activities',
-        'shoe'
-      ));
-      return;
+    $response = ['activities' => $activities];
+
+    // For full page loads, send an array with the shoe data to hydrate the app
+    // state. Otherwise, just send data for the single shoe and let reducers
+    // handle updates to the state.
+    if ($this->request->is('ajax')) {
+      $response['shoe'] = $shoe;
+    } else {
+      $response['shoes'] = [$shoe];
     }
 
-    $this->set([
-      'activities' => $activities,
-      'shoe' => $shoe
-    ]);
+    $this->set($response);
   }
 
   public function add() {

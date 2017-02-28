@@ -15,7 +15,7 @@ const SideNav = props => (
 
 const SideNavItem = ({children, className, icon, open, pathname}) => {
   const navItem =
-    <LinkContainer to={{pathname}}>
+    <LinkContainer onlyActiveOnIndex to={{pathname}}>
       <NavItem className={cx('app-side-nav-item', className)}>
         {icon}
         <SideNavItemLabel>

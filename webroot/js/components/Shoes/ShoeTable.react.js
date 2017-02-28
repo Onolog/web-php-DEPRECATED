@@ -8,7 +8,7 @@ import Link from 'components/Link/Link.react';
 import ShoeModal from './ShoeModal.react';
 import ShoeViewModal from './ShoeViewModal.react';
 
-import {viewShoe} from 'actions/shoes';
+import {fetchShoeActivities} from 'actions/shoes';
 
 const EDIT = 'edit';
 const VIEW = 'view';
@@ -111,7 +111,7 @@ const ShoeTable = React.createClass({
   },
 
   _handleView(e, shoe) {
-    this.props.dispatch(viewShoe(shoe));
+    this.props.dispatch(fetchShoeActivities(shoe));
 
     this.setState({
       action: VIEW,

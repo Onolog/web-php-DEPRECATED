@@ -1,34 +1,18 @@
 import $ from 'jquery';
-import {filter} from 'lodash';
-import {
-  ALL_SHOES_FETCH,
-  ALL_SHOES_FETCH_ERROR,
-  ALL_SHOES_FETCH_SUCCESS,
-  SHOE_ADD,
-  SHOE_ADD_ERROR,
-  SHOE_ADD_SUCCESS,
-  SHOE_DELETE,
-  SHOE_DELETE_ERROR,
-  SHOE_DELETE_SUCCESS,
-  SHOE_UPDATE,
-  SHOE_UPDATE_ERROR,
-  SHOE_UPDATE_SUCCESS,
-  SHOE_VIEW,
-  SHOE_VIEW_ERROR,
-  SHOE_VIEW_SUCCESS,
-} from 'constants/ActionTypes';
+import {filter, find} from 'lodash';
+import ActionTypes from 'constants/ActionTypes';
 
 function addShoeError({responseJSON}, dispatch) {
   dispatch({
     error: responseJSON,
-    type: SHOE_ADD_ERROR,
+    type: ActionTypes.SHOE_ADD_ERROR,
   });
 }
 
 function addShoeSuccess({shoe}, dispatch) {
   dispatch({
     shoe,
-    type: SHOE_ADD_SUCCESS,
+    type: ActionTypes.SHOE_ADD_SUCCESS,
   });
 }
 
@@ -36,7 +20,7 @@ export const addShoe = shoe => {
   return dispatch => {
     dispatch({
       shoe,
-      type: SHOE_ADD,
+      type: ActionTypes.SHOE_ADD,
     });
 
     $.post('/shoes/add.json', shoe)
@@ -48,21 +32,21 @@ export const addShoe = shoe => {
 function deleteShoeRequest(id) {
   return {
     id,
-    type: SHOE_DELETE,
+    type: ActionTypes.SHOE_DELETE,
   };
 }
 
 function deleteShoeError({responseJSON}, dispatch) {
   dispatch({
     error: responseJSON,
-    type: SHOE_DELETE_ERROR,
+    type: ActionTypes.SHOE_DELETE_ERROR,
   });
 }
 
 function deleteShoeSuccess({id}, dispatch) {
   dispatch({
     id,
-    type: SHOE_DELETE_SUCCESS,
+    type: ActionTypes.SHOE_DELETE_SUCCESS,
   });
 }
 
@@ -79,13 +63,13 @@ export const deleteShoe = id => {
 function fetchShoesSuccess({shoes}, dispatch) {
   dispatch({
     shoes,
-    type: ALL_SHOES_FETCH_SUCCESS,
+    type: ActionTypes.ALL_SHOES_FETCH_SUCCESS,
   });
 }
 
 export function fetchShoes() {
   return dispatch => {
-    dispatch({type: ALL_SHOES_FETCH});
+    dispatch({type: ActionTypes.ALL_SHOES_FETCH});
 
     $.get('/shoes/index.json')
       .done(response => fetchShoesSuccess(response, dispatch))
@@ -93,17 +77,34 @@ export function fetchShoes() {
   };
 }
 
+// function fetchShoeSuccess({shoes}, dispatch) {
+//   dispatch({
+//     shoes,
+//     type: ActionTypes.SHOE_FETCH_SUCCESS,
+//   });
+// }
+
+// export function fetchShoe() {
+//   return dispatch => {
+//     dispatch({type: ActionTypes.SHOE_FETCH});
+
+//     $.get('/shoes/index.json')
+//       .done(response => fetchShoeSuccess(response, dispatch))
+//       .fail(response => dispatch({type: ActionTypes.SHOE_FETCH_ERROR}));
+//   };
+// }
+
 function updateShoeError({responseJSON}, dispatch) {
   dispatch({
     error: responseJSON,
-    type: SHOE_UPDATE_ERROR,
+    type: ActionTypes.SHOE_UPDATE_ERROR,
   });
 }
 
 function updateShoeSuccess({shoe}, dispatch) {
   dispatch({
     shoe,
-    type: SHOE_UPDATE_SUCCESS,
+    type: ActionTypes.SHOE_UPDATE_SUCCESS,
   });
 }
 
@@ -111,7 +112,7 @@ export const updateShoe = shoe => {
   return dispatch => {
     dispatch({
       shoe,
-      type: SHOE_UPDATE,
+      type: ActionTypes.SHOE_UPDATE,
     });
 
     $.post(`/shoes/edit/${shoe.id}.json`, shoe)
@@ -123,7 +124,7 @@ export const updateShoe = shoe => {
 function viewShoeError({responseJSON}, dispatch) {
   dispatch({
     error: responseJSON,
-    type: SHOE_VIEW_ERROR,
+    type: ActionTypes.SHOE_VIEW_ERROR,
   });
 }
 
@@ -131,20 +132,50 @@ function viewShoeSuccess({activities, shoe}, dispatch) {
   dispatch({
     activities,
     shoe,
-    type: SHOE_VIEW_SUCCESS,
+    type: ActionTypes.SHOE_VIEW_SUCCESS,
   });
 }
 
-export const viewShoe = shoe => {
+export const viewShoe = shoeId => {
   return (dispatch, getState) => {
-    dispatch({type: SHOE_VIEW});
+    const {shoes} = getState();
+    const shoe = find(shoes, {id: shoeId});
 
-    const {activities} = getState();
-    const shoeActivities = filter(activities, {shoe_id: shoe.id});
-    if (shoeActivities.length !== shoe.activity_count) {
-      $.get(`/shoes/view/${shoe.id}.json`)
+    if (!shoe) {
+      dispatch({type: ActionTypes.SHOE_VIEW});
+
+      $.get(`/shoes/${shoeId}.json`)
         .done(response => viewShoeSuccess(response, dispatch))
         .fail(response => viewShoeError(response, dispatch));
+    }
+  };
+};
+
+function fetchShoeActivitiesError({responseJSON}, dispatch) {
+  dispatch({
+    error: responseJSON,
+    type: ActionTypes.SHOE_ACTIVITIES_FETCH_ERROR,
+  });
+}
+
+function fetchShoeActivitiesSuccess({activities, shoe}, dispatch) {
+  dispatch({
+    activities,
+    type: ActionTypes.SHOE_ACTIVITIES_FETCH_SUCCESS,
+  });
+}
+
+export const fetchShoeActivities = shoe => {
+  return (dispatch, getState) => {
+    const {activities} = getState();
+    const shoeActivities = filter(activities, {shoe_id: shoe.id});
+
+    if (shoeActivities.length !== shoe.activity_count) {
+      dispatch({type: ActionTypes.SHOE_ACTIVITIES_FETCH});
+
+      $.get(`/shoes/${shoe.id}.json`)
+        .done(response => fetchShoeActivitiesSuccess(response, dispatch))
+        .fail(response => fetchShoeActivitiesError(response, dispatch));
     }
   };
 };

@@ -25,6 +25,9 @@ module.exports = {
 
   ERROR_CLEAR: 'error-clear',
 
+  SHOE_ACTIVITIES_FETCH: 'shoe-activities-fetch',
+  SHOE_ACTIVITIES_FETCH_ERROR: 'shoe-activities-fetch-error',
+  SHOE_ACTIVITIES_FETCH_SUCCESS: 'shoe-activities-fetch-success',
   SHOE_ADD: 'shoe-add',
   SHOE_ADD_ERROR: 'shoe-add-error',
   SHOE_ADD_SUCCESS: 'shoe-add-success',
