@@ -35,7 +35,7 @@ const ShoeFields = React.createClass({
   render() {
     const {brand_id, model, notes, size, size_type} = this.props.shoe;
     const sizeType = size_type || 0;
-    const shoeSizes = SIZES[sizeType];
+    const shoeSizes = SIZES[sizeType].slice();
     if (!size) {
       shoeSizes.unshift({label: '--', value: -1});
     }
