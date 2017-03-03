@@ -5,6 +5,7 @@ import activities from './activities';
 import activitySummary from './activitySummary';
 import brands from './brands';
 import error from './error';
+import garminData from './garminData';
 import navigation from './navigation';
 import pendingRequests from './pendingRequests';
 import session from './session';
@@ -16,6 +17,7 @@ export default combineReducers({
   activitySummary,
   brands,
   error,
+  garminData,
   navigation,
   pendingRequests,
   routing,

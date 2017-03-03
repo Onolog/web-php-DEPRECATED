@@ -133,7 +133,7 @@ const Activity = React.createClass({
   },
 
   _renderMap(tracks) {
-    if (tracks) {
+    if (tracks && tracks.length) {
       return (
         <div className="activityMapContainer">
           <GoogleMap className="activityMap" path={tracks} />

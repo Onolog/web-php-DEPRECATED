@@ -45,6 +45,10 @@ module.exports = {
   BRANDS_FETCH_ERROR: 'brands-fetch-error',
   BRANDS_FETCH_SUCCESS: 'brands-fetch-success',
 
+  GARMIN_ACTIVITY_SCRAPE: 'garmin-activity-scrape',
+  GARMIN_ACTIVITY_SCRAPE_ERROR: 'garmin-activity-scrape-error',
+  GARMIN_ACTIVITY_SCRAPE_SUCCESS: 'garmin-activity-scrape-success',
+
   PROFILE_FETCH: 'profile-fetch',
   PROFILE_FETCH_ERROR: 'profile-fetch-error',
   PROFILE_FETCH_SUCCESS: 'profile-fetch-success',

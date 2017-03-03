@@ -21,6 +21,7 @@ const initialState = {
   activitySummary: {},
   brands: [],
   error: null,
+  garminData: {},
   navigation: {
     sideNavOpen: JSON.parse(localStorage.getItem('sideNavOpen')),
   },

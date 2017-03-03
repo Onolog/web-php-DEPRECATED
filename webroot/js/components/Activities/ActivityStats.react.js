@@ -85,7 +85,7 @@ const ActivityStats = React.createClass({
     if (calories) {
       stats.push({
         label: 'Calories',
-        value: calories,
+        value: Math.round(calories),
       });
     }
 

@@ -3,12 +3,12 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
-use Cake\ORM\TableRegistry;
-
 use Cake\Network\Exception\BadRequestException;
 use Cake\Network\Exception\InternalErrorException;
 use Cake\Network\Exception\NotFoundException;
 use Cake\Network\Exception\UnauthorizedException;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Xml;
 
 /**
  * Activities Controller
@@ -221,6 +221,27 @@ class ActivitiesController extends AppController {
       'message' => 'Your activity was successfully deleted.',
       'shoe' => $this->getUpdatedShoe($shoe_id),
     ]);
+  }
+
+  public function scrape($activityId=null) {
+    $baseUrl = 'https://connect.garmin.com/proxy';
+
+    if ($activityId) {
+      $activity_url = "{$baseUrl}/activity-service/activity/{$activityId}";
+      $weather_url = "{$baseUrl}/weather-service/weather/{$activityId}";
+
+      $activity_json = file_get_contents($activity_url);
+      $details_json = file_get_contents("{$activity_url}/details");
+      $splits_json = file_get_contents("{$activity_url}/splits");
+      $weather_json = file_get_contents($weather_url);
+
+      $this->set([
+        'activity' => json_decode($activity_json),
+        'details' => json_decode($details_json),
+        'splits' => json_decode($splits_json),
+        'weather' => json_decode($weather_json),
+      ]);
+    }
   }
 
   /**
