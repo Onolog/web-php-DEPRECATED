@@ -13,9 +13,9 @@ import {
   ACTIVITY_UPDATE,
   ACTIVITY_UPDATE_ERROR,
   ACTIVITY_UPDATE_SUCCESS,
-  GARMIN_ACTIVITY_SCRAPE,
-  GARMIN_ACTIVITY_SCRAPE_ERROR,
-  GARMIN_ACTIVITY_SCRAPE_SUCCESS,
+  GARMIN_ACTIVITY_FETCH,
+  GARMIN_ACTIVITY_FETCH_ERROR,
+  GARMIN_ACTIVITY_FETCH_SUCCESS,
 } from 'constants/ActionTypes';
 
 function addActivitySuccess(response, dispatch) {
@@ -116,20 +116,20 @@ function getGarminActivityError(response, dispatch) {
     error: {
       message: 'There was an error',
     },
-    type: GARMIN_ACTIVITY_SCRAPE_ERROR,
+    type: GARMIN_ACTIVITY_FETCH_ERROR,
   });
 }
 
 function getGarminActivitySuccess(garminData, dispatch) {
   dispatch({
     garminData,
-    type: GARMIN_ACTIVITY_SCRAPE_SUCCESS,
+    type: GARMIN_ACTIVITY_FETCH_SUCCESS,
   });
 }
 
 export function getGarminActivity(activityId) {
   return dispatch => {
-    dispatch({type: GARMIN_ACTIVITY_SCRAPE});
+    dispatch({type: GARMIN_ACTIVITY_FETCH});
 
     $.post(`/activities/scrape/${activityId}.json`)
       .done(response => getGarminActivitySuccess(response, dispatch))

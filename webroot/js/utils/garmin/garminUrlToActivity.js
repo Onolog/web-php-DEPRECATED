@@ -1,5 +1,8 @@
-import {metersToMiles} from 'utils/distanceUtils';
+import {metersToFeet, metersToMiles} from 'utils/distanceUtils';
 
+/**
+ * Normalizes activity data pulled from Garmin's endpoints.
+ */
 function garminUrlToActivity({activity, details, splits, weather}) {
   const {
     averageHR,
@@ -18,14 +21,14 @@ function garminUrlToActivity({activity, details, splits, weather}) {
     calories,
     distance: metersToMiles(distance),
     duration,
+    elevation_gain: metersToFeet(elevationGain),
+    elevation_loss: metersToFeet(elevationLoss),
+    garmin_activity_id: activity.activityId,
     max_hr: maxHR,
     start_date: startTimeLocal,
     timezone: activity.timeZoneUnitDTO.timeZone,
 
     // TODO: Add these fields to the schema.
-    //
-    // elevation_gain: metersToFeet(elevationGain),
-    // elevation_loss: metersToFeet(elevationLoss),
     // device: {},
     // laps: splits.lapDTOs,
     // tracks: [],

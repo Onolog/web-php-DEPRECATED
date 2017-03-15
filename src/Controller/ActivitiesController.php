@@ -231,15 +231,19 @@ class ActivitiesController extends AppController {
       $weather_url = "{$baseUrl}/weather-service/weather/{$activityId}";
 
       $activity_json = file_get_contents($activity_url);
-      $details_json = file_get_contents("{$activity_url}/details");
-      $splits_json = file_get_contents("{$activity_url}/splits");
-      $weather_json = file_get_contents($weather_url);
+
+      // TODO: Add this data to the schema and import along with activity
+      // summary.
+      //
+      // $details_json = file_get_contents("{$activity_url}/details");
+      // $splits_json = file_get_contents("{$activity_url}/splits");
+      // $weather_json = file_get_contents($weather_url);
 
       $this->set([
         'activity' => json_decode($activity_json),
-        'details' => json_decode($details_json),
-        'splits' => json_decode($splits_json),
-        'weather' => json_decode($weather_json),
+        // 'details' => json_decode($details_json),
+        // 'splits' => json_decode($splits_json),
+        // 'weather' => json_decode($weather_json),
       ]);
     }
   }

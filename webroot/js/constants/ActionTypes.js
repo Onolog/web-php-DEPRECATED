@@ -45,9 +45,9 @@ module.exports = {
   BRANDS_FETCH_ERROR: 'brands-fetch-error',
   BRANDS_FETCH_SUCCESS: 'brands-fetch-success',
 
-  GARMIN_ACTIVITY_SCRAPE: 'garmin-activity-scrape',
-  GARMIN_ACTIVITY_SCRAPE_ERROR: 'garmin-activity-scrape-error',
-  GARMIN_ACTIVITY_SCRAPE_SUCCESS: 'garmin-activity-scrape-success',
+  GARMIN_ACTIVITY_FETCH: 'garmin-activity-fetch',
+  GARMIN_ACTIVITY_FETCH_ERROR: 'garmin-activity-fetch-error',
+  GARMIN_ACTIVITY_FETCH_SUCCESS: 'garmin-activity-fetch-success',
 
   PROFILE_FETCH: 'profile-fetch',
   PROFILE_FETCH_ERROR: 'profile-fetch-error',
@@ -72,5 +72,7 @@ module.exports = {
   USER_SETTINGS_SAVE_ERROR: 'user-settings-save-error',
   USER_SETTINGS_SAVE_SUCCESS: 'user-settings-save-success',
 
+  // UI Actions
+  ACTIVITY_MODAL_HIDE: 'activity-modal-hide',
   NAV_TOGGLE: 'nav-toggle',
 };

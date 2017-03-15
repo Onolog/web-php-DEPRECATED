@@ -11,7 +11,7 @@ export default (pendingRequests={}, action) => {
     case ActionTypes.ACTIVITY_VIEW:
     case ActionTypes.ALL_SHOES_FETCH:
     case ActionTypes.BRANDS_FETCH:
-    case ActionTypes.GARMIN_ACTIVITY_SCRAPE:
+    case ActionTypes.GARMIN_ACTIVITY_FETCH:
     case ActionTypes.PROFILE_FETCH:
     case ActionTypes.SESSION_LOGIN:
     case ActionTypes.SESSION_LOGOUT:
@@ -39,8 +39,8 @@ export default (pendingRequests={}, action) => {
     case ActionTypes.ALL_SHOES_FETCH_SUCCESS:
     case ActionTypes.BRANDS_FETCH_ERROR:
     case ActionTypes.BRANDS_FETCH_SUCCESS:
-    case ActionTypes.GARMIN_ACTIVITY_SCRAPE_ERROR:
-    case ActionTypes.GARMIN_ACTIVITY_SCRAPE_SUCCESS:
+    case ActionTypes.GARMIN_ACTIVITY_FETCH_ERROR:
+    case ActionTypes.GARMIN_ACTIVITY_FETCH_SUCCESS:
     case ActionTypes.PROFILE_FETCH_ERROR:
     case ActionTypes.PROFILE_FETCH_SUCCESS:
     case ActionTypes.SESSION_LOGIN_ERROR:

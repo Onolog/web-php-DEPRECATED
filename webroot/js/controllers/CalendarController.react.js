@@ -1,10 +1,11 @@
 import moment from 'moment';
 import React, {PropTypes} from 'react';
-import {Button, ButtonGroup} from 'react-bootstrap';
+import {Button, ButtonGroup, DropdownButton, MenuItem} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 
 import ActivityCalendar from 'components/Activities/ActivityCalendar.react';
+import ActivityImportModal from 'components/Activities/ActivityImportModal.react';
 import ActivityModal from 'components/Activities/ActivityModal.react';
 
 import AppFullPage from 'components/Page/AppFullPage.react';
@@ -48,7 +49,8 @@ const CalendarController = React.createClass({
 
   getInitialState() {
     return {
-      showModal: false,
+      showAddModal: false,
+      showImportModal: false,
     };
   },
 
@@ -90,16 +92,20 @@ const CalendarController = React.createClass({
   _renderButtonGroup() {
     return (
       <div>
-        <ActivityModal
-          onHide={this._hideModal}
-          show={this.state.showModal}
-        />
-        <Button
+        <DropdownButton
           bsSize="small"
           bsStyle="success"
-          onClick={this._showModal}>
-          <MaterialIcon icon="plus" />
-        </Button>
+          id="activity-create"
+          noCaret
+          pullRight
+          title={<MaterialIcon icon="plus" />}>
+          <MenuItem onClick={this._showImportModal}>
+            <MaterialIcon icon="cloud-upload" /> Import activity from URL
+          </MenuItem>
+          <MenuItem onClick={this._showAddModal}>
+            <MaterialIcon icon="calendar-plus" /> Add manual activity
+          </MenuItem>
+        </DropdownButton>
         <ButtonGroup bsSize="small">
           <Button
             className="monthArrow"
@@ -115,6 +121,14 @@ const CalendarController = React.createClass({
             <MaterialIcon icon="arrow-right" />
           </Button>
         </ButtonGroup>
+        <ActivityModal
+          onHide={this._hideModal}
+          show={this.state.showAddModal}
+        />
+        <ActivityImportModal
+          onHide={this._hideModal}
+          show={this.state.showImportModal}
+        />
       </div>
     );
   },
@@ -124,11 +138,18 @@ const CalendarController = React.createClass({
   },
 
   _hideModal() {
-    this.setState({showModal: false});
+    this.setState({
+      showAddModal: false,
+      showImportModal: false,
+    });
   },
 
-  _showModal() {
-    this.setState({showModal: true});
+  _showAddModal() {
+    this.setState({showAddModal: true});
+  },
+
+  _showImportModal() {
+    this.setState({showImportModal: true});
   },
 
   _updateCalendar(newMoment) {

@@ -1,4 +1,4 @@
-import {NAV_TOGGLE} from 'constants/ActionTypes';
+import {ACTIVITY_MODAL_HIDE, NAV_TOGGLE} from 'constants/ActionTypes';
 
 export function toggleSideNav() {
   return (dispatch, getState) => {
@@ -9,4 +9,8 @@ export function toggleSideNav() {
       type: NAV_TOGGLE,
     });
   };
+}
+
+export function hideActivityModal() {
+  return dispatch => dispatch({type: ACTIVITY_MODAL_HIDE});
 }

@@ -1,8 +1,11 @@
-import {GARMIN_ACTIVITY_SCRAPE_SUCCESS} from 'constants/ActionTypes';
+import ActionTypes from 'constants/ActionTypes';
 
 export default (state={}, action) => {
   switch (action.type) {
-    case GARMIN_ACTIVITY_SCRAPE_SUCCESS:
+    case ActionTypes.ACTIVITY_MODAL_HIDE:
+      // Reset data.
+      return {};
+    case ActionTypes.GARMIN_ACTIVITY_FETCH_SUCCESS:
       return action.garminData;
     default:
       return state;

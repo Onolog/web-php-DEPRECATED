@@ -3,7 +3,7 @@ import ActionTypes from 'constants/ActionTypes';
 const error = (state=null, action) => {
   switch (action.type) {
     case ActionTypes.ACTIVITY_ADD_ERROR:
-    case ActionTypes.GARMIN_ACTIVTY_SCRAPE_ERROR:
+    case ActionTypes.GARMIN_ACTIVTY_FETCH_ERROR:
     case ActionTypes.SESSION_LOGIN_ERROR:
     case ActionTypes.SESSION_LOGOUT_ERROR:
       return action.error;
