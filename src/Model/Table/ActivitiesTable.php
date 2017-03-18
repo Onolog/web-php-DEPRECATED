@@ -157,6 +157,14 @@ class ActivitiesTable extends Table {
         ->integer('garmin_activity_id')
         ->allowEmpty('garmin_activity_id');
 
+    $validator
+        ->integer('elevation_gain')
+        ->allowEmpty('elevation_gain');
+
+    $validator
+        ->integer('elevation_loss')
+        ->allowEmpty('elevation_loss');
+
     return $validator;
   }
 
