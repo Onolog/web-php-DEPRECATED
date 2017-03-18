@@ -1,4 +1,6 @@
 import React, {PropTypes} from 'react';
+import {findDOMNode} from 'react-dom';
+import {FormControl} from 'react-bootstrap';
 
 import ShoeSelector from 'components/Shoes/ShoeSelector.react';
 
@@ -7,8 +9,6 @@ import DateTimePicker from 'components/DateTimePicker/DateTimePicker.react';
 import DurationInput from 'components/Forms/DurationInput.react';
 import FBFriendTokenizer from 'components/Facebook/FBFriendTokenizer.react';
 import FormGroup from 'components/Forms/FormGroup.react';
-import Textarea from 'components/Forms/Textarea.react';
-import TextInput from 'components/Forms/TextInput.react';
 
 import calculatePace from 'utils/calculatePace';
 
@@ -30,18 +30,18 @@ const ActivityForm = React.createClass({
     onChange: PropTypes.func.isRequired,
   },
 
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       activity: {},
     };
   },
 
-  componentDidMount: function() {
-    // Auto-focus the first field
-    this.refs.distance.focus();
+  componentDidMount() {
+    // Auto-focus the distance field
+    findDOMNode(this._distanceInput).focus();
   },
 
-  render: function() {
+  render() {
     const {activity} = this.props;
     const pace = calculatePace.fromSeconds(
       activity.distance || 0,
@@ -51,12 +51,13 @@ const ActivityForm = React.createClass({
     return (
       <AppForm bordered className="activity-form" horizontal>
         <FormGroup label="Distance">
-          <TextInput
+          <FormControl
             className="distanceInput"
             defaultValue={activity.distance}
             name="distance"
             onChange={this._onInputChange}
-            ref="distance"
+            ref={input => this._distanceInput = input}
+            type="number"
           />
           <span className="colon">miles</span>
         </FormGroup>
@@ -82,12 +83,13 @@ const ActivityForm = React.createClass({
         </FormGroup>
 
         <FormGroup label="Avg. Heart Rate">
-          <TextInput
+          <FormControl
             className="heartRateInput"
             defaultValue={activity.avg_hr}
             maxLength={3}
             name="avg_hr"
             onChange={this._onInputChange}
+            type="text"
           />
           <span className="colon">bpm</span>
         </FormGroup>
@@ -109,8 +111,9 @@ const ActivityForm = React.createClass({
         </FormGroup>
 
         <FormGroup label="Notes">
-          <Textarea
+          <FormControl
             className="notes"
+            componentClass="textarea"
             defaultValue={activity.notes}
             name="notes"
             onChange={this._onInputChange}
