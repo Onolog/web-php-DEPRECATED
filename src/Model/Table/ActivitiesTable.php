@@ -153,6 +153,10 @@ class ActivitiesTable extends Table {
     $validator
         ->allowEmpty('friends');
 
+    $validator
+        ->integer('garmin_activity_id')
+        ->allowEmpty('garmin_activity_id');
+
     return $validator;
   }
 
