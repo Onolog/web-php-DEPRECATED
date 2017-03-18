@@ -1,4 +1,3 @@
-import {isEmpty} from 'lodash';
 import React, {PropTypes} from 'react';
 import {Button, ButtonToolbar, Modal} from 'react-bootstrap';
 
@@ -23,6 +22,9 @@ const ActivityImportModal = React.createClass({
       show,
     } = this.props;
 
+    // When the Garmin id is set, we have the activity data.
+    const hasActivity = !!activity.garmin_activity_id;
+
     return (
       <Modal onExited={onExited} onHide={onHide} show={show}>
         <Modal.Header closeButton>
@@ -30,7 +32,7 @@ const ActivityImportModal = React.createClass({
         </Modal.Header>
         <Modal.Body>
           <ActivityFromUrlForm
-            activity={activity}
+            activity={hasActivity ? activity : {}}
             isLoading={pendingRequests[GARMIN_ACTIVITY_FETCH]}
             onChange={onChange}
           />
@@ -44,7 +46,7 @@ const ActivityImportModal = React.createClass({
             </Button>
             <Button
               bsStyle="primary"
-              disabled={isLoading || isEmpty(activity)}
+              disabled={isLoading || !hasActivity}
               onClick={onSave}>
               Create Activity
             </Button>

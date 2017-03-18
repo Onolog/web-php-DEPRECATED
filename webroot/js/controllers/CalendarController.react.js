@@ -15,7 +15,7 @@ import PageHeader from 'components/Page/PageHeader.react';
 
 import {fetchActivities} from 'actions/activities';
 
-import {ACTIVITIES_FETCH} from 'constants/ActionTypes';
+import {ACTIVITIES_FETCH, ACTIVITY_ADD} from 'constants/ActionTypes';
 
 const getMoment = ({month, year}) => moment({month: +month - 1, year});
 
@@ -45,6 +45,15 @@ const CalendarController = React.createClass({
 
     // Load initial data.
     this._fetchData(m);
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.pendingRequests[ACTIVITY_ADD] &&
+      !nextProps.pendingRequests[ACTIVITY_ADD]
+    ) {
+      this._hideModal();
+    }
   },
 
   getInitialState() {

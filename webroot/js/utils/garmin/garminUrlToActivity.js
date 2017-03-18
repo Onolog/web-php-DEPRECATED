@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {metersToFeet, metersToMiles} from 'utils/distanceUtils';
 
 /**
@@ -18,17 +19,17 @@ function garminUrlToActivity({activity, details, splits, weather}) {
   return {
     activity_type: activity.activityTypeDTO.typeKey,
     avg_hr: averageHR,
-    calories,
+    calories: Math.round(calories),     // TODO: Accept decimal values?
     distance: metersToMiles(distance),
-    duration,
+    duration: Math.round(duration),     // TODO: Accept decimal values?
     elevation_gain: metersToFeet(elevationGain),
     elevation_loss: metersToFeet(elevationLoss),
     garmin_activity_id: activity.activityId,
     max_hr: maxHR,
-    start_date: startTimeLocal,
+    start_date: moment(startTimeLocal).format(),
     timezone: activity.timeZoneUnitDTO.timeZone,
 
-    // TODO: Add these fields to the schema.
+    // TODO: Add these models to the schema.
     // device: {},
     // laps: splits.lapDTOs,
     // tracks: [],

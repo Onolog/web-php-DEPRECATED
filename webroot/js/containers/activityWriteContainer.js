@@ -79,6 +79,8 @@ const activityModalContainer = Component => {
     },
 
     _handleHide() {
+      // TODO: Find a better way to compare states to see whether there are
+      // changes.
       const {activity} = this.getInitialState();
       const hasChanges = !isEqual(activity, this.state.activity);
       const confirmed = hasChanges && confirm(
@@ -102,7 +104,7 @@ const activityModalContainer = Component => {
     _handleSave(e) {
       const {dispatch, initialActivity} = this.props;
       const {activity} = this.state;
-      const {distance, avg_hr} = activity;
+      const {avg_hr, distance} = activity;
 
       // Client-side validation of form.
       // TODO: Better validation on server.
@@ -122,12 +124,7 @@ const activityModalContainer = Component => {
     },
 
     _getNewActivity() {
-      const {date} = this.props;
-
-      if (!date) {
-        return {};
-      }
-
+      const date = this.props.date || new Date();
       const now = new Date();
 
       // Set time to match the current time.

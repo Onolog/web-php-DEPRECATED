@@ -20,6 +20,7 @@ const ActivityFromUrlForm = React.createClass({
   render() {
     const {activity, onChange, isLoading} = this.props;
 
+
     if (!isEmpty(activity)) {
       return (
         <ActivityForm

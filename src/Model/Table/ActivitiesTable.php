@@ -124,7 +124,8 @@ class ActivitiesTable extends Table {
         ->notEmpty('start_date');
 
     $validator
-        ->allowEmpty('timezone');
+        ->requirePresence('timezone', 'create')
+        ->notEmpty('timezone');
 
     $validator
         ->decimal('distance')
