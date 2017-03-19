@@ -4,6 +4,11 @@
 echo 'Getting latest master from Github...'
 git pull origin master
 
+# Apply any migrations and clear the model cache.
+echo 'Applying migrations...'
+./bin/cake migrations migrate
+rm -f ./tmp/cache/models/*
+
 # Remove node modules and re-install.
 echo 'Reinstalling Node modules...'
 rm -rf ./node_modules
