@@ -1,35 +1,33 @@
 import cx from 'classnames';
 import React, {PropTypes} from 'react';
-import {Col, ControlLabel, FormGroup} from 'react-bootstrap';
+import {Col, ControlLabel, FormGroup, HelpBlock} from 'react-bootstrap';
 
 /**
  * FormRow.react
  */
-const FormRow = React.createClass({
-  displayName: 'FormRow',
+const FormRow = props => {
+  const {children, error, inline, label, name} = props;
 
-  propTypes: {
-    inline: PropTypes.bool,
-    label: PropTypes.string,
-    name: PropTypes.string,
-  },
+  return (
+    <FormGroup
+      className={cx({'form-inline': inline})}
+      validationState={error ? 'error' : null}>
+      <Col sm={3}>
+        <ControlLabel>{label}</ControlLabel>
+      </Col>
+      <Col sm={9}>
+        {children}
+        {error && <HelpBlock>{error}</HelpBlock>}
+      </Col>
+    </FormGroup>
+  );
+};
 
-  render() {
-    const {children, inline, label, name} = this.props;
-
-    return (
-      <FormGroup className={cx({'form-inline': inline})}>
-        <Col sm={3}>
-          <ControlLabel htmlFor={name}>
-            {label}
-          </ControlLabel>
-        </Col>
-        <Col sm={9}>
-          {children}
-        </Col>
-      </FormGroup>
-    );
-  },
-});
+FormRow.propTypes = {
+  error: PropTypes.string,
+  inline: PropTypes.bool,
+  label: PropTypes.string,
+  name: PropTypes.string,
+};
 
 module.exports = FormRow;

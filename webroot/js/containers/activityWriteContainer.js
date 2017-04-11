@@ -15,6 +15,17 @@ const mapStateToProps = ({garminData, pendingRequests}) => {
   };
 };
 
+const FIELDS = {
+  distance: {
+    error: 'Please enter a valid distance greater than 0.',
+    isValid: (value) => !!Number(value),
+  },
+  'avg_hr': {
+    error: 'Please enter a valid heart rate.',
+    isValid: (value) => !value || isInteger(Number(value)),
+  },
+};
+
 /**
  * ActivityWriteContainer
  *
@@ -35,6 +46,7 @@ const activityModalContainer = Component => {
     getInitialState() {
       return {
         activity: this.props.initialActivity || this._getNewActivity(),
+        errors: {},
         isLoading: false,
       };
     },
@@ -45,18 +57,15 @@ const activityModalContainer = Component => {
       if (!isEmpty(garminData)) {
         this.setState({activity: garminUrlToActivity(garminData)});
       }
-
-      if (!show) {
-        // Reset the modal if it's hidden.
-        this.setState(this.getInitialState());
-      }
     },
 
     render() {
+      const {initialActivity, ...otherProps} = this.props;
       return (
         <Component
-          {...this.props}
+          {...otherProps}
           {...this.state}
+          isEditing={!!initialActivity}
           onChange={this._handleChange}
           onDelete={this._handleDelete}
           onExited={this._handleExited}
@@ -104,17 +113,17 @@ const activityModalContainer = Component => {
     _handleSave(e) {
       const {dispatch, initialActivity} = this.props;
       const {activity} = this.state;
-      const {avg_hr, distance} = activity;
 
-      // Client-side validation of form.
-      // TODO: Better validation on server.
-      if (!distance || isNaN(distance)) {
-        alert('Please enter a valid distance.');
-        return;
-      }
+      const errors = {};
+      Object.keys(FIELDS).forEach(name => {
+        const field = FIELDS[name];
+        if (!field.isValid(activity[name])) {
+          errors[name] = field.error;
+        }
+      });
 
-      if (avg_hr && !isInteger(Number(avg_hr))) {
-        alert('Please enter a valid heart rate.');
+      if (!isEmpty(errors)) {
+        this.setState({errors});
         return;
       }
 

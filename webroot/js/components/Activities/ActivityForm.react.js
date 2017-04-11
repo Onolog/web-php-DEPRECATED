@@ -8,11 +8,17 @@ import AppForm from 'components/Forms/AppForm.react';
 import DateTimePicker from 'components/DateTimePicker/DateTimePicker.react';
 import DurationInput from 'components/Forms/DurationInput.react';
 import FBFriendTokenizer from 'components/Facebook/FBFriendTokenizer.react';
-import FormGroup from 'components/Forms/FormGroup.react';
+import FormRow from 'components/Forms/FormGroup.react';
 
 import calculatePace from 'utils/calculatePace';
 
 import './css/ActivityForm.css';
+
+const FIELDNAMES = {
+  AVG_HR: 'avg_hr',
+  DISTANCE: 'distance',
+  DURATION: 'duration',
+};
 
 /**
  * ActivityForm.react
@@ -27,12 +33,14 @@ const ActivityForm = React.createClass({
      * An existing activity object.
      */
     activity: PropTypes.object,
+    errors: PropTypes.object,
     onChange: PropTypes.func.isRequired,
   },
 
   getDefaultProps() {
     return {
       activity: {},
+      errors: {},
     };
   },
 
@@ -42,7 +50,7 @@ const ActivityForm = React.createClass({
   },
 
   render() {
-    const {activity} = this.props;
+    const {activity, errors} = this.props;
     const pace = calculatePace.fromSeconds(
       activity.distance || 0,
       activity.duration || 0
@@ -50,67 +58,67 @@ const ActivityForm = React.createClass({
 
     return (
       <AppForm bordered className="activity-form" horizontal>
-        <FormGroup label="Distance">
+        <FormRow error={errors[FIELDNAMES.DISTANCE]} label="Distance">
           <FormControl
             className="distanceInput"
-            defaultValue={activity.distance}
-            name="distance"
+            defaultValue={activity[FIELDNAMES.DISTANCE]}
+            name={FIELDNAMES.DISTANCE}
             onChange={this._onInputChange}
             ref={input => this._distanceInput = input}
             type="number"
           />
           <span className="colon">miles</span>
-        </FormGroup>
+        </FormRow>
 
-        <FormGroup className="time" label="Duration">
+        <FormRow className="time" label="Duration">
           <DurationInput
             className="timeInput"
-            duration={activity.duration}
-            name="duration"
+            duration={activity[FIELDNAMES.DURATION]}
+            name={FIELDNAMES.DURATION}
             onChange={this._onInputChange}
           />
           <span className="colon">
             {pace} per mile
           </span>
-        </FormGroup>
+        </FormRow>
 
-        <FormGroup label="Date">
+        <FormRow label="Date">
           <DateTimePicker
             date={activity.start_date}
             onChange={this._onDateChange}
             timezone={activity.timezone}
           />
-        </FormGroup>
+        </FormRow>
 
-        <FormGroup label="Avg. Heart Rate">
+        <FormRow error={errors[FIELDNAMES.AVG_HR]} label="Avg. Heart Rate">
           <FormControl
             className="heartRateInput"
-            defaultValue={activity.avg_hr}
+            defaultValue={activity[FIELDNAMES.AVG_HR]}
             maxLength={3}
-            name="avg_hr"
+            name={FIELDNAMES.AVG_HR}
             onChange={this._onInputChange}
             type="text"
           />
           <span className="colon">bpm</span>
-        </FormGroup>
+        </FormRow>
 
-        <FormGroup label="Shoes">
+        <FormRow label="Shoes">
           <ShoeSelector
             name="shoe_id"
             onChange={this._onInputChange}
             value={activity.shoe_id}
           />
-        </FormGroup>
+        </FormRow>
 
-        <FormGroup label="Friends">
+        <FormRow label="Friends">
           <FBFriendTokenizer
             friends={activity.friends}
             name="friends"
             onChange={this._onInputChange}
           />
-        </FormGroup>
+        </FormRow>
 
-        <FormGroup label="Notes">
+        <FormRow label="Notes">
           <FormControl
             className="notes"
             componentClass="textarea"
@@ -120,7 +128,7 @@ const ActivityForm = React.createClass({
             placeholder="Add some details about your activity..."
             rows="6"
           />
-        </FormGroup>
+        </FormRow>
       </AppForm>
     );
   },
