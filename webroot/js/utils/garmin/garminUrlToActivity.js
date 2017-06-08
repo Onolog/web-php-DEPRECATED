@@ -16,12 +16,15 @@ function garminUrlToActivity({activity, details, splits, weather}) {
     startTimeLocal,
   } = activity.summaryDTO;
 
+  debugger;
   return {
     activity_type: activity.activityTypeDTO.typeKey,
     avg_hr: averageHR,
-    calories: Math.round(calories),     // TODO: Accept decimal values?
+    // TODO: Accept decimal values?
+    calories: calories && Math.round(calories),
     distance: metersToMiles(distance),
-    duration: Math.round(duration),     // TODO: Accept decimal values?
+    // TODO: Accept decimal values?
+    duration: Math.round(duration),
     elevation_gain: metersToFeet(elevationGain),
     elevation_loss: metersToFeet(elevationLoss),
     garmin_activity_id: activity.activityId,
