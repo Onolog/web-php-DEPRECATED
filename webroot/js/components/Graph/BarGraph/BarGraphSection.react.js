@@ -28,13 +28,13 @@ class GraphSection extends React.Component {
     );
   }
 
-  _renderGraphSectionLabel = (label) => {
+  _renderGraphSectionLabel = label => {
     if (label) {
       return <h4>{label}</h4>;
     }
   };
 
-  _renderGraphSectionMetadata = (metadata) => {
+  _renderGraphSectionMetadata = metadata => {
     if (metadata) {
       return (
         <div className="graphSectionMetadata">

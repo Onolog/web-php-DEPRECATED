@@ -84,7 +84,7 @@ class DateInputCalendarPopover extends React.Component {
     );
   }
 
-  _onKeydown = (e) => {
+  _onKeydown = e => {
     if (this.props.show) {
       switch (e.keyCode) {
         case ESC:
@@ -100,14 +100,14 @@ class DateInputCalendarPopover extends React.Component {
     }
   };
 
-  _onPrevMonthClick = (e) => {
+  _onPrevMonthClick = e => {
     e.preventDefault();
     this.setState({
       calendarMoment: this.state.calendarMoment.subtract(1, 'month'),
     });
   };
 
-  _onNextMonthClick = (e) => {
+  _onNextMonthClick = e => {
     e.preventDefault();
     this.setState({
       calendarMoment: this.state.calendarMoment.add(1, 'month'),

@@ -93,7 +93,7 @@ class FBFriendTokenizer extends React.Component {
   /**
    * Simulate firing an onChange event
    */
-  _handleChange = (/*array*/ selected) => {
+  _handleChange = selected => {
     this.setState({selected});
 
     this.props.onChange && this.props.onChange({
@@ -107,7 +107,7 @@ class FBFriendTokenizer extends React.Component {
   /**
    * Parse the batched response from the FB Graph API.
    */
-  _handleGraphResponse = (response) => {
+  _handleGraphResponse = response => {
     if (!(response && isArray(response))) {
       return;
     }

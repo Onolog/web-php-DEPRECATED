@@ -70,7 +70,7 @@ class ScraperController extends React.Component {
     );
   };
 
-  _handleChange = (e) => {
+  _handleChange = e => {
     const url = e.target.value;
 
     if (!url) {

@@ -100,7 +100,7 @@ class extends React.Component {
     );
   };
 
-  _handleChange = (e) => {
+  _handleChange = e => {
     const newState = {};
     const {name, value} = e.target;
 
@@ -117,7 +117,7 @@ class extends React.Component {
     this.setState(newState);
   };
 
-  _handleNavigateAway = (nextLocation) => {
+  _handleNavigateAway = nextLocation => {
     if (!isEqual(this.state, this.props.user)) {
       return (
         'Are you sure you want to leave? Your settings have not been saved.'
@@ -125,7 +125,7 @@ class extends React.Component {
     }
   };
 
-  _handleSave = (e) => {
+  _handleSave = e => {
     const {email, first_name, last_name} = this.state;
 
     // TODO: Better client-side validation.

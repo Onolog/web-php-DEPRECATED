@@ -58,7 +58,7 @@ class ShoeTable extends React.Component {
     );
   }
 
-  _renderRow = (shoe) => {
+  _renderRow = shoe => {
     const {activities} = this.props;
     const {action, shown} = this.state;
 

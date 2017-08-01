@@ -141,7 +141,7 @@ class CalendarController extends React.Component {
     );
   };
 
-  _fetchData = (m) => {
+  _fetchData = m => {
     this.props.dispatch(fetchActivities(m.year(), m.month() + 1));
   };
 
@@ -160,7 +160,7 @@ class CalendarController extends React.Component {
     this.setState({showImportModal: true});
   };
 
-  _updateCalendar = (newMoment) => {
+  _updateCalendar = newMoment => {
     // Don't update if the month hasn't changed.
     if (newMoment.isSame(getMoment(this.props.params), 'month')) {
       return;

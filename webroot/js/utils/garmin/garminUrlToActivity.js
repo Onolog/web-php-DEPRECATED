@@ -16,7 +16,6 @@ function garminUrlToActivity({activity, details, splits, weather}) {
     startTimeLocal,
   } = activity.summaryDTO;
 
-  debugger;
   return {
     activity_type: activity.activityTypeDTO.typeKey,
     avg_hr: averageHR,

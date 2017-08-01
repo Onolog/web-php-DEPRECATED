@@ -91,7 +91,7 @@ class DateTimePicker extends React.Component {
     );
   }
 
-  _onChange = (/*object*/ values) => {
+  _onChange = values => {
     var {dateObject, timezone} = this.state;
     dateObject = assign({}, dateObject, values);
 
@@ -103,7 +103,7 @@ class DateTimePicker extends React.Component {
     );
   };
 
-  _onTimezoneChange = (/*string*/ timezone) => {
+  _onTimezoneChange = timezone => {
     this.setState({timezone});
 
     this.props.onChange(

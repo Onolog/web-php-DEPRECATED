@@ -132,7 +132,7 @@ class ActivityForm extends React.Component {
     );
   }
 
-  _onInputChange = (e) => {
+  _onInputChange = e => {
     const {name, value} = e.target;
     const activity = {...this.props.activity};
     activity[name] = value;
@@ -150,7 +150,7 @@ class ActivityForm extends React.Component {
     this._onChange(activity);
   };
 
-  _onChange = (/*object*/ activity) => {
+  _onChange = activity => {
     this.props.onChange(activity);
   };
 }

@@ -63,11 +63,11 @@ class DateInput extends React.Component {
   /**
    * From `onClickOutside` HoC.
    */
-  handleClickOutside = (e) => {
+  handleClickOutside = e => {
     this._hideCalendar();
   };
 
-  _onChange = (/*object*/ dateObject) => {
+  _onChange = dateObject => {
     this._hideCalendar();
     this.props.onChange(dateObject);
   };

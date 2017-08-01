@@ -1,7 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import {Button, ButtonToolbar, Modal} from 'react-bootstrap';
-import {omit} from 'lodash';
 
 import ActivityForm from 'components/Activities/ActivityForm.react';
 import LeftRight from 'components/LeftRight/LeftRight.react';

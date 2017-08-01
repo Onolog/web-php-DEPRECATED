@@ -90,7 +90,7 @@ class FBFacepile extends React.Component {
     });
   };
 
-  _parseFriendData = (response) => {
+  _parseFriendData = response => {
     var friends = [];
     response.forEach(data => {
       if (data.code === 200) {

@@ -93,7 +93,7 @@ class ActivitySplitsTable extends React.Component {
     }];
   };
 
-  _formatDistance = (distance) => {
+  _formatDistance = distance => {
     return metersToMiles(distance) + ' mi';
   };
 }

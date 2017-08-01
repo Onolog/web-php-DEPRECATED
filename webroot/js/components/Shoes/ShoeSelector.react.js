@@ -59,7 +59,7 @@ class ShoeSelector extends React.Component {
    * Group the list of shoes by active or inactive, and format the data
    * correctly.
    */
-  _getOptions = (shoes) => {
+  _getOptions = shoes => {
     // Filter out inactive shoes unless it's the initially selected shoe.
     shoes = shoes.filter(shoe => (
       !shoe.inactive || shoe.id === +this.state.initialSelection

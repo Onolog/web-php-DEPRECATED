@@ -50,7 +50,7 @@ class BaseCalendar extends React.Component {
     return <thead><tr>{headerCells}</tr></thead>;
   };
 
-  _formatDayOfWeek = (day) => {
+  _formatDayOfWeek = day => {
     var format = this.props.headerFormat;
     var substr = false;
 

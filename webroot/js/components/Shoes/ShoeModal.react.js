@@ -66,7 +66,7 @@ class ShoeModal extends React.Component {
       />;
   }
 
-  _handleChange = (shoe) => {
+  _handleChange = shoe => {
     this.setState({shoe});
   };
 
@@ -92,11 +92,11 @@ class ShoeModal extends React.Component {
   /**
    * Reset the form when the modal closes.
    */
-  _handleExited = (e) => {
+  _handleExited = e => {
     this.setState(getInitialState(this.props));
   };
 
-  _handleSave = (e) => {
+  _handleSave = e => {
     const action = this.props.initialShoe ? updateShoe : addShoe;
     const {shoe} = this.state;
 

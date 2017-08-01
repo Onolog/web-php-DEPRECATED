@@ -90,7 +90,7 @@ class ShoesController extends React.Component {
     );
   };
 
-  _renderActiveShoes = (/*array*/ activeShoes) => {
+  _renderActiveShoes = activeShoes => {
     const contents = activeShoes && activeShoes.length ?
       <ShoeTable fill shoes={activeShoes} /> :
       <EmptyState>
@@ -104,7 +104,7 @@ class ShoesController extends React.Component {
     );
   };
 
-  _renderInactiveShoes = (/*array*/ inactiveShoes) => {
+  _renderInactiveShoes = inactiveShoes => {
     if (inactiveShoes && inactiveShoes.length) {
       return (
         <Panel header={<h3>Inactive</h3>}>

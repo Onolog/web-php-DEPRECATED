@@ -42,11 +42,11 @@ const mapStateToProps = ({garminData, pendingRequests}) => {
 const FIELDS = {
   distance: {
     error: 'Please enter a valid distance greater than 0.',
-    isValid: (value) => !!Number(value),
+    isValid: value => !!Number(value),
   },
   'avg_hr': {
     error: 'Please enter a valid heart rate.',
-    isValid: (value) => !value || isInteger(Number(value)),
+    isValid: value => !value || isInteger(Number(value)),
   },
 };
 
@@ -73,7 +73,7 @@ const activityModalContainer = Component => {
     };
 
     componentWillReceiveProps(nextProps) {
-      const {garminData, show} = nextProps;
+      const {garminData} = nextProps;
 
       if (!isEmpty(garminData)) {
         this.setState({activity: garminUrlToActivity(garminData)});
@@ -96,7 +96,7 @@ const activityModalContainer = Component => {
       );
     }
 
-    _handleChange = (/*object*/ activity) => {
+    _handleChange = activity => {
       this.setState({activity});
     };
 
@@ -126,12 +126,12 @@ const activityModalContainer = Component => {
     /**
      * Reset the form when the modal closes.
      */
-    _handleExited = (e) => {
+    _handleExited = e => {
       this.props.dispatch(hideActivityModal());
       this.setState(getInitialState(this.props));
     };
 
-    _handleSave = (e) => {
+    _handleSave = e => {
       const {dispatch, initialActivity} = this.props;
       const {activity} = this.state;
 

@@ -98,7 +98,7 @@ class GoogleMap extends React.Component {
     });
   };
 
-  _getBoundsForPath = (path) => {
+  _getBoundsForPath = path => {
     const {LatLngBounds, LatLng} = window.google.maps;
     const bounds = new LatLngBounds();
     for (let ii = 0; ii < path.length-1; ii++) {

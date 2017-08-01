@@ -117,7 +117,7 @@ class ShoeFields extends React.Component {
     }
   };
 
-  _handleChange = (e) => {
+  _handleChange = e => {
     const {checked, name, value} = e.target;
     let shoe = {...this.props.shoe};
 

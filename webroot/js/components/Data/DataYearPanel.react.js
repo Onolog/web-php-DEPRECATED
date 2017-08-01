@@ -157,7 +157,7 @@ class ProfileYearPanel extends React.Component {
     );
   };
 
-  _onChartTypeClick = (selectedGraph) => {
+  _onChartTypeClick = selectedGraph => {
     this.setState({selectedGraph});
   };
 }

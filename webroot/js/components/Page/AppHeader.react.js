@@ -48,7 +48,7 @@ class AppHeader extends React.Component {
     );
   }
 
-  _renderAccountMenu = (user) => {
+  _renderAccountMenu = user => {
     if (user.id) {
       const title =
         <span>
@@ -77,7 +77,7 @@ class AppHeader extends React.Component {
     }
   };
 
-  _renderMainMenu = (user) => {
+  _renderMainMenu = user => {
     if (user.id) {
       const links = [
         {label: 'Calendar', pathname: homeUrl()},
@@ -101,7 +101,7 @@ class AppHeader extends React.Component {
    * If there's no user info, it means the user isn't logged in. Prompt them
    * to do so.
    */
-  _renderLoginLink = (user) => {
+  _renderLoginLink = user => {
     if (!user.id) {
       return (
         <Nav pullRight>
