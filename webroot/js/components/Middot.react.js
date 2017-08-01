@@ -5,12 +5,12 @@ import React from 'react';
  *
  * Renders a styled middot character within a span
  */
-const Middot = React.createClass({
-  displayName: 'Middot',
+class Middot extends React.Component {
+  static displayName = 'Middot';
 
-  render: function() {
+  render() {
     return <span className="middot">&middot;</span>;
-  },
-});
+  }
+}
 
 module.exports = Middot;

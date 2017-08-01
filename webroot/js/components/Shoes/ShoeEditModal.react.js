@@ -11,10 +11,10 @@ import ShoeFields from './ShoeFields.react';
  *
  * Modal for editing an existing shoe.
  */
-const ShoeEditModal = React.createClass({
-  displayName: 'ShoeEditModal',
+class ShoeEditModal extends React.Component {
+  static displayName = 'ShoeEditModal';
 
-  propTypes: {
+  static propTypes = {
     isLoading: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
@@ -23,7 +23,7 @@ const ShoeEditModal = React.createClass({
     shoe: PropTypes.object.isRequired,
     show: PropTypes.bool,
     user: PropTypes.object.isRequired,
-  },
+  };
 
   render() {
     const {
@@ -73,7 +73,7 @@ const ShoeEditModal = React.createClass({
         </Modal.Footer>
       </Modal>
     );
-  },
-});
+  }
+}
 
 module.exports = ShoeEditModal;

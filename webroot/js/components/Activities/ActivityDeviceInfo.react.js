@@ -12,14 +12,13 @@ import GarminDeviceUtils from 'utils/GarminDeviceUtils';
  *
  * Displays the the name and software version for a given device.
  */
-const ActivityDeviceInfo = React.createClass({
-
-  propTypes: {
+class ActivityDeviceInfo extends React.Component {
+  static propTypes = {
     deviceName: PropTypes.string.isRequired,
     softwareVersion: PropTypes.string.isRequired,
-  },
+  };
 
-  render: function() {
+  render() {
     const {deviceName} = this.props;
     const src = GarminDeviceUtils.getDeviceImageSrc(deviceName);
 
@@ -37,7 +36,7 @@ const ActivityDeviceInfo = React.createClass({
         </div>
       </ImageBlock>
     );
-  },
-});
+  }
+}
 
 export default ActivityDeviceInfo;

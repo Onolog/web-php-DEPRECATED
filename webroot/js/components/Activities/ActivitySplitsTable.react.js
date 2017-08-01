@@ -11,23 +11,23 @@ var secondsToTime = require('utils/secondsToTime');
  *
  * Displays data for each split/lap in a table view
  */
-var ActivitySplitsTable = React.createClass({
-  displayName: 'ActivitySplitsTable',
+class ActivitySplitsTable extends React.Component {
+  static displayName = 'ActivitySplitsTable';
 
-  propTypes: {
+  static propTypes = {
     laps: PropTypes.array,
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       <Table border condensed hover>
         {this._renderHeaderRows()}
         {this._renderBody()}
       </Table>
     );
-  },
+  }
 
-  _renderHeaderRows: function() {
+  _renderHeaderRows = () => {
     var headerCells = map(this._getColumns(), (column, idx) => {
       return <th key={idx}>{column.label}</th>;
     });
@@ -39,9 +39,9 @@ var ActivitySplitsTable = React.createClass({
         </tr>
       </thead>
     );
-  },
+  };
 
-  _renderBody: function() {
+  _renderBody = () => {
     var {laps} = this.props;
     if (laps && laps.length) {
       return <tbody>{laps.map(this._renderRows)}</tbody>;
@@ -56,9 +56,9 @@ var ActivitySplitsTable = React.createClass({
         </tr>
       </tbody>
     );
-  },
+  };
 
-  _renderRows: function(lap, idx) {
+  _renderRows = (lap, idx) => {
     var cells = map(this._getColumns(), (column, idx) => {
       var value = lap[column.key];
       return (
@@ -69,9 +69,9 @@ var ActivitySplitsTable = React.createClass({
     });
 
     return <tr key={idx}>{cells}</tr>;
-  },
+  };
 
-  _getColumns: function() /*array*/ {
+  _getColumns = () => /*array*/ {
     return [{
       label: 'Lap',
       key: 'lap',
@@ -91,11 +91,11 @@ var ActivitySplitsTable = React.createClass({
       label: 'Elev (ft)',
       key: 'elevation_change',
     }];
-  },
+  };
 
-  _formatDistance: function(distance) {
+  _formatDistance = (distance) => {
     return metersToMiles(distance) + ' mi';
-  },
-});
+  };
+}
 
 module.exports = ActivitySplitsTable;

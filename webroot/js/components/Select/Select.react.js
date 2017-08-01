@@ -7,22 +7,20 @@ import cx from 'classnames';
  *
  * React wrapper around standard HTML <select> tag
  */
-const Select = React.createClass({
-  displayName: 'Select',
+class Select extends React.Component {
+  static displayName = 'Select';
 
-  propTypes: {
+  static propTypes = {
     options: PropTypes.array.isRequired,
     /**
      * Option to be used if there's no defaultValue
      */
     defaultLabel: PropTypes.string,
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      defaultLabel: '',
-    };
-  },
+  static defaultProps = {
+    defaultLabel: '',
+  };
 
   render() {
     const {className, defaultLabel, options, ...otherProps} = this.props;
@@ -42,9 +40,9 @@ const Select = React.createClass({
         {selectOptions}
       </select>
     );
-  },
+  }
 
-  _renderOptions(/*object*/ option, /*number*/ idx) /*object*/ {
+  _renderOptions = (/*object*/ option, /*number*/ idx) => /*object*/ {
     // If the option contains sub-options, render an <optgroup>
     if (option.options && Array.isArray(option.options)) {
       return (
@@ -56,15 +54,15 @@ const Select = React.createClass({
 
     // Otherwise, just render normal options
     return this._renderOption(option, idx);
-  },
+  };
 
-  _renderOption(/*object*/ option, /*number*/ idx) /*object*/ {
+  _renderOption = (/*object*/ option, /*number*/ idx) => /*object*/ {
     return (
       <option key={idx} value={option.value}>
         {option.label}
       </option>
     );
-  },
-});
+  };
+}
 
 export default Select;

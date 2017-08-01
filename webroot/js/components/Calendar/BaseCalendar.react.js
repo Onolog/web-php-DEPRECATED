@@ -9,10 +9,10 @@ const ISO_DAY_OF_WEEK = 'E';
 /**
  * BaseCalendar.react
  */
-const BaseCalendar = React.createClass({
-  displayName: 'BaseCalendar',
+class BaseCalendar extends React.Component {
+  static displayName = 'BaseCalendar';
 
-  propTypes: {
+  static propTypes = {
     borders: PropTypes.bool,
     headerFormat: PropTypes.oneOf([
       'd',    // M, T, W...
@@ -20,16 +20,14 @@ const BaseCalendar = React.createClass({
       'ddd',  // Mon, Tue, Wed...
       'dddd', // Monday, Tuesday, Wednesday...
     ]),
-  },
+  };
 
-  getDefaultProps: function() {
-    return {
-      borders: true,
-      headerFormat: 'ddd',
-    };
-  },
+  static defaultProps = {
+    borders: true,
+    headerFormat: 'ddd',
+  };
 
-  render: function() {
+  render() {
     return (
       <table className={this.props.className}>
         {this._renderHeaderRow()}
@@ -38,21 +36,21 @@ const BaseCalendar = React.createClass({
         </tbody>
       </table>
     );
-  },
+  }
 
   /**
    * Renders the days of the week in the header cells ('Sun', 'Mon', etc.).
    */
-  _renderHeaderRow: function() {
+  _renderHeaderRow = () => {
     // TODO: Allow for different week start days. Sunday (7) is currently first.
     var headerCells = [7, 1, 2, 3, 4, 5, 6].map(day => {
       return <th key={day}>{this._formatDayOfWeek(day)}</th>;
     });
 
     return <thead><tr>{headerCells}</tr></thead>;
-  },
+  };
 
-  _formatDayOfWeek: function(day) {
+  _formatDayOfWeek = (day) => {
     var format = this.props.headerFormat;
     var substr = false;
 
@@ -65,7 +63,7 @@ const BaseCalendar = React.createClass({
 
     var formatted = moment(day, ISO_DAY_OF_WEEK).format(format);
     return substr ? formatted.substr(0, 1) : formatted;
-  },
-});
+  };
+}
 
 module.exports = BaseCalendar;

@@ -15,10 +15,10 @@ const LAST_DAY_OF_WEEK = 6; // Saturday (Sunday is 0)
 /**
 * ActivityCalendarDay.react
 */
-const ActivityCalendarDay = React.createClass({
-  displayName: 'ActivityCalendarDay',
+class ActivityCalendarDay extends React.Component {
+  static displayName = 'ActivityCalendarDay';
 
-  propTypes: {
+  static propTypes = {
     /**
      * Activities for the given day
      */
@@ -32,13 +32,11 @@ const ActivityCalendarDay = React.createClass({
      */
     month: PropTypes.number,
     weeklyMileage: PropTypes.number,
-  },
+  };
 
-  getInitialState() {
-    return {
-      showModal: false,
-    };
-  },
+  state = {
+    showModal: false,
+  };
 
   componentWillReceiveProps(nextProps) {
     const {activities} = this.props;
@@ -48,7 +46,7 @@ const ActivityCalendarDay = React.createClass({
     if (nextCount !== thisCount) {
       this._hideModal();
     }
-  },
+  }
 
   render() {
     const {date, month} = this.props;
@@ -77,20 +75,20 @@ const ActivityCalendarDay = React.createClass({
         </div>
       </BaseCalendarDay>
     );
-  },
+  }
 
-  _renderActivities() /*?object*/ {
+  _renderActivities = () => /*?object*/ {
     const {activities} = this.props;
     if (activities.length) {
       return activities.map(this._renderActivityLink);
     }
-  },
+  };
 
-  _renderActivityLink(/*object*/ activity) {
+  _renderActivityLink = (/*object*/ activity) => {
     return <ActivityLink activity={activity} key={activity.id} />;
-  },
+  };
 
-  _renderWeeklyTotal(dateObject) {
+  _renderWeeklyTotal = (dateObject) => {
     if (dateObject.getDay() === LAST_DAY_OF_WEEK) {
       return (
         <div className="total">
@@ -100,15 +98,15 @@ const ActivityCalendarDay = React.createClass({
         </div>
       );
     }
-  },
+  };
 
-  _hideModal() {
+  _hideModal = () => {
     this.setState({showModal: false});
-  },
+  };
 
-  _showModal() {
+  _showModal = () => {
     this.setState({showModal: true});
-  },
-});
+  };
+}
 
 module.exports = ActivityCalendarDay;

@@ -8,14 +8,13 @@ var React = require('react');
  * it could represent one month, with sets of data for that month displayed
  * within (multiple bars), or simply high-level data for that month (one bar).
  */
-var GraphSection = React.createClass({
-
-  propTypes: {
+class GraphSection extends React.Component {
+  static propTypes = {
     label: PropTypes.string,
     metadata: PropTypes.string,
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       <li className="graphSection">
         <div className="graphSectionData">
@@ -27,15 +26,15 @@ var GraphSection = React.createClass({
         </div>
       </li>
     );
-  },
+  }
 
-  _renderGraphSectionLabel: function(label) {
+  _renderGraphSectionLabel = (label) => {
     if (label) {
       return <h4>{label}</h4>;
     }
-  },
+  };
 
-  _renderGraphSectionMetadata: function(metadata) {
+  _renderGraphSectionMetadata = (metadata) => {
     if (metadata) {
       return (
         <div className="graphSectionMetadata">
@@ -43,7 +42,7 @@ var GraphSection = React.createClass({
         </div>
       );
     }
-  },
-});
+  };
+}
 
 module.exports = GraphSection;

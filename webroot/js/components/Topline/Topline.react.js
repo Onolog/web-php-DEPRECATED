@@ -15,13 +15,13 @@ const Topline = props => {
   );
 };
 
-const ToplineItem = React.createClass({
-  displayName: 'ToplineItem',
+class ToplineItem extends React.Component {
+  static displayName = 'ToplineItem';
 
-  propTypes: {
+  static propTypes = {
     annotation: PropTypes.string,
     label: PropTypes.string.isRequired,
-  },
+  };
 
   render() {
     return (
@@ -35,9 +35,9 @@ const ToplineItem = React.createClass({
         {this._renderAnnotation()}
       </li>
     );
-  },
+  }
 
-  _renderAnnotation() {
+  _renderAnnotation = () => {
     if (this.props.annotation) {
       return (
         <div className="topline-item-annotation">
@@ -45,8 +45,8 @@ const ToplineItem = React.createClass({
         </div>
       );
     }
-  },
-});
+  };
+}
 
 Topline.Item = ToplineItem;
 

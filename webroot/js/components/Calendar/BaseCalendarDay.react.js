@@ -9,10 +9,10 @@ import isSameDay from 'utils/isSameDay';
  *
  * Renders a single day for a month-view calendar
  */
-const BaseCalendarDay = React.createClass({
-  displayName: 'BaseCalendarDay',
+class BaseCalendarDay extends React.Component {
+  static displayName = 'BaseCalendarDay';
 
-  propTypes: {
+  static propTypes = {
     /**
      * Date object for the day being rendered
      */
@@ -21,9 +21,9 @@ const BaseCalendarDay = React.createClass({
      * Month being displayed by the calendar
      */
     month: PropTypes.number.isRequired,
-  },
+  };
 
-  render: function() {
+  render() {
     var dateObj = this.props.date;
     var month = dateObj.getMonth();
     var calMonth = this.props.month;
@@ -40,7 +40,7 @@ const BaseCalendarDay = React.createClass({
         {this.props.children}
       </td>
     );
-  },
-});
+  }
+}
 
 module.exports = BaseCalendarDay;

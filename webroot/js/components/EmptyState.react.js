@@ -5,16 +5,16 @@ import React from 'react';
  *
  * Standardized component for when there's no data to display.
  */
-const EmptyState = React.createClass({
-  displayName: 'EmptyState',
+class EmptyState extends React.Component {
+  static displayName = 'EmptyState';
 
-  render: function() {
+  render() {
     return (
       <div className="emptyState">
         {this.props.children}
       </div>
     );
-  },
-});
+  }
+}
 
 module.exports = EmptyState;

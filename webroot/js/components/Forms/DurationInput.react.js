@@ -19,10 +19,10 @@ function formatter(value) {
  * Input for specifying and displaying the duration of an activity, formatted
  * as `hh:mm:ss`.
  */
-const DurationInput = React.createClass({
-  displayName: 'DurationInput',
+class DurationInput extends React.Component {
+  static displayName = 'DurationInput';
 
-  propTypes: {
+  static propTypes = {
     /**
      * The duration of the workout, in seconds.
      */
@@ -32,19 +32,15 @@ const DurationInput = React.createClass({
      */
     name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      duration: 0,
-    };
-  },
+  static defaultProps = {
+    duration: 0,
+  };
 
-  getInitialState() {
-    return {
-      duration: this.props.duration,
-    };
-  },
+  state = {
+    duration: this.props.duration,
+  };
 
   render() {
     const duration = moment.duration(this.props.duration, 's');
@@ -85,9 +81,9 @@ const DurationInput = React.createClass({
         />
       </div>
     );
-  },
+  }
 
-  _onChange() {
+  _onChange = () => {
     var duration = moment.duration({
       hours: this.refs.hours.getValue(),
       minutes: this.refs.minutes.getValue(),
@@ -104,13 +100,13 @@ const DurationInput = React.createClass({
         value: duration,
       },
     });
-  },
+  };
 
-  _getHoursValue(/*object*/ duration) /*?number*/ {
+  _getHoursValue = (/*object*/ duration) => /*?number*/ {
     if (duration) {
       return duration.days() * 24 + duration.hours();
     }
-  },
-});
+  };
+}
 
 module.exports = DurationInput;

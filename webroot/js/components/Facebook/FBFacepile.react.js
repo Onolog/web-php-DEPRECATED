@@ -17,10 +17,10 @@ require('./css/FBFacepile.css');
  * displayed via tooltip on hover and clicking on the hoto takes the user to
  * the person's profile page.
  */
-const FBFacepile = React.createClass({
-  displayName: 'FBFacepile',
+class FBFacepile extends React.Component {
+  static displayName = 'FBFacepile';
 
-  propTypes: {
+  static propTypes = {
     /**
      * A comma-delimited string of FBIDs. Can also be a single fbid as a
      * number or string.
@@ -29,17 +29,15 @@ const FBFacepile = React.createClass({
       PropTypes.number,
       PropTypes.string,
     ]).isRequired,
-  },
+  };
 
-  getInitialState() {
-    return {
-      friends: null,
-    };
-  },
+  state = {
+    friends: null,
+  };
 
   componentWillMount() {
     fbLoader(this._getFriends);
-  },
+  }
 
   render() {
     if (!this.state.friends) {
@@ -52,9 +50,9 @@ const FBFacepile = React.createClass({
         {faces}
       </div>
     );
-  },
+  }
 
-  _renderFace(friend, idx) {
+  _renderFace = (friend, idx) => {
     return (
       <OverlayTrigger
         key={idx}
@@ -67,9 +65,9 @@ const FBFacepile = React.createClass({
         </Link>
       </OverlayTrigger>
     );
-  },
+  };
 
-  _getFriends() {
+  _getFriends = () => {
     var friends = this.props.friends + '';
     if (!friends) {
       return;
@@ -90,9 +88,9 @@ const FBFacepile = React.createClass({
     FB.getLoginStatus(response => {
       FB.api('/', 'POST', {batch}, this._parseFriendData);
     });
-  },
+  };
 
-  _parseFriendData(response) {
+  _parseFriendData = (response) => {
     var friends = [];
     response.forEach(data => {
       if (data.code === 200) {
@@ -100,7 +98,7 @@ const FBFacepile = React.createClass({
       }
     });
     this.setState({friends});
-  },
-});
+  };
+}
 
 module.exports = FBFacepile;

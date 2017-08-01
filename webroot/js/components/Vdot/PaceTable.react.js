@@ -14,13 +14,12 @@ function _formatTime(/*number*/ seconds) /*string|number*/ {
   return time.getMinutes() + ':' + ss;
 }
 
-var PaceTable = React.createClass({
-
-  propTypes: {
+class PaceTable extends React.Component {
+  static propTypes = {
     vdot: PropTypes.number,
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       <div>
         <table className="paces">
@@ -59,9 +58,9 @@ var PaceTable = React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
-  _getRows: function() {
+  _getRows = () => {
     var rows = [];
     var vdots = this.props.vdot ?
       [this.props.vdot] : Object.keys(Daniels.PACES);
@@ -71,9 +70,9 @@ var PaceTable = React.createClass({
     }.bind(this));
 
     return rows;
-  },
+  };
 
-  _getCells: function(vdot) {
+  _getCells = (vdot) => {
     var cells = [];
     var paces = Daniels.PACES[vdot];
 
@@ -100,7 +99,7 @@ var PaceTable = React.createClass({
     cells.push(<td className="vdot" key={vdot + '-r'}>{vdot}</td>);
 
     return cells;
-  },
-});
+  };
+}
 
 module.exports = PaceTable;

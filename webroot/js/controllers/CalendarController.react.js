@@ -30,10 +30,15 @@ const mapStateToProps = ({activities, pendingRequests}) => {
 /**
  * CalendarController.react
  */
-const CalendarController = React.createClass({
-  propTypes: {
+class CalendarController extends React.Component {
+  static propTypes = {
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  },
+  };
+
+  state = {
+    showAddModal: false,
+    showImportModal: false,
+  };
 
   componentWillMount() {
     const {params} = this.props;
@@ -46,7 +51,7 @@ const CalendarController = React.createClass({
 
     // Load initial data.
     this._fetchData(m);
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     if (
@@ -55,14 +60,7 @@ const CalendarController = React.createClass({
     ) {
       this._hideModal();
     }
-  },
-
-  getInitialState() {
-    return {
-      showAddModal: false,
-      showImportModal: false,
-    };
-  },
+  }
 
   render() {
     const {params, pendingRequests} = this.props;
@@ -97,9 +95,9 @@ const CalendarController = React.createClass({
         </PageFrame>
       </AppFullPage>
     );
-  },
+  }
 
-  _renderButtonGroup() {
+  _renderButtonGroup = () => {
     return (
       <div>
         <DropdownButton
@@ -141,28 +139,28 @@ const CalendarController = React.createClass({
         />
       </div>
     );
-  },
+  };
 
-  _fetchData(m) {
+  _fetchData = (m) => {
     this.props.dispatch(fetchActivities(m.year(), m.month() + 1));
-  },
+  };
 
-  _hideModal() {
+  _hideModal = () => {
     this.setState({
       showAddModal: false,
       showImportModal: false,
     });
-  },
+  };
 
-  _showAddModal() {
+  _showAddModal = () => {
     this.setState({showAddModal: true});
-  },
+  };
 
-  _showImportModal() {
+  _showImportModal = () => {
     this.setState({showImportModal: true});
-  },
+  };
 
-  _updateCalendar(newMoment) {
+  _updateCalendar = (newMoment) => {
     // Don't update if the month hasn't changed.
     if (newMoment.isSame(getMoment(this.props.params), 'month')) {
       return;
@@ -171,19 +169,19 @@ const CalendarController = React.createClass({
     browserHistory.push(newMoment.format('/YYYY/MM'));
 
     this._fetchData(newMoment);
-  },
+  };
 
-  _onLastMonthClick() {
+  _onLastMonthClick = () => {
     this._updateCalendar(getMoment(this.props.params).subtract({months: 1}));
-  },
+  };
 
-  _onThisMonthClick() {
+  _onThisMonthClick = () => {
     this._updateCalendar(moment());
-  },
+  };
 
-  _onNextMonthClick() {
+  _onNextMonthClick = () => {
     this._updateCalendar(getMoment(this.props.params).add({months: 1}));
-  },
-});
+  };
+}
 
 module.exports = connect(mapStateToProps)(CalendarController);

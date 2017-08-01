@@ -34,9 +34,8 @@ const mapStoreToProps = (state, props) => {
  *
  * Displays the view for a single shoe.
  */
-const ShoeController = React.createClass({
-
-  propTypes: {
+class ShoeController extends React.Component {
+  static propTypes = {
     activities: PropTypes.arrayOf(PropTypes.object.isRequired),
     shoe: PropTypes.shape({
       activities: PropTypes.array.isRequired,
@@ -49,12 +48,12 @@ const ShoeController = React.createClass({
     viewer: PropTypes.shape({
       id: PropTypes.number.isRequired,
     }),
-  },
+  };
 
   componentWillMount() {
     const {dispatch, params} = this.props;
     dispatch(viewShoe(getIntParam(params, 'shoeId')));
-  },
+  }
 
   render() {
     const {activities, pendingRequests, shoe} = this.props;
@@ -77,9 +76,9 @@ const ShoeController = React.createClass({
         </PageFrame>
       </AppFullPage>
     );
-  },
+  }
 
-  _renderButtonGroup() {
+  _renderButtonGroup = () => {
     const {shoe, viewer} = this.props;
 
     if (viewer.id === shoe.user_id) {
@@ -102,16 +101,16 @@ const ShoeController = React.createClass({
         </ButtonGroup>
       );
     }
-  },
+  };
 
   /**
    * TODO: Handle this better...
    */
-  _onShoeDelete() {
+  _onShoeDelete = () => {
     if (confirm('Are you sure you want to delete this shoe?')) {
       document.location = `/shoes/delete/${this.props.shoe.id}`;
     }
-  },
-});
+  };
+}
 
 module.exports = connect(mapStoreToProps)(ShoeController);

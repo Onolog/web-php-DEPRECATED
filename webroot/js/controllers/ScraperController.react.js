@@ -22,7 +22,7 @@ const mapStateToProps = ({garminData, pendingRequests, session}) => {
   };
 };
 
-const ScraperController = React.createClass({
+class ScraperController extends React.Component {
   render() {
     return (
       <AppFullPage>
@@ -40,9 +40,9 @@ const ScraperController = React.createClass({
         </PageFrame>
       </AppFullPage>
     );
-  },
+  }
 
-  _renderContents() {
+  _renderContents = () => {
     const {garminData, pendingRequests, user} = this.props;
 
     if (!isEmpty(garminData)) {
@@ -68,9 +68,9 @@ const ScraperController = React.createClass({
         No activity to display. Please enter a url.
       </EmptyState>
     );
-  },
+  };
 
-  _handleChange(e) {
+  _handleChange = (e) => {
     const url = e.target.value;
 
     if (!url) {
@@ -85,7 +85,7 @@ const ScraperController = React.createClass({
     }
 
     this.props.dispatch(getGarminActivity(activityId));
-  },
-});
+  };
+}
 
 module.exports = connect(mapStateToProps)(ScraperController);

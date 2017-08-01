@@ -47,15 +47,15 @@ const SideColumn = ({onLogout, onToggle, open, user}) => (
   </FlexContainer>
 );
 
-const SideColBackdrop = React.createClass({
+class SideColBackdrop extends React.Component {
   render() {
     return this.props.open ?
       <div
         className="side-col-backdrop modal-backdrop fade in"
         onClick={this.props.onToggle}
       /> : null;
-  },
-});
+  }
+}
 
 const mapStateToProps = ({navigation, session}) => {
   return {

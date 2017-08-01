@@ -18,9 +18,10 @@ const FB_URL = '//www.facebook.com/plugins/like.php';
  * TODO: Although we're including the FB SDK globally, it really should be
  * included individually by each module that needs it.
  */
-const FBLikeButton = React.createClass({
-  displayName: 'FBLikeButton',
-  propTypes: {
+class FBLikeButton extends React.Component {
+  static displayName = 'FBLikeButton';
+
+  static propTypes = {
     href: PropTypes.string.isRequired,
     /**
      * Specify the label to be displayed in the button
@@ -54,22 +55,20 @@ const FBLikeButton = React.createClass({
      * Includes a Share button beside the Like button.
      */
     useShare: PropTypes.bool,
-  },
+  };
 
   /**
    * Use the FB defaults
    */
-  getDefaultProps: function() {
-    return {
-      action: 'like',
-      layout: 'standard',
-      showFaces: true,
-      useShare: true,
-      width: 165,
-    };
-  },
+  static defaultProps = {
+    action: 'like',
+    layout: 'standard',
+    showFaces: true,
+    useShare: true,
+    width: 165,
+  };
 
-  render: function() {
+  render() {
     var params = param({
       href: URL + this.props.href,
       width: this.props.width,
@@ -95,9 +94,9 @@ const FBLikeButton = React.createClass({
         }}>
       </iframe>
     );
-  },
+  }
 
-  _getHeight: function() {
+  _getHeight = () => {
     var heights = {
       'standard': this.props.showFaces ? 80 : 35,
       'box_count': 65,
@@ -105,7 +104,7 @@ const FBLikeButton = React.createClass({
       'button': 35,
     };
     return heights[this.props.layout];
-  },
-});
+  };
+}
 
 module.exports = FBLikeButton;

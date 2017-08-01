@@ -38,21 +38,18 @@ const mapStateToProps = (state, props) => {
  *
  * Displays a single activity.
  */
-const ActivityController = React.createClass({
-
-  propTypes: {
+class ActivityController extends React.Component {
+  static propTypes = {
     activity: PropTypes.object.isRequired,
     athlete: PropTypes.object.isRequired,
     pendingRequests: PropTypes.object.isRequired,
     shoe: PropTypes.object,
     viewer: PropTypes.object,
-  },
+  };
 
-  getInitialState() {
-    return {
-      showModal: false,
-    };
-  },
+  state = {
+    showModal: false,
+  };
 
   componentWillReceiveProps(nextProps) {
     const {pendingRequests} = this.props;
@@ -62,7 +59,7 @@ const ActivityController = React.createClass({
     ) {
       this.setState({showModal: false});
     }
-  },
+  }
 
   render() {
     const {activity, athlete, shoe} = this.props;
@@ -83,9 +80,9 @@ const ActivityController = React.createClass({
         </Panel>
       </AppPage>
     );
-  },
+  }
 
-  _renderButtonGroup() {
+  _renderButtonGroup = () => {
     const {activity, viewer} = this.props;
     const {showModal} = this.state;
 
@@ -114,20 +111,20 @@ const ActivityController = React.createClass({
         </ButtonGroup>
       );
     }
-  },
+  };
 
   /**
    * TODO: Handle this better...
    */
-  _handleActivityDelete() {
+  _handleActivityDelete = () => {
     if (confirm('Are you sure you want to delete this shoe?')) {
       document.location = `/workouts/delete/${this.props.activity.id}`;
     }
-  },
+  };
 
-  _handleActivityEdit() {
+  _handleActivityEdit = () => {
     this.setState({showModal: true});
-  },
-});
+  };
+}
 
 module.exports = connect(mapStateToProps)(ActivityController);

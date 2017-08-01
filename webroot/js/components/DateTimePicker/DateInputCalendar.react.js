@@ -13,10 +13,10 @@ var cx = require('classnames');
 /**
  * DateInputCalendar.react.js
  */
-var DateInputCalendar = React.createClass({
-  displayName: 'DateInputCalendar',
+class DateInputCalendar extends React.Component {
+  static displayName = 'DateInputCalendar';
 
-  propTypes: {
+  static propTypes = {
     /**
      * The month being displayed by the calendar.
      */
@@ -29,9 +29,9 @@ var DateInputCalendar = React.createClass({
      * The year being displayed by the calendar.
      */
     year: PropTypes.number.isRequired,
-  },
+  };
 
-  render: function() {
+  render() {
     var grid = calendarGrid(this.props.month, this.props.year);
 
     return (
@@ -41,17 +41,17 @@ var DateInputCalendar = React.createClass({
         {grid.map(this._renderWeek)}
       </BaseCalendar>
     );
-  },
+  }
 
-  _renderWeek: function(week, idx) {
+  _renderWeek = (week, idx) => {
     return (
       <BaseCalendarWeek key={idx}>
         {week.map(this._renderDay)}
       </BaseCalendarWeek>
     );
-  },
+  };
 
-  _renderDay: function(day, idx) {
+  _renderDay = (day, idx) => {
     var dayDate = day.date;
     return (
       <BaseCalendarDay
@@ -68,16 +68,16 @@ var DateInputCalendar = React.createClass({
         </Link>
       </BaseCalendarDay>
     );
-  },
+  };
 
-  _onDayClick: function(/*Date*/ selectedDate, evt) {
+  _onDayClick = (/*Date*/ selectedDate, evt) => {
     evt.preventDefault();
     this.props.onChange && this.props.onChange({
       date: selectedDate.getDate(),
       months: selectedDate.getMonth(),
       years: selectedDate.getFullYear(),
     });
-  },
-});
+  };
+}
 
 module.exports = DateInputCalendar;

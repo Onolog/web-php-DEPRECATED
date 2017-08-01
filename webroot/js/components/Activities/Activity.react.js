@@ -23,32 +23,30 @@ import './css/Activity.css';
  * Renders a full activity view, depending on what data is passed in, like maps,
  * graphs, stats and any user-created details.
  */
-const Activity = React.createClass({
-  displayName: 'Activity',
+class Activity extends React.Component {
+  static displayName = 'Activity';
 
-  propTypes: {
+  static propTypes = {
     activity: PropTypes.object.isRequired,
     athlete: PropTypes.object.isRequired,
     shoe: PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
     }),
-  },
+  };
 
-  getInitialState() {
-    return {
-      isHorizontal: true,
-    };
-  },
+  state = {
+    isHorizontal: true,
+  };
 
   componentDidMount() {
     this._setOrientation();
     window.addEventListener('resize', this._setOrientation);
-  },
+  }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this._setOrientation);
-  },
+  }
 
   render() {
     const {activity} = this.props;
@@ -79,9 +77,9 @@ const Activity = React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
-  _renderDetailsContent(activity) {
+  _renderDetailsContent = (activity) => {
     const {device, friends, notes} = activity;
 
     let content = [];
@@ -131,9 +129,9 @@ const Activity = React.createClass({
     }
 
     return content;
-  },
+  };
 
-  _renderMap(tracks) {
+  _renderMap = (tracks) => {
     if (tracks && tracks.length) {
       return (
         <div className="activityMapContainer">
@@ -141,9 +139,9 @@ const Activity = React.createClass({
         </div>
       );
     }
-  },
+  };
 
-  _renderSplitsTab(/*array*/ {laps}) {
+  _renderSplitsTab = (/*array*/ {laps}) => {
     if (laps && laps.length) {
       return (
         <Tab className="activityNavPane" eventKey={2} title="Splits">
@@ -153,13 +151,13 @@ const Activity = React.createClass({
         </Tab>
       );
     }
-  },
+  };
 
-  _setOrientation() {
+  _setOrientation = () => {
     this.setState({
       isHorizontal: findDOMNode(this).offsetWidth > 750,
     });
-  },
-});
+  };
+}
 
 export default Activity;

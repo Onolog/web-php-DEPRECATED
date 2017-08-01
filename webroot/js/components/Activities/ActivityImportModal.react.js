@@ -6,10 +6,10 @@ import ActivityFromUrlForm from 'components/Activities/ActivityFromUrlForm.react
 import activityWriteContainer from 'containers/activityWriteContainer';
 import {GARMIN_ACTIVITY_FETCH} from 'constants/ActionTypes';
 
-const ActivityImportModal = React.createClass({
-  propTypes: {
+class ActivityImportModal extends React.Component {
+  static propTypes = {
     activity: PropTypes.object,
-  },
+  };
 
   render() {
     const {
@@ -55,7 +55,7 @@ const ActivityImportModal = React.createClass({
         </Modal.Footer>
       </Modal>
     );
-  },
-});
+  }
+}
 
 export default activityWriteContainer(ActivityImportModal);

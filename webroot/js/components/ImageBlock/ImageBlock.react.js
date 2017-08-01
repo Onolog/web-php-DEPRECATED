@@ -6,21 +6,19 @@ import cx from 'classnames';
 /**
  * ImageBlock.react
  */
-const ImageBlock = React.createClass({
-  displayName: 'ImageBlock',
+class ImageBlock extends React.Component {
+  static displayName = 'ImageBlock';
 
-  propTypes: {
+  static propTypes = {
     align: PropTypes.oneOf(['top', 'middle', 'bottom']),
     image: PropTypes.object.isRequired,
-  },
+  };
 
-  getDefaultProps: function() {
-    return {
-      align: 'top',
-    };
-  },
+  static defaultProps = {
+    align: 'top',
+  };
 
-  render: function() {
+  render() {
     const {align} = this.props;
 
     return (
@@ -37,7 +35,7 @@ const ImageBlock = React.createClass({
         </div>
       </div>
     );
-  },
-});
+  }
+}
 
 module.exports = ImageBlock;

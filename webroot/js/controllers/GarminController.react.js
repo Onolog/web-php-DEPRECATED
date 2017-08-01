@@ -15,14 +15,12 @@ import GoogleTimezone from 'utils/GoogleTimezone';
 /**
  * GarminUploader.react
  */
-const GarminUploader = React.createClass({
-  displayName: 'GarminUploader',
+class GarminUploader extends React.Component {
+  static displayName = 'GarminUploader';
 
-  getInitialState() {
-    return {
-      activity: null,
-    };
-  },
+  state = {
+    activity: null,
+  };
 
   render() {
     const {activity} = this.state;
@@ -56,12 +54,12 @@ const GarminUploader = React.createClass({
         </Panel>
       </AppFullPage>
     );
-  },
+  }
 
   /**
    * Convert a Garmin activity to the standardized format.
    */
-  _normalizeActivity(activity) {
+  _normalizeActivity = (activity) => {
     const friends = [
       4280,
       700963,
@@ -91,17 +89,17 @@ const GarminUploader = React.createClass({
       friends,
       notes,
     };
-  },
+  };
 
-  _handleChange(e) {
+  _handleChange = (e) => {
     const {files} = e.target;
     const reader = new FileReader();
 
     reader.onloadend = this._onLoadEnd;
     reader.readAsText(files[0]);
-  },
+  };
 
-  _onLoadEnd(e) {
+  _onLoadEnd = (e) => {
     if (e.target.readyState === FileReader.DONE) {
       const parser = new FileParser();
       const activities = parser.parse(e.target.result);
@@ -120,7 +118,7 @@ const GarminUploader = React.createClass({
         this.setState({activity: activity});
       });
     }
-  },
-});
+  };
+}
 
 module.exports = GarminUploader;

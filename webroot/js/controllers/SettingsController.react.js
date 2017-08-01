@@ -29,8 +29,11 @@ const mapStateToProps = ({pendingRequests, session}) => {
 /**
  * SettingsController.react
  */
-const SettingsController = withRouter(React.createClass({
-  propTypes: {
+const SettingsController = withRouter(/**
+ * SettingsController.react
+ */
+class extends React.Component {
+  static propTypes = {
     user: PropTypes.shape({
       distance_units: PropTypes.number.isRequired,
       email: PropTypes.string.isRequired,
@@ -38,22 +41,20 @@ const SettingsController = withRouter(React.createClass({
       last_name: PropTypes.string.isRequired,
       timezone: PropTypes.string.isRequired,
     }).isRequired,
-  },
+  };
 
-  getInitialState() {
-    return {...this.props.user};
-  },
+  state = {...this.props.user};
 
   componentWillMount() {
     this.props.dispatch(fetchSettings());
-  },
+  }
 
   componentDidMount() {
     this.props.router.setRouteLeaveHook(
       this.props.route,
       this._handleNavigateAway
     );
-  },
+  }
 
   render() {
     const {pendingRequests, user} = this.props;
@@ -74,9 +75,9 @@ const SettingsController = withRouter(React.createClass({
         </PageFrame>
       </AppFullPage>
     );
-  },
+  }
 
-  _renderContent() {
+  _renderContent = () => {
     if (isEmpty(this.props.user)) {
       return <Loader background full />;
     }
@@ -97,9 +98,9 @@ const SettingsController = withRouter(React.createClass({
         />
       </SettingsListGroup>
     );
-  },
+  };
 
-  _handleChange(e) {
+  _handleChange = (e) => {
     const newState = {};
     const {name, value} = e.target;
 
@@ -114,17 +115,17 @@ const SettingsController = withRouter(React.createClass({
     }
 
     this.setState(newState);
-  },
+  };
 
-  _handleNavigateAway(nextLocation) {
+  _handleNavigateAway = (nextLocation) => {
     if (!isEqual(this.state, this.props.user)) {
       return (
         'Are you sure you want to leave? Your settings have not been saved.'
       );
     }
-  },
+  };
 
-  _handleSave(e) {
+  _handleSave = (e) => {
     const {email, first_name, last_name} = this.state;
 
     // TODO: Better client-side validation.
@@ -147,7 +148,7 @@ const SettingsController = withRouter(React.createClass({
       ...this.state,
       id: this.props.user.id,
     }));
-  },
-}));
+  };
+});
 
 module.exports = connect(mapStateToProps)(SettingsController);

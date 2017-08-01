@@ -11,12 +11,12 @@ import Loader from 'components/Loader/Loader.react';
 
 import {getGarminActivity} from 'actions/activities';
 
-const ActivityFromUrlForm = React.createClass({
-  propTypes: {
+class ActivityFromUrlForm extends React.Component {
+  static propTypes = {
     activity: PropTypes.object,
     isLoading: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
-  },
+  };
 
   render() {
     const {activity, onChange, isLoading} = this.props;
@@ -53,9 +53,9 @@ const ActivityFromUrlForm = React.createClass({
         </FormGroup>
       </AppForm>
     );
-  },
+  }
 
-  _handleUrlChange(e) {
+  _handleUrlChange = (e) => {
     const url = e.target.value;
 
     if (!url) {
@@ -70,7 +70,7 @@ const ActivityFromUrlForm = React.createClass({
     }
 
     this.props.dispatch(getGarminActivity(activityId));
-  },
-});
+  };
+}
 
 export default connect()(ActivityFromUrlForm);

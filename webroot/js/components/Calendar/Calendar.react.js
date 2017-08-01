@@ -11,14 +11,14 @@ var calendarGrid = require('utils/calendarGrid');
 /**
  * Renders a calendar view for a single month
  */
-var Calendar = React.createClass({
-  displayName: 'Calendar',
+class Calendar extends React.Component {
+  static displayName = 'Calendar';
 
-  propTypes: {
+  static propTypes = {
     date: PropTypes.instanceOf(Date).isRequired,
-  },
+  };
 
-  render: function() {
+  render() {
     var grid = calendarGrid(
       this.props.date.getMonth(),
       this.props.date.getFullYear()
@@ -29,17 +29,17 @@ var Calendar = React.createClass({
         {grid.map(this._renderWeek)}
       </BaseCalendar>
     );
-  },
+  }
 
-  _renderWeek: function(week, idx) {
+  _renderWeek = (week, idx) => {
     return (
       <BaseCalendarWeek key={idx}>
         {week.map(this._renderDay)}
       </BaseCalendarWeek>
     );
-  },
+  };
 
-  _renderDay: function(day, idx) {
+  _renderDay = (day, idx) => {
     var date = day.date;
     return (
       <BaseCalendarDay
@@ -49,7 +49,7 @@ var Calendar = React.createClass({
         <CalendarDate date={date} />
       </BaseCalendarDay>
     );
-  },
-});
+  };
+}
 
 module.exports = Calendar;

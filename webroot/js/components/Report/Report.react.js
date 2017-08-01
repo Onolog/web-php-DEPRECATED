@@ -19,10 +19,11 @@ const DATE_FORMAT = 'MMMM Do';
 /**
  * Report.react
  */
-const Report = React.createClass({
-  displayName: 'Report',
+class Report extends React.Component {
+  static displayName = 'Report';
 
-  getInitialState: function() {
+  constructor(props) {
+    super(props);
     const {
       runExtremes,
       shoeCount,
@@ -35,7 +36,7 @@ const Report = React.createClass({
       workoutDataByWeek,
     } = window.app;
 
-    return {
+    this.state = {
       runExtremes: runExtremes,
       shoeCount: shoeCount,
       topBrand: topBrand,
@@ -46,9 +47,9 @@ const Report = React.createClass({
       workoutData: workoutData,
       workoutDataByWeek: workoutDataByWeek,
     };
-  },
+  }
 
-  render: function() {
+  render() {
     let content;
     const {workoutData} = this.state;
     // Render an empty state when there's no workout data
@@ -76,9 +77,9 @@ const Report = React.createClass({
         {content}
       </BaseAppPage>
     );
-  },
+  }
 
-  _renderTotalStats() {
+  _renderTotalStats = () => {
     const {totalMiles, totalRuns} = this.state;
     const avgRunDistance = formatDistance(totalMiles / totalRuns);
 
@@ -94,9 +95,9 @@ const Report = React.createClass({
         </Topline.Item>
       </Topline>
     );
-  },
+  };
 
-  _renderTimeStats() {
+  _renderTimeStats = () => {
     var duration = moment.duration(this.state.totalTime, 'seconds');
     var durationString =
       duration.days() + 'd ' +
@@ -111,9 +112,9 @@ const Report = React.createClass({
         </Topline.Item>
       </Topline>
     );
-  },
+  };
 
-  _renderExtremesStats() {
+  _renderExtremesStats = () => {
     const {totalRuns, runExtremes} = this.state;
     if (totalRuns < 2) {
       return;
@@ -133,9 +134,9 @@ const Report = React.createClass({
         </Topline.Item>
       </Topline>
     );
-  },
+  };
 
-  _renderShoeStats() {
+  _renderShoeStats = () => {
     const {shoeCount, topBrand} = this.state;
     if (!shoeCount) {
       return;
@@ -153,9 +154,9 @@ const Report = React.createClass({
         </Topline.Item>
       </Topline>
     );
-  },
+  };
 
-  _renderTopFriendsTable() {
+  _renderTopFriendsTable = () => {
     // Only show the top 5 friends
     var topFriends = this.state.topFriends.slice(0, 5);
     var friends = topFriends.map(function(friend) {
@@ -193,9 +194,9 @@ const Report = React.createClass({
         <table className="topFriendsTable">{friends}</table>
       </div>
     );
-  },
+  };
 
-  _renderGraphs() {
+  _renderGraphs = () => {
     return (
       <div className="YIRGraphContainer">
         <div className="YIRGraph dailyGraph">
@@ -218,9 +219,9 @@ const Report = React.createClass({
         </div>
       </div>
     );
-  },
+  };
 
-  _renderDailyGraph() {
+  _renderDailyGraph = () => {
     var monthData = this.state.workoutData.months;
     var monthKeys = Object.keys(monthData);
     var months = monthKeys.map(monthKey => {
@@ -257,9 +258,9 @@ const Report = React.createClass({
     });
 
     return <BarGraph>{months}</BarGraph>;
-  },
+  };
 
-  _renderWeeklyGraph() {
+  _renderWeeklyGraph = () => {
     var weekData = this.state.workoutDataByWeek.weeks;
     var keys = Object.keys(weekData).sort();
     var weeks = keys.map(key => {
@@ -282,9 +283,9 @@ const Report = React.createClass({
     });
 
     return <BarGraph>{weeks}</BarGraph>;
-  },
+  };
 
-  _renderMonthlyGraph() {
+  _renderMonthlyGraph = () => {
     var monthData = this.state.workoutData.months;
     var keys = Object.keys(monthData);
     var months = keys.map(key => {
@@ -312,7 +313,7 @@ const Report = React.createClass({
     });
 
     return <BarGraph>{months}</BarGraph>;
-  },
-});
+  };
+}
 
 module.exports = Report;

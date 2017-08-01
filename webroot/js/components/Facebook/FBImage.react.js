@@ -12,24 +12,22 @@ const GRAPH_URL = 'https://graph.facebook.com';
  *
  * Given an fbid, retrieves and renders an FB graph image.
  */
-const FBImage = React.createClass({
-  displayName: 'FBImage',
+class FBImage extends React.Component {
+  static displayName = 'FBImage';
 
-  propTypes: {
+  static propTypes = {
     fbid: PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.string,
     ]).isRequired,
     height: PropTypes.number,
     width: PropTypes.number,
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      height: 50,
-      width: 50,
-    };
-  },
+  static defaultProps = {
+    height: 50,
+    width: 50,
+  };
 
   render() {
     const {fbid, height, width} = this.props;
@@ -48,7 +46,7 @@ const FBImage = React.createClass({
         width={Math.floor(width)}
       />
     );
-  },
-});
+  }
+}
 
 module.exports = FBImage;

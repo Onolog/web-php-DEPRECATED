@@ -3,15 +3,14 @@ import d3tip from 'd3-tip';
 import React from 'react';
 import {findDOMNode} from 'react-dom';
 
-const Bar = React.createClass({
-
+class Bar extends React.Component {
   componentDidMount() {
     this._setTooltip(this.props);
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     this._setTooltip(nextProps);
-  },
+  }
 
   render() {
     const {height, onClick, width, x, y} = this.props;
@@ -25,9 +24,9 @@ const Bar = React.createClass({
         y={y}
       />
     );
-  },
+  }
 
-  _setTooltip({tooltip}) {
+  _setTooltip = ({tooltip}) => {
     if (!tooltip) {
       return;
     }
@@ -43,7 +42,7 @@ const Bar = React.createClass({
       .call(tip)
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide);
-  },
-});
+  };
+}
 
 export default Bar;

@@ -17,41 +17,35 @@ import {ESC, LEFT, RIGHT} from 'constants/KeyCode';
  * changing the displayed month. The visibility of the popover is controlled
  * externally.
  */
-const DateInputCalendarPopover = React.createClass({
-  displayName: 'DateInputCalendarPopover',
+class DateInputCalendarPopover extends React.Component {
+  static displayName = 'DateInputCalendarPopover';
 
-  propTypes: {
+  static propTypes = {
     date: PropTypes.number.isRequired,
     months: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,
     onHide: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
     years: PropTypes.number.isRequired,
-  },
+  };
 
-  getInitialState: function() {
-    return {
-      calendarMoment: this._getMoment(this.props),
-    };
-  },
-
-  componentDidMount: function() {
+  componentDidMount() {
     window.addEventListener('keydown', this._onKeydown);
-  },
+  }
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps(nextProps) {
     // When hiding or showing the popover, the date shown by the calendar
     // should be the same as the selected date.
     if (this.props.show !== nextProps.show) {
       this.setState({calendarMoment: this._getMoment(nextProps)});
     }
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     window.removeEventListener('keydown', this._onKeydown);
-  },
+  }
 
-  render: function() {
+  render() {
     if (!this.props.show) {
       return null;
     }
@@ -88,9 +82,9 @@ const DateInputCalendarPopover = React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
-  _onKeydown: function(e) {
+  _onKeydown = (e) => {
     if (this.props.show) {
       switch (e.keyCode) {
         case ESC:
@@ -104,25 +98,29 @@ const DateInputCalendarPopover = React.createClass({
           break;
       }
     }
-  },
+  };
 
-  _onPrevMonthClick: function(e) {
+  _onPrevMonthClick = (e) => {
     e.preventDefault();
     this.setState({
       calendarMoment: this.state.calendarMoment.subtract(1, 'month'),
     });
-  },
+  };
 
-  _onNextMonthClick: function(e) {
+  _onNextMonthClick = (e) => {
     e.preventDefault();
     this.setState({
       calendarMoment: this.state.calendarMoment.add(1, 'month'),
     });
-  },
+  };
 
-  _getMoment: function({date, months, years}) {
+  _getMoment = ({date, months, years}) => {
     return moment().year(years).month(months).date(date);
-  },
-});
+  };
+
+  state = {
+    calendarMoment: this._getMoment(this.props),
+  };
+}
 
 module.exports = DateInputCalendarPopover;

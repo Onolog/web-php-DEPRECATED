@@ -31,20 +31,23 @@ const mapStateToProps = ({error}) => {
  * Base component for rendering the app page, with code that should execute on
  * every page.
  */
-const BaseAppPage = React.createClass({
-
-  propTypes: {
+class BaseAppPage extends React.Component {
+  static propTypes = {
     error: PropTypes.object,
     session: PropTypes.shape({
       time: PropTypes.number.isRequired,
     }),
     title: PropTypes.string,
-  },
+  };
+
+  state = {
+    show: false,
+  };
 
   componentWillMount() {
     // Set the browser page title.
     document.title = renderTitle(this.props.title);
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     const {session} = this.props;
@@ -66,21 +69,15 @@ const BaseAppPage = React.createClass({
     if (this.props.title !== nextProps.title) {
       document.title = renderTitle(nextProps.title);
     }
-  },
+  }
 
   componentDidMount() {
     fbLoader(() => setInterval(this._checkLoginStatus, INTERVAL));
-  },
+  }
 
   componentWillUnmount() {
     clearInterval();
-  },
-
-  getInitialState() {
-    return {
-      show: false,
-    };
-  },
+  }
 
   render() {
     return (
@@ -90,9 +87,9 @@ const BaseAppPage = React.createClass({
         {this._renderSessionModal()}
       </div>
     );
-  },
+  }
 
-  _renderErrorModal() {
+  _renderErrorModal = () => {
     const {dispatch, error} = this.props;
     const onHide = () => dispatch(clearError());
 
@@ -104,9 +101,9 @@ const BaseAppPage = React.createClass({
         {error && error.message}
       </AlertModal>
     );
-  },
+  };
 
-  _renderSessionModal() {
+  _renderSessionModal = () => {
     return (
       <Modal show={this.state.show}>
         <Modal.Header>
@@ -122,9 +119,9 @@ const BaseAppPage = React.createClass({
         </Modal.Footer>
       </Modal>
     );
-  },
+  };
 
-  _checkLoginStatus() {
+  _checkLoginStatus = () => {
     if (document.location.pathname === LOGIN_PATH) {
       // If the user is on the login page, they're obviously logged out.
       clearInterval();
@@ -151,11 +148,11 @@ const BaseAppPage = React.createClass({
         this.setState({show: true});
       }
     });
-  },
+  };
 
-  _handleLogin() {
+  _handleLogin = () => {
     this.props.dispatch(loginIfNeeded());
-  },
-});
+  };
+}
 
 export default connect(mapStateToProps)(BaseAppPage);

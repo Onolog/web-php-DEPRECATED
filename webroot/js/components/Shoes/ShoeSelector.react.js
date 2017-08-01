@@ -17,10 +17,10 @@ const mapStoreToProps = ({shoes}) => {
  *
  * HTML selector that displays all of a user's shoes, grouped by activity state.
  */
-const ShoeSelector = React.createClass({
-  displayName: 'ShoeSelector',
+class ShoeSelector extends React.Component {
+  static displayName = 'ShoeSelector';
 
-  propTypes: {
+  static propTypes = {
     defaultValue: PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.string,
@@ -30,18 +30,16 @@ const ShoeSelector = React.createClass({
       mileage: PropTypes.number.isRequired,
       name: PropTypes.isRequired,
     })),
-  },
+  };
+
+  state = {
+    // TODO: This is kind of a hack.
+    initialSelection: this.props.defaultValue,
+  };
 
   componentWillMount() {
     this.props.dispatch(fetchShoes());
-  },
-
-  getInitialState() {
-    return {
-      // TODO: This is kind of a hack.
-      initialSelection: this.props.defaultValue,
-    };
-  },
+  }
 
   render() {
     const {shoes, value, ...otherProps} = this.props;
@@ -55,13 +53,13 @@ const ShoeSelector = React.createClass({
         value={value || ''}
       />
     );
-  },
+  }
 
   /**
    * Group the list of shoes by active or inactive, and format the data
    * correctly.
    */
-  _getOptions(shoes) {
+  _getOptions = (shoes) => {
     // Filter out inactive shoes unless it's the initially selected shoe.
     shoes = shoes.filter(shoe => (
       !shoe.inactive || shoe.id === +this.state.initialSelection
@@ -78,7 +76,7 @@ const ShoeSelector = React.createClass({
     }
 
     return options;
-  },
-});
+  };
+}
 
 module.exports = connect(mapStoreToProps)(ShoeSelector);

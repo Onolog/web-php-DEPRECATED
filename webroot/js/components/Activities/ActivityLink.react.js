@@ -11,26 +11,23 @@ import {isEqual} from 'lodash';
 /**
  * ActivityLink.react
  */
-const ActivityLink = React.createClass({
-
-  propTypes: {
+class ActivityLink extends React.Component {
+  static propTypes = {
     activity: PropTypes.object.isRequired,
-  },
+  };
 
-  getInitialState() {
-    return {
-      isEditing: false,
-      isLoading: false,
-      showModal: false,
-    };
-  },
+  state = {
+    isEditing: false,
+    isLoading: false,
+    showModal: false,
+  };
 
   componentWillReceiveProps(nextProps) {
     // Close the modal if the activity was successfully updated.
     if (!isEqual(nextProps.activity, this.props.activity)) {
       this._hideModal();
     }
-  },
+  }
 
   render() {
     const {activity} = this.props;
@@ -59,23 +56,23 @@ const ActivityLink = React.createClass({
         {modal}
       </Link>
     );
-  },
+  }
 
-  _handleEdit() {
+  _handleEdit = () => {
     this.setState({isEditing: true});
-  },
+  };
 
-  _hideModal() {
+  _hideModal = () => {
     this.setState({
       isEditing: false,
       isLoading: false,
       showModal: false,
     });
-  },
+  };
 
-  _showModal() {
+  _showModal = () => {
     this.setState({showModal: true});
-  },
-});
+  };
+}
 
 export default ActivityLink;

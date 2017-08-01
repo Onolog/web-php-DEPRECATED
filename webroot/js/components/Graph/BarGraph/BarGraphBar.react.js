@@ -11,8 +11,8 @@ var cx = require('classnames');
  *
  * Represent a single piece of data in a bar graph
  */
-var GraphBar = React.createClass({
-  propTypes: {
+class GraphBar extends React.Component {
+  static propTypes = {
     /**
      * If supplied, renders a link
      */
@@ -31,20 +31,18 @@ var GraphBar = React.createClass({
      */
     scale: PropTypes.number,
     value: PropTypes.number.isRequired,
-  },
+  };
 
-  componentDidMount: function() {
+  static defaultProps = {
+    scale: 1,
+  };
+
+  componentDidMount() {
     // Position/hide the label depending on the size of the bar
     // need to recalculate on windo resize
-  },
+  }
 
-  getDefaultProps: function() {
-    return {
-      scale: 1,
-    };
-  },
-
-  render: function() {
+  render() {
     const {label, scale, value} = this.props;
 
     return (
@@ -61,7 +59,7 @@ var GraphBar = React.createClass({
         </Link>
       </OverlayTrigger>
     );
-  },
-});
+  }
+}
 
 module.exports = GraphBar;

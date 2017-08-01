@@ -17,22 +17,19 @@ const mapStateToProps = ({session}) => {
 /**
  * Login.react.js
  */
-const Login = React.createClass({
-
-  getInitialState() {
-    return {
-      windowHeight: null,
-    };
-  },
+class Login extends React.Component {
+  state = {
+    windowHeight: null,
+  };
 
   componentDidMount() {
     this._handleResize();
     window.addEventListener('resize', this._handleResize);
-  },
+  }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this._handleResize);
-  },
+  }
 
   render() {
     return (
@@ -54,9 +51,9 @@ const Login = React.createClass({
         </div>
       </BaseAppPage>
     );
-  },
+  }
 
-  _renderMarketingSection(title) {
+  _renderMarketingSection = (title) => {
     return (
       <div className="marketingSection">
         <div className="container">
@@ -64,19 +61,19 @@ const Login = React.createClass({
         </div>
       </div>
     );
-  },
+  };
 
-  _handleLogin() {
+  _handleLogin = () => {
     this.props.dispatch(loginIfNeeded());
-  },
+  };
 
-  _handleResize() {
+  _handleResize = () => {
     var windowHeight = Math.max(
       document.documentElement.clientHeight,
       window.innerHeight || 0
     );
     this.setState({windowHeight});
-  },
-});
+  };
+}
 
 module.exports = connect(mapStateToProps)(Login);

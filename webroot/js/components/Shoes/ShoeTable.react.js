@@ -14,33 +14,31 @@ import {fetchShoeActivities} from 'actions/shoes';
 const EDIT = 'edit';
 const VIEW = 'view';
 
+const getInitialState = props => ({
+  action: null,
+  shown: null,
+});
+
 const mapStateToProps = ({activities}) => {
   return {
     activities,
   };
 };
 
-const ShoeTable = React.createClass({
-  displayName: 'ShoeTable',
+class ShoeTable extends React.Component {
+  static displayName = 'ShoeTable';
 
-  propTypes: {
+  static propTypes = {
     activities: PropTypes.array.isRequired,
     shoes: PropTypes.array.isRequired,
-  },
+  };
 
   componentWillReceiveProps(nextProps) {
     // Close dialog when shoes get updated.
     if (this.state.action === EDIT) {
-      this.setState(this.getInitialState());
+      this.setState(getInitialState(nextProps));
     }
-  },
-
-  getInitialState() {
-    return {
-      action: null,
-      shown: null,
-    };
-  },
+  }
 
   render() {
     return (
@@ -58,9 +56,9 @@ const ShoeTable = React.createClass({
         </tbody>
       </Table>
     );
-  },
+  }
 
-  _renderRow(shoe) {
+  _renderRow = (shoe) => {
     const {activities} = this.props;
     const {action, shown} = this.state;
 
@@ -95,30 +93,30 @@ const ShoeTable = React.createClass({
         </td>
       </tr>
     );
-  },
+  };
 
-  _handleEdit(e, shoeId) {
+  _handleEdit = (e, shoeId) => {
     this.setState({
       action: EDIT,
       shown: shoeId,
     });
-  },
+  };
 
-  _handleHideModal() {
+  _handleHideModal = () => {
     this.setState({
       action: null,
       shown: null,
     });
-  },
+  };
 
-  _handleView(e, shoe) {
+  _handleView = (e, shoe) => {
     this.props.dispatch(fetchShoeActivities(shoe));
 
     this.setState({
       action: VIEW,
       shown: shoe.id,
     });
-  },
-});
+  };
+}
 
 module.exports = connect(mapStateToProps)(ShoeTable);

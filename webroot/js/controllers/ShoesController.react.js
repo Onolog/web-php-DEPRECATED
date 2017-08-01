@@ -27,23 +27,21 @@ const mapStateToProps = ({shoes}) => {
  *
  * View controller for displaying all of a user's shoes
  */
-const ShoesController = React.createClass({
-  displayName: 'ShoesController',
+class ShoesController extends React.Component {
+  static displayName = 'ShoesController';
 
-  propTypes: {
+  static propTypes = {
     shoes: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-  },
+  };
+
+  state = {
+    isLoading: false,
+    show: false,
+  };
 
   componentWillMount() {
     this._fetchData();
-  },
-
-  getInitialState() {
-    return {
-      isLoading: false,
-      show: false,
-    };
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     // Hide modal when shoes are modified somehow.
@@ -52,7 +50,7 @@ const ShoesController = React.createClass({
     }
 
     this.setState({isLoading: false});
-  },
+  }
 
   render() {
     const {isLoading, show} = this.state;
@@ -75,9 +73,9 @@ const ShoesController = React.createClass({
         </PageFrame>
       </AppFullPage>
     );
-  },
+  }
 
-  _renderContent() {
+  _renderContent = () => {
     if (this.state.isLoading) {
       return;
     }
@@ -90,9 +88,9 @@ const ShoesController = React.createClass({
         {this._renderInactiveShoes(shoes[0])}
       </div>
     );
-  },
+  };
 
-  _renderActiveShoes(/*array*/ activeShoes) {
+  _renderActiveShoes = (/*array*/ activeShoes) => {
     const contents = activeShoes && activeShoes.length ?
       <ShoeTable fill shoes={activeShoes} /> :
       <EmptyState>
@@ -104,9 +102,9 @@ const ShoesController = React.createClass({
         {contents}
       </Panel>
     );
-  },
+  };
 
-  _renderInactiveShoes(/*array*/ inactiveShoes) {
+  _renderInactiveShoes = (/*array*/ inactiveShoes) => {
     if (inactiveShoes && inactiveShoes.length) {
       return (
         <Panel header={<h3>Inactive</h3>}>
@@ -114,20 +112,20 @@ const ShoesController = React.createClass({
         </Panel>
       );
     }
-  },
+  };
 
-  _handleHideModal() {
+  _handleHideModal = () => {
     this.setState({show: false});
-  },
+  };
 
-  _handleShowModal() {
+  _handleShowModal = () => {
     this.setState({show: true});
-  },
+  };
 
-  _fetchData() {
+  _fetchData = () => {
     this.props.dispatch(fetchShoes());
     this.setState({isLoading: true});
-  },
-});
+  };
+}
 
 module.exports = connect(mapStateToProps)(ShoesController);

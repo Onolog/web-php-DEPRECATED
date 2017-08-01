@@ -7,14 +7,14 @@ import ShoeView from './ShoeView.react';
 /**
  * ShoeViewModal.react
  */
-const ShoeViewModal = React.createClass({
-  displayName: 'ShoeViewModal',
+class ShoeViewModal extends React.Component {
+  static displayName = 'ShoeViewModal';
 
-  propTypes: {
+  static propTypes = {
     onHide: PropTypes.func,
     shoe: PropTypes.object,
     show: PropTypes.bool,
-  },
+  };
 
   render() {
     const {activities, shoe} = this.props;
@@ -38,11 +38,11 @@ const ShoeViewModal = React.createClass({
         </Modal.Footer>
       </Modal>
     );
-  },
+  }
 
-  _handleClose() {
+  _handleClose = () => {
     this.props.onHide && this.props.onHide();
-  },
-});
+  };
+}
 
 module.exports = ShoeViewModal;

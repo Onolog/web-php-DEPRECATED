@@ -17,22 +17,20 @@ import MaterialIcon from 'components/Icons/MaterialIcon.react';
 /**
  * ActivityViewModal.react
  */
-const ActivityViewModal = React.createClass({
-  displayName: 'ActivityViewModal',
+class ActivityViewModal extends React.Component {
+  static displayName = 'ActivityViewModal';
 
-  propTypes: {
+  static propTypes = {
     activity: PropTypes.object.isRequired,
     isLoading: PropTypes.bool,
     onEdit: PropTypes.func.isRequired,
     onHide: PropTypes.func.isRequired,
     show: PropTypes.bool,
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      isLoading: false,
-    };
-  },
+  static defaultProps = {
+    isLoading: false,
+  };
 
   render() {
     const {activity, isLoading, onEdit, onHide, show} = this.props;
@@ -70,7 +68,7 @@ const ActivityViewModal = React.createClass({
         </Modal.Footer>
       </Modal>
     );
-  },
-});
+  }
+}
 
 export default ActivityViewModal;

@@ -30,18 +30,18 @@ const mapStateToProps = ({activities, pendingRequests, shoes, session}) => {
 /**
  * DataController.react
  */
-const DataController = React.createClass({
-  propTypes: {
+class DataController extends React.Component {
+  static propTypes = {
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     shoes: PropTypes.arrayOf(PropTypes.object).isRequired,
     user: PropTypes.shape({
       name: PropTypes.string.isRequired,
     }).isRequired,
-  },
+  };
 
   componentWillMount() {
     this.props.dispatch(fetchUserData());
-  },
+  }
 
   render() {
     const {activities, pendingRequests, user} = this.props;
@@ -61,9 +61,9 @@ const DataController = React.createClass({
         {this._renderContent(activities)}
       </AppPage>
     );
-  },
+  }
 
-  _renderToplineStats(activities) {
+  _renderToplineStats = (activities) => {
     const totalMiles = getAggregateDistance(activities);
     const totalRuns = activities.length;
 
@@ -82,9 +82,9 @@ const DataController = React.createClass({
         </Topline>
       </Panel>
     );
-  },
+  };
 
-  _renderContent(activities) {
+  _renderContent = (activities) => {
     // Render an empty state when there's no data.
     if (!activities.length) {
       return (
@@ -106,7 +106,7 @@ const DataController = React.createClass({
         />
       );
     });
-  },
-});
+  };
+}
 
 module.exports = connect(mapStateToProps)(DataController);

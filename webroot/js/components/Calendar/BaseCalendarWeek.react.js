@@ -5,12 +5,12 @@ import React from 'react';
  *
  * Renders a single row in the calendar grid (ie: one week)
  */
-const BaseCalendarWeek = React.createClass({
-  displayName: 'BaseCalendarWeek',
+class BaseCalendarWeek extends React.Component {
+  static displayName = 'BaseCalendarWeek';
 
-  render: function() {
+  render() {
     return <tr>{this.props.children}</tr>;
-  },
-});
+  }
+}
 
 module.exports = BaseCalendarWeek;

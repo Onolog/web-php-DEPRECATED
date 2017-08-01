@@ -13,20 +13,18 @@ const DIRECTION = {
  *
  * Simple left right positioning tool.
  */
-const LeftRight = React.createClass({
-  displayName: 'LeftRight',
+class LeftRight extends React.Component {
+  static displayName = 'LeftRight';
 
-  propTypes: {
+  static propTypes = {
     direction: PropTypes.oneOf(Object.keys(DIRECTION)),
-  },
+  };
 
-  getDefaultProps: function() {
-    return {
-      direction: DIRECTION.both,
-    };
-  },
+  static defaultProps = {
+    direction: DIRECTION.both,
+  };
 
-  render: function() {
+  render() {
     var children = [];
     React.Children.forEach(this.props.children, child => {
       children.push(child);
@@ -60,7 +58,7 @@ const LeftRight = React.createClass({
         {orderedChildren}
       </div>
     );
-  },
-});
+  }
+}
 
 module.exports = LeftRight;

@@ -8,6 +8,11 @@ import ShoeEditModal from 'components/Shoes/ShoeEditModal.react';
 
 import {addShoe, deleteShoe, updateShoe} from 'actions/shoes';
 
+const getInitialState = props => ({
+  isLoading: false,
+  shoe: props.initialShoe || INITIAL_SHOE_DATA,
+});
+
 const mapStateToProps = ({session}) => {
   return {
     user: session,
@@ -25,22 +30,15 @@ const INITIAL_SHOE_DATA = {
  *
  * Modal for adding or editing the properties of a single shoe.
  */
-const ShoeModal = React.createClass({
-  displayName: 'ShoeModal',
+class ShoeModal extends React.Component {
+  static displayName = 'ShoeModal';
 
-  propTypes: {
+  static propTypes = {
     initialShoe: PropTypes.object,
     onHide: PropTypes.func,
     show: PropTypes.bool,
     user: PropTypes.object.isRequired,
-  },
-
-  getInitialState() {
-    return {
-      isLoading: false,
-      shoe: this.props.initialShoe || INITIAL_SHOE_DATA,
-    };
-  },
+  };
 
   render() {
     const {initialShoe, show, user} = this.props;
@@ -66,14 +64,14 @@ const ShoeModal = React.createClass({
       <ShoeAddModal
         {...props}
       />;
-  },
+  }
 
-  _handleChange(shoe) {
+  _handleChange = (shoe) => {
     this.setState({shoe});
-  },
+  };
 
-  _handleClose() {
-    const {shoe} = this.getInitialState();
+  _handleClose = () => {
+    const {shoe} = getInitialState(this.props);
     const hasChanges = !isEqual(shoe, this.state.shoe);
     const confirmed = hasChanges && confirm(
       'Are you sure you want to close the dialog? Your changes will not ' +
@@ -83,22 +81,22 @@ const ShoeModal = React.createClass({
     if (!hasChanges || confirmed) {
       this.props.onHide && this.props.onHide();
     }
-  },
+  };
 
-  _handleDelete(id, e) {
+  _handleDelete = (id, e) => {
     if (confirm('Are you sure you want to delete this shoe?')) {
       this.props.dispatch(deleteShoe(id));
     }
-  },
+  };
 
   /**
    * Reset the form when the modal closes.
    */
-  _handleExited(e) {
-    this.setState(this.getInitialState());
-  },
+  _handleExited = (e) => {
+    this.setState(getInitialState(this.props));
+  };
 
-  _handleSave(e) {
+  _handleSave = (e) => {
     const action = this.props.initialShoe ? updateShoe : addShoe;
     const {shoe} = this.state;
 
@@ -114,7 +112,7 @@ const ShoeModal = React.createClass({
 
     this.setState({isLoading: true});
     this.props.dispatch(action(this.state.shoe));
-  },
-});
+  };
+}
 
 module.exports = connect(mapStateToProps)(ShoeModal);

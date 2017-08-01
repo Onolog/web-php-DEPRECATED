@@ -7,23 +7,21 @@ import cx from 'classnames';
  *
  * Menu used in a dropdown.
  */
-const Menu = React.createClass({
-  displayName: 'Menu',
+class Menu extends React.Component {
+  static displayName = 'Menu';
 
-  propTypes: {
+  static propTypes = {
     /**
      * Horizontal alignment of the menu.
      */
     align: PropTypes.oneOf(['left', 'right']),
-  },
+  };
 
-  getDefaultProps: function() {
-    return {
-      align: 'left',
-    };
-  },
+  static defaultProps = {
+    align: 'left',
+  };
 
-  render: function() {
+  render() {
     return (
       <ul
         className={cx('dropdown-menu', {
@@ -33,7 +31,7 @@ const Menu = React.createClass({
         {this.props.children}
       </ul>
     );
-  },
-});
+  }
+}
 
 module.exports = Menu;

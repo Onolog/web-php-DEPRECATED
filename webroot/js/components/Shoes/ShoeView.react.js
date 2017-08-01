@@ -16,10 +16,10 @@ import secondsToTime from 'utils/secondsToTime';
  *
  * Data (mileage, total activities, and activity summary) for a single shoe.
  */
-const ShoeView = React.createClass({
-  displayName: 'ShoeView',
+class ShoeView extends React.Component {
+  static displayName = 'ShoeView';
 
-  propTypes: {
+  static propTypes = {
     /**
      * Array of all the activities associated with the shoe
      */
@@ -35,14 +35,12 @@ const ShoeView = React.createClass({
       activity_count: PropTypes.number.isRequired,
       mileage: PropTypes.number.isRequired,
     }).isRequired,
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      activities: [],
-      isLoading: false,
-    };
-  },
+  static defaultProps = {
+    activities: [],
+    isLoading: false,
+  };
 
   render() {
     const {shoe} = this.props;
@@ -70,9 +68,9 @@ const ShoeView = React.createClass({
         {this._renderActivities()}
       </div>
     );
-  },
+  }
 
-  _renderNotes() {
+  _renderNotes = () => {
     const {notes} = this.props.shoe;
     if (notes) {
       return (
@@ -81,9 +79,9 @@ const ShoeView = React.createClass({
         </ActivitySection>
       );
     }
-  },
+  };
 
-  _renderActivities() {
+  _renderActivities = () => {
     const {activities, isLoading} = this.props;
 
     if (isLoading) {
@@ -112,9 +110,9 @@ const ShoeView = React.createClass({
         </tbody>
       </Table>
     );
-  },
+  };
 
-  _renderRows(activity) {
+  _renderRows = (activity) => {
     const date = moment.tz(
       activity.start_date,
       activity.timezone
@@ -133,7 +131,7 @@ const ShoeView = React.createClass({
         </td>
       </tr>
     );
-  },
-});
+  };
+}
 
 module.exports = ShoeView;

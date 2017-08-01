@@ -31,29 +31,27 @@ const yScale = (data, height) => {
 };
 
 
-const BarChart = React.createClass({
-  propTypes: {
+class BarChart extends React.Component {
+  static propTypes = {
     data: PropTypes.array.isRequired,
     height: PropTypes.number.isRequired,
     tooltip: PropTypes.func,
     width: PropTypes.number,
     xFormat: PropTypes.func,
-  },
+  };
 
-  getInitialState() {
-    return {
-      width: this.props.width || 400,
-    };
-  },
+  state = {
+    width: this.props.width || 400,
+  };
 
   componentDidMount() {
     this._setWidth();
     window.addEventListener('resize', this._setWidth);
-  },
+  }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this._setWidth);
-  },
+  }
 
   render() {
     const {data, height, xFormat} = this.props;
@@ -90,9 +88,9 @@ const BarChart = React.createClass({
         </g>
       </svg>
     );
-  },
+  }
 
-  _renderBar(d, idx) {
+  _renderBar = (d, idx) => {
     const {data, height, tooltip} = this.props;
     const {width} = this.state;
     const x = xScale(data, width);
@@ -109,12 +107,12 @@ const BarChart = React.createClass({
         y={y(d.yVal)}
       />
     );
-  },
+  };
 
-  _setWidth() {
+  _setWidth = () => {
     const width = findDOMNode(this).parentNode.offsetWidth;
     this.setState({width});
-  },
-});
+  };
+}
 
 export default BarChart;

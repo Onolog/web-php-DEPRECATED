@@ -61,8 +61,8 @@ const mapStateToProps = (state, props) => {
 /**
  * ProfileController.react
  */
-const ProfileController = React.createClass({
-  propTypes: {
+class ProfileController extends React.Component {
+  static propTypes = {
     activities: PropTypes.array.isRequired,
     activitySummary: PropTypes.shape({
       month: SummaryShape,
@@ -73,31 +73,29 @@ const ProfileController = React.createClass({
     user: PropTypes.shape({
       name: PropTypes.string.isRequired,
     }),
-  },
+  };
+
+  state = {
+    showHeader: false,
+  };
 
   componentWillMount() {
     this._fetchProfileData(this.props);
     window.addEventListener('scroll', this._showHeaderCheck, true);
-  },
+  }
 
   componentWillReceiveProps(nextProps) {
     // Re-fetch data when navigating to a different profile.
     if (this.props.params.userId !== nextProps.params.userId) {
       this._fetchProfileData(nextProps);
     }
-  },
+  }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this._showHeaderCheck, true);
-  },
+  }
 
-  getInitialState() {
-    return {
-      showHeader: false,
-    };
-  },
-
-  _showHeaderCheck() {
+  _showHeaderCheck = () => {
     const node = findDOMNode(this._profileImageName);
     const {bottom} = node.getBoundingClientRect();
     const showHeader = bottom <= 0;
@@ -105,7 +103,7 @@ const ProfileController = React.createClass({
     if (showHeader !== this.state.showHeader) {
       this.setState({showHeader});
     }
-  },
+  };
 
   render() {
     const {user} = this.props;
@@ -114,9 +112,9 @@ const ProfileController = React.createClass({
         {this._renderContents()}
       </AppFullPage>
     );
-  },
+  }
 
-  _renderContents() {
+  _renderContents = () => {
     const {
       activities,
       dispatch,
@@ -176,9 +174,9 @@ const ProfileController = React.createClass({
         </Row>
       </PageFrame>
     );
-  },
+  };
 
-  _renderActivitySummary() {
+  _renderActivitySummary = () => {
     const {month, week, year} = this.props.activitySummary;
 
     if (!month || !week || !year) {
@@ -207,11 +205,11 @@ const ProfileController = React.createClass({
         </Topline.Item>
       </Topline>
     );
-  },
+  };
 
-  _fetchProfileData({dispatch, params}) {
+  _fetchProfileData = ({dispatch, params}) => {
     dispatch(fetchProfile(params.userId));
-  },
-});
+  };
+}
 
 module.exports = connect(mapStateToProps)(ProfileController);

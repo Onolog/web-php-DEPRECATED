@@ -11,23 +11,21 @@ import MaterialIcon from 'components/Icons/MaterialIcon.react';
  *
  * Structured input for selecting a date via a calendar picker.
  */
-const DateInput = React.createClass({
-  displayName: 'DateInput',
+class DateInput extends React.Component {
+  static displayName = 'DateInput';
 
-  propTypes: {
+  static propTypes = {
     date: PropTypes.number.isRequired,
     months: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,
     years: PropTypes.number.isRequired,
-  },
+  };
 
-  getInitialState: function() {
-    return {
-      showCalendar: false,
-    };
-  },
+  state = {
+    showCalendar: false,
+  };
 
-  render: function() {
+  render() {
     const {date, months, years} = this.props;
     var m = moment({date, months, years});
 
@@ -52,27 +50,27 @@ const DateInput = React.createClass({
         />
       </div>
     );
-  },
+  }
 
-  _hideCalendar: function() {
+  _hideCalendar = () => {
     this.setState({showCalendar: false});
-  },
+  };
 
-  _showCalendar: function() {
+  _showCalendar = () => {
     this.setState({showCalendar: true});
-  },
+  };
 
   /**
    * From `onClickOutside` HoC.
    */
-  handleClickOutside: function(e) {
+  handleClickOutside = (e) => {
     this._hideCalendar();
-  },
+  };
 
-  _onChange: function(/*object*/ dateObject) {
+  _onChange = (/*object*/ dateObject) => {
     this._hideCalendar();
     this.props.onChange(dateObject);
-  },
-});
+  };
+}
 
 module.exports = onClickOutside(DateInput);

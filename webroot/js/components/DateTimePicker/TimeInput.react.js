@@ -22,14 +22,14 @@ function formatter(value) {
  * Structured input for specifiying a time of day. Can be used as a controlled
  * or uncontrolled input similar to a normal form field.
  */
-var TimeInput = React.createClass({
-  displayName: 'TimeInput',
+class TimeInput extends React.Component {
+  static displayName = 'TimeInput';
 
-  propTypes: {
+  static propTypes = {
     hours: PropTypes.number.isRequired,
     minutes: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,
-  },
+  };
 
   render() {
     var m = moment({
@@ -67,9 +67,9 @@ var TimeInput = React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
-  _onHoursChange(/*number*/ hours) {
+  _onHoursChange = (/*number*/ hours) => {
     var meridiem = this.refs.meridiem.getValue();
 
     // Display is 12-hour, time is 24-hour. Adjust accordingly.
@@ -80,21 +80,21 @@ var TimeInput = React.createClass({
     }
 
     this._onChange(hours, this.props.minutes);
-  },
+  };
 
-  _onMinutesChange(/*number*/ minutes) {
+  _onMinutesChange = (/*number*/ minutes) => {
     this._onChange(this.props.hours, minutes);
-  },
+  };
 
-  _onMeridiemChange(/*string*/ meridiem) {
+  _onMeridiemChange = (/*string*/ meridiem) => {
     var {hours} = this.props;
     hours = (meridiem === MERIDIEM.PM && hours < 12) ? hours + 12 : hours - 12;
     this._onChange(hours, this.props.minutes);
-  },
+  };
 
-  _onChange(/*number*/ hours, /*number*/ minutes) {
+  _onChange = (/*number*/ hours, /*number*/ minutes) => {
     this.props.onChange({hours, minutes});
-  },
-});
+  };
+}
 
 module.exports = TimeInput;

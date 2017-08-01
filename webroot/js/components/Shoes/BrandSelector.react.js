@@ -17,19 +17,19 @@ const mapStateToProps = ({brands}) => {
  *
  * A selector element that displays all possible shoe brands.
  */
-const BrandSelector = React.createClass({
-  displayName: 'BrandSelector',
+class BrandSelector extends React.Component {
+  static displayName = 'BrandSelector';
 
-  componentWillMount() {
-    this.props.dispatch(fetchBrands());
-  },
-
-  propTypes: {
+  static propTypes = {
     brands: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
     })).isRequired,
-  },
+  };
+
+  componentWillMount() {
+    this.props.dispatch(fetchBrands());
+  }
 
   render() {
     const {brands, ...otherProps} = this.props;
@@ -51,7 +51,7 @@ const BrandSelector = React.createClass({
         options={options}
       />
     );
-  },
-});
+  }
+}
 
 export default connect(mapStateToProps)(BrandSelector);

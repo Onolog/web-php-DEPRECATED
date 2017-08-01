@@ -26,29 +26,27 @@ const FIELDNAMES = {
  *
  * Displays a form with inputs for adding or editing an activity.
  */
-const ActivityForm = React.createClass({
-  displayName: 'ActivityForm',
+class ActivityForm extends React.Component {
+  static displayName = 'ActivityForm';
 
-  propTypes: {
+  static propTypes = {
     /**
      * An existing activity object.
      */
     activity: PropTypes.object,
     errors: PropTypes.object,
     onChange: PropTypes.func.isRequired,
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      activity: {},
-      errors: {},
-    };
-  },
+  static defaultProps = {
+    activity: {},
+    errors: {},
+  };
 
   componentDidMount() {
     // Auto-focus the distance field
     findDOMNode(this._distanceInput).focus();
-  },
+  }
 
   render() {
     const {activity, errors} = this.props;
@@ -132,17 +130,17 @@ const ActivityForm = React.createClass({
         </FormRow>
       </AppForm>
     );
-  },
+  }
 
-  _onInputChange(e) {
+  _onInputChange = (e) => {
     const {name, value} = e.target;
     const activity = {...this.props.activity};
     activity[name] = value;
 
     this._onChange(activity);
-  },
+  };
 
-  _onDateChange(/*string*/ start_date, /*string*/ timezone) {
+  _onDateChange = (/*string*/ start_date, /*string*/ timezone) => {
     const activity = {
       ...this.props.activity,
       start_date,
@@ -150,11 +148,11 @@ const ActivityForm = React.createClass({
     };
 
     this._onChange(activity);
-  },
+  };
 
-  _onChange(/*object*/ activity) {
+  _onChange = (/*object*/ activity) => {
     this.props.onChange(activity);
-  },
-});
+  };
+}
 
 export default ActivityForm;

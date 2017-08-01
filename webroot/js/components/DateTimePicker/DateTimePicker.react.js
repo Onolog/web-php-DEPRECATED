@@ -20,10 +20,10 @@ import './DateTimePicker.scss';
  * Form element that allows the user to select date, time and timezone.
  * Returns a date string with timezone offset and a timezone name.
  */
-const DateTimePicker = React.createClass({
-  displayName: 'DateTimePicker',
+class DateTimePicker extends React.Component {
+  static displayName = 'DateTimePicker';
 
-  propTypes: {
+  static propTypes = {
     /**
      * Some kind of date format. Could be:
      *
@@ -43,27 +43,26 @@ const DateTimePicker = React.createClass({
      * Timezone name (NOT the offset). For example: 'America/Los_Angeles'.
      */
     timezone: PropTypes.oneOf(TIMEZONES),
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      date: new Date(),
-      timezone: CURRENT_TIMEZONE,
-    };
-  },
+  static defaultProps = {
+    date: new Date(),
+    timezone: CURRENT_TIMEZONE,
+  };
 
-  getInitialState() {
-    var {date, timezone} = this.props;
+  constructor(props) {
+    super(props);
+    var {date, timezone} = props;
 
     // Convert the date to individual values to keep them separate from the
     // timezone/offset.
     var dateObject = moment.tz(date, timezone).toObject();
 
-    return {
+    this.state = {
       dateObject,
       timezone,
     };
-  },
+  }
 
   render() {
     var {dateObject, timezone} = this.state;
@@ -90,9 +89,9 @@ const DateTimePicker = React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
-  _onChange(/*object*/ values) {
+  _onChange = (/*object*/ values) => {
     var {dateObject, timezone} = this.state;
     dateObject = assign({}, dateObject, values);
 
@@ -102,16 +101,16 @@ const DateTimePicker = React.createClass({
       moment.tz(dateObject, timezone).format(),
       timezone
     );
-  },
+  };
 
-  _onTimezoneChange(/*string*/ timezone) {
+  _onTimezoneChange = (/*string*/ timezone) => {
     this.setState({timezone});
 
     this.props.onChange(
       moment.tz(this.state.dateObject, timezone).format(),
       timezone
     );
-  },
-});
+  };
+}
 
 export default DateTimePicker;

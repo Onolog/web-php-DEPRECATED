@@ -6,17 +6,17 @@ var cx = require('classnames');
  *
  * React wrapper around a standard textarea.
  */
-var Textarea = React.createClass({
-  displayName: 'Textarea',
+class Textarea extends React.Component {
+  static displayName = 'Textarea';
 
-  render: function() {
+  render() {
     return (
       <textarea
         {...this.props}
         className={cx(this.props.className, 'form-control')}
       />
     );
-  },
-});
+  }
+}
 
 module.exports = Textarea;

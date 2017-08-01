@@ -13,13 +13,13 @@ import './css/ActivityCalendar.css';
 /**
  * ActivityCalendar.react
  */
-const ActivityCalendar = React.createClass({
-  displayName: 'ActivityCalendar',
+class ActivityCalendar extends React.Component {
+  static displayName = 'ActivityCalendar';
 
-  propTypes: {
+  static propTypes = {
     activities: PropTypes.array.isRequired,
     date: PropTypes.instanceOf(Date).isRequired,
-  },
+  };
 
   render() {
     const {date} = this.props;
@@ -30,18 +30,18 @@ const ActivityCalendar = React.createClass({
         {grid.map(this._renderWeek)}
       </BaseCalendar>
     );
-  },
+  }
 
-  _renderWeek(week, idx) {
+  _renderWeek = (week, idx) => {
     this._weeklyMileage = 0;
     return (
       <BaseCalendarWeek key={idx}>
         {week.map(this._renderDay)}
       </BaseCalendarWeek>
     );
-  },
+  };
 
-  _renderDay(day, idx) {
+  _renderDay = (day, idx) => {
     const dateObject = day.date;
 
     let activities = this.props.activities.filter(activity => (
@@ -63,7 +63,7 @@ const ActivityCalendar = React.createClass({
         weeklyMileage={this._weeklyMileage}
       />
     );
-  },
-});
+  };
+}
 
 export default ActivityCalendar;

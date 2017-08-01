@@ -21,22 +21,20 @@ const MAP_TYPES = {
 
 let map;
 
-const GoogleMap = React.createClass({
-  displayName: 'GoogleMap',
+class GoogleMap extends React.Component {
+  static displayName = 'GoogleMap';
 
-  propTypes: {
+  static propTypes = {
     mapTypeId: PropTypes.oneOf(values(MAP_TYPES)),
     path: PropTypes.arrayOf(PropTypes.shape({
       lat: PropTypes.number.isRequired,
       lng: PropTypes.number.isRequired,
     }).isRequired).isRequired,
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      mapTypeId: MAP_TYPES.TERRAIN,
-    };
-  },
+  static defaultProps = {
+    mapTypeId: MAP_TYPES.TERRAIN,
+  };
 
   componentDidMount() {
     GoogleMapsLoader.KEY = API_KEY;
@@ -46,7 +44,7 @@ const GoogleMap = React.createClass({
       window.google = google;
       this._drawMap();
     });
-  },
+  }
 
   componentDidUpdate(prevProps, prevState) {
     const lastPath = prevProps.path;
@@ -56,13 +54,13 @@ const GoogleMap = React.createClass({
     if (lastPath.length !== thisPath.length && window.google) {
       this._drawMap();
     }
-  },
+  }
 
   render() {
     return <div className={this.props.className} />;
-  },
+  }
 
-  _drawMap() {
+  _drawMap = () => {
     const {mapTypeId, path} = this.props;
     const {Map, Marker, Polyline} = window.google.maps;
 
@@ -98,17 +96,17 @@ const GoogleMap = React.createClass({
       strokeOpacity: 1.0,
       strokeWeight: 2,
     });
-  },
+  };
 
-  _getBoundsForPath(path) {
+  _getBoundsForPath = (path) => {
     const {LatLngBounds, LatLng} = window.google.maps;
     const bounds = new LatLngBounds();
     for (let ii = 0; ii < path.length-1; ii++) {
       bounds.extend(new LatLng(path[ii]));
     }
     return bounds;
-  },
-});
+  };
+}
 
 GoogleMap.MAP_TYPES = MAP_TYPES;
 

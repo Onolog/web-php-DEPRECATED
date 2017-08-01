@@ -31,8 +31,8 @@ const weekData = weekMiles.map((miles, week) => ({
  *
  * Static page for testing data & charting libs.
  */
-const DataPage = React.createClass({
-  displayName: 'DataPage',
+class DataPage extends React.Component {
+  static displayName = 'DataPage';
 
   render() {
     return (
@@ -62,7 +62,7 @@ const DataPage = React.createClass({
         </Panel>
       </AppPage>
     );
-  },
-});
+  }
+}
 
 module.exports = DataPage;

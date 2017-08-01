@@ -7,10 +7,10 @@ var cx = require('classnames');
  *
  * React wrapper around a standard text input.
  */
-var TextInput = React.createClass({
-  displayName: 'TextInput',
+class TextInput extends React.Component {
+  static displayName = 'TextInput';
 
-  render: function() {
+  render() {
     return (
       <input
         {...this.props}
@@ -18,21 +18,21 @@ var TextInput = React.createClass({
         type="text"
       />
     );
-  },
+  }
 
-  blur: function() {
+  blur = () => {
     ReactDOM.findDOMNode(this).blur();
     return this;
-  },
+  };
 
-  focus: function() {
+  focus = () => {
     ReactDOM.findDOMNode(this).focus();
     return this;
-  },
+  };
 
-  getValue: function() {
+  getValue = () => {
     return ReactDOM.findDOMNode(this).value;
-  },
-});
+  };
+}
 
 module.exports = TextInput;

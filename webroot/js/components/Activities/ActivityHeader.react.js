@@ -14,9 +14,8 @@ const PHOTO_DIMENSIONS = 75; // In px
 /**
  * ActivityHeader.react
  */
-const ActivityHeader = React.createClass({
-
-  propTypes: {
+class ActivityHeader extends React.Component {
+  static propTypes = {
     activity: PropTypes.shape({
       activity_type: PropTypes.string,
       id: PropTypes.oneOfType([
@@ -33,9 +32,9 @@ const ActivityHeader = React.createClass({
       ]).isRequired,
       name: PropTypes.string,
     }).isRequired,
-  },
+  };
 
-  render: function() {
+  render() {
     const {activity, athlete} = this.props;
 
     return (
@@ -67,9 +66,9 @@ const ActivityHeader = React.createClass({
         </ImageBlock>
       </ActivitySection>
     );
-  },
+  }
 
-  _renderActivityDate: function({start_date, timezone}) {
+  _renderActivityDate = ({start_date, timezone}) => {
     const date = moment.tz(start_date, timezone);
     const tooltip =
       <Tooltip id={timezone}>
@@ -86,7 +85,7 @@ const ActivityHeader = React.createClass({
         </OverlayTrigger>
       </span>
     );
-  },
-});
+  };
+}
 
 export default ActivityHeader;

@@ -29,22 +29,20 @@ const WEEKLY = 'weekly';
 /**
  * ProfileYearPanel.react
  */
-const ProfileYearPanel = React.createClass({
-  displayName: 'ProfileYearPanel',
+class ProfileYearPanel extends React.Component {
+  static displayName = 'ProfileYearPanel';
 
-  propTypes: {
+  static propTypes = {
     activities: PropTypes.array.isRequired,
     year: PropTypes.oneOfType([
       PropTypes.number,
       PropTypes.string,
     ]).isRequired,
-  },
+  };
 
-  getInitialState() {
-    return {
-      selectedGraph: WEEKLY,
-    };
-  },
+  state = {
+    selectedGraph: WEEKLY,
+  };
 
   render() {
     return (
@@ -68,9 +66,9 @@ const ProfileYearPanel = React.createClass({
         </ListGroup>
       </Panel>
     );
-  },
+  }
 
-  _renderChart() {
+  _renderChart = () => {
     const {activities, year} = this.props;
 
     let groupedActivities;
@@ -117,9 +115,9 @@ const ProfileYearPanel = React.createClass({
         xFormat={xFormat}
       />
     );
-  },
+  };
 
-  _renderToplineStats() {
+  _renderToplineStats = () => {
     const {miles, run_count, duration} = getGroupingInfo(this.props.activities);
     const m = moment.duration(duration, 'seconds');
     const durationString =
@@ -132,9 +130,9 @@ const ProfileYearPanel = React.createClass({
         <Topline.Item label="Time">{durationString}</Topline.Item>
       </Topline>
     );
-  },
+  };
 
-  _renderActions() {
+  _renderActions = () => {
     const {selectedGraph} = this.state;
     return (
       <ButtonGroup bsSize="xsmall" className="chart-type-selector">
@@ -157,11 +155,11 @@ const ProfileYearPanel = React.createClass({
         </Button>
       </ButtonGroup>
     );
-  },
+  };
 
-  _onChartTypeClick(selectedGraph) {
+  _onChartTypeClick = (selectedGraph) => {
     this.setState({selectedGraph});
-  },
-});
+  };
+}
 
 export default ProfileYearPanel;

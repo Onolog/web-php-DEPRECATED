@@ -16,13 +16,13 @@ import './css/AppHeader.css';
 /**
  * AppHeader.react
  */
-const AppHeader = React.createClass({
-  propTypes: {
+class AppHeader extends React.Component {
+  static propTypes = {
     user: PropTypes.shape({
       id: PropTypes.number,
       name: PropTypes.string,
     }).isRequired,
-  },
+  };
 
   render() {
     const {user} = this.props;
@@ -46,9 +46,9 @@ const AppHeader = React.createClass({
         </Navbar.Collapse>
       </Navbar>
     );
-  },
+  }
 
-  _renderAccountMenu(user) {
+  _renderAccountMenu = (user) => {
     if (user.id) {
       const title =
         <span>
@@ -75,9 +75,9 @@ const AppHeader = React.createClass({
         </Nav>
       );
     }
-  },
+  };
 
-  _renderMainMenu(user) {
+  _renderMainMenu = (user) => {
     if (user.id) {
       const links = [
         {label: 'Calendar', pathname: homeUrl()},
@@ -95,13 +95,13 @@ const AppHeader = React.createClass({
         </Nav>
       );
     }
-  },
+  };
 
   /**
    * If there's no user info, it means the user isn't logged in. Prompt them
    * to do so.
    */
-  _renderLoginLink(user) {
+  _renderLoginLink = (user) => {
     if (!user.id) {
       return (
         <Nav pullRight>
@@ -111,15 +111,15 @@ const AppHeader = React.createClass({
         </Nav>
       );
     }
-  },
+  };
 
-  _handleLogin() {
+  _handleLogin = () => {
     this.props.dispatch(loginIfNeeded());
-  },
+  };
 
-  _handleLogout() {
+  _handleLogout = () => {
     this.props.dispatch(logoutIfNeeded());
-  },
-});
+  };
+}
 
 export default connect()(AppHeader);

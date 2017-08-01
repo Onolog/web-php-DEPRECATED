@@ -17,10 +17,10 @@ const TYPES = {
  * the values by pressing the up and down arrow keys. They can also enter a
  * specific value, which will be validated on blur.
  */
-const ConstrainedTextInput = React.createClass({
-  displayName: 'ConstrainedTextInput',
+class ConstrainedTextInput extends React.Component {
+  static displayName = 'ConstrainedTextInput';
 
-  propTypes: {
+  static propTypes = {
     /**
      * Allows custom formatting of number values for display. For example:
      *
@@ -42,16 +42,15 @@ const ConstrainedTextInput = React.createClass({
      * and validates what can be entered as a value.
      */
     values: PropTypes.array.isRequired,
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      type: TYPES.number,
-    };
-  },
+  static defaultProps = {
+    type: TYPES.number,
+  };
 
-  getInitialState() {
-    const {defaultValue, value, values} = this.props;
+  constructor(props, context) {
+    super(props, context);
+    const {defaultValue, value, values} = props;
     const index = this._getIndex(defaultValue || value);
 
     invariant(
@@ -60,7 +59,7 @@ const ConstrainedTextInput = React.createClass({
       values + '`'
     );
 
-    return {
+    this.state = {
       index: index,
       /**
        * Keep track of the last valid index that was registered, as a
@@ -73,9 +72,9 @@ const ConstrainedTextInput = React.createClass({
        */
       tempValue: null,
     };
-  },
+  }
 
-  render: function() {
+  render() {
     var value = this.state.tempValue;
     if (value == null) {
       value = this.props.values[this.state.index];
@@ -96,22 +95,22 @@ const ConstrainedTextInput = React.createClass({
         value={value}
       />
     );
-  },
+  }
 
-  getValue() {
+  getValue = () => {
     return findDOMNode(this).value;
-  },
+  };
 
-  _getIndex(value) {
+  _getIndex = (value) => {
     // Explicitly check for empty string in case the user cleared the input.
     if (value !== '' && this.props.type === TYPES.number) {
       // If the values are numbers, cast the value to a number to check it.
       value = +value;
     }
     return this.props.values.indexOf(value);
-  },
+  };
 
-  _onKeydown(e) {
+  _onKeydown = (e) => {
     const count = this.props.values.length;
     let index = +this.state.index;
 
@@ -132,9 +131,9 @@ const ConstrainedTextInput = React.createClass({
     }
 
     this._onChange(index);
-  },
+  };
 
-  _onBlur: function(evt) {
+  _onBlur = (evt) => {
     var tempValue = this.state.tempValue;
     if (tempValue == null) {
       return;
@@ -149,16 +148,16 @@ const ConstrainedTextInput = React.createClass({
     // When the input is blurred, "commit" the changes by updating the index
     // and re-setting the temp value.
     this._onChange(index);
-  },
+  };
 
   /**
    * When typing in a value, store it as a temp value until the blur event.
    */
-  _onKeyboardEntry(e) {
+  _onKeyboardEntry = (e) => {
     this.setState({tempValue: e.target.value});
-  },
+  };
 
-  _onChange(index) {
+  _onChange = (index) => {
     this.setState({
       index,
       lastValidIndex: index,
@@ -166,7 +165,7 @@ const ConstrainedTextInput = React.createClass({
     });
 
     this.props.onChange && this.props.onChange(this.props.values[index]);
-  },
-});
+  };
+}
 
 module.exports = ConstrainedTextInput;

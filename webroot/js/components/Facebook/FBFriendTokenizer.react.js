@@ -18,24 +18,22 @@ import './css/FBFriendTokenizer.css';
  *
  * FB friend typeahead with name tokenizer
  */
-const FBFriendTokenizer = React.createClass({
-  displayName: 'FBFriendTokenizer',
+class FBFriendTokenizer extends React.Component {
+  static displayName = 'FBFriendTokenizer';
 
-  propTypes: {
+  static propTypes = {
     // Comma-delimited string of FBIDs
     friends: PropTypes.string,
-  },
+  };
 
-  getInitialState() {
-    return {
-      options: [],
-      selected: [],
-    };
-  },
+  state = {
+    options: [],
+    selected: [],
+  };
 
   componentWillMount() {
     fbLoader(this._getFriends);
-  },
+  }
 
   render() {
     const {selected, options} = this.state;
@@ -51,9 +49,9 @@ const FBFriendTokenizer = React.createClass({
         selected={selected}
       />
     );
-  },
+  }
 
-  _renderMenuItemChildren(option, props, idx) {
+  _renderMenuItemChildren = (option, props, idx) => {
     return (
       <div className="fb-friend-tokenizer-item">
         <span className="innerBorder">
@@ -69,9 +67,9 @@ const FBFriendTokenizer = React.createClass({
         </span>
       </div>
     );
-  },
+  };
 
-  _getFriends() {
+  _getFriends = () => {
     // Get all taggable friends
     var batch = [{
       method: 'GET',
@@ -91,12 +89,12 @@ const FBFriendTokenizer = React.createClass({
 
     // Get taggable + already tagged FB friends
     FB.api('/', 'POST', {batch}, this._handleGraphResponse);
-  },
+  };
 
   /**
    * Simulate firing an onChange event
    */
-  _handleChange(/*array*/ selected) {
+  _handleChange = (/*array*/ selected) => {
     this.setState({selected});
 
     this.props.onChange && this.props.onChange({
@@ -105,12 +103,12 @@ const FBFriendTokenizer = React.createClass({
         value: map(selected, 'id').join(','),
       },
     });
-  },
+  };
 
   /**
    * Parse the batched response from the FB Graph API.
    */
-  _handleGraphResponse(response) {
+  _handleGraphResponse = (response) => {
     if (!(response && isArray(response))) {
       return;
     }
@@ -127,7 +125,7 @@ const FBFriendTokenizer = React.createClass({
     });
 
     this.setState({options, selected});
-  },
-});
+  };
+}
 
 module.exports = FBFriendTokenizer;

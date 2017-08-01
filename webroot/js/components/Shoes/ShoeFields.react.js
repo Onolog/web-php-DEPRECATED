@@ -23,15 +23,15 @@ const SIZES = {
  *
  * Displays a form with inputs for adding or editing a shoe.
  */
-const ShoeFields = React.createClass({
-  displayName: 'ShoeFields',
+class ShoeFields extends React.Component {
+  static displayName = 'ShoeFields';
 
-  propTypes: {
+  static propTypes = {
     isNew: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
     shoe: PropTypes.object.isRequired,
     user: PropTypes.object.isRequired,
-  },
+  };
 
   render() {
     const {brand_id, model, notes, size, size_type} = this.props.shoe;
@@ -92,13 +92,13 @@ const ShoeFields = React.createClass({
         {this._renderInactiveCheckbox()}
       </AppForm>
     );
-  },
+  }
 
   /**
    * Don't render this input when creating a new shoe, since we assume
    * that all newly created shoes are active.
    */
-  _renderInactiveCheckbox() {
+  _renderInactiveCheckbox = () => {
     const {isNew, shoe} = this.props;
 
     if (!isNew) {
@@ -115,9 +115,9 @@ const ShoeFields = React.createClass({
         </FormGroup>
       );
     }
-  },
+  };
 
-  _handleChange(e) {
+  _handleChange = (e) => {
     const {checked, name, value} = e.target;
     let shoe = {...this.props.shoe};
 
@@ -134,7 +134,7 @@ const ShoeFields = React.createClass({
     }
 
     this.props.onChange(shoe);
-  },
-});
+  };
+}
 
 module.exports = ShoeFields;

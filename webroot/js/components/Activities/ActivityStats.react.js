@@ -14,12 +14,12 @@ var secondsToTime = require('utils/secondsToTime');
  * Renders a series of label/stat pairings for the activity, like distance,
  * time, heart rate, etc.
  */
-const ActivityStats = React.createClass({
-  displayName: 'ActivityStats',
+class ActivityStats extends React.Component {
+  static displayName = 'ActivityStats';
 
-  propTypes: {
+  static propTypes = {
     activity: PropTypes.object.isRequired,
-  },
+  };
 
   render() {
     const items = map(this._getStats(), (stat, idx) => {
@@ -34,9 +34,9 @@ const ActivityStats = React.createClass({
     });
 
     return <Topline>{items}</Topline>;
-  },
+  }
 
-  _getStats() {
+  _getStats = () => {
     const {
       avg_hr,
       calories,
@@ -91,7 +91,7 @@ const ActivityStats = React.createClass({
     }
 
     return stats;
-  },
-});
+  };
+}
 
 module.exports = ActivityStats;

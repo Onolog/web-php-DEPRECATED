@@ -13,19 +13,17 @@ import fbLoader from 'utils/fbLoader';
 /**
  * Friends.react
  */
-const Friends = React.createClass({
-  displayName: 'Friends',
+class Friends extends React.Component {
+  static displayName = 'Friends';
 
-  getInitialState() {
-    return {
-      friends: null,
-    };
-  },
+  state = {
+    friends: null,
+  };
 
   componentWillMount() {
     // Get all friends who are in the system
     fbLoader(this._getFriends);
-  },
+  }
 
   render() {
     return (
@@ -36,13 +34,13 @@ const Friends = React.createClass({
         </Panel>
       </AppPage>
     );
-  },
+  }
 
-  _renderContent() {
+  _renderContent = () => {
     return this.state.friends ? this._renderFriendList() : <Loader />;
-  },
+  };
 
-  _renderFriendList() {
+  _renderFriendList = () => {
     return this.state.friends.map(function(friend, idx) {
       return (
         <ImageBlock
@@ -59,16 +57,16 @@ const Friends = React.createClass({
         </ImageBlock>
       );
     });
-  },
+  };
 
-  _getFriends() {
+  _getFriends = () => {
     const {FB} = window;
     FB.getLoginStatus(response => {
       FB.api('/me/friends', response => {
         this.setState({friends: response.data});
       });
     });
-  },
-});
+  };
+}
 
 module.exports = Friends;

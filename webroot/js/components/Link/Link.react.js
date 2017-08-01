@@ -5,14 +5,12 @@ import React from 'react';
  *
  * React wrapper around standard HTML <a> tag
  */
-const Link = React.createClass({
-  displayName: 'Link',
+class Link extends React.Component {
+  static displayName = 'Link';
 
-  getDefaultProps() {
-    return {
-      href: '#',
-    };
-  },
+  static defaultProps = {
+    href: '#',
+  };
 
   render() {
     return (
@@ -20,14 +18,14 @@ const Link = React.createClass({
         {this.props.children}
       </a>
     );
-  },
+  }
 
-  _handleClick(e) {
+  _handleClick = (e) => {
     if (this.props.href === '#') {
       e.preventDefault();
     }
     this.props.onClick && this.props.onClick(e);
-  },
-});
+  };
+}
 
 module.exports = Link;

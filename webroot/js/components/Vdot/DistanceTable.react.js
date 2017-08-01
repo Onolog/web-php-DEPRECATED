@@ -31,13 +31,12 @@ function _formatTime(/*number*/ seconds) /*string*/ {
  * Displays a table of VDOT values associated with times raced over popular
  * distances.
  */
-var DistanceTable = React.createClass({
-
-  propTypes: {
+class DistanceTable extends React.Component {
+  static propTypes = {
     vdot: PropTypes.number,
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       <div>
         <table className="paces">
@@ -56,9 +55,9 @@ var DistanceTable = React.createClass({
         </div>
       </div>
     );
-  },
+  }
 
-  _getHeaderCells: function() /*array*/ {
+  _getHeaderCells = () => /*array*/ {
     var distances = Daniels.DISTANCES;
     var headerCells = distances.map(function(distance) {
       return (
@@ -69,9 +68,9 @@ var DistanceTable = React.createClass({
     headerCells.unshift(<th key="vdot-l">VDOT</th>);
 
     return headerCells;
-  },
+  };
 
-  _getRows: function() /*array*/ {
+  _getRows = () => /*array*/ {
     var rows = [];
     var vdots = Object.keys(Daniels.PACES);
 
@@ -80,9 +79,9 @@ var DistanceTable = React.createClass({
     }.bind(this));
 
     return rows;
-  },
+  };
 
-  _getCells: function(/*number*/ vdot) /*array*/ {
+  _getCells = (/*number*/ vdot) => /*array*/ {
     var cells = [];
     var times = Daniels.TIMES;
     var distances = Object.keys(times);
@@ -100,7 +99,7 @@ var DistanceTable = React.createClass({
     cells.push(<td className="vdot" key={vdot + '-r'}>{vdot}</td>);
 
     return cells;
-  },
-});
+  };
+}
 
 module.exports = DistanceTable;

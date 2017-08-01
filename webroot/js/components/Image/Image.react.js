@@ -5,12 +5,12 @@ import React from 'react';
  *
  * React wrapper around standard HTML <img> tag
  */
-const Image = React.createClass({
-  displayName: 'Image',
+class Image extends React.Component {
+  static displayName = 'Image';
 
-  render: function() {
+  render() {
     return <img {...this.props} />;
-  },
-});
+  }
+}
 
 module.exports = Image;
