@@ -9,7 +9,6 @@ import {isArray, map} from 'lodash';
 
 const IMG_PX = 32;
 
-import 'react-bootstrap-typeahead/css/Token.css';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import './css/FBFriendTokenizer.css';
 
