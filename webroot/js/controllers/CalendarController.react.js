@@ -17,6 +17,7 @@ import PageHeader from 'components/Page/PageHeader.react';
 import {fetchActivities} from 'actions/activities';
 
 import {ACTIVITIES_FETCH, ACTIVITY_ADD} from 'constants/ActionTypes';
+import {LEFT, RIGHT} from 'constants/KeyCode';
 
 const getMoment = ({month, year}) => moment({month: +month - 1, year});
 
@@ -51,6 +52,8 @@ class CalendarController extends React.Component {
 
     // Load initial data.
     this._fetchData(m);
+
+    window.addEventListener('keydown', this._onKeyDown);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,6 +63,10 @@ class CalendarController extends React.Component {
     ) {
       this._hideModal();
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this._onKeyDown);
   }
 
   render() {
@@ -160,16 +167,18 @@ class CalendarController extends React.Component {
     this.setState({showImportModal: true});
   };
 
-  _updateCalendar = newMoment => {
-    // Don't update if the month hasn't changed.
-    if (newMoment.isSame(getMoment(this.props.params), 'month')) {
-      return;
+  _onKeyDown = e => {
+    switch (e.keyCode) {
+      case LEFT:
+        e.preventDefault();
+        this._onLastMonthClick();
+        break;
+      case RIGHT:
+        e.preventDefault();
+        this._onNextMonthClick();
+        break;
     }
-
-    browserHistory.push(newMoment.format('/YYYY/MM'));
-
-    this._fetchData(newMoment);
-  };
+  }
 
   _onLastMonthClick = () => {
     this._updateCalendar(getMoment(this.props.params).subtract({months: 1}));
@@ -181,6 +190,17 @@ class CalendarController extends React.Component {
 
   _onNextMonthClick = () => {
     this._updateCalendar(getMoment(this.props.params).add({months: 1}));
+  };
+
+  _updateCalendar = newMoment => {
+    // Don't update if the month hasn't changed.
+    if (newMoment.isSame(getMoment(this.props.params), 'month')) {
+      return;
+    }
+
+    browserHistory.push(newMoment.format('/YYYY/MM'));
+
+    this._fetchData(newMoment);
   };
 }
 
