@@ -33,6 +33,11 @@ class ShoeTable extends React.Component {
     shoes: PropTypes.array.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = getInitialState(props);
+  }
+
   componentWillReceiveProps(nextProps) {
     // Close dialog when shoes get updated.
     if (this.state.action === EDIT) {

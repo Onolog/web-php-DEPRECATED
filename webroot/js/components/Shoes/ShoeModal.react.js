@@ -40,6 +40,11 @@ class ShoeModal extends React.Component {
     user: PropTypes.object.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = getInitialState(props);
+  }
+
   render() {
     const {initialShoe, show, user} = this.props;
     const {isLoading, shoe} = this.state;
