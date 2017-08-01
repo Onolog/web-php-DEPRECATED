@@ -44,7 +44,11 @@ const ActivityFromUrlForm = React.createClass({
           <ControlLabel>
             Enter a Garmin Activity URL
           </ControlLabel>
-          <FormControl onChange={this._handleUrlChange} type="text" />
+          <FormControl
+            autoFocus
+            onChange={this._handleUrlChange}
+            type="text"
+          />
         </FormGroup>
       </AppForm>
     );
