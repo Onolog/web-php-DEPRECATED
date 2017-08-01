@@ -29,10 +29,7 @@ const mapStateToProps = ({pendingRequests, session}) => {
 /**
  * SettingsController.react
  */
-const SettingsController = withRouter(/**
- * SettingsController.react
- */
-class extends React.Component {
+class SettingsController extends React.Component {
   static propTypes = {
     user: PropTypes.shape({
       distance_units: PropTypes.number.isRequired,
@@ -149,6 +146,6 @@ class extends React.Component {
       id: this.props.user.id,
     }));
   };
-});
+}
 
-module.exports = connect(mapStateToProps)(SettingsController);
+module.exports = connect(mapStateToProps)(withRouter(SettingsController));
