@@ -1,7 +1,8 @@
 import jstz from 'jstz';
 import {assign} from 'lodash';
 import moment from 'moment-timezone';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import DateInput from './DateInput.react';
 import TimeInput from './TimeInput.react';

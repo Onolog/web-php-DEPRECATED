@@ -1,5 +1,6 @@
 import {isEqual} from 'lodash';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {connect} from 'react-redux';
 
 import ShoeAddModal from 'components/Shoes/ShoeAddModal.react';

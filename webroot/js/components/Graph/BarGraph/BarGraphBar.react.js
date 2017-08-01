@@ -1,3 +1,4 @@
+const PropTypes = require('prop-types');
 var React = require('react');
 var {OverlayTrigger, Tooltip} = require('react-bootstrap/lib');
 
@@ -15,10 +16,10 @@ var GraphBar = React.createClass({
     /**
      * If supplied, renders a link
      */
-    href: React.PropTypes.string,
-    label: React.PropTypes.oneOfType([
-      React.PropTypes.number,
-      React.PropTypes.string,
+    href: PropTypes.string,
+    label: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
     ]),
     /**
      * Adjusts the scale of the graph so that it doesn't just render at
@@ -28,8 +29,8 @@ var GraphBar = React.createClass({
      * graph to make it fit correctly in the space. Need to come up with a
      * better system.
      */
-    scale: React.PropTypes.number,
-    value: React.PropTypes.number.isRequired,
+    scale: PropTypes.number,
+    value: PropTypes.number.isRequired,
   },
 
   componentDidMount: function() {

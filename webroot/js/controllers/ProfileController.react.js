@@ -1,7 +1,8 @@
 import cx from 'classnames';
 import {find} from 'lodash';
 import moment from 'moment';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {Col, Row} from 'react-bootstrap';
 import {findDOMNode} from 'react-dom';
 import {connect} from 'react-redux';

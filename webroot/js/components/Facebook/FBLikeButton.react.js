@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import param from 'utils/param';
@@ -20,11 +21,11 @@ const FB_URL = '//www.facebook.com/plugins/like.php';
 const FBLikeButton = React.createClass({
   displayName: 'FBLikeButton',
   propTypes: {
-    href: React.PropTypes.string.isRequired,
+    href: PropTypes.string.isRequired,
     /**
      * Specify the label to be displayed in the button
      */
-    action: React.PropTypes.oneOf([
+    action: PropTypes.oneOf([
       'like',
       'recommend',
     ]),
@@ -39,7 +40,7 @@ const FBLikeButton = React.createClass({
      *
      * button: Horizontally aligned button(s), no count.
      */
-    layout: React.PropTypes.oneOf([
+    layout: PropTypes.oneOf([
       'standard',
       'box_count',
       'button_count',
@@ -48,11 +49,11 @@ const FBLikeButton = React.createClass({
     /**
      * Show profile photos when 2 or more friends like the URL.
      */
-    showFaces: React.PropTypes.bool,
+    showFaces: PropTypes.bool,
     /**
      * Includes a Share button beside the Like button.
      */
-    useShare: React.PropTypes.bool,
+    useShare: PropTypes.bool,
   },
 
   /**

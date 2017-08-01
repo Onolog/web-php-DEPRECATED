@@ -1,6 +1,7 @@
 import moment from 'moment-timezone';
 import {OverlayTrigger, Tooltip} from 'react-bootstrap/lib';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import ActivitySection from 'components/Activities/ActivitySection.react';
 import FBImage from 'components/Facebook/FBImage.react';

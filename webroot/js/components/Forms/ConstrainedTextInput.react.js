@@ -1,5 +1,6 @@
 import cx from 'classnames';
 import invariant from 'invariant';
+import PropTypes from 'prop-types';
 import React from 'react';
 import {findDOMNode} from 'react-dom';
 
@@ -25,7 +26,7 @@ const ConstrainedTextInput = React.createClass({
      *
      *    1 => '01'
      */
-    format: React.PropTypes.func,
+    format: PropTypes.func,
     /**
      * Defines the type of values found in `this.props.values`.
      *
@@ -35,12 +36,12 @@ const ConstrainedTextInput = React.createClass({
      *    Number: Values can be numbers, or number-like strings cast to
      *    numbers for validation. Validation is a bit looser in this case.
      */
-    type: React.PropTypes.oneOf(Object.keys(TYPES)),
+    type: PropTypes.oneOf(Object.keys(TYPES)),
     /**
      * An array of valid values for the input. This automatically restricts
      * and validates what can be entered as a value.
      */
-    values: React.PropTypes.array.isRequired,
+    values: PropTypes.array.isRequired,
   },
 
   getDefaultProps() {

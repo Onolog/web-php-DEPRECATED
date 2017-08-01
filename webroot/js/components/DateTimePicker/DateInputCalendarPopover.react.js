@@ -1,4 +1,5 @@
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import DateInputCalendar from './DateInputCalendar.react';
@@ -20,12 +21,12 @@ const DateInputCalendarPopover = React.createClass({
   displayName: 'DateInputCalendarPopover',
 
   propTypes: {
-    date: React.PropTypes.number.isRequired,
-    months: React.PropTypes.number.isRequired,
-    onChange: React.PropTypes.func.isRequired,
-    onHide: React.PropTypes.func.isRequired,
-    show: React.PropTypes.bool.isRequired,
-    years: React.PropTypes.number.isRequired,
+    date: PropTypes.number.isRequired,
+    months: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired,
+    onHide: PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired,
+    years: PropTypes.number.isRequired,
   },
 
   getInitialState: function() {

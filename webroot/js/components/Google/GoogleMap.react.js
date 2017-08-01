@@ -1,6 +1,7 @@
 import {head, last, values} from 'lodash';
 import GoogleMapsLoader from 'google-maps';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {findDOMNode} from 'react-dom';
 
 import {API_KEY} from 'constants/Google';

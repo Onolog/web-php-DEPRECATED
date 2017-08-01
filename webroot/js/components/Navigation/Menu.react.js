@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import cx from 'classnames';
 
@@ -13,7 +14,7 @@ const Menu = React.createClass({
     /**
      * Horizontal alignment of the menu.
      */
-    align: React.PropTypes.oneOf(['left', 'right']),
+    align: PropTypes.oneOf(['left', 'right']),
   },
 
   getDefaultProps: function() {

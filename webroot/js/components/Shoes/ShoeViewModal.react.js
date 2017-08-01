@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {Button, Modal} from 'react-bootstrap/lib';
 
 import ShoeView from './ShoeView.react';

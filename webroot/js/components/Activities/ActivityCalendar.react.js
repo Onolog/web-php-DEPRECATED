@@ -1,4 +1,5 @@
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import ActivityCalendarDay from './ActivityCalendarDay.react';
@@ -16,8 +17,8 @@ const ActivityCalendar = React.createClass({
   displayName: 'ActivityCalendar',
 
   propTypes: {
-    activities: React.PropTypes.array.isRequired,
-    date: React.PropTypes.instanceOf(Date).isRequired,
+    activities: PropTypes.array.isRequired,
+    date: PropTypes.instanceOf(Date).isRequired,
   },
 
   render() {

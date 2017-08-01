@@ -1,5 +1,6 @@
 import {Nav, Navbar, NavItem} from 'react-bootstrap';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import {LinkContainer} from 'react-router-bootstrap';

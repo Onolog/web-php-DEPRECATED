@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Form} from 'react-bootstrap';
 
@@ -17,7 +18,7 @@ const AppForm = ({bordered, className, ...otherProps}) => (
 );
 
 AppForm.propTypes = {
-  bordered: React.PropTypes.bool,
+  bordered: PropTypes.bool,
 };
 AppForm.defaultProps = {
   bordered: false,

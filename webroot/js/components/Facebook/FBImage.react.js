@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import Image from 'components/Image/Image.react';
@@ -15,12 +16,12 @@ const FBImage = React.createClass({
   displayName: 'FBImage',
 
   propTypes: {
-    fbid: React.PropTypes.oneOfType([
-      React.PropTypes.number,
-      React.PropTypes.string,
+    fbid: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
     ]).isRequired,
-    height: React.PropTypes.number,
-    width: React.PropTypes.number,
+    height: PropTypes.number,
+    width: PropTypes.number,
   },
 
   getDefaultProps() {

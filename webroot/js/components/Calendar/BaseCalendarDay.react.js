@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import cx from 'classnames';
@@ -15,11 +16,11 @@ const BaseCalendarDay = React.createClass({
     /**
      * Date object for the day being rendered
      */
-    date: React.PropTypes.instanceOf(Date).isRequired,
+    date: PropTypes.instanceOf(Date).isRequired,
     /**
      * Month being displayed by the calendar
      */
-    month: React.PropTypes.number.isRequired,
+    month: PropTypes.number.isRequired,
   },
 
   render: function() {

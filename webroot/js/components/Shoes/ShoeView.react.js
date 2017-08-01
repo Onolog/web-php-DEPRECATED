@@ -1,5 +1,6 @@
 import moment from 'moment-timezone';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {Table} from 'react-bootstrap/lib';
 
 import ActivitySection from 'components/Activities/ActivitySection.react';

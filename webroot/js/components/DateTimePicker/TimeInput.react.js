@@ -1,5 +1,6 @@
 import {range} from 'lodash';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import ConstrainedTextInput from 'components/Forms/ConstrainedTextInput.react';
@@ -25,9 +26,9 @@ var TimeInput = React.createClass({
   displayName: 'TimeInput',
 
   propTypes: {
-    hours: React.PropTypes.number.isRequired,
-    minutes: React.PropTypes.number.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    hours: PropTypes.number.isRequired,
+    minutes: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired,
   },
 
   render() {

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {OverlayTrigger, Tooltip} from 'react-bootstrap/lib';
 
@@ -24,9 +25,9 @@ const FBFacepile = React.createClass({
      * A comma-delimited string of FBIDs. Can also be a single fbid as a
      * number or string.
      */
-    friends: React.PropTypes.oneOfType([
-      React.PropTypes.number,
-      React.PropTypes.string,
+    friends: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string,
     ]).isRequired,
   },
 

@@ -1,5 +1,6 @@
 import {range} from 'lodash';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {Checkbox, Col, FormControl, FormGroup} from 'react-bootstrap';
 
 import AppForm from 'components/Forms/AppForm.react';

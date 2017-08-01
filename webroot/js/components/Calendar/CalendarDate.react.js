@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 /**
@@ -12,7 +13,7 @@ const CalendarDate = React.createClass({
     /**
      * Date object for the day being rendered
      */
-    date: React.PropTypes.instanceOf(Date).isRequired,
+    date: PropTypes.instanceOf(Date).isRequired,
   },
 
   render: function() {

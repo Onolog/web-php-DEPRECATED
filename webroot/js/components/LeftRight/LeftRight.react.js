@@ -1,3 +1,4 @@
+const PropTypes = require('prop-types');
 var React = require('react');
 var cx = require('classnames');
 
@@ -16,7 +17,7 @@ const LeftRight = React.createClass({
   displayName: 'LeftRight',
 
   propTypes: {
-    direction: React.PropTypes.oneOf(Object.keys(DIRECTION)),
+    direction: PropTypes.oneOf(Object.keys(DIRECTION)),
   },
 
   getDefaultProps: function() {

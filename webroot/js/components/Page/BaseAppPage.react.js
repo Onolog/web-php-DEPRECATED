@@ -1,6 +1,7 @@
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 // import moment from 'moment';
-import React, {PropTypes} from 'react';
+import React from 'react';
 import {Button, Modal} from 'react-bootstrap';
 import {connect} from 'react-redux';
 

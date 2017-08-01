@@ -1,7 +1,8 @@
 import jstz from 'jstz';
 import {isEmpty, isEqual, isInteger} from 'lodash';
 import moment from 'moment';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {connect} from 'react-redux';
 
 import {addActivity, deleteActivity, updateActivity} from 'actions/activities';

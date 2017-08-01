@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import cx from 'classnames';
@@ -9,8 +10,8 @@ const ImageBlock = React.createClass({
   displayName: 'ImageBlock',
 
   propTypes: {
-    align: React.PropTypes.oneOf(['top', 'middle', 'bottom']),
-    image: React.PropTypes.object.isRequired,
+    align: PropTypes.oneOf(['top', 'middle', 'bottom']),
+    image: PropTypes.object.isRequired,
   },
 
   getDefaultProps: function() {

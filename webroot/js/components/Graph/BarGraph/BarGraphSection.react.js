@@ -1,3 +1,4 @@
+var PropTypes = require('prop-types');
 var React = require('react');
 
 /**
@@ -10,8 +11,8 @@ var React = require('react');
 var GraphSection = React.createClass({
 
   propTypes: {
-    label: React.PropTypes.string,
-    metadata: React.PropTypes.string,
+    label: PropTypes.string,
+    metadata: PropTypes.string,
   },
 
   render: function() {

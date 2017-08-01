@@ -1,3 +1,4 @@
+var PropTypes = require('prop-types');
 var React = require('react');
 
 var BaseCalendar = require('./BaseCalendar.react');
@@ -14,7 +15,7 @@ var Calendar = React.createClass({
   displayName: 'Calendar',
 
   propTypes: {
-    date: React.PropTypes.instanceOf(Date).isRequired,
+    date: PropTypes.instanceOf(Date).isRequired,
   },
 
   render: function() {

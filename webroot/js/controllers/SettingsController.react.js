@@ -1,5 +1,6 @@
 import {isEmpty, isEqual} from 'lodash';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';

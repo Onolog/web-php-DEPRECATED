@@ -1,5 +1,6 @@
 import Autolinker from 'autolinker';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {findDOMNode} from 'react-dom';
 import {Tab, Tabs} from 'react-bootstrap';
 

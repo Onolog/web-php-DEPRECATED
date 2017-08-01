@@ -1,4 +1,5 @@
 var {map} = require('lodash');
+const PropTypes = require('prop-types');
 var React = require('react');
 
 var Topline = require('components/Topline/Topline.react');
@@ -17,7 +18,7 @@ const ActivityStats = React.createClass({
   displayName: 'ActivityStats',
 
   propTypes: {
-    activity: React.PropTypes.object.isRequired,
+    activity: PropTypes.object.isRequired,
   },
 
   render() {

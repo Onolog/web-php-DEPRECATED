@@ -1,5 +1,6 @@
 import {omit} from 'lodash';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {connect} from 'react-redux';
 
 import Select from 'components/Select/Select.react';

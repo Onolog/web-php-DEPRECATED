@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Typeahead} from 'react-bootstrap-typeahead';
 
@@ -22,7 +23,7 @@ const FBFriendTokenizer = React.createClass({
 
   propTypes: {
     // Comma-delimited string of FBIDs
-    friends: React.PropTypes.string,
+    friends: PropTypes.string,
   },
 
   getInitialState() {

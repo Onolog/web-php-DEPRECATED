@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import {filter} from 'lodash';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {Table} from 'react-bootstrap';
 import {connect} from 'react-redux';
 

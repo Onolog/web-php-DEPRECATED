@@ -1,3 +1,4 @@
+var PropTypes = require('prop-types');
 var React = require('react');
 var {Table} = require('react-bootstrap/lib');
 
@@ -14,7 +15,7 @@ var ActivitySplitsTable = React.createClass({
   displayName: 'ActivitySplitsTable',
 
   propTypes: {
-    laps: React.PropTypes.array,
+    laps: PropTypes.array,
   },
 
   render: function() {

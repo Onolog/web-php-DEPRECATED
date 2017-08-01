@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import d3 from 'd3';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {findDOMNode} from 'react-dom';
 
 const Axis = React.createClass({

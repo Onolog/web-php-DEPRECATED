@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import './css/ActivitySection.css';
@@ -25,8 +26,8 @@ const ActivitySection = ({border, children, className, title}) => {
 };
 
 ActivitySection.propTypes = {
-  border: React.PropTypes.bool,
-  title: React.PropTypes.string,
+  border: PropTypes.bool,
+  title: PropTypes.string,
 };
 
 ActivitySection.defaultProps = {

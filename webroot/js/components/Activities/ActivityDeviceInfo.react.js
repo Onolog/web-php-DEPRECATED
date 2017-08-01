@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import Image from 'components/Image/Image.react';
@@ -14,8 +15,8 @@ import GarminDeviceUtils from 'utils/GarminDeviceUtils';
 const ActivityDeviceInfo = React.createClass({
 
   propTypes: {
-    deviceName: React.PropTypes.string.isRequired,
-    softwareVersion: React.PropTypes.string.isRequired,
+    deviceName: PropTypes.string.isRequired,
+    softwareVersion: PropTypes.string.isRequired,
   },
 
   render: function() {

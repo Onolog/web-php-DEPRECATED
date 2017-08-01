@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import SideNav from 'components/Navigation/SideNav.react';
 import homeUrl from 'utils/homeUrl';
 

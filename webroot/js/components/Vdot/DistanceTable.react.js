@@ -1,3 +1,4 @@
+var PropTypes = require('prop-types');
 var React = require('react');
 
 var Daniels = require('../../constants/Daniels');
@@ -33,7 +34,7 @@ function _formatTime(/*number*/ seconds) /*string*/ {
 var DistanceTable = React.createClass({
 
   propTypes: {
-    vdot: React.PropTypes.number,
+    vdot: PropTypes.number,
   },
 
   render: function() {

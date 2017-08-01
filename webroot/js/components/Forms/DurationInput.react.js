@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import {range} from 'lodash';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import ConstrainedTextInput from './ConstrainedTextInput.react';
@@ -25,12 +26,12 @@ const DurationInput = React.createClass({
     /**
      * The duration of the workout, in seconds.
      */
-    duration: React.PropTypes.number,
+    duration: PropTypes.number,
     /**
      * Name of the form that is using the component.
      */
-    name: React.PropTypes.string.isRequired,
-    onChange: React.PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
   },
 
   getDefaultProps() {

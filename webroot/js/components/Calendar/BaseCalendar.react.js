@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import moment from 'moment';
 
@@ -12,8 +13,8 @@ const BaseCalendar = React.createClass({
   displayName: 'BaseCalendar',
 
   propTypes: {
-    borders: React.PropTypes.bool,
-    headerFormat: React.PropTypes.oneOf([
+    borders: PropTypes.bool,
+    headerFormat: PropTypes.oneOf([
       'd',    // M, T, W...
       'dd',   // Mo, Tu, We...
       'ddd',  // Mon, Tue, Wed...

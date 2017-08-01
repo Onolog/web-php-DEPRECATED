@@ -7,7 +7,8 @@ import {
   Panel,
   Tooltip,
 } from 'react-bootstrap';
-import React, {PropTypes} from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {connect} from 'react-redux';
 
 import Activity from 'components/Activities/Activity.react';

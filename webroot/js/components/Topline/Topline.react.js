@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 import './Topline.scss';
@@ -18,8 +19,8 @@ const ToplineItem = React.createClass({
   displayName: 'ToplineItem',
 
   propTypes: {
-    annotation: React.PropTypes.string,
-    label: React.PropTypes.string.isRequired,
+    annotation: PropTypes.string,
+    label: PropTypes.string.isRequired,
   },
 
   render() {

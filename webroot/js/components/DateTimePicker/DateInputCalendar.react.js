@@ -1,4 +1,5 @@
 var moment = require('moment');
+var PropTypes = require('prop-types');
 var React = require('react');
 
 var BaseCalendar = require('components/Calendar/BaseCalendar.react');
@@ -19,15 +20,15 @@ var DateInputCalendar = React.createClass({
     /**
      * The month being displayed by the calendar.
      */
-    month: React.PropTypes.number.isRequired,
+    month: PropTypes.number.isRequired,
     /**
      * The selected date for the DateInput component.
      */
-    selectedDate: React.PropTypes.instanceOf(Date).isRequired,
+    selectedDate: PropTypes.instanceOf(Date).isRequired,
     /**
      * The year being displayed by the calendar.
      */
-    year: React.PropTypes.number.isRequired,
+    year: PropTypes.number.isRequired,
   },
 
   render: function() {
