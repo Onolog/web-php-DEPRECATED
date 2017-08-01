@@ -23,7 +23,7 @@ const initialState = {
   error: null,
   garminData: {},
   navigation: {
-    sideNavOpen: JSON.parse(localStorage.getItem('sideNavOpen')),
+    sideNavOpen: JSON.parse(localStorage.getItem('sideNavOpen')) || false,
   },
   pendingRequests,
   session: {},
