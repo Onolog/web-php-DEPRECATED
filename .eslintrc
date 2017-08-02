@@ -1,9 +1,22 @@
 {
-  "env": {},
-  "extends": "ericgio",
+  "env": {
+    "mocha": true
+  },
+  "extends": [
+    "ericgio",
+    "plugin:flowtype/recommended"
+  ],
   "globals": {
     "FB": true
   },
   "parser": "babel-eslint",
+  "plugins": [
+    "flowtype"
+  ],
   "rules": {},
+  "settings": {
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
+    }
+  }
 }
