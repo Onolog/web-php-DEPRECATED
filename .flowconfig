@@ -1,0 +1,13 @@
+[ignore]
+# See: https://github.com/oliviertassinari/babel-plugin-transform-react-remove-prop-types/issues/107
+.*/babel-plugin-transform-react-remove-prop-types/src/
+
+<PROJECT_ROOT>/vendor/.*
+
+[include]
+
+[libs]
+
+[options]
+
+[lints]
