@@ -1,5 +1,7 @@
-var moment = require('moment');
-var pad = require('./pad');
+// @flow
+
+import moment from 'moment';
+import pad from './pad';
 
 /**
  * Formats given number of seconds into the following:
@@ -7,12 +9,13 @@ var pad = require('./pad');
  *    'hh:mm:ss'
  *    'm:ss'
  */
-function secondsToTime(/*number|string*/ seconds) /*string*/ {
-  var time = moment.duration(parseInt(seconds, 10), 's');
-  var timeArr = [];
-  var dd = time.days();
-  var hh = time.hours();
-  var mm = time.minutes();
+export default function secondsToTime(seconds: number): string {
+  const time = moment.duration(parseInt(seconds, 10), 's');
+  const timeArr = [];
+  const dd = time.days();
+
+  let hh = time.hours();
+  let mm = time.minutes();
 
   // If the time is more than a day, calculate the total number of hours
   if (dd) {
@@ -21,12 +24,10 @@ function secondsToTime(/*number|string*/ seconds) /*string*/ {
 
   if (hh) {
     timeArr.push(hh);
-    mm = pad(mm, 2);
+    mm = pad(mm);
   }
   timeArr.push(mm);
-  timeArr.push(pad(time.seconds(), 2));
+  timeArr.push(pad(time.seconds()));
 
   return timeArr.join(':');
 }
-
-module.exports = secondsToTime;

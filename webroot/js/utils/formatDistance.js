@@ -1,10 +1,12 @@
+// @flow
+
 /**
  * formatDistance.js
  *
  * Consistently formats distance measurements, by stripping trailing
  * zeroes and restricting floats to 2 decimal places.
  */
-function formatDistance(/*string|number*/ distance) /*string*/ {
+export default function formatDistance(distance: number | string): string {
   // We may get irrational values for floats, so restrict
   // to 2 decimal places.
   if (typeof distance === 'number') {
@@ -13,7 +15,5 @@ function formatDistance(/*string|number*/ distance) /*string*/ {
 
   // Trim trailing zeroes by converting to a number and then
   // converting back to a string.
-  return (distance * 1).toString();
+  return (+distance).toString();
 }
-
-module.exports = formatDistance;

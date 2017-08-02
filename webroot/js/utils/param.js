@@ -1,8 +1,10 @@
+// @flow
+
 /**
  * Serializes an object into a URI-encoded query string.
  */
-module.exports = function(/*object*/ obj) {
-  return Object.keys(obj).map(key => {
-    return `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`;
-  }).join('&');
-};
+export default function(obj: Object): string {
+  return Object.keys(obj).map(key => (
+    `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`
+  )).join('&');
+}

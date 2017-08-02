@@ -1,3 +1,5 @@
+// @flow
+
 const METERS_PER_MILE = 1609.35;
 const FEET_PER_METER = 3.28084;
 
@@ -8,16 +10,20 @@ const FEET_PER_METER = 3.28084;
  *
  * TODO: miles to meters, miles to km, meters to km
  */
-module.exports = {
-  metersToMiles: function(/*number|string*/ distanceInMeters) /*number*/ {
-    var miles = distanceInMeters / METERS_PER_MILE;
 
-    // Round to 2 decimal places.
-    // See: http://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-in-javascript
-    return +(Math.round(miles + 'e+2')  + 'e-2');
-  },
+export function metersToMiles(
+  distanceInMeters: number,
+  precision: number = 2
+): number {
+  const miles = distanceInMeters / METERS_PER_MILE;
 
-  metersToFeet: function(/*number|string*/ distanceInMeters) /*number*/ {
-    return +(Math.round(distanceInMeters * FEET_PER_METER));
-  },
-};
+  // Round to x decimal places.
+  // See:
+  //  - https://stackoverflow.com/questions/11832914/round-to-at-most-2-decimal-places-in-javascript
+  //  - https://stackoverflow.com/questions/10015027/javascript-tofixed-not-rounding/32605063#32605063
+  return +(Math.round(+(miles + 'e' + precision)) + 'e' + -precision);
+}
+
+export function metersToFeet(distanceInMeters: number): number {
+  return +(Math.round(distanceInMeters * FEET_PER_METER));
+}
