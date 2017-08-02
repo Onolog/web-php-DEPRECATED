@@ -1,5 +1,3 @@
-'use strict';
-
 var baseConfig = require('./webpack.config.js');
 var webpack = require('webpack');
 
@@ -11,7 +9,7 @@ module.exports = Object.assign({}, baseConfig, {
     filename: '[name]-[chunkhash:16].js',
   }),
 
-  plugins: baseConfig.commonPlugins.concat([
+  plugins: baseConfig.plugins.concat([
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production')
@@ -27,7 +25,7 @@ module.exports = Object.assign({}, baseConfig, {
       mangle: {
         except: ['$', 'exports', 'require']
       },
+      sourceMap: true,
     }),
-    new webpack.optimize.OccurenceOrderPlugin(),
   ]),
 });
