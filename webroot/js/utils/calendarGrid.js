@@ -1,13 +1,11 @@
+// @flow
+
+import invariant from 'invariant';
 import {isInteger} from 'lodash';
 
-/**
- * calendarGrid
- *
- * Given a month and year, returns an array describing how to lay out the
- * full month as a grid.
- */
+const DAYS_IN_WEEK = 7;
 
-function getDate(year, month, day) {
+function getDate(year: number, month: number, day: number): Date {
   var now = new Date();
   return new Date(
     year,
@@ -19,23 +17,28 @@ function getDate(year, month, day) {
   );
 }
 
-var DAYS_IN_WEEK = 7;
-
-function calendarGrid(/*number*/ month, /*number*/ year) {
-  if (!(isInteger(month) && isInteger(year))) {
-    throw new Error('calendarGrid: The month and year must be integers');
-  }
+/**
+ * calendarGrid
+ *
+ * Given a month and year, returns an array describing how to lay out the
+ * full month as a grid.
+ */
+function calendarGrid(month: number, year: number): Array<Array<Object>> {
+  invariant(
+    isInteger(month) && isInteger(year),
+    'calendarGrid: The month and year must be integers'
+  );
 
   // Number of days in the given month
-  var daysInMonth = getDate(year, month + 1, 0).getDate();
+  const daysInMonth = getDate(year, month + 1, 0).getDate();
 
   // Numeric representation of the day of the week
-  var monthStartDay = getDate(year, month, 1).getDay();
+  const monthStartDay = getDate(year, month, 1).getDay();
 
-  var day;
-  var monthArr = [];
-  var weekArr = [];
-  var ii = 0;  // Day counter
+  let day;
+  let monthArr = [];
+  let weekArr = [];
+  let ii = 0;  // Day counter
 
   // Start the month on the right day of the week
   if (monthStartDay !== 0) {
@@ -82,4 +85,4 @@ function calendarGrid(/*number*/ month, /*number*/ year) {
   return monthArr;
 }
 
-module.exports = calendarGrid;
+export default calendarGrid;

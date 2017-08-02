@@ -1,42 +1,24 @@
-var moment = require('moment');
+// @flow
 
-var secondsToTime = require('./secondsToTime');
+import moment from 'moment';
+import secondsToTime from './secondsToTime';
 
 /**
  * calculatePace.js
  *
  * Calculates the pace per mile/km, formatted as 'm:ss'
  */
-var calculatePace = {
+function calculatePace(distance: number, seconds: number): string {
+  if (!distance || !seconds) {
+    // If distance hasn't been entered or has a value of zero, the
+    // calculation will come back invalid. No time will just be zero.
+    // In either case, just return '0:00' as the pace.
+    return secondsToTime(0);
+  }
 
-  fromHHMMSS: function(
-    /*number|string*/ distance,
-    /*number|string*/ hours,
-    /*number|string*/ minutes,
-    /*number|string*/ seconds
-  ) /*string*/ {
+  return secondsToTime(
+    moment.duration(seconds/distance, 's').asSeconds()
+  );
+}
 
-    // Convert the time to seconds
-    seconds = moment.duration({hours, minutes, seconds}).asSeconds();
-
-    return calculatePace.fromSeconds(distance, seconds);
-  },
-
-  fromSeconds: function(
-    /*number|string*/ distance,
-    /*number|string*/seconds
-  ) /*string*/ {
-    if (!distance || !seconds) {
-      // If distance hasn't been entered or has a value of zero, the
-      // calculation will come back invalid. No time will just be zero.
-      // In either case, just return '0:00' as the pace.
-      return secondsToTime(0);
-    }
-
-    return secondsToTime(
-      moment.duration(seconds/distance, 's').asSeconds()
-    );
-  },
-};
-
-module.exports = calculatePace;
+export default calculatePace;

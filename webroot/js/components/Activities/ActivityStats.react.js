@@ -56,7 +56,7 @@ class ActivityStats extends React.Component {
     }, {
       annotation: 'per mile',
       label: 'Pace',
-      value: calculatePace.fromSeconds(distance, duration),
+      value: calculatePace(distance, duration),
     }];
 
     if (elevation_gain) {

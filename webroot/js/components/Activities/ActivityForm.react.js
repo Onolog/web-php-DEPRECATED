@@ -50,7 +50,7 @@ class ActivityForm extends React.Component {
 
   render() {
     const {activity, errors} = this.props;
-    const pace = calculatePace.fromSeconds(
+    const pace = calculatePace(
       activity.distance || 0,
       activity.duration || 0
     );
