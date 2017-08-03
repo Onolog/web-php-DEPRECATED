@@ -1,12 +1,12 @@
-var {map} = require('lodash');
-const PropTypes = require('prop-types');
-var React = require('react');
+import {map} from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
 
-var Topline = require('components/Topline/Topline.react');
+import Topline from 'components/Topline/Topline.react';
 
-var calculatePace = require('utils/calculatePace');
-var formatDistance = require('utils/formatDistance');
-var secondsToTime = require('utils/secondsToTime');
+import calculatePace from 'utils/calculatePace';
+import formatDistance from 'utils/formatDistance';
+import secondsToTime from 'utils/secondsToTime';
 
 /**
  * ActivityStats.react
@@ -94,4 +94,4 @@ class ActivityStats extends React.Component {
   };
 }
 
-module.exports = ActivityStats;
+export default ActivityStats;

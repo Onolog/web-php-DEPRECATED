@@ -1,14 +1,14 @@
-var moment = require('moment');
-var PropTypes = require('prop-types');
-var React = require('react');
+import cx from 'classnames';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+import React from 'react';
 
-var BaseCalendar = require('components/Calendar/BaseCalendar.react');
-var BaseCalendarDay = require('components/Calendar/BaseCalendarDay.react');
-var BaseCalendarWeek = require('components/Calendar/BaseCalendarWeek.react');
-var Link = require('components/Link/Link.react');
+import BaseCalendar from 'components/Calendar/BaseCalendar.react';
+import BaseCalendarDay from 'components/Calendar/BaseCalendarDay.react';
+import BaseCalendarWeek from 'components/Calendar/BaseCalendarWeek.react';
+import Link from 'components/Link/Link.react';
 
-var calendarGrid = require('utils/calendarGrid');
-var cx = require('classnames');
+import calendarGrid from 'utils/calendarGrid';
 
 /**
  * DateInputCalendar.react.js
@@ -32,7 +32,7 @@ class DateInputCalendar extends React.Component {
   };
 
   render() {
-    var grid = calendarGrid(this.props.month, this.props.year);
+    const grid = calendarGrid(this.props.month, this.props.year);
 
     return (
       <BaseCalendar
@@ -52,7 +52,7 @@ class DateInputCalendar extends React.Component {
   };
 
   _renderDay = (day, idx) => {
-    var dayDate = day.date;
+    const dayDate = day.date;
     return (
       <BaseCalendarDay
         date={dayDate}
@@ -70,8 +70,8 @@ class DateInputCalendar extends React.Component {
     );
   };
 
-  _onDayClick = (/*Date*/ selectedDate, evt) => {
-    evt.preventDefault();
+  _onDayClick = (/*Date*/ selectedDate, e) => {
+    e.preventDefault();
     this.props.onChange && this.props.onChange({
       date: selectedDate.getDate(),
       months: selectedDate.getMonth(),
@@ -80,4 +80,4 @@ class DateInputCalendar extends React.Component {
   };
 }
 
-module.exports = DateInputCalendar;
+export default DateInputCalendar;

@@ -1,12 +1,12 @@
-var PropTypes = require('prop-types');
-var React = require('react');
+import PropTypes from 'prop-types';
+import React from 'react';
 
-var BaseCalendar = require('./BaseCalendar.react');
-var BaseCalendarDay = require('./BaseCalendarDay.react');
-var BaseCalendarWeek = require('./BaseCalendarWeek.react');
-var CalendarDate = require('./CalendarDate.react');
+import BaseCalendar from './BaseCalendar.react';
+import BaseCalendarDay from './BaseCalendarDay.react';
+import BaseCalendarWeek from './BaseCalendarWeek.react';
+import CalendarDate from './CalendarDate.react';
 
-var calendarGrid = require('utils/calendarGrid');
+import calendarGrid from 'utils/calendarGrid';
 
 /**
  * Renders a calendar view for a single month
@@ -19,7 +19,7 @@ class Calendar extends React.Component {
   };
 
   render() {
-    var grid = calendarGrid(
+    const grid = calendarGrid(
       this.props.date.getMonth(),
       this.props.date.getFullYear()
     );
@@ -40,7 +40,7 @@ class Calendar extends React.Component {
   };
 
   _renderDay = (day, idx) => {
-    var date = day.date;
+    const date = day.date;
     return (
       <BaseCalendarDay
         date={date}
@@ -52,4 +52,4 @@ class Calendar extends React.Component {
   };
 }
 
-module.exports = Calendar;
+export default Calendar;

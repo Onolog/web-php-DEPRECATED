@@ -1,7 +1,7 @@
-var PropTypes = require('prop-types');
-var React = require('react');
+import PropTypes from 'prop-types';
+import React from 'react';
 
-var Daniels = require('../../constants/Daniels');
+import Daniels from 'constants/Daniels';
 
 
 function _formatTime(/*number*/ seconds) /*string*/ {
@@ -102,4 +102,4 @@ class DistanceTable extends React.Component {
   };
 }
 
-module.exports = DistanceTable;
+export default DistanceTable;

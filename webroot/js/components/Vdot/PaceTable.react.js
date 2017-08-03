@@ -1,7 +1,7 @@
-var PropTypes = require('prop-types');
-var React = require('react');
+import PropTypes from 'prop-types';
+import React from 'react';
 
-var Daniels = require('../../constants/Daniels');
+import Daniels from 'constants/Daniels';
 
 function _formatTime(/*number*/ seconds) /*string|number*/ {
   // For paces under 100 seconds, just show as seconds
@@ -102,4 +102,4 @@ class PaceTable extends React.Component {
   };
 }
 
-module.exports = PaceTable;
+export default PaceTable;

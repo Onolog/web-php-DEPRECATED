@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {findDOMNode} from 'react-dom';
 
-const {DOWN, UP} = require('constants/KeyCode');
+import {DOWN, UP} from 'constants/KeyCode';
 const TYPES = {
   any: 'any',
   number: 'number',

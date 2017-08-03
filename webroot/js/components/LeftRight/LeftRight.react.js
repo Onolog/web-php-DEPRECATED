@@ -1,6 +1,6 @@
-const PropTypes = require('prop-types');
-var React = require('react');
-var cx = require('classnames');
+import cx from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const DIRECTION = {
   left: 'left',
@@ -25,29 +25,29 @@ class LeftRight extends React.Component {
   };
 
   render() {
-    var children = [];
+    const children = [];
     React.Children.forEach(this.props.children, child => {
       children.push(child);
     });
 
-    var dir = this.props.direction || DIRECTION.both;
-    var both = (dir === DIRECTION.both);
+    const dir = this.props.direction || DIRECTION.both;
+    const both = (dir === DIRECTION.both);
 
-    var firstClass = both || dir === DIRECTION.left ? 'pull-left' : '';
+    const firstClass = both || dir === DIRECTION.left ? 'pull-left' : '';
+    const secondClass = both || dir === DIRECTION.right ? 'pull-right' : '';
 
-    var secondClass = both || dir === DIRECTION.right ? 'pull-right' : '';
-
-    var firstChild =
+    const firstChild =
       <div className={firstClass} key="left">
         {children[0]}
       </div>;
 
-    var secondChild = (children.length < 2) ? null :
+    const secondChild = children.length < 2 ?
+      null :
       <div className={secondClass} key="right">
         {children[1]}
       </div>;
 
-    var orderedChildren = (dir === DIRECTION.right && secondChild) ?
+    const orderedChildren = (dir === DIRECTION.right && secondChild) ?
       [secondChild, firstChild] :
       [firstChild, secondChild];
 
@@ -61,4 +61,4 @@ class LeftRight extends React.Component {
   }
 }
 
-module.exports = LeftRight;
+export default LeftRight;

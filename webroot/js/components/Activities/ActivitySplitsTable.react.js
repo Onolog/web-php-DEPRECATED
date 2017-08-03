@@ -1,10 +1,10 @@
-var PropTypes = require('prop-types');
-var React = require('react');
-var {Table} = require('react-bootstrap/lib');
+import PropTypes from 'prop-types';
+import React from 'react';
+import {Table} from 'react-bootstrap/lib';
 
-var {map} = require('lodash');
-var {metersToFeet, metersToMiles} = require('utils/distanceUtils');
-var secondsToTime = require('utils/secondsToTime');
+import {map} from 'lodash';
+import {metersToFeet, metersToMiles} from 'utils/distanceUtils';
+import secondsToTime from 'utils/secondsToTime';
 
 /**
  * ActivitySplitsTable.react
@@ -28,9 +28,9 @@ class ActivitySplitsTable extends React.Component {
   }
 
   _renderHeaderRows = () => {
-    var headerCells = map(this._getColumns(), (column, idx) => {
-      return <th key={idx}>{column.label}</th>;
-    });
+    const headerCells = map(this._getColumns(), (column, idx) => (
+      <th key={idx}>{column.label}</th>
+    ));
 
     return (
       <thead>
@@ -42,7 +42,7 @@ class ActivitySplitsTable extends React.Component {
   };
 
   _renderBody = () => {
-    var {laps} = this.props;
+    const {laps} = this.props;
     if (laps && laps.length) {
       return <tbody>{laps.map(this._renderRows)}</tbody>;
     }
@@ -59,8 +59,8 @@ class ActivitySplitsTable extends React.Component {
   };
 
   _renderRows = (lap, idx) => {
-    var cells = map(this._getColumns(), (column, idx) => {
-      var value = lap[column.key];
+    const cells = map(this._getColumns(), (column, idx) => {
+      const value = lap[column.key];
       return (
         <td key={idx}>
           {column.formatter ? column.formatter(value) : value}
@@ -98,4 +98,4 @@ class ActivitySplitsTable extends React.Component {
   };
 }
 
-module.exports = ActivitySplitsTable;
+export default ActivitySplitsTable;
