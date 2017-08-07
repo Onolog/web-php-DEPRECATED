@@ -1,16 +1,30 @@
-language: php
+sudo: required
+dist: trusty
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
 
-sudo: false
-
-php:
-  - 7.0
-
-before_script:
-  - sh -c "composer require 'cakephp/cakephp-codesniffer:dev-master'"
-  - phpenv rehash
+language: node_js
+node_js:
+  - "6"
+  - "5"
+cache:
+  directories: node_modules
 
 script:
-  - sh -c "vendor/bin/phpcs -p --extensions=php --standard=vendor/cakephp/cakephp-codesniffer/CakePHP ./src ./tests ./config ./webroot"
+  - npm run lint
+  - npm run flow
+  - npm test
+  - npm run build-prod
 
-notifications:
-  email: false
+# Google Chrome
+#
+# https://github.com/travis-ci/travis-ci/issues/272#issuecomment-14402117
+# http://stackoverflow.com/questions/19255976/how-to-make-travis-execute-angular-tests-on-chrome-please-set-env-variable-chr
+before_install:
+  - export CHROME_BIN=chromium-browser
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
