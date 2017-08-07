@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {shallow, mount, render} from 'enzyme';
+import {shallow} from 'enzyme';
 import React from 'react';
 
 import Middot from 'components/Middot.react';
