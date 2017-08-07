@@ -17,9 +17,9 @@ module.exports = function(config) {
     frameworks: ['mocha', 'chai'],
     singleRun: true,
     files: [
-      // Common package needs to be first since it defines webpackJsonp
+      // Vendor package needs to be first since it defines webpackJsonp
       // https://github.com/webpack-contrib/karma-webpack/issues/24
-      'webroot/build/Common.js',
+      'webroot/build/vendor.js',
       'tests.webpack.js',
     ],
     preprocessors: {

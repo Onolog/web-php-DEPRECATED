@@ -58,7 +58,7 @@ class PageHelper extends Helper {
           $this->Html->css('/css/base/bs-override') .
           $this->Html->css('/css/base/fonts') .
           $this->Html->css('/css/base/util') .
-          $this->Html->css('/build/' . $manifest['App.css']) .
+          $this->Html->css('/build/' . $manifest['app.css']) .
         '</head>' .
         '<body>' .
           '<div id="root">' .
@@ -68,8 +68,8 @@ class PageHelper extends Helper {
           // Javascript
           $this->renderChunkManifest() .
           $this->renderAppData() .
-          $this->Html->script('/build/'. $manifest['Common.js']) .
-          $this->Html->script('/build/'. $manifest['App.js']) .
+          $this->Html->script('/build/'. $manifest['vendor.js']) .
+          $this->Html->script('/build/'. $manifest['app.js']) .
           $this->renderGoogleAnalyticsJS() .
         '</body>' .
       '</html>';

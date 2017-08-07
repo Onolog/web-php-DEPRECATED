@@ -1,7 +1,5 @@
-var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var ManifestPlugin = require('webpack-manifest-plugin');
-var Md5HashPlugin = require('webpack-md5-hash');
+var webpackPlugins = require('./webpackPlugins');
 
 var fs = require('fs');
 var path = require('path');
@@ -12,8 +10,8 @@ var JS_ROOT = path.join(__dirname, 'webroot', 'js');
 var config = {
   context: JS_ROOT,
   entry: {
-    App: 'App.js',
-    Common: [
+    app: 'App.js',
+    vendor: [
       'classnames',
       'jquery',
       'lodash',
@@ -77,32 +75,13 @@ var config = {
       }
     ]
   },
-  plugins: [
-    // Generate a single chunk for common code
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'Common',
-      minChunks: Infinity,
-    }),
-    // Don't pull in all of Moment's locales
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new Md5HashPlugin(),
-    new ManifestPlugin({
-      fileName: 'webpack-manifest.json',
-    }),
-    new ChunkManifestPlugin({
-      filename: 'chunk-manifest.json',
-      manifestVariable: 'chunkManifest'
-    }),
-    new ExtractTextPlugin({
-      allChunks: true,
-      filename: 'app-[contenthash:16].css',
-    }),
+  plugins: webpackPlugins.concat([
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('development')
       }
     }),
-  ],
+  ]),
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
     modules: [

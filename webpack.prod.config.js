@@ -1,4 +1,6 @@
 var baseConfig = require('./webpack.config.js');
+var webpackPlugins = require('./webpackPlugins');
+
 var webpack = require('webpack');
 
 module.exports = Object.assign({}, baseConfig, {
@@ -9,7 +11,7 @@ module.exports = Object.assign({}, baseConfig, {
     filename: '[name]-[chunkhash:16].js',
   }),
 
-  plugins: baseConfig.plugins.concat([
+  plugins: webpackPlugins.concat([
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production')
