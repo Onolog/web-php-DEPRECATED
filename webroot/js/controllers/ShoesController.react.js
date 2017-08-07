@@ -46,7 +46,7 @@ class ShoesController extends React.Component {
   componentWillReceiveProps(nextProps) {
     // Hide modal when shoes are modified somehow.
     if (!isEqual(this.props.shoes, nextProps.shoes)) {
-      this.setState({shoe: false});
+      this.setState({show: false});
     }
 
     this.setState({isLoading: false});
