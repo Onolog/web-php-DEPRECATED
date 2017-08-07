@@ -28,7 +28,15 @@ module.exports = function(config) {
     reporters: ['dots'],
     webpack: Object.assign(webpackConfig, {
       devtool: 'inline-source-map',
+      externals: {
+        'react/lib/ExecutionEnvironment': 'react',
+        'react/lib/ReactContext': 'react',
+        'react-test-renderer': 'react-test-renderer',
+      },
     }),
+    webpackMiddleware: {
+      stats: 'errors-only',
+    },
     webpackServer: {
       noInfo: true,
     },
