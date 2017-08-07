@@ -1,4 +1,5 @@
-import moment from 'moment';
+import jstz from 'jstz';
+import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -7,6 +8,8 @@ import BaseCalendar from 'components/Calendar/BaseCalendar.react';
 import BaseCalendarWeek from 'components/Calendar/BaseCalendarWeek.react';
 
 import calendarGrid from 'utils/calendarGrid';
+
+const CURRENT_TIMEZONE = jstz.determine().name();
 
 import './css/ActivityCalendar.css';
 
@@ -43,10 +46,18 @@ class ActivityCalendar extends React.Component {
 
   _renderDay = (day, idx) => {
     const dateObject = day.date;
+    const dayMoment = moment.tz(dateObject, CURRENT_TIMEZONE);
+    const activities = this.props.activities.filter(activity => {
+      const activityMoment = moment.tz(activity.start_date, activity.timezone);
 
-    let activities = this.props.activities.filter(activity => (
-      moment(dateObject).isSame(activity.start_date, 'day')
-    ));
+      // Don't use moment.isSame() here, since it won't always work correctly
+      // for moments across timezones.
+      return (
+        dayMoment.year() === activityMoment.year() &&
+        dayMoment.month() === activityMoment.month() &&
+        dayMoment.date() === activityMoment.date()
+      );
+    });
 
     if (activities.length) {
       activities.forEach(activity => {
