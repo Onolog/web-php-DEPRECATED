@@ -1,6 +1,11 @@
 /* eslint-env node */
 var webpackConfig = require('./webpack.config');
 
+// Remove CommonChunks plugin since it doesn't play well with Karma:
+// https://github.com/webpack-contrib/karma-webpack/issues/24#issuecomment-257613167
+const commonsChunkPluginIndex = webpackConfig.plugins.findIndex(plugin => plugin.chunkNames);
+webpackConfig.plugins.splice(commonsChunkPluginIndex, 1);
+
 module.exports = function(config) {
   config.set({
     browsers: [process.env.TRAVIS ? 'Chrome_travis_ci' : 'Chrome'],
@@ -17,9 +22,6 @@ module.exports = function(config) {
     frameworks: ['mocha', 'chai'],
     singleRun: true,
     files: [
-      // Vendor package needs to be first since it defines webpackJsonp
-      // https://github.com/webpack-contrib/karma-webpack/issues/24
-      'webroot/build/vendor.js',
       'tests.webpack.js',
     ],
     preprocessors: {
