@@ -7,7 +7,7 @@ var webpack = require('webpack');
 module.exports = [
   // Generate a single chunk for common code
   new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
+    name: ['vendor'],
     minChunks: Infinity,
   }),
   // Don't pull in all of Moment's locales
