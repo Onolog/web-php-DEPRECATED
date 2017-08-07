@@ -168,6 +168,11 @@ class CalendarController extends React.Component {
   };
 
   _onKeyDown = e => {
+    // Don't key through the months if a modal is open.
+    if (this.state.showAddModal || this.state.showImportModal) {
+      return;
+    }
+
     switch (e.keyCode) {
       case LEFT:
         e.preventDefault();
