@@ -1,15 +1,10 @@
 import {find} from 'lodash';
 import moment from 'moment-timezone';
-import {
-  Button,
-  ButtonGroup,
-  OverlayTrigger,
-  Panel,
-  Tooltip,
-} from 'react-bootstrap';
+import {Button, ButtonGroup, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import Activity from 'components/Activities/Activity.react';
 import ActivityModal from 'components/Activities/ActivityModal.react';
@@ -19,9 +14,10 @@ import MaterialIcon from 'components/Icons/MaterialIcon.react';
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
 
-import {fetchActivity} from 'actions/activities';
+import {deleteActivity, fetchActivity} from 'actions/activities';
+import homeUrl from 'utils/homeUrl';
 
-import {ACTIVITY_FETCH, ACTIVITY_UPDATE} from 'constants/ActionTypes';
+import {ACTIVITY_FETCH, ACTIVITY_DELETE, ACTIVITY_UPDATE} from 'constants/ActionTypes';
 
 const DATE_FORMAT = 'dddd, MMMM Do, YYYY';
 
@@ -62,11 +58,18 @@ class ActivityController extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const {pendingRequests} = this.props;
+
     if (
       pendingRequests[ACTIVITY_UPDATE] &&
       !nextProps.pendingRequests[ACTIVITY_UPDATE]
     ) {
       this.setState({showModal: false});
+    }
+
+    // Redirect if the activity was deleted.
+    if (pendingRequests[ACTIVITY_DELETE] && !nextProps.activity) {
+      browserHistory.push(homeUrl());
+      return;
     }
   }
 
@@ -134,12 +137,9 @@ class ActivityController extends React.Component {
     }
   };
 
-  /**
-   * TODO: Handle this better...
-   */
   _handleActivityDelete = () => {
     if (confirm('Are you sure you want to delete this activity?')) {
-      document.location = `/activities/delete/${this.props.activity.id}`;
+      this.props.dispatch(deleteActivity(this.props.activity.id));
     }
   };
 

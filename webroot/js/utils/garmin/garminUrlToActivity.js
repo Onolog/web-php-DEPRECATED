@@ -9,7 +9,7 @@ import type {Activity} from 'types/Activity';
  * Normalizes activity data pulled from Garmin's endpoints.
  */
 function garminUrlToActivity(data: Object): Activity {
-  const {activity, details, splits, weather} = data;
+  const {activity} = data;
   const {
     averageHR,
     calories,

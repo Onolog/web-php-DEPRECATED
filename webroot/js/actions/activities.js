@@ -122,7 +122,7 @@ export function fetchActivity(id) {
 
     // Only fetch if we don't already have the activity.
     if (!find(activities, {id})) {
-      dispatch(fetchActivityRequest(id))
+      dispatch(fetchActivityRequest(id));
     }
   };
 }
