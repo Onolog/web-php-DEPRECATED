@@ -2,6 +2,7 @@ import moment from 'moment-timezone';
 import {OverlayTrigger, Tooltip} from 'react-bootstrap/lib';
 import PropTypes from 'prop-types';
 import React from 'react';
+import {Link as RouterLink} from 'react-router';
 
 import ActivitySection from 'components/Activities/ActivitySection.react';
 import FBImage from 'components/Facebook/FBImage.react';
@@ -42,15 +43,15 @@ class ActivityHeader extends React.Component {
         <ImageBlock
           align="middle"
           image={
-            <Link
+            <RouterLink
               className="activityAthletePhoto innerBorder"
-              href={'/users/profile/' + athlete.id}>
+              to={`/users/${athlete.id}`}>
               <FBImage
                 fbid={athlete.id}
                 height={PHOTO_DIMENSIONS}
                 width={PHOTO_DIMENSIONS}
               />
-            </Link>
+            </RouterLink>
           }>
           <h4 className="activityAthleteName">
             {athlete.name}

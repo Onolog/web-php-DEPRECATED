@@ -170,7 +170,7 @@ class Report extends React.Component {
           <td className="topFriendsPhoto">
             <Link
               className="innerBorder"
-              href={'/users/profile/' + friend.id}>
+              href={`/users/${friend.id}`}>
               <FBImage fbid={friend.id} />
             </Link>
           </td>

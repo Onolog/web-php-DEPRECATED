@@ -13,10 +13,15 @@ import {connect} from 'react-redux';
 
 import Activity from 'components/Activities/Activity.react';
 import ActivityModal from 'components/Activities/ActivityModal.react';
-import AppPage from 'components/Page/AppPage.react';
+import AppFullPage from 'components/Page/AppFullPage.react';
+import Loader from 'components/Loader/Loader.react';
 import MaterialIcon from 'components/Icons/MaterialIcon.react';
+import PageFrame from 'components/Page/PageFrame.react';
+import PageHeader from 'components/Page/PageHeader.react';
 
-import {ACTIVITY_UPDATE} from 'constants/ActionTypes';
+import {fetchActivity} from 'actions/activities';
+
+import {ACTIVITY_FETCH, ACTIVITY_UPDATE} from 'constants/ActionTypes';
 
 const DATE_FORMAT = 'dddd, MMMM Do, YYYY';
 
@@ -26,9 +31,9 @@ const mapStateToProps = (state, props) => {
 
   return {
     activity,
-    athlete: find(users, {id: activity.user_id}),
+    athlete: activity && find(users, {id: activity.user_id}),
     pendingRequests,
-    shoe: find(shoes, {id: activity.shoe_id}),
+    shoe: activity && find(shoes, {id: activity.shoe_id}),
     viewer: session,
   };
 };
@@ -40,8 +45,8 @@ const mapStateToProps = (state, props) => {
  */
 class ActivityController extends React.Component {
   static propTypes = {
-    activity: PropTypes.object.isRequired,
-    athlete: PropTypes.object.isRequired,
+    activity: PropTypes.object,
+    athlete: PropTypes.object,
     pendingRequests: PropTypes.object.isRequired,
     shoe: PropTypes.object,
     viewer: PropTypes.object,
@@ -50,6 +55,10 @@ class ActivityController extends React.Component {
   state = {
     showModal: false,
   };
+
+  componentWillMount() {
+    this.props.dispatch(fetchActivity(+this.props.params.activityId));
+  }
 
   componentWillReceiveProps(nextProps) {
     const {pendingRequests} = this.props;
@@ -62,23 +71,35 @@ class ActivityController extends React.Component {
   }
 
   render() {
-    const {activity, athlete, shoe} = this.props;
+    const {activity, athlete, pendingRequests, shoe} = this.props;
+
+    if (!activity || pendingRequests[ACTIVITY_FETCH]) {
+      return (
+        <AppFullPage>
+          <Loader background full />
+        </AppFullPage>
+      );
+    }
+
+    const activityDate = moment.tz(
+      activity.start_date,
+      activity.timezone
+    ).format(DATE_FORMAT);
+
     return (
-      <AppPage
-        narrow
-        title={moment.tz(
-          activity.start_date,
-          activity.timezone
-        ).format(DATE_FORMAT)}>
-        <Panel footer={this._renderButtonGroup()}>
+      <AppFullPage title={activityDate}>
+        <PageHeader full title={activityDate}>
+          {this._renderButtonGroup()}
+        </PageHeader>
+        <PageFrame fill>
           <Activity
             activity={activity}
             athlete={athlete}
             fill
             shoe={shoe}
           />
-        </Panel>
-      </AppPage>
+        </PageFrame>
+      </AppFullPage>
     );
   }
 
@@ -88,17 +109,17 @@ class ActivityController extends React.Component {
 
     if (viewer.id === activity.user_id) {
       return (
-        <ButtonGroup>
+        <ButtonGroup bsSize="small">
           <OverlayTrigger
             overlay={<Tooltip id="edit">Edit Activity</Tooltip>}
-            placement="top">
+            placement="bottom">
             <Button onClick={this._handleActivityEdit}>
               <MaterialIcon icon="pencil" />
             </Button>
           </OverlayTrigger>
           <OverlayTrigger
             overlay={<Tooltip id="delete">Delete Activity</Tooltip>}
-            placement="top">
+            placement="bottom">
             <Button onClick={this._handleActivityDelete}>
               <MaterialIcon icon="delete" />
             </Button>
@@ -117,8 +138,8 @@ class ActivityController extends React.Component {
    * TODO: Handle this better...
    */
   _handleActivityDelete = () => {
-    if (confirm('Are you sure you want to delete this shoe?')) {
-      document.location = `/workouts/delete/${this.props.activity.id}`;
+    if (confirm('Are you sure you want to delete this activity?')) {
+      document.location = `/activities/delete/${this.props.activity.id}`;
     }
   };
 

@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {OverlayTrigger, Tooltip} from 'react-bootstrap/lib';
+import {OverlayTrigger, Tooltip} from 'react-bootstrap';
+import {Link} from 'react-router';
 
 import FBImage from './FBImage.react';
-import Link from 'components/Link/Link.react';
 import Loader from 'components/Loader/Loader.react';
 
 import fbLoader from 'utils/fbLoader';
@@ -60,7 +60,7 @@ class FBFacepile extends React.Component {
         placement="top">
         <Link
           className="FacepileLink innerBorder"
-          href={`/users/profile/${friend.id}`}>
+          to={`/users/${friend.id}`}>
           <FBImage fbid={friend.id} />
         </Link>
       </OverlayTrigger>

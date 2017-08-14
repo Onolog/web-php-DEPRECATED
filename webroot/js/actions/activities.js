@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import {find} from 'lodash';
 
 import {
   ACTIVITIES_FETCH,
@@ -10,6 +11,9 @@ import {
   ACTIVITY_DELETE,
   ACTIVITY_DELETE_ERROR,
   ACTIVITY_DELETE_SUCCESS,
+  ACTIVITY_FETCH,
+  ACTIVITY_FETCH_ERROR,
+  ACTIVITY_FETCH_SUCCESS,
   ACTIVITY_UPDATE,
   ACTIVITY_UPDATE_ERROR,
   ACTIVITY_UPDATE_SUCCESS,
@@ -90,6 +94,37 @@ function fetchActivitiesRequest(year, month) {
 export function fetchActivities(year, month) {
   // TODO: Check if we already have the activities so we don't re-fetch.
   return (dispatch, getState) => dispatch(fetchActivitiesRequest(year, month));
+}
+
+function fetchActivitySuccess(response, dispatch) {
+  const {activities, shoes, users} = response;
+  dispatch({
+    activities,
+    shoes,
+    type: ACTIVITY_FETCH_SUCCESS,
+    users,
+  });
+}
+
+function fetchActivityRequest(id) {
+  return dispatch => {
+    dispatch({type: ACTIVITY_FETCH});
+
+    $.get(`/activities/${id}.json`)
+      .done(response => fetchActivitySuccess(response, dispatch))
+      .fail(response => dispatch({type: ACTIVITY_FETCH_ERROR}));
+  };
+}
+
+export function fetchActivity(id) {
+  return (dispatch, getState) => {
+    const {activities} = getState();
+
+    // Only fetch if we don't already have the activity.
+    if (!find(activities, {id})) {
+      dispatch(fetchActivityRequest(id))
+    }
+  };
 }
 
 function updateActivitySuccess(response, dispatch) {

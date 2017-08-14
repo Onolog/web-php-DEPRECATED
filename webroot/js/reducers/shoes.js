@@ -17,6 +17,7 @@ const shoe = (state={}, action) => {
 const shoes = (state=[], action) => {
   switch (action.type) {
     case ActionTypes.ACTIVITIES_FETCH_SUCCESS:
+    case ActionTypes.ACTIVITY_FETCH_SUCCESS:
     case ActionTypes.ALL_SHOES_FETCH_SUCCESS:
     case ActionTypes.USER_DATA_FETCH_SUCCESS:
       return action.shoes;

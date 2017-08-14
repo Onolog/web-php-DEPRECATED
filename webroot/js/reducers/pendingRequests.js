@@ -7,6 +7,7 @@ export default (pendingRequests={}, action) => {
     case ActionTypes.ACTIVITIES_FETCH:
     case ActionTypes.ACTIVITY_ADD:
     case ActionTypes.ACTIVITY_DELETE:
+    case ActionTypes.ACTIVITY_FETCH:
     case ActionTypes.ACTIVITY_UPDATE:
     case ActionTypes.ACTIVITY_VIEW:
     case ActionTypes.ALL_SHOES_FETCH:
@@ -31,6 +32,8 @@ export default (pendingRequests={}, action) => {
     case ActionTypes.ACTIVITY_ADD_SUCCESS:
     case ActionTypes.ACTIVITY_DELETE_ERROR:
     case ActionTypes.ACTIVITY_DELETE_SUCCESS:
+    case ActionTypes.ACTIVITY_FETCH_ERROR:
+    case ActionTypes.ACTIVITY_FETCH_SUCCESS:
     case ActionTypes.ACTIVITY_UPDATE_ERROR:
     case ActionTypes.ACTIVITY_UPDATE_SUCCESS:
     case ActionTypes.ACTIVITY_VIEW_ERROR:

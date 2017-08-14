@@ -1,5 +1,6 @@
 import {
   ACTIVITIES_FETCH_SUCCESS,
+  ACTIVITY_FETCH_SUCCESS,
   PROFILE_FETCH_SUCCESS,
   SETTINGS_FETCH_SUCCESS,
   USER_SETTINGS_SAVE_SUCCESS,
@@ -17,6 +18,7 @@ const user = (state={}, action) => {
 const users = (state=[], action) => {
   switch (action.type) {
     case ACTIVITIES_FETCH_SUCCESS:
+    case ACTIVITY_FETCH_SUCCESS:
     case PROFILE_FETCH_SUCCESS:
     case SETTINGS_FETCH_SUCCESS:
       return action.users;

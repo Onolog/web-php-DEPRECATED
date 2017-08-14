@@ -48,7 +48,7 @@ class Friends extends React.Component {
           image={
             <Link
               className="innerBorder"
-              href={`/users/profile/${friend.id}`}>
+              href={`/users/${friend.id}`}>
               <FBImage fbid={friend.id} />
             </Link>
           }
