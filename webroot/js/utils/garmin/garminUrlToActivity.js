@@ -1,10 +1,15 @@
+// @flow
+
 import moment from 'moment';
 import {metersToFeet, metersToMiles} from 'utils/distanceUtils';
+
+import type {Activity} from 'types/Activity';
 
 /**
  * Normalizes activity data pulled from Garmin's endpoints.
  */
-function garminUrlToActivity({activity, details, splits, weather}) {
+function garminUrlToActivity(data: Object): Activity {
+  const {activity, details, splits, weather} = data;
   const {
     averageHR,
     calories,

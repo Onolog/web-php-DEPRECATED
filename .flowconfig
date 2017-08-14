@@ -9,5 +9,8 @@
 [libs]
 
 [options]
+# Tell Flow to look in both `node_modules` and the webroot dir for modules.
+module.system.node.resolve_dirname=node_modules
+module.system.node.resolve_dirname=webroot/js
 
 [lints]

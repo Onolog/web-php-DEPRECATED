@@ -1,5 +1,11 @@
+// @flow
+
 import {groupBy, head, last, range, reduce} from 'lodash';
 import moment from 'moment-timezone';
+
+import type {Activity} from 'types/Activity';
+type Activities = Array<Activity>;
+type TimeUnit = 'year' | 'month' | 'week' | 'dayOfYear';
 
 /**
  * Activity Utils
@@ -10,7 +16,7 @@ import moment from 'moment-timezone';
 /**
  * Provides standard top-level metrics for a grouping of activities.
  */
-function getGroupingInfo(/*array*/ activities) {
+export function getGroupingInfo(activities: Activities): Object {
   return {
     miles: getAggregateDistance(activities),
     run_count: activities.length,
@@ -21,14 +27,14 @@ function getGroupingInfo(/*array*/ activities) {
 /**
  * Calculates the total distance across an array of activities.
  */
-function getAggregateDistance(/*array*/ activities) {
+export function getAggregateDistance(activities: Activities): number {
   return +reduce(activities, (total, a) => +total + +a.distance, 0).toFixed(2);
 }
 
 /**
  * Calculates the total duration across an array of activities.
  */
-function getAggregateDuration(/*array*/ activities) {
+export function getAggregateDuration(activities: Activities): number {
   return reduce(activities, (total, a) => +total + +a.duration, 0);
 }
 
@@ -45,7 +51,7 @@ function getAggregateDuration(/*array*/ activities) {
  *    - second
  *    - millisecond
  */
-function _getDateValue(/*string*/ unit, /*object*/ activity) {
+function _getDateValue(unit: TimeUnit, activity: Activity): number {
   return moment.tz(activity.start_date, activity.timezone).get(unit);
 }
 
@@ -53,7 +59,7 @@ function _getDateValue(/*string*/ unit, /*object*/ activity) {
  * Find the range of time for which there could be an activity and get the
  * full range of units in between.
  */
-function _getRange(/*string*/ unit, /*object*/ activities) {
+function _getRange(unit: TimeUnit, activities: Activities): Array<number> {
   // TODO: Find a better fallback for this scenario.
   if (!activities.length) {
     return range(1, 53);
@@ -95,7 +101,7 @@ function _getRange(/*string*/ unit, /*object*/ activities) {
  * For anything other than 'year', it's assumed that all the activities are in
  * the same year.
  */
-function _groupBy(/*string*/ unit, /*array*/ activities) {
+function _groupBy(unit: TimeUnit, activities: Activities): Object {
   // Group the activities by the desired unit of time.
   const range = _getRange(unit, activities);
   activities = groupBy(activities, _getDateValue.bind(null, unit));
@@ -108,14 +114,9 @@ function _groupBy(/*string*/ unit, /*array*/ activities) {
   return {...grouped, ...activities};
 }
 
-module.exports = {
-  getAggregateDistance: getAggregateDistance,
-  getAggregateDuration: getAggregateDuration,
-  getGroupingInfo: getGroupingInfo,
-  groupActivities: {
-    byYear: activities => _groupBy('year', activities),
-    byMonth: activities => _groupBy('month', activities),
-    byWeek: activities => _groupBy('week', activities),
-    byDay: activities => _groupBy('dayOfYear', activities),
-  },
+export const groupActivities = {
+  byYear: (activities: Activities) => _groupBy('year', activities),
+  byMonth: (activities: Activities) => _groupBy('month', activities),
+  byWeek: (activities: Activities) => _groupBy('week', activities),
+  byDay: (activities: Activities) => _groupBy('dayOfYear', activities),
 };

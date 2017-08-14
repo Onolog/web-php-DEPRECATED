@@ -5,7 +5,7 @@ import Image from 'components/Image/Image.react';
 import ImageBlock from 'components/ImageBlock/ImageBlock.react';
 import Link from 'components/Link/Link.react';
 
-import GarminDeviceUtils from 'utils/GarminDeviceUtils';
+import {getDeviceImageSrc, getDeviceProductPageURL} from 'utils/GarminDeviceUtils';
 
 /**
  * ActivityDeviceInfo.react
@@ -20,14 +20,14 @@ class ActivityDeviceInfo extends React.Component {
 
   render() {
     const {deviceName} = this.props;
-    const src = GarminDeviceUtils.getDeviceImageSrc(deviceName);
+    const src = getDeviceImageSrc(deviceName);
 
     return (
       <ImageBlock
         align="middle"
         image={<Image className="activityDeviceImage" src={src} />}>
         <h5 className="activityDeviceName">
-          <Link href={GarminDeviceUtils.getDeviceProductPageURL()}>
+          <Link href={getDeviceProductPageURL()}>
             {deviceName}
           </Link>
         </h5>

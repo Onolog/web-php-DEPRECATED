@@ -1,3 +1,5 @@
+// @flow
+
 import moment from 'moment';
 
 /**
@@ -5,6 +7,6 @@ import moment from 'moment';
  *
  * Returns an ISO string with the local time + offset, instead of UTC.
  */
-module.exports = function(/*Date*/ date) {
+export default function(date: Date): string {
   return moment(date).format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
-};
+}

@@ -1,3 +1,5 @@
+// @flow
+
 import pad from './pad';
 
 /**
@@ -5,9 +7,7 @@ import pad from './pad';
  *
  * Simple util function for defining the default home url.
  */
-function homeUrl() {
+export default function(): string {
   var now = new Date();
   return `/${now.getFullYear()}/${pad(now.getMonth() + 1, 2)}`;
 }
-
-module.exports = homeUrl;
