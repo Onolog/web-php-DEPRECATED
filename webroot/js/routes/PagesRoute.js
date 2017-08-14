@@ -1,6 +1,6 @@
 module.exports = {
   childRoutes: [{
-    path: 'data',
+    path: 'chart',
     getComponent(nextState, cb) {
       require.ensure([], require => {
         cb(null, require('controllers/ChartController.react'));

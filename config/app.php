@@ -5,9 +5,10 @@
 $APP = json_decode(file_get_contents(ROOT . DS . 'env.json'), true);
 
 /**
- * CakePHP constants
+ * App constants
  */
 define('__PROD__', $APP['PRODUCTION']);
+define('COMMON_TEMPLATE', 'common');
 
 return [
   /**
@@ -67,7 +68,7 @@ return [
   ],
 
   'Calendar' => [
-    /** 
+    /**
      * Define default calendar type
      *  0 or CAL_GREGORIAN - Gregorian Calendar
      *  1 or CAL_JULIAN    - Julian Calendar
@@ -297,7 +298,7 @@ return [
        * which is the recommended value in production environments
        */
       //'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
-      
+
       'url' => env('DATABASE_URL', null),
     ],
 

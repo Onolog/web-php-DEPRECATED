@@ -32,7 +32,6 @@ class PagesController extends AppController {
     parent::beforeFilter($event);
 
     $this->Auth->allow(
-      ['controller' => 'pages', 'action' => 'display', 'data'],
       ['controller' => 'pages', 'action' => 'display', 'privacy'],
       ['controller' => 'pages', 'action' => 'display', 'terms'],
       ['controller' => 'pages', 'action' => 'display', 'vdot']
@@ -48,12 +47,6 @@ class PagesController extends AppController {
    */
   public function display() {
     $path = func_get_args();
-
-    $count = count($path);
-    if (!$count) {
-      return $this->redirect('/');
-    }
-
     $page = $subpage = null;
 
     if (!empty($path[0])) {
@@ -67,7 +60,7 @@ class PagesController extends AppController {
     $this->set(compact('page', 'subpage'));
 
     try {
-      $this->render(implode('/', $path));
+      $this->render(COMMON_TEMPLATE);
     } catch (MissingTemplateException $e) {
       if (Configure::read('debug')) {
         throw $e;

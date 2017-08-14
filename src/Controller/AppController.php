@@ -55,7 +55,7 @@ class AppController extends Controller {
 
     // All actions use the common view:
     $this->viewBuilder()->templatePath('Common');
-    $this->viewBuilder()->template('common');
+    $this->viewBuilder()->template(COMMON_TEMPLATE);
   }
 
   public function beforeFilter(Event $event) {
