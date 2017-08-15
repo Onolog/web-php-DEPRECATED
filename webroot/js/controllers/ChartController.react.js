@@ -4,6 +4,7 @@ import {Panel} from 'react-bootstrap';
 
 import AppPage from 'components/Page/AppPage.react';
 import BarChart from 'components/D3/BarChart.react';
+import LineChart from 'components/D3/LineChart.react';
 import PageHeader from 'components/Page/PageHeader.react';
 
 const HEIGHT = 300;
@@ -52,6 +53,17 @@ class DataPage extends React.Component {
         </Panel>
         <Panel header={<h3>Week Data</h3>}>
           <BarChart
+            data={weekData}
+            height={HEIGHT}
+            tooltip={data => (`
+              <strong>Week ${moment().week(data.xVal).format('w')}</strong>
+              <div>${data.yVal} Miles</div>
+            `)}
+            xFormat={w => moment().week(w).format('ww')}
+          />
+        </Panel>
+        <Panel>
+          <LineChart
             data={weekData}
             height={HEIGHT}
             tooltip={data => (`
