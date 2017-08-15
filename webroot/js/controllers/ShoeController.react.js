@@ -1,17 +1,20 @@
 import {find} from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Button, ButtonGroup, Glyphicon, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import {Button, ButtonGroup, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 
 import AppFullPage from 'components/Page/AppFullPage.react';
 import Loader from 'components/Loader/Loader.react';
+import MaterialIcon from 'components/Icons/MaterialIcon.react';
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
+import ShoeModal from 'components/Shoes/ShoeModal.react';
 import ShoeView from 'components/Shoes/ShoeView.react';
 
-import {viewShoe} from 'actions/shoes';
-import {SHOE_VIEW} from 'constants/ActionTypes';
+import {deleteShoe, viewShoe} from 'actions/shoes';
+import {SHOE_DELETE, SHOE_UPDATE, SHOE_VIEW} from 'constants/ActionTypes';
 
 import 'components/Shoes/css/Shoe.css';
 
@@ -50,9 +53,30 @@ class ShoeController extends React.Component {
     }),
   };
 
+  state = {
+    showModal: false,
+  };
+
   componentWillMount() {
     const {dispatch, params} = this.props;
     dispatch(viewShoe(getIntParam(params, 'shoeId')));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {pendingRequests} = this.props;
+
+    if (
+      pendingRequests[SHOE_UPDATE] &&
+      !nextProps.pendingRequests[SHOE_UPDATE]
+    ) {
+      this.setState({showModal: false});
+    }
+
+    // Redirect if the activity was deleted.
+    if (pendingRequests[SHOE_DELETE] && !nextProps.shoe) {
+      browserHistory.push('/shoes');
+      return;
+    }
   }
 
   render() {
@@ -69,7 +93,7 @@ class ShoeController extends React.Component {
     return (
       <AppFullPage title={shoe.name}>
         <PageHeader full title={shoe.name}>
-          {this._renderButtonGroup(shoe)}
+          {this._renderButtonGroup()}
         </PageHeader>
         <PageFrame fill scroll>
           <ShoeView activities={activities} shoe={shoe} />
@@ -83,33 +107,39 @@ class ShoeController extends React.Component {
 
     if (viewer.id === shoe.user_id) {
       return (
-        <ButtonGroup>
+        <ButtonGroup bsSize="small">
           <OverlayTrigger
             overlay={<Tooltip id="edit">Edit Shoe</Tooltip>}
             placement="bottom">
-            <Button href={`/shoes/edit/${shoe.id}`}>
-              <Glyphicon glyph="pencil" />
+            <Button onClick={this._handleShoeEdit}>
+              <MaterialIcon icon="pencil" />
             </Button>
           </OverlayTrigger>
           <OverlayTrigger
             overlay={<Tooltip id="delete">Delete Shoe</Tooltip>}
             placement="bottom">
-            <Button onClick={this._onShoeDelete}>
-              <Glyphicon glyph="trash" />
+            <Button onClick={this._handleShoeDelete}>
+              <MaterialIcon icon="delete" />
             </Button>
           </OverlayTrigger>
+          <ShoeModal
+            initialShoe={shoe}
+            onHide={() => this.setState({showModal: false})}
+            show={this.state.showModal}
+          />
         </ButtonGroup>
       );
     }
   };
 
-  /**
-   * TODO: Handle this better...
-   */
-  _onShoeDelete = () => {
+  _handleShoeDelete = () => {
     if (confirm('Are you sure you want to delete this shoe?')) {
-      document.location = `/shoes/delete/${this.props.shoe.id}`;
+      this.props.dispatch(deleteShoe(this.props.shoe.id));
     }
+  };
+
+  _handleShoeEdit = () => {
+    this.setState({showModal: true});
   };
 }
 
