@@ -1,3 +1,6 @@
+// @flow
+
+import invariant from 'invariant';
 import $ from 'jquery';
 import {find} from 'lodash';
 
@@ -22,7 +25,9 @@ import {
   GARMIN_ACTIVITY_FETCH_SUCCESS,
 } from 'constants/ActionTypes';
 
-function addActivitySuccess(response, dispatch) {
+import type {Activity} from 'types/Activity';
+
+function addActivitySuccess(response: Object, dispatch: Function): void {
   const {activity, shoe} = response;
   dispatch({
     activity,
@@ -31,7 +36,7 @@ function addActivitySuccess(response, dispatch) {
   });
 }
 
-function addActivityError(response, dispatch) {
+function addActivityError(response: Object, dispatch: Function): void {
   const message =
     'Your activity could not be added. Please refresh the page and try again.';
 
@@ -41,7 +46,7 @@ function addActivityError(response, dispatch) {
   });
 }
 
-export function addActivity(activity) {
+export function addActivity(activity: Activity): Function {
   return dispatch => {
     dispatch({type: ACTIVITY_ADD});
 
@@ -51,7 +56,7 @@ export function addActivity(activity) {
   };
 }
 
-function deleteActivitySuccess(response, dispatch) {
+function deleteActivitySuccess(response: Object, dispatch: Function): void {
   const {id, shoe} = response;
   dispatch({
     id,
@@ -60,7 +65,7 @@ function deleteActivitySuccess(response, dispatch) {
   });
 }
 
-export function deleteActivity(activityId) {
+export function deleteActivity(activityId: number): Function {
   return dispatch => {
     dispatch({type: ACTIVITY_DELETE});
 
@@ -70,7 +75,7 @@ export function deleteActivity(activityId) {
   };
 }
 
-function fetchActivitiesSuccess(response, dispatch) {
+function fetchActivitiesSuccess(response: Object, dispatch: Function): void {
   const {activities, shoes, users} = response;
   dispatch({
     activities,
@@ -80,7 +85,7 @@ function fetchActivitiesSuccess(response, dispatch) {
   });
 }
 
-function fetchActivitiesRequest(year, month) {
+function fetchActivitiesRequest(year: number, month: number): Function {
   return dispatch => {
     dispatch({type: ACTIVITIES_FETCH});
 
@@ -91,12 +96,14 @@ function fetchActivitiesRequest(year, month) {
   };
 }
 
-export function fetchActivities(year, month) {
+export function fetchActivities(year: number, month: number): Function {
   // TODO: Check if we already have the activities so we don't re-fetch.
-  return (dispatch, getState) => dispatch(fetchActivitiesRequest(year, month));
+  return (dispatch: Function) => (
+    dispatch(fetchActivitiesRequest(year, month))
+  );
 }
 
-function fetchActivitySuccess(response, dispatch) {
+function fetchActivitySuccess(response: Object, dispatch: Function) {
   const {activities, shoes, users} = response;
   dispatch({
     activities,
@@ -106,7 +113,7 @@ function fetchActivitySuccess(response, dispatch) {
   });
 }
 
-function fetchActivityRequest(id) {
+function fetchActivityRequest(id: number) {
   return dispatch => {
     dispatch({type: ACTIVITY_FETCH});
 
@@ -116,8 +123,8 @@ function fetchActivityRequest(id) {
   };
 }
 
-export function fetchActivity(id) {
-  return (dispatch, getState) => {
+export function fetchActivity(id: number) {
+  return (dispatch: Function, getState: Function) => {
     const {activities} = getState();
 
     // Only fetch if we don't already have the activity.
@@ -127,7 +134,7 @@ export function fetchActivity(id) {
   };
 }
 
-function updateActivitySuccess(response, dispatch) {
+function updateActivitySuccess(response: Object, dispatch: Function) {
   const {activity, shoe} = response;
   dispatch({
     activity,
@@ -136,17 +143,23 @@ function updateActivitySuccess(response, dispatch) {
   });
 }
 
-export function updateActivity(activity) {
+export function updateActivity(activity: Activity): Function {
+  const {id} = activity;
+  invariant(
+    !!id,
+    'You are trying to update an activity that does not exist'
+  );
+
   return dispatch => {
     dispatch({type: ACTIVITY_UPDATE});
 
-    $.post(`/activities/edit/${activity.id}.json`, activity)
+    $.post(`/activities/edit/${id}.json`, activity)
       .done(response => updateActivitySuccess(response, dispatch))
       .fail(response => dispatch({type: ACTIVITY_UPDATE_ERROR}));
   };
 }
 
-function getGarminActivityError(response, dispatch) {
+function getGarminActivityError(response: Object, dispatch: Function): void {
   dispatch({
     error: {
       message: 'There was an error',
@@ -155,14 +168,17 @@ function getGarminActivityError(response, dispatch) {
   });
 }
 
-function getGarminActivitySuccess(garminData, dispatch) {
+function getGarminActivitySuccess(
+  garminData: Object,
+  dispatch: Function
+): void {
   dispatch({
     garminData,
     type: GARMIN_ACTIVITY_FETCH_SUCCESS,
   });
 }
 
-export function getGarminActivity(activityId) {
+export function getGarminActivity(activityId: number): Function {
   return dispatch => {
     dispatch({type: GARMIN_ACTIVITY_FETCH});
 

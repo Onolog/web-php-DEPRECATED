@@ -1,23 +1,27 @@
+// @flow
+
+import invariant from 'invariant';
 import $ from 'jquery';
 import {filter, find} from 'lodash';
 import ActionTypes from 'constants/ActionTypes';
+import type {Shoe} from 'types/Shoe';
 
-function addShoeError({responseJSON}, dispatch) {
+function addShoeError(response: Object, dispatch: Function): void {
   dispatch({
-    error: responseJSON,
+    error: response.responseJSON,
     type: ActionTypes.SHOE_ADD_ERROR,
   });
 }
 
-function addShoeSuccess({shoe}, dispatch) {
+function addShoeSuccess(response: Object, dispatch: Function) {
   dispatch({
-    shoe,
+    shoe: response.shoe,
     type: ActionTypes.SHOE_ADD_SUCCESS,
   });
 }
 
-export const addShoe = shoe => {
-  return dispatch => {
+export function addShoe(shoe: Shoe): Function {
+  return (dispatch: Function) => {
     dispatch({
       shoe,
       type: ActionTypes.SHOE_ADD,
@@ -29,30 +33,26 @@ export const addShoe = shoe => {
   };
 };
 
-function deleteShoeRequest(id) {
-  return {
-    id,
-    type: ActionTypes.SHOE_DELETE,
-  };
-}
-
-function deleteShoeError({responseJSON}, dispatch) {
+function deleteShoeError(response: Object, dispatch: Function): void {
   dispatch({
-    error: responseJSON,
+    error: response.responseJSON,
     type: ActionTypes.SHOE_DELETE_ERROR,
   });
 }
 
-function deleteShoeSuccess({id}, dispatch) {
+function deleteShoeSuccess(response: Object, dispatch: Function): void {
   dispatch({
-    id,
+    id: response.id,
     type: ActionTypes.SHOE_DELETE_SUCCESS,
   });
 }
 
-export const deleteShoe = id => {
-  return dispatch => {
-    dispatch(deleteShoeRequest(id));
+export function deleteShoe(id: number): Function {
+  return (dispatch: Function) => {
+    dispatch({
+      id,
+      type: ActionTypes.SHOE_DELETE,
+    });
 
     $.post(`/shoes/delete/${id}.json`)
       .done(response => deleteShoeSuccess(response, dispatch))
@@ -60,14 +60,14 @@ export const deleteShoe = id => {
   };
 };
 
-function fetchShoesSuccess({shoes}, dispatch) {
+function fetchShoesSuccess(response: Object, dispatch: Function): void {
   dispatch({
-    shoes,
+    shoes: response.shoes,
     type: ActionTypes.ALL_SHOES_FETCH_SUCCESS,
   });
 }
 
-export function fetchShoes() {
+export function fetchShoes(): Function {
   return dispatch => {
     dispatch({type: ActionTypes.ALL_SHOES_FETCH});
 
@@ -77,41 +77,48 @@ export function fetchShoes() {
   };
 }
 
-function updateShoeError({responseJSON}, dispatch) {
+function updateShoeError(response: Object, dispatch: Function) {
   dispatch({
-    error: responseJSON,
+    error: response.responseJSON,
     type: ActionTypes.SHOE_UPDATE_ERROR,
   });
 }
 
-function updateShoeSuccess({shoe}, dispatch) {
+function updateShoeSuccess(response: Object, dispatch: Function) {
   dispatch({
-    shoe,
+    shoe: response.shoe,
     type: ActionTypes.SHOE_UPDATE_SUCCESS,
   });
 }
 
-export const updateShoe = shoe => {
-  return dispatch => {
+export function updateShoe(shoe: Shoe): Function {
+  return (dispatch: Function) => {
+    const {id} = shoe;
+    invariant(
+      !!id,
+      'You are trying to update a shoe that does not exist.'
+    );
+
     dispatch({
       shoe,
       type: ActionTypes.SHOE_UPDATE,
     });
 
-    $.post(`/shoes/edit/${shoe.id}.json`, shoe)
+    $.post(`/shoes/edit/${id}.json`, shoe)
       .done(response => updateShoeSuccess(response, dispatch))
       .fail(response => updateShoeError(response, dispatch));
   };
 };
 
-function viewShoeError({responseJSON}, dispatch) {
+function viewShoeError(response: Object, dispatch: Function): void {
   dispatch({
-    error: responseJSON,
+    error: response.responseJSON,
     type: ActionTypes.SHOE_VIEW_ERROR,
   });
 }
 
-function viewShoeSuccess({activities, shoe}, dispatch) {
+function viewShoeSuccess(response: Object, dispatch: Function): void {
+  const {activities, shoe} = response;
   dispatch({
     activities,
     shoe,
@@ -119,8 +126,8 @@ function viewShoeSuccess({activities, shoe}, dispatch) {
   });
 }
 
-export const viewShoe = shoeId => {
-  return (dispatch, getState) => {
+export function viewShoe(shoeId: number): Function {
+  return (dispatch: Function, getState: Function): void => {
     const {shoes} = getState();
     const shoe = find(shoes, {id: shoeId});
 
@@ -134,29 +141,39 @@ export const viewShoe = shoeId => {
   };
 };
 
-function fetchShoeActivitiesError({responseJSON}, dispatch) {
+function fetchShoeActivitiesError(response: Object, dispatch: Function) {
   dispatch({
-    error: responseJSON,
+    error: response.responseJSON,
     type: ActionTypes.SHOE_ACTIVITIES_FETCH_ERROR,
   });
 }
 
-function fetchShoeActivitiesSuccess({activities, shoe}, dispatch) {
+function fetchShoeActivitiesSuccess(
+  response: Object,
+  dispatch: Function
+): void {
+  const {activities, shoe} = response;
   dispatch({
     activities,
     type: ActionTypes.SHOE_ACTIVITIES_FETCH_SUCCESS,
   });
 }
 
-export const fetchShoeActivities = shoe => {
-  return (dispatch, getState) => {
+export function fetchShoeActivities(shoe: Shoe): Function {
+  return (dispatch: Function, getState: Function): void => {
+    const {id} = shoe;
+    invariant(
+      !!id,
+      'You are trying to update a shoe that does not exist.'
+    );
+
     const {activities} = getState();
-    const shoeActivities = filter(activities, {shoe_id: shoe.id});
+    const shoeActivities = filter(activities, {shoe_id: id});
 
     if (shoeActivities.length !== shoe.activity_count) {
       dispatch({type: ActionTypes.SHOE_ACTIVITIES_FETCH});
 
-      $.get(`/shoes/${shoe.id}.json`)
+      $.get(`/shoes/${id}.json`)
         .done(response => fetchShoeActivitiesSuccess(response, dispatch))
         .fail(response => fetchShoeActivitiesError(response, dispatch));
     }

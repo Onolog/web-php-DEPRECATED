@@ -1,3 +1,5 @@
+// @flow
+
 import $ from 'jquery';
 import {find} from 'lodash';
 
@@ -16,7 +18,7 @@ import {
   USER_SETTINGS_SAVE_SUCCESS,
 } from 'constants/ActionTypes';
 
-function fetchUserDataSuccess(response, dispatch) {
+function fetchUserDataSuccess(response: Object, dispatch: Function): void {
   const {activities, shoes} = response;
   dispatch({
     activities,
@@ -26,7 +28,7 @@ function fetchUserDataSuccess(response, dispatch) {
 }
 
 function fetchUserDataRequest() {
-  return dispatch => {
+  return (dispatch: Function) => {
     dispatch({type: USER_DATA_FETCH});
 
     $.get('/users/data.json')
@@ -35,12 +37,14 @@ function fetchUserDataRequest() {
   };
 }
 
-export function fetchUserData() {
+export function fetchUserData(): Function {
   // TODO: Check if we already have the data so we don't re-fetch.
-  return (dispatch, getState) => dispatch(fetchUserDataRequest());
+  return (dispatch: Function, getState: Function) => (
+    dispatch(fetchUserDataRequest())
+  );
 }
 
-function fetchProfileError(response, dispatch) {
+function fetchProfileError(response: Object, dispatch: Function) {
   const message =
     'Something went wrong. Please refresh the page and try again.';
 
@@ -60,7 +64,7 @@ function fetchProfileSuccess({activities, activitySummary, users}, dispatch) {
 }
 
 function fetchProfileRequest(userId) {
-  return dispatch => {
+  return (dispatch: Function) => {
     dispatch({type: PROFILE_FETCH});
 
     $.get(`/users/${userId}.json`)
@@ -69,20 +73,22 @@ function fetchProfileRequest(userId) {
   };
 }
 
-export function fetchProfile(userId) {
+export function fetchProfile(userId: number) {
   // TODO: Check if we already have the data so we don't re-fetch.
-  return (dispatch, getState) => dispatch(fetchProfileRequest(userId));
+  return (dispatch: Function, getState: Function) => (
+    dispatch(fetchProfileRequest(userId))
+  );
 }
 
-function fetchSettingsSuccess({users}, dispatch) {
+function fetchSettingsSuccess(response: Object, dispatch: Function) {
   dispatch({
-    users,
+    users: response.users,
     type: SETTINGS_FETCH_SUCCESS,
   });
 }
 
 function fetchSettingsRequest() {
-  return dispatch => {
+  return (dispatch: Function) => {
     dispatch({type: SETTINGS_FETCH});
 
     $.get('/users/settings.json')
@@ -92,7 +98,7 @@ function fetchSettingsRequest() {
 }
 
 export function fetchSettings() {
-  return (dispatch, getState) => {
+  return (dispatch: Function, getState: Function) => {
     // Check local data to see if we already have the user.
     const {session, users} = getState();
     if (!(session && find(users, {id: session.id}))) {
@@ -101,15 +107,15 @@ export function fetchSettings() {
   };
 }
 
-function userSaveSettingsSuccess(response, dispatch) {
+function userSaveSettingsSuccess(response: Object, dispatch: Function) {
   dispatch({
     ...response,
     type: USER_SETTINGS_SAVE_SUCCESS,
   });
 }
 
-export function userSaveSettings(settings) {
-  return dispatch => {
+export function userSaveSettings(settings: Object): Function {
+  return (dispatch: Function) => {
     dispatch({type: USER_SETTINGS_SAVE});
 
     $.post('/users/edit.json', settings)

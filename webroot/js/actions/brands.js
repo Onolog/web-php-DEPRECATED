@@ -1,3 +1,5 @@
+// @flow
+
 import $ from 'jquery';
 import {
   BRANDS_FETCH,
@@ -5,21 +7,21 @@ import {
   BRANDS_FETCH_SUCCESS,
 } from 'constants/ActionTypes';
 
-function fetchBrandsError(response, dispatch) {
+function fetchBrandsError(response: Object, dispatch: Function): void {
   dispatch({
     type: BRANDS_FETCH_ERROR,
   });
 }
 
-function fetchBrandsSuccess({brands}, dispatch) {
+function fetchBrandsSuccess(response: Object, dispatch: Function): void {
   dispatch({
-    brands,
+    brands: response.brands,
     type: BRANDS_FETCH_SUCCESS,
   });
 }
 
-function fetchBrandsRequest() {
-  return dispatch => {
+function fetchBrandsRequest(): Function {
+  return (dispatch: Function) => {
     dispatch({type: BRANDS_FETCH});
 
     $.get('/brands.json')
@@ -28,8 +30,8 @@ function fetchBrandsRequest() {
   };
 }
 
-export function fetchBrands() {
-  return (dispatch, getState) => {
+export function fetchBrands(): Function {
+  return (dispatch: Function, getState: Function) => {
     const {brands} = getState();
     if (!brands.length) {
       return dispatch(fetchBrandsRequest());

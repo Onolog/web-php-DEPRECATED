@@ -1,7 +1,9 @@
+// @flow
+
 import {ACTIVITY_MODAL_HIDE, NAV_TOGGLE} from 'constants/ActionTypes';
 
-export function toggleSideNav() {
-  return (dispatch, getState) => {
+export function toggleSideNav(): Function {
+  return (dispatch: Function, getState: Function) => {
     const sideNavOpen = !getState().navigation.sideNavOpen;
     localStorage && localStorage.setItem('sideNavOpen', sideNavOpen);
     dispatch({
@@ -11,6 +13,6 @@ export function toggleSideNav() {
   };
 }
 
-export function hideActivityModal() {
+export function hideActivityModal(): Function {
   return dispatch => dispatch({type: ACTIVITY_MODAL_HIDE});
 }
