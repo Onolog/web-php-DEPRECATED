@@ -7,18 +7,11 @@ import {Bar, Bars} from 'components/D3/Bar.react';
 import Chart from 'components/D3/Chart.react';
 
 import fullWidthChart from 'containers/fullWidthChart';
+import {getInnerHeight, getInnerWidth, transform} from 'utils/d3Utils';
+
+import {MARGIN} from 'constants/d3';
 
 import './css/d3-bar.css';
-
-const MARGIN = {
-  bottom: 30,
-  left: 40,
-  right: 30,
-  top: 20,
-};
-
-const getInnerHeight = height => height - MARGIN.top - MARGIN.bottom;
-const getInnerWidth = width => width - MARGIN.left - MARGIN.right;
 
 const xScale = (data, width) => {
   return d3.scaleBand()
@@ -48,14 +41,14 @@ class BarChart extends React.Component {
     return (
       <Chart
         height={height}
-        transform={`translate(${MARGIN.left}, ${MARGIN.top})`}
+        transform={transform(MARGIN.left, MARGIN.top)}
         width={width}>
         <Axis
           className="x-axis"
           orient="bottom"
           scale={xScale(data, width)}
           tickFormat={xFormat}
-          transform={`translate(0, ${getInnerHeight(height)})`}
+          transform={transform(0, getInnerHeight(height))}
         />
         <Axis
           className="y-axis"

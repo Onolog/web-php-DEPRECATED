@@ -7,16 +7,9 @@ import Chart from 'components/D3/Chart.react';
 import Line from 'components/D3/Line.react';
 
 import fullWidthChart from 'containers/fullWidthChart';
+import {getInnerHeight, getInnerWidth, transform} from 'utils/d3Utils';
 
-const MARGIN = {
-  bottom: 30,
-  left: 40,
-  right: 30,
-  top: 20,
-};
-
-const getInnerHeight = height => height - MARGIN.top - MARGIN.bottom;
-const getInnerWidth = width => width - MARGIN.left - MARGIN.right;
+import {MARGIN} from 'constants/d3';
 
 class LineChart extends React.Component {
   static propTypes = {
@@ -32,24 +25,23 @@ class LineChart extends React.Component {
 
     const xScale = d3.scaleBand()
       .domain(data.map(d => d.xVal))
-      .padding(0.1)
       .rangeRound([0, getInnerWidth(width)]);
 
     const yScale = d3.scaleLinear()
-      .rangeRound([getInnerHeight(height), 0])
-      .domain([0, d3.max(data, d => d.yVal)]);
+      .domain([0, d3.max(data, d => d.yVal)])
+      .rangeRound([getInnerHeight(height), 0]);
 
     return (
       <Chart
         height={height}
-        transform={`translate(${MARGIN.left}, ${MARGIN.top})`}
+        transform={transform(MARGIN.left, MARGIN.top)}
         width={width}>
         <Axis
           className="x-axis"
           orient="bottom"
           scale={xScale}
           tickFormat={xFormat}
-          transform={`translate(0, ${getInnerHeight(height)})`}
+          transform={transform(0, getInnerHeight(height))}
         />
         <Axis
           className="y-axis"
