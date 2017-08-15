@@ -31,7 +31,7 @@ export function addShoe(shoe: Shoe): Function {
       .done(response => addShoeSuccess(response, dispatch))
       .fail(response => addShoeError(response, dispatch));
   };
-};
+}
 
 function deleteShoeError(response: Object, dispatch: Function): void {
   dispatch({
@@ -58,7 +58,7 @@ export function deleteShoe(id: number): Function {
       .done(response => deleteShoeSuccess(response, dispatch))
       .fail(response => deleteShoeError(response, dispatch));
   };
-};
+}
 
 function fetchShoesSuccess(response: Object, dispatch: Function): void {
   dispatch({
@@ -108,7 +108,7 @@ export function updateShoe(shoe: Shoe): Function {
       .done(response => updateShoeSuccess(response, dispatch))
       .fail(response => updateShoeError(response, dispatch));
   };
-};
+}
 
 function viewShoeError(response: Object, dispatch: Function): void {
   dispatch({
@@ -139,7 +139,7 @@ export function viewShoe(shoeId: number): Function {
         .fail(response => viewShoeError(response, dispatch));
     }
   };
-};
+}
 
 function fetchShoeActivitiesError(response: Object, dispatch: Function) {
   dispatch({
@@ -152,9 +152,8 @@ function fetchShoeActivitiesSuccess(
   response: Object,
   dispatch: Function
 ): void {
-  const {activities, shoe} = response;
   dispatch({
-    activities,
+    activities: response.activities,
     type: ActionTypes.SHOE_ACTIVITIES_FETCH_SUCCESS,
   });
 }
@@ -178,4 +177,4 @@ export function fetchShoeActivities(shoe: Shoe): Function {
         .fail(response => fetchShoeActivitiesError(response, dispatch));
     }
   };
-};
+}
