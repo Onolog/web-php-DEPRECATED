@@ -1,16 +1,6 @@
 /**
- * chart.css
+ * d3-axis.css
  */
-
-.bar {
-  fill: #95b7cf;
-  shape-rendering: crispEdges;
-}
-.bar:hover {
-  cursor: pointer;
-  fill: #7295af;
-}
-
 .axis text {
   font-size: 10px;
 }

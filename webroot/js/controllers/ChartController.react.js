@@ -21,6 +21,7 @@ const weekMiles = [
   23.01, 21.02, 10.82, 20.34, 5.21, 10.03, 12.02, 17.11, 13.08, 22.04,
   29.8, 21.36, 36.51, 33.53, 37.26, 41.52, 23.08, 45.08, 47.57,
 ];
+
 const weekData = weekMiles.map((miles, week) => ({
   xVal: week + 1,
   yVal: miles,

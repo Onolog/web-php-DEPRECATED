@@ -1,7 +1,13 @@
-import d3 from 'd3';
+import * as d3 from 'd3';
 import d3tip from 'd3-tip';
 import React from 'react';
 import {findDOMNode} from 'react-dom';
+
+const Bars = ({children}) => (
+  <g className="bars">
+    {children}
+  </g>
+);
 
 class Bar extends React.Component {
   componentDidMount() {
@@ -14,6 +20,7 @@ class Bar extends React.Component {
 
   render() {
     const {height, onClick, width, x, y} = this.props;
+
     return (
       <rect
         className="bar"
@@ -45,4 +52,4 @@ class Bar extends React.Component {
   };
 }
 
-export default Bar;
+export {Bar, Bars};

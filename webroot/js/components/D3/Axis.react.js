@@ -1,8 +1,10 @@
 import cx from 'classnames';
-import d3 from 'd3';
+import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {findDOMNode} from 'react-dom';
+
+import './css/d3-axis.css';
 
 class Axis extends React.Component {
   static propTypes = {
@@ -38,9 +40,24 @@ class Axis extends React.Component {
 
   _renderAxis = () => {
     const {orient, scale, ticks, tickFormat, tickSize} = this.props;
-    const axis = d3.svg.axis()
-      .orient(orient)
-      .scale(scale)
+
+    let axis;
+    switch (orient) {
+      case 'bottom':
+        axis = d3.axisBottom(scale);
+        break;
+      case 'left':
+        axis = d3.axisLeft(scale);
+        break;
+      case 'right':
+        axis = d3.axisRight(scale);
+        break;
+      case 'top':
+        axis = d3.axisTop(scale);
+        break;
+    }
+
+    axis
       .ticks(ticks)
       .tickFormat(tickFormat)
       .tickSize(tickSize);

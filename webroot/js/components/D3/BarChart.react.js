@@ -1,12 +1,14 @@
-import d3 from 'd3';
+import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {findDOMNode} from 'react-dom';
 
 import Axis from 'components/D3/Axis.react';
-import Bar from 'components/D3/Bar.react';
+import {Bar, Bars} from 'components/D3/Bar.react';
+import Chart from 'components/D3/Chart.react';
 
-import './css/chart.css';
+import fullWidthChart from 'containers/fullWidthChart';
+
+import './css/d3-bar.css';
 
 const MARGIN = {
   bottom: 30,
@@ -19,17 +21,17 @@ const getInnerHeight = height => height - MARGIN.top - MARGIN.bottom;
 const getInnerWidth = width => width - MARGIN.left - MARGIN.right;
 
 const xScale = (data, width) => {
-  return d3.scale.ordinal()
-    .domain(data.map(d => d.xVal))
-    .rangeRoundBands([0, getInnerWidth(width)], .1);
+  return d3.scaleBand()
+    .rangeRound([0, getInnerWidth(width)])
+    .padding(0.1)
+    .domain(data.map(d => d.xVal));
 };
 
 const yScale = (data, height) => {
-  return d3.scale.linear()
-    .domain([0, d3.max(data, d => d.yVal)])
-    .range([getInnerHeight(height), 0]);
+  return d3.scaleLinear()
+    .rangeRound([getInnerHeight(height), 0])
+    .domain([0, d3.max(data, d => d.yVal)]);
 };
-
 
 class BarChart extends React.Component {
   static propTypes = {
@@ -40,59 +42,41 @@ class BarChart extends React.Component {
     xFormat: PropTypes.func,
   };
 
-  state = {
-    width: this.props.width || 400,
-  };
-
-  componentDidMount() {
-    this._setWidth();
-    window.addEventListener('resize', this._setWidth);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this._setWidth);
-  }
-
   render() {
-    const {data, height, xFormat} = this.props;
-    const {width} = this.state;
+    const {data, height, width, xFormat} = this.props;
 
     return (
-      <svg
+      <Chart
         height={height}
+        transform={`translate(${MARGIN.left}, ${MARGIN.top})`}
         width={width}>
-        <g
-          className="chart"
-          transform={`translate(${MARGIN.left}, ${MARGIN.top})`}>
-          <Axis
-            className="x-axis"
-            orient="bottom"
-            scale={xScale(data, width)}
-            tickFormat={xFormat}
-            transform={`translate(0, ${getInnerHeight(height)})`}
-          />
-          <Axis
-            className="y-axis"
-            orient="left"
-            scale={yScale(data, height)}
-          />
-          <Axis
-            className="y-axis-background"
-            orient="right"
-            scale={yScale(data, height)}
-            tickSize={getInnerWidth(width)}
-          />
-          <g className="bars">
-            {data.map(this._renderBar)}
-          </g>
-        </g>
-      </svg>
+        <Axis
+          className="x-axis"
+          orient="bottom"
+          scale={xScale(data, width)}
+          tickFormat={xFormat}
+          transform={`translate(0, ${getInnerHeight(height)})`}
+        />
+        <Axis
+          className="y-axis"
+          orient="left"
+          scale={yScale(data, height)}
+        />
+        <Axis
+          className="y-axis-background"
+          orient="right"
+          scale={yScale(data, height)}
+          tickSize={getInnerWidth(width)}
+        />
+        <Bars>
+          {data.map(this._renderBar)}
+        </Bars>
+      </Chart>
     );
   }
 
   _renderBar = (d, idx) => {
-    const {data, height, tooltip} = this.props;
-    const {width} = this.state;
+    const {data, height, tooltip, width} = this.props;
     const x = xScale(data, width);
     const y = yScale(data, height);
 
@@ -108,11 +92,6 @@ class BarChart extends React.Component {
       />
     );
   };
-
-  _setWidth = () => {
-    const width = findDOMNode(this).parentNode.offsetWidth;
-    this.setState({width});
-  };
 }
 
-export default BarChart;
+export default fullWidthChart(BarChart);
