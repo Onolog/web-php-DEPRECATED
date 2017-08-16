@@ -67,6 +67,7 @@ class DataPage extends React.Component {
         <Panel>
           <LineChart
             data={weekData}
+            dots
             height={HEIGHT}
             tooltip={data => (`
               <strong>Week ${moment().week(data.xVal).format('w')}</strong>

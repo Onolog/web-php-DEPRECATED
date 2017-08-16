@@ -4,12 +4,28 @@ import React from 'react';
 
 import Axis from 'components/D3/Axis.react';
 import Chart from 'components/D3/Chart.react';
+import {Dot, Dots} from 'components/D3/Dot.react';
 import Line from 'components/D3/Line.react';
 
+import d3Tooltip from 'containers/d3Tooltip';
 import fullWidthChart from 'containers/fullWidthChart';
 import {getInnerHeight, getInnerWidth, transform} from 'utils/d3Utils';
 
 import {MARGIN} from 'constants/d3';
+
+const TooltipDot = d3Tooltip(Dot);
+
+const xScale = (data, width) => {
+  return d3.scaleBand()
+    .rangeRound([0, getInnerWidth(width)])
+    .domain(data.map(d => d.xVal));
+};
+
+const yScale = (data, height) => {
+  return d3.scaleLinear()
+    .rangeRound([getInnerHeight(height), 0])
+    .domain([0, d3.max(data, d => d.yVal)]);
+};
 
 class LineChart extends React.Component {
   static propTypes = {
@@ -23,14 +39,6 @@ class LineChart extends React.Component {
   render() {
     const {data, height, width, xFormat} = this.props;
 
-    const xScale = d3.scaleBand()
-      .domain(data.map(d => d.xVal))
-      .rangeRound([0, getInnerWidth(width)]);
-
-    const yScale = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.yVal)])
-      .rangeRound([getInnerHeight(height), 0]);
-
     return (
       <Chart
         height={height}
@@ -39,27 +47,56 @@ class LineChart extends React.Component {
         <Axis
           className="x-axis"
           orient="bottom"
-          scale={xScale}
+          scale={xScale(data, width)}
           tickFormat={xFormat}
           transform={transform(0, getInnerHeight(height))}
         />
         <Axis
           className="y-axis"
           orient="left"
-          scale={yScale}
+          scale={yScale(data, height)}
         />
         <Axis
           className="y-axis-background"
           orient="right"
-          scale={yScale}
+          scale={yScale(data, height)}
           tickSize={getInnerWidth(width)}
         />
         <Line
           data={data}
-          xScale={xScale}
-          yScale={yScale}
+          xScale={xScale(data, width)}
+          yScale={yScale(data, height)}
         />
+        {this._renderDots()}
       </Chart>
+    );
+  }
+
+  _renderDots = () => {
+    const {data, dots} = this.props;
+
+    if (dots) {
+      return (
+        <Dots>
+          {data.map(this._renderDot)}
+        </Dots>
+      );
+    }
+  }
+
+  _renderDot = (d, idx) => {
+    const {data, height, tooltip, width} = this.props;
+    const x = xScale(data, width);
+    const y = yScale(data, height);
+
+    return (
+      <TooltipDot
+        key={idx}
+        radius={5}
+        tooltip={tooltip && tooltip(d)}
+        x={x(d.xVal)}
+        y={y(d.yVal)}
+      />
     );
   }
 }
