@@ -6,12 +6,13 @@ import Axis from 'components/D3/Axis.react';
 import {Bar, Bars} from 'components/D3/Bar.react';
 import Chart from 'components/D3/Chart.react';
 
+import d3Tooltip from 'containers/d3Tooltip';
 import fullWidthChart from 'containers/fullWidthChart';
 import {getInnerHeight, getInnerWidth, transform} from 'utils/d3Utils';
 
 import {MARGIN} from 'constants/d3';
 
-import './css/d3-bar.css';
+const TooltipBar = d3Tooltip(Bar);
 
 const xScale = (data, width) => {
   return d3.scaleBand()
@@ -74,7 +75,7 @@ class BarChart extends React.Component {
     const y = yScale(data, height);
 
     return (
-      <Bar
+      <TooltipBar
         data={d}
         height={getInnerHeight(height) - y(d.yVal)}
         key={idx}

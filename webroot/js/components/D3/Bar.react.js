@@ -1,23 +1,14 @@
-import * as d3 from 'd3';
-import d3tip from 'd3-tip';
 import React from 'react';
-import {findDOMNode} from 'react-dom';
 
-const Bars = ({children}) => (
+import './css/d3-bar.css';
+
+export const Bars = ({children}) => (
   <g className="bars">
     {children}
   </g>
 );
 
-class Bar extends React.Component {
-  componentDidMount() {
-    this._setTooltip(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this._setTooltip(nextProps);
-  }
-
+export class Bar extends React.Component {
   render() {
     const {height, onClick, width, x, y} = this.props;
 
@@ -32,24 +23,4 @@ class Bar extends React.Component {
       />
     );
   }
-
-  _setTooltip = ({tooltip}) => {
-    if (!tooltip) {
-      return;
-    }
-
-    const tip = d3tip()
-      .attr('class', 'tooltip top')
-      .html(`
-        <div class="tooltip-arrow"></div>
-        <div class="tooltip-inner">${tooltip}</div>
-      `);
-
-    d3.select(findDOMNode(this))
-      .call(tip)
-      .on('mouseover', tip.show)
-      .on('mouseout', tip.hide);
-  };
 }
-
-export {Bar, Bars};
