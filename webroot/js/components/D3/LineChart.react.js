@@ -64,8 +64,8 @@ class LineChart extends React.Component {
         />
         <Line
           data={data}
-          xScale={xScale(data, width)}
-          yScale={yScale(data, height)}
+          x={d => xScale(data, width)(d.xVal)}
+          y={d => yScale(data, height)(d.yVal)}
         />
         {this._renderDots()}
       </Chart>

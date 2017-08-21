@@ -57,9 +57,8 @@ class AreaChart extends React.Component {
         <Area
           data={data}
           height={height}
-          width={width}
-          xScale={xScale}
-          yScale={yScale}
+          x={d => xScale(d.xVal)}
+          y={d => yScale(d.yVal)}
         />
       </Chart>
     );

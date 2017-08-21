@@ -1,40 +1,32 @@
+import cx from 'classnames';
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {findDOMNode} from 'react-dom';
 
 import './css/d3-line.css';
 
 class Line extends React.Component {
-  static propTypes = {
-    data: PropTypes.array.isRequired,
-    xScale: PropTypes.func.isRequired,
-    yScale: PropTypes.func.isRequired,
-  }
-
-  componentDidMount() {
-    this._drawLine();
-  }
-
-  componentDidUpdate() {
-    this._drawLine();
-  }
-
   render() {
-    return <path className="line" />;
-  }
-
-  _drawLine = () => {
-    const {data, xScale, yScale} = this.props;
+    const {className, data, x, y, ...props} = this.props;
 
     const line = d3.line()
-      .x(d => xScale(d.xVal))
-      .y(d => yScale(d.yVal));
+      .x(x)
+      .y(y);
 
-    d3.select(findDOMNode(this))
-      .datum(data)
-      .attr('d', line);
+    return (
+      <path
+        {...props}
+        className={cx('line', className)}
+        d={line(data)}
+      />
+    );
   }
 }
+
+Line.propTypes = {
+  data: PropTypes.array.isRequired,
+  x: PropTypes.func.isRequired,
+  y: PropTypes.func.isRequired,
+};
 
 export default Line;
