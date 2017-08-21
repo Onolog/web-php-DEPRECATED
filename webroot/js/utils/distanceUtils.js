@@ -1,7 +1,6 @@
 // @flow
 
-const METERS_PER_MILE = 1609.35;
-const FEET_PER_METER = 3.28084;
+import {FEET_PER_METER, METERS_PER_MILE} from 'constants/metrics';
 
 /**
  * distanceUtils.js
