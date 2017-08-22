@@ -9,8 +9,6 @@ import Chart from 'components/D3/Chart.react';
 import fullWidthChart from 'containers/fullWidthChart';
 import {getInnerHeight, getInnerWidth, transform} from 'utils/d3Utils';
 
-import {MARGIN} from 'constants/d3';
-
 class AreaChart extends React.Component {
   static propTypes = {
     data: PropTypes.array.isRequired,
@@ -32,10 +30,7 @@ class AreaChart extends React.Component {
       .rangeRound([getInnerHeight(height), 0]);
 
     return (
-      <Chart
-        height={height}
-        transform={transform(MARGIN.left, MARGIN.top)}
-        width={width}>
+      <Chart height={height} width={width}>
         <Axis
           className="x-axis"
           orient="bottom"

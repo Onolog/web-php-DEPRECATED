@@ -10,8 +10,6 @@ import d3Tooltip from 'containers/d3Tooltip';
 import fullWidthChart from 'containers/fullWidthChart';
 import {getInnerHeight, getInnerWidth, transform} from 'utils/d3Utils';
 
-import {MARGIN} from 'constants/d3';
-
 const TooltipDot = d3Tooltip(Dot);
 
 const xScale = (data, width) => {
@@ -39,10 +37,7 @@ class ScatterChart extends React.Component {
     const {data, height, width, xFormat} = this.props;
 
     return (
-      <Chart
-        height={height}
-        transform={transform(MARGIN.left, MARGIN.top)}
-        width={width}>
+      <Chart height={height} width={width}>
         <Axis
           className="x-axis"
           orient="bottom"
