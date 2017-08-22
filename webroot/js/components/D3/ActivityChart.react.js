@@ -12,19 +12,19 @@ import {getInnerHeight, getInnerWidth} from 'utils/d3Utils';
 
 class ActivityChart extends React.Component {
   render() {
-    const {data, height, style, width} = this.props;
+    const {data, height, style, width, yFormat} = this.props;
 
     const innerHeight = getInnerHeight(height, {top: 0});
     const innerWidth = getInnerWidth(width);
     const xMax = d3.max(data, d => d.x);
 
     const xScale = d3.scaleLinear()
-      .rangeRound([0, innerWidth])
-      .domain([0, xMax]);
+      .domain([0, xMax])
+      .range([0, innerWidth]);
 
     const yScale = d3.scaleLinear()
-      .rangeRound([innerHeight, 0])
-      .domain([d3.min(data, d => d.y), d3.max(data, d => d.y)]);
+      .domain([d3.min(data, d => d.y), d3.max(data, d => d.y)])
+      .range([innerHeight, 0]);
 
     const mean = d3.mean(data, d => d.y);
 
@@ -34,6 +34,7 @@ class ActivityChart extends React.Component {
           className="y-axis"
           orient="left"
           scale={yScale}
+          tickFormat={yFormat}
           ticks={2}
         />
         <Axis

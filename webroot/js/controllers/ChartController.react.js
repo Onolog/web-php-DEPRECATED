@@ -12,6 +12,8 @@ import PageHeader from 'components/Page/PageHeader.react';
 import ScatterChart from 'components/D3/ScatterChart.react';
 
 import {metersToFeet, metersToMiles} from 'utils/distanceUtils';
+import secondsToTime from 'utils/secondsToTime';
+import speedToPace from 'utils/speedToPace';
 
 import {ACTIVITY} from 'constants/TestData';
 
@@ -50,7 +52,7 @@ const weekData = weekMiles.map((miles, week) => ({
 
 let elevationData = [];
 let heartRateData = [];
-let speedData = [];
+let paceData = [];
 
 ACTIVITY.forEach(({metrics}) => {
   const sumDistance = metersToMiles(metrics[METRICS.SUM_DISTANCE]);
@@ -65,9 +67,10 @@ ACTIVITY.forEach(({metrics}) => {
     y: metrics[METRICS.HEART_RATE],
   });
 
-  speedData.push({
+  const pace = speedToPace(metrics[METRICS.SPEED]);
+  paceData.push({
     x: sumDistance,
-    y: metrics[METRICS.SPEED],
+    y: pace > 800 ? 800 : pace, // Compress outlying data
   });
 });
 
@@ -76,7 +79,7 @@ ACTIVITY.forEach(({metrics}) => {
  *
  * Static page for testing data & charting libs.
  */
-class DataPage extends React.Component {
+class ChartController extends React.Component {
   static displayName = 'DataPage';
 
   render() {
@@ -145,11 +148,12 @@ class DataPage extends React.Component {
             height={150}
           />
           <ActivityChart
-            data={speedData}
+            data={paceData}
             style={{
               stroke: '#34ace4',
               strokeWidth: '1px',
             }}
+            yFormat={secondsToTime}
           />
           <ActivityChart
             data={heartRateData}
@@ -164,4 +168,4 @@ class DataPage extends React.Component {
   }
 }
 
-module.exports = DataPage;
+module.exports = ChartController;
