@@ -2,14 +2,32 @@ import moment from 'moment';
 import React from 'react';
 import {Panel} from 'react-bootstrap';
 
+import ActivityChart from 'components/D3/ActivityChart.react';
 import AppPage from 'components/Page/AppPage.react';
 import AreaChart from 'components/D3/AreaChart.react';
 import BarChart from 'components/D3/BarChart.react';
+import ElevationChart from 'components/D3/ElevationChart.react';
 import LineChart from 'components/D3/LineChart.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import ScatterChart from 'components/D3/ScatterChart.react';
 
+import {metersToFeet, metersToMiles} from 'utils/distanceUtils';
+
+import {ACTIVITY} from 'constants/TestData';
+
 const HEIGHT = 300;
+const METRICS = {
+  SUM_ELAPSED_DURATION: 0,
+  LATITUDE: 1,
+  SUM_MOVING_DURATION: 2,
+  ELEVATION: 3,
+  HEART_RATE: 4,
+  SUM_DURATION: 5,
+  SUM_DISTANCE: 6,
+  TIMESTAMP: 7,
+  SPEED: 8,
+  LONGITUDE: 9,
+};
 
 const monthMiles = [107, 125, 156, 210, 184, 107, 125, 156, 210, 184, 30, 24];
 const monthData = monthMiles.map((miles, month) => ({
@@ -29,6 +47,29 @@ const weekData = weekMiles.map((miles, week) => ({
   xVal: week + 1,
   yVal: miles,
 }));
+
+let elevationData = [];
+let heartRateData = [];
+let speedData = [];
+
+ACTIVITY.forEach(({metrics}) => {
+  const sumDistance = metersToMiles(metrics[METRICS.SUM_DISTANCE]);
+
+  elevationData.push({
+    x: sumDistance,
+    y: metersToFeet(metrics[METRICS.ELEVATION]),
+  });
+
+  heartRateData.push({
+    x: sumDistance,
+    y: metrics[METRICS.HEART_RATE],
+  });
+
+  speedData.push({
+    x: sumDistance,
+    y: metrics[METRICS.SPEED],
+  });
+});
 
 /**
  * ChartController.react
@@ -96,6 +137,26 @@ class DataPage extends React.Component {
               <div>${data.yVal} Miles</div>
             `)}
             xFormat={w => moment().week(w).format('ww')}
+          />
+        </Panel>
+        <Panel>
+          <ElevationChart
+            data={elevationData}
+            height={150}
+          />
+          <ActivityChart
+            data={speedData}
+            style={{
+              stroke: '#34ace4',
+              strokeWidth: '1px',
+            }}
+          />
+          <ActivityChart
+            data={heartRateData}
+            style={{
+              stroke: '#dd0447',
+              strokeWidth: '1px',
+            }}
           />
         </Panel>
       </AppPage>

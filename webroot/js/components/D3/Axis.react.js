@@ -7,19 +7,6 @@ import {findDOMNode} from 'react-dom';
 import './css/d3-axis.css';
 
 class Axis extends React.Component {
-  static propTypes = {
-    orient: PropTypes.oneOf(['bottom', 'left', 'right', 'top']).isRequired,
-    scale: PropTypes.func.isRequired,
-    ticks: PropTypes.number,
-    tickFormat: PropTypes.func,
-    tickSize: PropTypes.number,
-  };
-
-  static defaultProps = {
-    ticks: 5,
-    tickSize: 6,
-  };
-
   componentDidMount() {
     this._renderAxis();
   }
@@ -65,5 +52,18 @@ class Axis extends React.Component {
     d3.select(findDOMNode(this)).call(axis);
   };
 }
+
+Axis.propTypes = {
+  orient: PropTypes.oneOf(['bottom', 'left', 'right', 'top']).isRequired,
+  scale: PropTypes.func.isRequired,
+  ticks: PropTypes.number,
+  tickFormat: PropTypes.func,
+  tickSize: PropTypes.number,
+};
+
+Axis.defaultProps = {
+  ticks: 5,
+  tickSize: 6,
+};
 
 export default Axis;
