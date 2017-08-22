@@ -1,11 +1,14 @@
 // @flow
 
 import calculatePace from './calculatePace';
-import {METERS_PER_MILE} from 'constants/metrics';
+import {METERS_PER_KM, METERS_PER_MILE} from 'constants/metrics';
 
 /**
- * Converts speed (meters/second) to pace (mins/mile or mins/km).
+ * Converts speed (in meters/second) to pace (in seconds/mile or seconds/km).
  */
-export default function speedToPace(speed: number): string {
-  return calculatePace(1, (1/speed) * METERS_PER_MILE);
+export default function speedToPace(
+  speed: number,
+  useMetric: boolean = false
+): number {
+  return (useMetric ? METERS_PER_KM : METERS_PER_MILE) / speed;
 }
