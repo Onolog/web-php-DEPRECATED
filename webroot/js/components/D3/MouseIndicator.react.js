@@ -3,17 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {findDOMNode} from 'react-dom';
 
-import {transform} from 'utils/d3Utils';
+import {bisectX, transform} from 'utils/d3Utils';
 
 import './css/d3-mouse-indicator.css';
-
-function getBisectedData(data, mouseX) {
-  const bisect = d3.bisector(d => d.x).left;
-  const i = bisect(data, mouseX, 1);
-  const d0 = data[i - 1];
-  const d1 = data[i];
-  return mouseX - d0.x > d1.x - mouseX ? d1 : d0;
-}
 
 class MouseIndicator extends React.Component {
 
@@ -43,7 +35,7 @@ class MouseIndicator extends React.Component {
       return null;
     }
 
-    const d = getBisectedData(data, mouseX);
+    const d = bisectX(data, mouseX);
     const x = xScale(d.x);
     const y = yScale(d.y);
 

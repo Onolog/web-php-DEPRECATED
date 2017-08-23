@@ -2,6 +2,13 @@ $pace-color: #34ace4;
 $hr-color: #dd0447;
 
 .activity-chart {
+  display: flex;
+
+  .activity-map {
+    height: 100%;
+    width: 100%;
+  }
+
   .elevation-chart {
     .area {
       fill: rgba(0, 0, 0, 0.15);

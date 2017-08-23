@@ -6,6 +6,11 @@ import {findDOMNode} from 'react-dom';
 
 import {API_KEY} from 'constants/Google';
 
+const dataShape = {
+  lat: PropTypes.number.isRequired,
+  lng: PropTypes.number.isRequired,
+};
+
 // Default values: Los Altos, CA
 const DEFAULT_LATITUDE = 37.3682;
 const DEFAULT_LONGITUDE = -122.098;
@@ -19,22 +24,9 @@ const MAP_TYPES = {
   TERRAIN: 'terrain',
 };
 
-let map;
-
 class GoogleMap extends React.Component {
-  static displayName = 'GoogleMap';
 
-  static propTypes = {
-    mapTypeId: PropTypes.oneOf(values(MAP_TYPES)),
-    path: PropTypes.arrayOf(PropTypes.shape({
-      lat: PropTypes.number.isRequired,
-      lng: PropTypes.number.isRequired,
-    }).isRequired).isRequired,
-  };
-
-  static defaultProps = {
-    mapTypeId: MAP_TYPES.TERRAIN,
-  };
+  cursor = null;
 
   componentDidMount() {
     GoogleMapsLoader.KEY = API_KEY;
@@ -46,14 +38,14 @@ class GoogleMap extends React.Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const lastPath = prevProps.path;
-    const thisPath = this.props.path;
-
+  componentWillReceiveProps(nextProps) {
     // Only re-draw the map if the path changes.
-    if (lastPath.length !== thisPath.length && window.google) {
+    if (window.google && nextProps.path.length !== this.props.path.length) {
       this._drawMap();
+      return;
     }
+
+    this._updateCursor(nextProps);
   }
 
   render() {
@@ -64,7 +56,7 @@ class GoogleMap extends React.Component {
     const {mapTypeId, path} = this.props;
     const {Map, Marker, Polyline} = window.google.maps;
 
-    map = new Map(findDOMNode(this), {
+    const map = new Map(findDOMNode(this), {
       zoom: DEFAULT_ZOOM,
       center: {lat: DEFAULT_LATITUDE, lng: DEFAULT_LONGITUDE},
       mapTypeId,
@@ -94,9 +86,19 @@ class GoogleMap extends React.Component {
       path,
       strokeColor: '#ff0000',
       strokeOpacity: 1.0,
-      strokeWeight: 2,
+      strokeWeight: 3,
     });
+
+    this.cursor = new Marker({
+      map,
+    });
+
+    this._updateCursor(this.props);
   };
+
+  _updateCursor = ({cursorPos}) => {
+    this.cursor.setPosition(cursorPos);
+  }
 
   _getBoundsForPath = path => {
     const {LatLngBounds, LatLng} = window.google.maps;
@@ -107,6 +109,18 @@ class GoogleMap extends React.Component {
     return bounds;
   };
 }
+
+GoogleMap.propTypes = {
+  cursorPos: PropTypes.shape(dataShape),
+  mapTypeId: PropTypes.oneOf(values(MAP_TYPES)),
+  path: PropTypes.arrayOf(
+    PropTypes.shape(dataShape).isRequired
+  ).isRequired,
+};
+
+GoogleMap.defaultProps = {
+  mapTypeId: MAP_TYPES.TERRAIN,
+};
 
 GoogleMap.MAP_TYPES = MAP_TYPES;
 
