@@ -5,7 +5,7 @@ import React from 'react';
 import Area from 'components/D3/Area.react';
 import Axis from 'components/D3/Axis.react';
 import Chart from 'components/D3/Chart.react';
-import MouseLine from 'components/D3/MouseLine.react';
+import MouseIndicator from 'components/D3/MouseIndicator.react';
 
 import fullWidthChart from 'containers/fullWidthChart';
 import {getInnerHeight, getInnerWidth, transform} from 'utils/d3Utils';
@@ -58,7 +58,7 @@ class ElevationChart extends React.Component {
           x={d => xScale(d.x)}
           y={d => yScale(d.y)}
         />
-        <MouseLine
+        <MouseIndicator
           {...otherProps}
           data={data}
           height={getInnerHeight(height)}

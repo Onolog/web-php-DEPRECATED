@@ -15,7 +15,7 @@ function getBisectedData(data, mouseX) {
   return mouseX - d0.x > d1.x - mouseX ? d1 : d0;
 }
 
-class MouseLine extends React.Component {
+class MouseIndicator extends React.Component {
 
   render() {
     const {height, onMouseMove, onMouseOut, width} = this.props;
@@ -81,7 +81,7 @@ class MouseLine extends React.Component {
   }
 }
 
-MouseLine.propTypes = {
+MouseIndicator.propTypes = {
   height: PropTypes.number.isRequired,
   mouseX: PropTypes.number,
   onMouseMove: PropTypes.func.isRequired,
@@ -92,8 +92,8 @@ MouseLine.propTypes = {
   yScale: PropTypes.func.isRequired,
 };
 
-MouseLine.defaultProps = {
+MouseIndicator.defaultProps = {
   yFormat: y => y,
 };
 
-export default MouseLine;
+export default MouseIndicator;
