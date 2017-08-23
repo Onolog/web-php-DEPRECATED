@@ -4,8 +4,9 @@ import React from 'react';
 import {transform} from 'utils/d3Utils';
 import {MARGIN} from 'constants/d3';
 
-const Chart = ({children, height, transform, width}) => (
+const Chart = ({children, className, height, transform, width}) => (
   <svg
+    className={className}
     height={height}
     width={width}>
     <g

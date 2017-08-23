@@ -10,26 +10,42 @@ import MouseLine from 'components/D3/MouseLine.react';
 import fullWidthChart from 'containers/fullWidthChart';
 import {getInnerHeight, getInnerWidth} from 'utils/d3Utils';
 
-class ActivityChart extends React.Component {
+class VitalsChart extends React.Component {
   render() {
-    const {data, height, style, width, yFormat} = this.props;
+    const {
+      className,
+      data,
+      height,
+      invertDomain,
+      style,
+      width,
+      yFormat,
+      ...otherProps,
+    } = this.props;
 
     const innerHeight = getInnerHeight(height, {top: 0});
     const innerWidth = getInnerWidth(width);
-    const xMax = d3.max(data, d => d.x);
 
+    const xMax = d3.max(data, d => d.x);
     const xScale = d3.scaleLinear()
       .domain([0, xMax])
       .range([0, innerWidth]);
 
+    const yMax = d3.max(data, d => d.y);
+    const yMin = d3.min(data, d => d.y);
+    const yDomain = invertDomain ? [yMax, yMin] : [yMin, yMax];
+
     const yScale = d3.scaleLinear()
-      .domain([d3.min(data, d => d.y), d3.max(data, d => d.y)])
+      .domain(yDomain)
       .range([innerHeight, 0]);
 
     const mean = d3.mean(data, d => d.y);
 
     return (
-      <Chart height={height} width={width}>
+      <Chart
+        className={className}
+        height={height}
+        width={width}>
         <Axis
           className="y-axis"
           orient="left"
@@ -45,47 +61,45 @@ class ActivityChart extends React.Component {
           tickSize={innerWidth}
         />
         <Line
+          className="mean-line"
           data={[
             {x: 0, y: mean},
             {x: xMax, y: mean},
           ]}
-          style={{
-            ...style,
-            opacity: 0.3,
-            shapeRendering: 'crispEdges',
-            strokeDasharray: '4,1',
-          }}
           x={d => xScale(d.x)}
           y={d => yScale(d.y)}
         />
         <Line
           data={data}
-          style={style}
           x={d => xScale(d.x)}
           y={d => yScale(d.y)}
         />
         <MouseLine
+          {...otherProps}
           data={data}
           height={innerHeight}
           width={innerWidth}
+          xScale={xScale}
+          yFormat={yFormat}
+          yScale={yScale}
         />
       </Chart>
     );
   }
 }
 
-ActivityChart.propTypes = {
+VitalsChart.propTypes = {
   data: PropTypes.array.isRequired,
   height: PropTypes.number,
-  style: PropTypes.object,
+  invertDomain: PropTypes.bool,
   tooltip: PropTypes.func,
   width: PropTypes.number.isRequired,
   yFormat: PropTypes.func,
 };
 
-ActivityChart.defaultProps = {
+VitalsChart.defaultProps = {
   height: 80,
-  style: {},
+  invertDomain: false,
 };
 
-export default fullWidthChart(ActivityChart);
+export default fullWidthChart(VitalsChart);

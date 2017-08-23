@@ -9,7 +9,7 @@ import {
   Panel,
 } from 'react-bootstrap';
 
-import BarChart from 'components/D3/BarChart.react';
+import BarChart from 'components/Data/BarChart.react';
 import LeftRight from 'components/LeftRight/LeftRight.react';
 import Topline from 'components/Topline/Topline.react';
 

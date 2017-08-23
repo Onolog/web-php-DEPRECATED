@@ -14,7 +14,7 @@ const Y_TICKS = 3;
 
 class ElevationChart extends React.Component {
   render() {
-    const {data, height, width} = this.props;
+    const {className, data, height, width, ...otherProps} = this.props;
 
     const xScale = d3.scaleLinear()
       .domain([0, d3.max(data, d => d.x)])
@@ -24,8 +24,13 @@ class ElevationChart extends React.Component {
       .domain([d3.min(data, d => d.y), d3.max(data, d => d.y)])
       .range([getInnerHeight(height), 0]);
 
+    const yFormat = d => `${d} ft`;
+
     return (
-      <Chart height={height} width={width}>
+      <Chart
+        className={className}
+        height={height}
+        width={width}>
         <Axis
           className="x-axis"
           orient="bottom"
@@ -37,7 +42,7 @@ class ElevationChart extends React.Component {
           className="y-axis"
           orient="left"
           scale={yScale}
-          tickFormat={d => `${d} ft`}
+          tickFormat={yFormat}
           ticks={Y_TICKS}
         />
         <Axis
@@ -50,16 +55,17 @@ class ElevationChart extends React.Component {
         <Area
           data={data}
           height={height}
-          style={{
-            fill: 'rgba(0, 0, 0, 0.15)',
-          }}
           x={d => xScale(d.x)}
           y={d => yScale(d.y)}
         />
         <MouseLine
+          {...otherProps}
           data={data}
           height={getInnerHeight(height)}
           width={getInnerWidth(width)}
+          xScale={xScale}
+          yFormat={yFormat}
+          yScale={yScale}
         />
       </Chart>
     );

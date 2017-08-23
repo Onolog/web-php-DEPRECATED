@@ -1,0 +1,48 @@
+$pace-color: #34ace4;
+$hr-color: #dd0447;
+
+.activity-chart {
+  .elevation-chart {
+    .area {
+      fill: rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  .pace-chart {
+    .line {
+      stroke: $pace-color;
+      stroke-width: 1px;
+    }
+
+    .y-indicator {
+      circle {
+        fill: $pace-color;
+      }
+    }
+  }
+
+  .hr-chart {
+    .line {
+      stroke: $hr-color;
+      stroke-width: 1px;
+    }
+
+    .y-indicator {
+      circle {
+        fill: $hr-color;
+      }
+    }
+  }
+
+  .y-indicator {
+    text {
+      font-size: 10px;
+    }
+  }
+
+  .mean-line {
+    opacity: 0.3;
+    shape-rendering: 'crispedges';
+    stroke-dasharray: 4, 1;
+  }
+}

@@ -2,20 +2,18 @@ import moment from 'moment';
 import React from 'react';
 import {Panel} from 'react-bootstrap';
 
-import ActivityChart from 'components/D3/ActivityChart.react';
+import ActivityChart from 'components/Data/ActivityChart.react';
 import AppPage from 'components/Page/AppPage.react';
-import AreaChart from 'components/D3/AreaChart.react';
-import BarChart from 'components/D3/BarChart.react';
-import ElevationChart from 'components/D3/ElevationChart.react';
-import LineChart from 'components/D3/LineChart.react';
+import AreaChart from 'components/Data/AreaChart.react';
+import BarChart from 'components/Data/BarChart.react';
+import LineChart from 'components/Data/LineChart.react';
 import PageHeader from 'components/Page/PageHeader.react';
-import ScatterChart from 'components/D3/ScatterChart.react';
+import ScatterChart from 'components/Data/ScatterChart.react';
 
 import {metersToFeet, metersToMiles} from 'utils/distanceUtils';
-import secondsToTime from 'utils/secondsToTime';
 import speedToPace from 'utils/speedToPace';
 
-import {ACTIVITY} from 'constants/TestData';
+import {ACTIVITY_METRICS} from 'constants/TestData';
 
 const HEIGHT = 300;
 const METRICS = {
@@ -54,7 +52,7 @@ let elevationData = [];
 let heartRateData = [];
 let paceData = [];
 
-ACTIVITY.forEach(({metrics}) => {
+ACTIVITY_METRICS.forEach(({metrics}) => {
   const sumDistance = metersToMiles(metrics[METRICS.SUM_DISTANCE]);
 
   elevationData.push({
@@ -70,7 +68,7 @@ ACTIVITY.forEach(({metrics}) => {
   const pace = speedToPace(metrics[METRICS.SPEED]);
   paceData.push({
     x: sumDistance,
-    y: pace > 800 ? 800 : pace, // Compress outlying data
+    y: pace > 960 ? 960 : pace, // Compress outlying data
   });
 });
 
@@ -80,8 +78,6 @@ ACTIVITY.forEach(({metrics}) => {
  * Static page for testing data & charting libs.
  */
 class ChartController extends React.Component {
-  static displayName = 'DataPage';
-
   render() {
     return (
       <AppPage>
@@ -143,24 +139,10 @@ class ChartController extends React.Component {
           />
         </Panel>
         <Panel>
-          <ElevationChart
-            data={elevationData}
-            height={150}
-          />
           <ActivityChart
-            data={paceData}
-            style={{
-              stroke: '#34ace4',
-              strokeWidth: '1px',
-            }}
-            yFormat={secondsToTime}
-          />
-          <ActivityChart
-            data={heartRateData}
-            style={{
-              stroke: '#dd0447',
-              strokeWidth: '1px',
-            }}
+            elevationData={elevationData}
+            heartRateData={heartRateData}
+            paceData={paceData}
           />
         </Panel>
       </AppPage>
