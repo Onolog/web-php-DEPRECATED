@@ -1,7 +1,5 @@
-import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {findDOMNode} from 'react-dom';
 
 import ElevationChart from 'components/Data/ElevationChart.react';
 import VitalsChart from 'components/Data/VitalsChart.react';

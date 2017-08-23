@@ -17,10 +17,9 @@ class VitalsChart extends React.Component {
       data,
       height,
       invertDomain,
-      style,
       width,
       yFormat,
-      ...otherProps,
+      ...otherProps
     } = this.props;
 
     const innerHeight = getInnerHeight(height, {top: 0});

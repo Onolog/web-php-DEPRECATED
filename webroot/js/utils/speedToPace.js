@@ -1,6 +1,5 @@
 // @flow
 
-import calculatePace from './calculatePace';
 import {METERS_PER_KM, METERS_PER_MILE} from 'constants/metrics';
 
 /**

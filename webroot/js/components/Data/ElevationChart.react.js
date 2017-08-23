@@ -16,13 +16,16 @@ class ElevationChart extends React.Component {
   render() {
     const {className, data, height, width, ...otherProps} = this.props;
 
+    const innerHeight = getInnerHeight(height);
+    const innerWidth = getInnerWidth(width);
+
     const xScale = d3.scaleLinear()
       .domain([0, d3.max(data, d => d.x)])
-      .range([0, getInnerWidth(width)]);
+      .range([0, innerWidth]);
 
     const yScale = d3.scaleLinear()
       .domain([d3.min(data, d => d.y), d3.max(data, d => d.y)])
-      .range([getInnerHeight(height), 0]);
+      .range([innerHeight, 0]);
 
     const yFormat = d => `${d} ft`;
 
@@ -36,7 +39,7 @@ class ElevationChart extends React.Component {
           orient="bottom"
           scale={xScale}
           tickFormat={d => `${d.toFixed(1)} mi`}
-          transform={transform(0, getInnerHeight(height))}
+          transform={transform(0, innerHeight)}
         />
         <Axis
           className="y-axis"
@@ -50,7 +53,7 @@ class ElevationChart extends React.Component {
           orient="right"
           scale={yScale}
           ticks={Y_TICKS}
-          tickSize={getInnerWidth(width)}
+          tickSize={innerWidth}
         />
         <Area
           data={data}
@@ -61,8 +64,8 @@ class ElevationChart extends React.Component {
         <MouseIndicator
           {...otherProps}
           data={data}
-          height={getInnerHeight(height)}
-          width={getInnerWidth(width)}
+          height={innerHeight}
+          width={innerWidth}
           xScale={xScale}
           yFormat={yFormat}
           yScale={yScale}

@@ -18,7 +18,7 @@ function getBisectedData(data, mouseX) {
 class MouseIndicator extends React.Component {
 
   render() {
-    const {height, onMouseMove, onMouseOut, width} = this.props;
+    const {height, onMouseOut, width} = this.props;
 
     return (
       <g
