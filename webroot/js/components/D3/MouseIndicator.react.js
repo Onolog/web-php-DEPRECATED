@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {findDOMNode} from 'react-dom';
 
-import {bisectX, transform} from 'utils/d3Utils';
+import {bisect, transform} from 'utils/d3Utils';
 
 import './css/d3-mouse-indicator.css';
 
@@ -35,7 +35,7 @@ class MouseIndicator extends React.Component {
       return null;
     }
 
-    const d = bisectX(data, mouseX);
+    const d = bisect(data, mouseX, 'x');
     const x = xScale(d.x);
     const y = yScale(d.y);
 

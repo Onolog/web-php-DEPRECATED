@@ -13,21 +13,10 @@ import ScatterChart from 'components/Data/ScatterChart.react';
 import {metersToFeet, metersToMiles} from 'utils/distanceUtils';
 import speedToPace from 'utils/speedToPace';
 
+import {METRICS} from 'constants/Garmin';
 import {ACTIVITY_METRICS} from 'constants/TestData';
 
 const HEIGHT = 300;
-const METRICS = {
-  SUM_ELAPSED_DURATION: 0,
-  LATITUDE: 1,
-  SUM_MOVING_DURATION: 2,
-  ELEVATION: 3,
-  HEART_RATE: 4,
-  SUM_DURATION: 5,
-  SUM_DISTANCE: 6,
-  TIMESTAMP: 7,
-  SPEED: 8,
-  LONGITUDE: 9,
-};
 
 const monthMiles = [107, 125, 156, 210, 184, 107, 125, 156, 210, 184, 30, 24];
 const monthData = monthMiles.map((miles, month) => ({

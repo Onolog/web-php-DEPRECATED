@@ -5,7 +5,7 @@ import ElevationChart from 'components/Data/ElevationChart.react';
 import GoogleMap from 'components/Google/GoogleMap.react';
 import VitalsChart from 'components/Data/VitalsChart.react';
 
-import {bisectX} from 'utils/d3Utils';
+import {bisect} from 'utils/d3Utils';
 import secondsToTime from 'utils/secondsToTime';
 
 import './css/ActivityChart.scss';
@@ -24,7 +24,7 @@ class ActivityChart extends React.Component {
         <div style={{height: '350px', width: '1000px'}}>
           <GoogleMap
             className="activityMap"
-            cursorPos={mouseX ? bisectX(mapData, mouseX) : null}
+            cursorPos={mouseX ? bisect(mapData, mouseX, 'x') : null}
             path={mapData}
           />
         </div>

@@ -3,12 +3,16 @@ import * as d3 from 'd3';
 
 import {MARGIN} from 'constants/d3';
 
-export function bisectX(data, mouseX) {
-  const bisect = d3.bisector(d => d.x).left;
-  const i = bisect(data, mouseX, 1);
+export function bisect(
+  data: Array<Object>,
+  position: number,
+  accessor: string
+): Object {
+  const bisect = d3.bisector(d => d[accessor]).left;
+  const i = bisect(data, position, 1);
   const d0 = data[i - 1];
   const d1 = data[i];
-  return d1 && (mouseX - d0.x > d1.x - mouseX) ? d1 : d0;
+  return d1 && (position - d0[accessor] > d1[accessor] - position) ? d1 : d0;
 }
 
 export function getInnerHeight(

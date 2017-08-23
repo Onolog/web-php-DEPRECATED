@@ -27,7 +27,7 @@ class ElevationChart extends React.Component {
       .domain([d3.min(data, d => d.y), d3.max(data, d => d.y)])
       .range([innerHeight, 0]);
 
-    const yFormat = d => `${d} ft`;
+    const yFormat = elevation => `${elevation} ft`;
 
     return (
       <Chart
