@@ -54,7 +54,7 @@ class GoogleMap extends React.Component {
 
   _drawMap = () => {
     const {mapTypeId, path} = this.props;
-    const {Map, Marker, Polyline} = window.google.maps;
+    const {Map, Marker, Point, Polyline, Size} = window.google.maps;
 
     const map = new Map(findDOMNode(this), {
       zoom: DEFAULT_ZOOM,
@@ -67,15 +67,27 @@ class GoogleMap extends React.Component {
     map.setCenter(bounds.getCenter());
     map.fitBounds(bounds);
 
+    const icon = {
+      anchor: new Point(6, 6),
+      origin: new Point(0, 0),
+      scaledSize: new Size(12, 12),
+    };
+
     // Add start/finish markers
     new Marker({
-      label: 'Start',
+      icon: {
+        ...icon,
+        url: '/webroot/img/markerStart.png',
+      },
       map,
       position: head(path),
     });
 
     new Marker({
-      label: 'Finish',
+      icon: {
+        ...icon,
+        url: '/webroot/img/markerEnd.png',
+      },
       map,
       position: last(path),
     });
@@ -89,8 +101,16 @@ class GoogleMap extends React.Component {
       strokeWeight: 3,
     });
 
+    //
     this.cursor = new Marker({
+      icon: {
+        anchor: new Point(9, 9),
+        origin: new Point(0, 0),
+        scaledSize: new Size(18, 18),
+        url: '/webroot/img/markerPosition.png',
+      },
       map,
+      zIndex: 100,
     });
 
     this._updateCursor(this.props);
