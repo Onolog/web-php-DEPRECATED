@@ -60,6 +60,7 @@ class GoogleMap extends React.Component {
       zoom: DEFAULT_ZOOM,
       center: {lat: DEFAULT_LATITUDE, lng: DEFAULT_LONGITUDE},
       mapTypeId,
+      streetViewControl: false,
     });
 
     // Center map and set zoom level based on the bounds of the path.
