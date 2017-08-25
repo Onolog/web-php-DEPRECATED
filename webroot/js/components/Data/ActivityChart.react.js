@@ -16,42 +16,45 @@ class ActivityChart extends React.Component {
   };
 
   render() {
-    const {elevationData, heartRateData, mapData, paceData} = this.props;
-    const {mouseX} = this.state;
+    const {data} = this.props;
+    const {mousePos} = this.state;
 
     return (
       <div className="activity-chart">
         <div style={{height: '350px', width: '1000px'}}>
           <GoogleMap
             className="activityMap"
-            cursorPos={mouseX ? bisect(mapData, mouseX, 'x') : null}
-            path={mapData}
+            cursorPos={mousePos}
+            path={data}
           />
         </div>
         <div>
           <ElevationChart
             className="elevation-chart"
-            data={elevationData}
+            data={data}
             height={150}
-            mouseX={mouseX}
+            mousePos={mousePos}
             onMouseMove={this._handleMouseMove}
             onMouseOut={this._handleMouseOut}
           />
           <VitalsChart
             className="pace-chart"
-            data={paceData}
-            invertDomain
-            mouseX={mouseX}
+            data={data}
+            invert
+            metric="pace"
+            mousePos={mousePos}
             onMouseMove={this._handleMouseMove}
             onMouseOut={this._handleMouseOut}
             yFormat={secondsToTime}
           />
           <VitalsChart
             className="hr-chart"
-            data={heartRateData}
-            mouseX={mouseX}
+            data={data}
+            metric="hr"
+            mousePos={mousePos}
             onMouseMove={this._handleMouseMove}
             onMouseOut={this._handleMouseOut}
+            yFormat={y => y}
           />
         </div>
       </div>
@@ -59,19 +62,23 @@ class ActivityChart extends React.Component {
   }
 
   _handleMouseMove = mouseX => {
-    this.setState({mouseX});
+    const mousePos = bisect(this.props.data, mouseX, d => d.distance);
+    this.setState({mousePos});
   }
 
   _handleMouseOut = e => {
-    this.setState({mouseX: null});
+    this.setState({mousePos: null});
   }
 }
 
 ActivityChart.propTypes = {
-  elevationData: PropTypes.array.isRequired,
-  heartRateData: PropTypes.array.isRequired,
-  mapData: PropTypes.array.isRequired,
-  paceData: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(PropTypes.shape({
+    distance: PropTypes.number.isRequired,
+    hr: PropTypes.number.isRequired,
+    lat: PropTypes.number.isRequired,
+    lng: PropTypes.number.isRequired,
+    pace: PropTypes.number.isRequired,
+  }).isRequired).isRequired,
 };
 
 export default ActivityChart;

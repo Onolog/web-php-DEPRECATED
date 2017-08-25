@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {findDOMNode} from 'react-dom';
 
-import {bisect, transform} from 'utils/d3Utils';
+import {transform} from 'utils/d3Utils';
 
-import './css/d3-mouse-indicator.css';
+import './css/d3-mouse-indicator.scss';
 
 class MouseIndicator extends React.Component {
 
@@ -14,14 +14,13 @@ class MouseIndicator extends React.Component {
 
     return (
       <g
-        className="mouse-position"
+        className="mouse-indicator"
         onMouseMove={this._handleMouseMove}
         onMouseOut={onMouseOut}>
         {this._renderIndicator()}
         <rect
-          fill="none"
+          className="mouse-indicator-background"
           height={height}
-          pointerEvents="all"
           width={width}
         />
       </g>
@@ -29,26 +28,22 @@ class MouseIndicator extends React.Component {
   }
 
   _renderIndicator = () => {
-    const {data, height, mouseX, xScale, yFormat, yScale} = this.props;
+    const {d, height, x, yFormat, y} = this.props;
 
-    if (!mouseX) {
+    if (!d) {
       return null;
     }
-
-    const d = bisect(data, mouseX, 'x');
-    const x = xScale(d.x);
-    const y = yScale(d.y);
 
     return (
       <g>
         <path
-          className="x-line"
-          d={`M${x},${height} ${x},0`}
+          className="mouse-indicator-line"
+          d={`M${x(d)},${height} ${x(d)},0`}
         />
-        <g className="y-indicator" transform={transform(x, y)}>
+        <g className="mouse-indicator-data" transform={transform(x(d), y(d))}>
           <circle r={4} />
           <text transform={transform(5, -5)}>
-            {yFormat(d.y)}
+            {yFormat(d)}
           </text>
         </g>
       </g>
@@ -74,18 +69,15 @@ class MouseIndicator extends React.Component {
 }
 
 MouseIndicator.propTypes = {
+  d: PropTypes.object,
   height: PropTypes.number.isRequired,
-  mouseX: PropTypes.number,
   onMouseMove: PropTypes.func.isRequired,
   onMouseOut: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
+  x: PropTypes.func.isRequired,
   xScale: PropTypes.func.isRequired,
-  yFormat: PropTypes.func,
-  yScale: PropTypes.func.isRequired,
-};
-
-MouseIndicator.defaultProps = {
-  yFormat: y => y,
+  y: PropTypes.func.isRequired,
+  yFormat: PropTypes.func.isRequired,
 };
 
 export default MouseIndicator;

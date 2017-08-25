@@ -16,7 +16,9 @@ class VitalsChart extends React.Component {
       className,
       data,
       height,
-      invertDomain,
+      invert,
+      metric,
+      mousePos,
       width,
       yFormat,
       ...otherProps
@@ -25,20 +27,23 @@ class VitalsChart extends React.Component {
     const innerHeight = getInnerHeight(height, {top: 0});
     const innerWidth = getInnerWidth(width);
 
-    const xMax = d3.max(data, d => d.x);
     const xScale = d3.scaleLinear()
-      .domain([0, xMax])
+      .domain([0, d3.max(data, d => d.distance)])
       .range([0, innerWidth]);
 
-    const yMax = d3.max(data, d => d.y);
-    const yMin = d3.min(data, d => d.y);
-    const yDomain = invertDomain ? [yMax, yMin] : [yMin, yMax];
+    const yDomain = d3.extent(data, d => d[metric]);
+    if (invert) {
+      yDomain.reverse();
+    }
 
     const yScale = d3.scaleLinear()
       .domain(yDomain)
       .range([innerHeight, 0]);
 
-    const mean = d3.mean(data, d => d.y);
+    const mean = d3.mean(data, d => d[metric]);
+
+    const x = d => xScale(d.distance);
+    const y = d => yScale(d[metric]);
 
     return (
       <Chart
@@ -62,25 +67,26 @@ class VitalsChart extends React.Component {
         <Line
           className="mean-line"
           data={[
-            {x: 0, y: mean},
-            {x: xMax, y: mean},
+            {distance: 0, [metric]: mean},
+            {distance: d3.max(data, d => d.distance), [metric]: mean},
           ]}
-          x={d => xScale(d.x)}
-          y={d => yScale(d.y)}
+          x={x}
+          y={y}
         />
         <Line
           data={data}
-          x={d => xScale(d.x)}
-          y={d => yScale(d.y)}
+          x={x}
+          y={y}
         />
         <MouseIndicator
           {...otherProps}
-          data={data}
+          d={mousePos}
           height={innerHeight}
           width={innerWidth}
+          x={x}
           xScale={xScale}
-          yFormat={yFormat}
-          yScale={yScale}
+          y={y}
+          yFormat={d => yFormat(d[metric])}
         />
       </Chart>
     );
@@ -90,8 +96,8 @@ class VitalsChart extends React.Component {
 VitalsChart.propTypes = {
   data: PropTypes.array.isRequired,
   height: PropTypes.number,
-  invertDomain: PropTypes.bool,
-  tooltip: PropTypes.func,
+  invert: PropTypes.bool,
+  mousePos: PropTypes.object,
   width: PropTypes.number.isRequired,
   yFormat: PropTypes.func,
 };

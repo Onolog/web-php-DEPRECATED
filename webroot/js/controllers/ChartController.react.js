@@ -37,35 +37,18 @@ const weekData = weekMiles.map((miles, week) => ({
   yVal: miles,
 }));
 
-let elevationData = [];
-let heartRateData = [];
-let mapData = [];
-let paceData = [];
+const data = ACTIVITY_METRICS.map(({metrics}) => {
+  const distance = metersToMiles(metrics[METRICS.SUM_DISTANCE]);
+  const pace = speedToPace(metrics[METRICS.SPEED]);
 
-ACTIVITY_METRICS.forEach(({metrics}) => {
-  const sumDistance = metersToMiles(metrics[METRICS.SUM_DISTANCE]);
-
-  elevationData.push({
-    x: sumDistance,
-    y: metersToFeet(metrics[METRICS.ELEVATION]),
-  });
-
-  heartRateData.push({
-    x: sumDistance,
-    y: metrics[METRICS.HEART_RATE],
-  });
-
-  mapData.push({
-    x: sumDistance,
+  return {
+    distance,
+    elevation: metersToFeet(metrics[METRICS.ELEVATION]),
+    hr: metrics[METRICS.HEART_RATE],
     lat: metrics[METRICS.LATITUDE],
     lng: metrics[METRICS.LONGITUDE],
-  });
-
-  const pace = speedToPace(metrics[METRICS.SPEED]);
-  paceData.push({
-    x: sumDistance,
-    y: pace > 960 ? 960 : pace, // Compress outlying data
-  });
+    pace: pace > 960 ? 960 : pace, // Compress outlying data,
+  };
 });
 
 /**
@@ -135,12 +118,7 @@ class ChartController extends React.Component {
           />
         </Panel>
         <Panel>
-          <ActivityChart
-            elevationData={elevationData}
-            heartRateData={heartRateData}
-            mapData={mapData}
-            paceData={paceData}
-          />
+          <ActivityChart data={data} />
         </Panel>
       </AppPage>
     );

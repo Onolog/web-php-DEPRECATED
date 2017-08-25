@@ -12,7 +12,7 @@ const data = ACTIVITY_METRICS.map(({metrics}) => ({
 
 describe('d3Utils', () => {
   it('bisects the given data', () => {
-    const d = bisect(data, 9900, 'distance');
+    const d = bisect(data, 9900, d => d.distance);
     expect(d.hr).to.equal(148);
   });
 

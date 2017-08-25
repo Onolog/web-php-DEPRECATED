@@ -21,7 +21,7 @@ $hr-color: #dd0447;
       stroke-width: 1px;
     }
 
-    .y-indicator {
+    .mouse-indicator-data {
       circle {
         fill: $pace-color;
       }
@@ -34,14 +34,14 @@ $hr-color: #dd0447;
       stroke-width: 1px;
     }
 
-    .y-indicator {
+    .mouse-indicator-data {
       circle {
         fill: $hr-color;
       }
     }
   }
 
-  .y-indicator {
+  .mouse-indicator-data {
     text {
       font-size: 10px;
     }

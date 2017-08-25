@@ -14,19 +14,28 @@ const Y_TICKS = 3;
 
 class ElevationChart extends React.Component {
   render() {
-    const {className, data, height, width, ...otherProps} = this.props;
+    const {
+      className,
+      data,
+      height,
+      mousePos,
+      width,
+      ...otherProps
+    } = this.props;
 
     const innerHeight = getInnerHeight(height);
     const innerWidth = getInnerWidth(width);
 
     const xScale = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.x)])
+      .domain([0, d3.max(data, d => d.distance)])
       .range([0, innerWidth]);
 
     const yScale = d3.scaleLinear()
-      .domain([d3.min(data, d => d.y), d3.max(data, d => d.y)])
+      .domain(d3.extent(data, d => d.elevation))
       .range([innerHeight, 0]);
 
+    const x = d => xScale(d.distance);
+    const y = d => yScale(d.elevation);
     const yFormat = elevation => `${elevation} ft`;
 
     return (
@@ -38,7 +47,7 @@ class ElevationChart extends React.Component {
           className="x-axis"
           orient="bottom"
           scale={xScale}
-          tickFormat={d => `${d.toFixed(1)} mi`}
+          tickFormat={distance => `${distance.toFixed(1)} mi`}
           transform={transform(0, innerHeight)}
         />
         <Axis
@@ -58,17 +67,18 @@ class ElevationChart extends React.Component {
         <Area
           data={data}
           height={height}
-          x={d => xScale(d.x)}
-          y={d => yScale(d.y)}
+          x={x}
+          y={y}
         />
         <MouseIndicator
           {...otherProps}
-          data={data}
+          d={mousePos}
           height={innerHeight}
           width={innerWidth}
+          x={x}
           xScale={xScale}
-          yFormat={yFormat}
-          yScale={yScale}
+          y={y}
+          yFormat={d => yFormat(d.elevation)}
         />
       </Chart>
     );
@@ -78,7 +88,7 @@ class ElevationChart extends React.Component {
 ElevationChart.propTypes = {
   data: PropTypes.array.isRequired,
   height: PropTypes.number.isRequired,
-  tooltip: PropTypes.func,
+  mousePos: PropTypes.object,
   width: PropTypes.number.isRequired,
 };
 
