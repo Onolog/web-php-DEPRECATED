@@ -12,12 +12,19 @@ import './css/ActivityChart.scss';
 
 class ActivityChart extends React.Component {
   state = {
-    mouseX: null,
+    mousePos: null,
   };
 
   render() {
     const {data} = this.props;
     const {mousePos} = this.state;
+
+    const commonProps = {
+      data,
+      mousePos,
+      onMouseMove: this._handleMouseMove,
+      onMouseOut: this._handleMouseOut,
+    };
 
     return (
       <div className="activity-chart">
@@ -30,30 +37,21 @@ class ActivityChart extends React.Component {
         </div>
         <div>
           <ElevationChart
+            {...commonProps}
             className="elevation-chart"
-            data={data}
             height={150}
-            mousePos={mousePos}
-            onMouseMove={this._handleMouseMove}
-            onMouseOut={this._handleMouseOut}
           />
           <VitalsChart
+            {...commonProps}
             className="pace-chart"
-            data={data}
             invert
             metric="pace"
-            mousePos={mousePos}
-            onMouseMove={this._handleMouseMove}
-            onMouseOut={this._handleMouseOut}
             yFormat={secondsToTime}
           />
           <VitalsChart
+            {...commonProps}
             className="hr-chart"
-            data={data}
             metric="hr"
-            mousePos={mousePos}
-            onMouseMove={this._handleMouseMove}
-            onMouseOut={this._handleMouseOut}
             yFormat={y => y}
           />
         </div>
@@ -61,8 +59,12 @@ class ActivityChart extends React.Component {
     );
   }
 
-  _handleMouseMove = mouseX => {
-    const mousePos = bisect(this.props.data, mouseX, d => d.distance);
+  _handleMouseMove = (mouse, xScale, yScale) => {
+    const mousePos = bisect(
+      this.props.data,
+      xScale.invert(mouse[0]),
+      d => d.distance
+    );
     this.setState({mousePos});
   }
 

@@ -5,7 +5,8 @@ import React from 'react';
 import Axis from 'components/D3/Axis.react';
 import Chart from 'components/D3/Chart.react';
 import Line from 'components/D3/Line.react';
-import MouseIndicator from 'components/D3/MouseIndicator.react';
+import MouseIndicator from 'components/Data/MouseIndicator.react';
+import MouseTracker from 'components/D3/MouseTracker.react';
 
 import fullWidthChart from 'containers/fullWidthChart';
 import {getInnerHeight, getInnerWidth} from 'utils/d3Utils';
@@ -78,13 +79,15 @@ class VitalsChart extends React.Component {
           x={x}
           y={y}
         />
-        <MouseIndicator
+        <MouseTracker
           {...otherProps}
+          xScale={xScale}
+          yScale={yScale}
+        />
+        <MouseIndicator
           d={mousePos}
           height={innerHeight}
-          width={innerWidth}
           x={x}
-          xScale={xScale}
           y={y}
           yFormat={d => yFormat(d[metric])}
         />
@@ -104,7 +107,7 @@ VitalsChart.propTypes = {
 
 VitalsChart.defaultProps = {
   height: 80,
-  invertDomain: false,
+  invert: false,
 };
 
 export default fullWidthChart(VitalsChart);

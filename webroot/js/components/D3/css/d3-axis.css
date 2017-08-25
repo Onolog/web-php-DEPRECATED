@@ -22,5 +22,5 @@
   display: none;
 }
 .y-axis-background line {
-  fill: #f9f9f9;
+  stroke: rgba(0,0,0,.05);
 }
