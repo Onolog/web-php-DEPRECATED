@@ -1,4 +1,5 @@
-import moment from 'moment';
+import * as d3 from 'd3';
+import moment from 'moment-timezone';
 import React from 'react';
 import {Panel} from 'react-bootstrap';
 
@@ -9,12 +10,13 @@ import BarChart from 'components/Data/BarChart.react';
 import LineChart from 'components/Data/LineChart.react';
 import PageHeader from 'components/Page/PageHeader.react';
 import ScatterChart from 'components/Data/ScatterChart.react';
+import WeeklyMileageChart from 'components/Data/WeeklyMileageChart.react';
 
 import {metersToFeet, metersToMiles} from 'utils/distanceUtils';
 import speedToPace from 'utils/speedToPace';
 
 import {METRICS} from 'constants/Garmin';
-import {ACTIVITY_METRICS} from 'constants/TestData';
+import {ACTIVITIES, ACTIVITY_METRICS} from 'constants/TestData';
 
 const HEIGHT = 300;
 
@@ -37,7 +39,13 @@ const weekData = weekMiles.map((miles, week) => ({
   yVal: miles,
 }));
 
-const data = ACTIVITY_METRICS.map(({metrics}) => {
+// TODO: Include timezone in fetched + test data.
+const activities = ACTIVITIES.map(a => ({
+  ...a,
+  timezone: 'America/Los_Angeles',
+}));
+
+const activityData = ACTIVITY_METRICS.map(({metrics}) => {
   const distance = metersToMiles(metrics[METRICS.SUM_DISTANCE]);
   const pace = speedToPace(metrics[METRICS.SPEED]);
 
@@ -73,14 +81,14 @@ class ChartController extends React.Component {
           />
         </Panel>
         <Panel header={<h3>Week Data</h3>}>
-          <BarChart
-            data={weekData}
-            height={HEIGHT}
-            tooltip={data => (`
-              <strong>Week ${moment().week(data.xVal).format('w')}</strong>
-              <div>${data.yVal} Miles</div>
-            `)}
-            xFormat={w => moment().week(w).format('ww')}
+          <WeeklyMileageChart
+            data={d3.nest()
+              .key(d => moment.tz(d.start_date, d.timezone).week())
+              .rollup(values => d3.sum(values, v => v.distance))
+              .entries(activities)
+            }
+            height={200}
+            year={2016}
           />
         </Panel>
         <Panel>
@@ -118,7 +126,7 @@ class ChartController extends React.Component {
           />
         </Panel>
         <Panel>
-          <ActivityChart data={data} />
+          <ActivityChart data={activityData} />
         </Panel>
       </AppPage>
     );

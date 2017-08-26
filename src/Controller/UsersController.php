@@ -151,7 +151,7 @@ class UsersController extends AppController {
     $activities = id(TableRegistry::get('Activities'))
       ->find()
       ->where(['user_id' => $user->id])
-      ->select(['distance', 'duration', 'start_date'])
+      ->select(['distance', 'duration', 'start_date', 'timezone'])
       ->order(['start_date' => 'DESC']);
 
     $shoes = id(TableRegistry::get('Shoes'))

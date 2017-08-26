@@ -1,4 +1,5 @@
-import moment from 'moment';
+import * as d3 from 'd3';
+import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
@@ -12,6 +13,7 @@ import {
 import BarChart from 'components/Data/BarChart.react';
 import LeftRight from 'components/LeftRight/LeftRight.react';
 import Topline from 'components/Topline/Topline.react';
+import WeeklyMileageChart from 'components/Data/WeeklyMileageChart.react';
 
 import {map} from 'lodash';
 import {
@@ -85,15 +87,18 @@ class ProfileYearPanel extends React.Component {
         xFormat = m => moment().month(m).format('MMM');
         break;
       case WEEKLY:
-        groupedActivities = groupActivities.byWeek(activities);
-        tooltip = data => {
-          const m = moment().week(data.xVal).year(year);
-          return `
-            ${m.format('MMM D')} &ndash; ${m.add(6, 'days').format('MMM D')}
-            <div>${data.yVal} Miles</div>
-          `;
-        };
-        xFormat = w => moment().week(w).format('ww');
+        const data = d3.nest()
+          .key(d => moment.tz(d.start_date, d.timezone).week())
+          .rollup(values => d3.sum(values, v => v.distance))
+          .entries(activities);
+
+        return (
+          <WeeklyMileageChart
+            data={data}
+            height={HEIGHT}
+            year={year}
+          />
+        );
         break;
       case DAILY:
         groupedActivities = groupActivities.byDay(activities);
