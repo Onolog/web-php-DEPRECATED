@@ -8,7 +8,7 @@ export function bisect(
   position: number,
   accessor: Function
 ): Object {
-  const bisect = d3.bisector(d => accessor(d)).left;
+  const bisect = d3.bisector(accessor).left;
   const i = bisect(data, position, 1);
   const d0 = data[i - 1];
   const d1 = data[i];

@@ -1,3 +1,4 @@
+import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -27,15 +28,18 @@ class ActivityChart extends React.Component {
     };
 
     return (
-      <div className="activity-chart">
-        <div style={{height: '350px', width: '1000px'}}>
+      <div className="activity-chart clearfix">
+        <div className="map-container">
           <GoogleMap
-            className="activityMap"
+            className="activity-map"
             cursorPos={mousePos}
+            onPolylineMouseMove={index => {
+              this.setState({mousePos: data[index]});
+            }}
             path={data}
           />
         </div>
-        <div>
+        <div className="chart-container">
           <ElevationChart
             {...commonProps}
             className="elevation-chart"

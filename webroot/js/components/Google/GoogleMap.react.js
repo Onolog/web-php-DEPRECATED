@@ -53,7 +53,7 @@ class GoogleMap extends React.Component {
   }
 
   _drawMap = () => {
-    const {mapTypeId, path} = this.props;
+    const {mapTypeId, onPolylineMouseMove, path} = this.props;
     const {Map, Marker, Point, Polyline, Size} = window.google.maps;
 
     const map = new Map(findDOMNode(this), {
@@ -94,7 +94,7 @@ class GoogleMap extends React.Component {
     });
 
     // Create and set the polyline.
-    new Polyline({
+    this.polyline = new Polyline({
       map,
       path,
       strokeColor: '#ff0000',
@@ -102,7 +102,8 @@ class GoogleMap extends React.Component {
       strokeWeight: 3,
     });
 
-    //
+    this.polyline.addListener('mousemove', this._handlePolylineMouseMove);
+
     this.cursor = new Marker({
       icon: {
         anchor: new Point(9, 9),
@@ -116,6 +117,30 @@ class GoogleMap extends React.Component {
 
     this._updateCursor(this.props);
   };
+
+  _handlePolylineMouseMove = e => {
+    if (!this.props.onPolylineMouseMove) {
+      return;
+    }
+
+    const {computeDistanceBetween} = window.google.maps.geometry.spherical;
+    const path = this.polyline.getPath().getArray();
+
+    let index = -1;
+    let minDistance = 1000;
+
+    // Find the point on the line closest to the hovered point.
+    path.forEach((point, idx) => {
+      const d = computeDistanceBetween(e.latLng, point);
+
+      if (d < minDistance){
+        minDistance = d;
+        index = idx;
+      }
+    });
+
+    this.props.onPolylineMouseMove(index);
+  }
 
   _updateCursor = ({cursorPos}) => {
     this.cursor.setPosition(cursorPos);
@@ -134,6 +159,7 @@ class GoogleMap extends React.Component {
 GoogleMap.propTypes = {
   cursorPos: PropTypes.shape(dataShape),
   mapTypeId: PropTypes.oneOf(values(MAP_TYPES)),
+  onPolylineMouseMove: PropTypes.func,
   path: PropTypes.arrayOf(
     PropTypes.shape(dataShape).isRequired
   ).isRequired,

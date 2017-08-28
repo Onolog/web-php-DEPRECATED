@@ -4,9 +4,21 @@ $hr-color: #dd0447;
 .activity-chart {
   display: flex;
 
+  .map-container {
+    float: left;
+    height: 350px;
+    margin-right: 20px;
+    width: 33%;
+  }
+
   .activity-map {
     height: 100%;
     width: 100%;
+  }
+
+  .chart-container {
+    float: left;
+    width: 67%;
   }
 
   .elevation-chart {
