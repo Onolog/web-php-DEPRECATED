@@ -18,6 +18,7 @@ values(ActionTypes).forEach(action => pendingRequests[action] = false);
 
 const initialState = {
   activities: [],
+  activityMetrics: [],
   activitySummary: {},
   brands: [],
   error: null,

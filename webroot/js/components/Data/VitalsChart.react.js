@@ -75,6 +75,7 @@ class VitalsChart extends React.Component {
           y={y}
         />
         <Line
+          curve={d3.curveNatural}
           data={data}
           x={x}
           y={y}

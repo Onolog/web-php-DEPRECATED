@@ -104,9 +104,10 @@ export function fetchActivities(year: number, month: number): Function {
 }
 
 function fetchActivitySuccess(response: Object, dispatch: Function) {
-  const {activities, shoes, users} = response;
+  const {activities, activityMetrics, shoes, users} = response;
   dispatch({
     activities,
+    activityMetrics,
     shoes,
     type: ACTIVITY_FETCH_SUCCESS,
     users,
@@ -128,9 +129,9 @@ export function fetchActivity(id: number) {
     const {activities} = getState();
 
     // Only fetch if we don't already have the activity.
-    if (!find(activities, {id})) {
+    // if (!find(activities, {id})) {
       dispatch(fetchActivityRequest(id));
-    }
+    // }
   };
 }
 

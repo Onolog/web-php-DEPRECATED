@@ -49,14 +49,23 @@ class GoogleMap extends React.Component {
   }
 
   render() {
-    return <div className={this.props.className} />;
+    return (
+      <div
+        className={this.props.className}
+        ref={instance => this._instance = instance}
+      />
+    );
   }
 
   _drawMap = () => {
-    const {mapTypeId, onPolylineMouseMove, path} = this.props;
+    if (!this._instance) {
+      return;
+    }
+
+    const {mapTypeId, path} = this.props;
     const {Map, Marker, Point, Polyline, Size} = window.google.maps;
 
-    const map = new Map(findDOMNode(this), {
+    const map = new Map(findDOMNode(this._instance), {
       zoom: DEFAULT_ZOOM,
       center: {lat: DEFAULT_LATITUDE, lng: DEFAULT_LONGITUDE},
       mapTypeId,
@@ -133,7 +142,7 @@ class GoogleMap extends React.Component {
     path.forEach((point, idx) => {
       const d = computeDistanceBetween(e.latLng, point);
 
-      if (d < minDistance){
+      if (d < minDistance) {
         minDistance = d;
         index = idx;
       }

@@ -32,7 +32,7 @@ class ElevationChart extends React.Component {
       .range([0, innerWidth]);
 
     const yScale = d3.scaleLinear()
-      .domain(d3.extent(data, d => d.elevation))
+      .domain([0, d3.max(data, d => d.elevation)])
       .range([innerHeight, 0]);
 
     const x = d => xScale(d.distance);

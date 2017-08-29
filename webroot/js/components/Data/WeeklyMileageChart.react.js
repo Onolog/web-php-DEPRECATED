@@ -23,7 +23,7 @@ class WeeklyMileageChart extends React.Component {
     const innerHeight = getInnerHeight(height);
     const innerWidth = getInnerWidth(width);
 
-    const m = moment(new Date(year, 0 , 1));
+    const m = moment(new Date(year, 0, 1));
     const xScale = d3.scaleTime()
       .domain([
         m.week(1).day(0).toDate(),
@@ -41,8 +41,8 @@ class WeeklyMileageChart extends React.Component {
           className="x-axis"
           orient="bottom"
           scale={xScale}
-          ticks={12}
           tickFormat={date => moment(date).format('MMM')}
+          ticks={12}
           transform={transform(0, innerHeight)}
         />
         <Axis

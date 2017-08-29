@@ -99,7 +99,6 @@ class ProfileYearPanel extends React.Component {
             year={year}
           />
         );
-        break;
       case DAILY:
         groupedActivities = groupActivities.byDay(activities);
         break;

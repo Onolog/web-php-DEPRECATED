@@ -1,4 +1,4 @@
-import {find} from 'lodash';
+import {find, meanBy} from 'lodash';
 import moment from 'moment-timezone';
 import {Button, ButtonGroup, OverlayTrigger, Tooltip} from 'react-bootstrap';
 import PropTypes from 'prop-types';
@@ -7,7 +7,9 @@ import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 
 import Activity from 'components/Activities/Activity.react';
+import ActivityChart from 'components/Data/ActivityChart.react';
 import ActivityModal from 'components/Activities/ActivityModal.react';
+import ActivitySection from 'components/Activities/ActivitySection.react';
 import AppFullPage from 'components/Page/AppFullPage.react';
 import Loader from 'components/Loader/Loader.react';
 import MaterialIcon from 'components/Icons/MaterialIcon.react';
@@ -15,24 +17,67 @@ import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
 
 import {deleteActivity, fetchActivity} from 'actions/activities';
+import {metersToFeet, metersToMiles} from 'utils/distanceUtils';
 import homeUrl from 'utils/homeUrl';
+import speedToPace from 'utils/speedToPace';
 
 import {ACTIVITY_FETCH, ACTIVITY_DELETE, ACTIVITY_UPDATE} from 'constants/ActionTypes';
+import {METRICS} from 'constants/Garmin';
 
 const DATE_FORMAT = 'dddd, MMMM Do, YYYY';
 
 const mapStateToProps = (state, props) => {
-  const {activities, pendingRequests, session, shoes, users} = state;
+  const {
+    activities,
+    activityMetrics,
+    pendingRequests,
+    session,
+    shoes,
+    users,
+  } = state;
+
   const activity = find(activities, {id: +props.params.activityId});
 
   return {
     activity,
+    activityMetrics,
     athlete: activity && find(users, {id: activity.user_id}),
     pendingRequests,
     shoe: activity && find(shoes, {id: activity.shoe_id}),
     viewer: session,
   };
 };
+
+const convertActivityMetrics = activityMetrics => {
+  const meanPace = meanBy(activityMetrics, ({metrics}) => {
+    if (metrics[METRICS.SPEED]) {
+      return speedToPace(metrics[METRICS.SPEED]);
+    }
+  });
+
+  return activityMetrics.reduce((converted, {metrics}, idx, metricsArr) => {
+    const lat = metrics[METRICS.LATITUDE];
+    const lng = metrics[METRICS.LONGITUDE];
+
+    if (lat && lng) {
+      // Normalize & compress outlying data.
+      // TODO: Don't modify the data, change the bounds of the chart.
+      const paceThreshold = Math.pow(meanPace, 2) / 400;
+      const pace = speedToPace(metrics[METRICS.SPEED]);
+
+      converted.push({
+        distance: metersToMiles(metrics[METRICS.SUM_DISTANCE]),
+        elevation: metersToFeet(metrics[METRICS.ELEVATION]),
+        hr: metrics[METRICS.HEART_RATE] || 0,
+        lat,
+        lng,
+        pace: !pace || pace > paceThreshold ? paceThreshold : pace,
+      });
+    }
+
+    return converted;
+  }, []);
+}
 
 /**
  * ActivityController.react
@@ -94,13 +139,14 @@ class ActivityController extends React.Component {
         <PageHeader full title={activityDate}>
           {this._renderButtonGroup()}
         </PageHeader>
-        <PageFrame fill>
+        <PageFrame fill scroll>
           <Activity
             activity={activity}
             athlete={athlete}
             fill
             shoe={shoe}
           />
+          {this._renderActivityMetrics()}
         </PageFrame>
       </AppFullPage>
     );
@@ -133,6 +179,17 @@ class ActivityController extends React.Component {
             show={showModal}
           />
         </ButtonGroup>
+      );
+    }
+  };
+
+  _renderActivityMetrics = () => {
+    const metrics = convertActivityMetrics(this.props.activityMetrics);
+    if (metrics && metrics.length) {
+      return (
+        <ActivitySection border title="Data">
+          <ActivityChart data={metrics} />
+        </ActivitySection>
       );
     }
   };

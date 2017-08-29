@@ -10,12 +10,17 @@ use Cake\Network\Exception\UnauthorizedException;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Xml;
 
+define('GARMIN_BASE_URL', 'https://connect.garmin.com/proxy');
+
 /**
  * Activities Controller
  *
  * @property \App\Model\Table\ActivitiesTable $Activities
  */
 class ActivitiesController extends AppController {
+
+  private $ACTIVITY_URL = GARMIN_BASE_URL . '/activity-service/activity/';
+  private $WEATHER_URL = GARMIN_BASE_URL . '/weather-service/weather/';
 
   public function beforeFilter(Event $event) {
     parent::beforeFilter($event);
@@ -107,8 +112,18 @@ class ActivitiesController extends AppController {
 
     $user = id(TableRegistry::get('Users'))->get($user_id);
 
+    $metrics = [];
+    $activityId = $activity->garmin_activity_id;
+
+    if ($activityId) {
+      $endpoint = "{$this->ACTIVITY_URL}{$activityId}/details?maxChartSize=1000";
+      $data = $this->getGarminData($endpoint);
+      $metrics = $data->activityDetailMetrics;
+    }
+
     $this->set([
       'activities' => [$activity],
+      'activityMetrics' => $metrics,
       'shoes' => $shoes,
       'users' => [$user],
     ]);
@@ -223,29 +238,26 @@ class ActivitiesController extends AppController {
     ]);
   }
 
-  public function scrape($activityId=null) {
-    $baseUrl = 'https://connect.garmin.com/proxy';
+  public function scrape($activityId) {
+    if (!$activityId) {
+      throw new NotFoundException(__('No activity id provided.'));
+    }
 
-    if ($activityId) {
-      $activity_url = "{$baseUrl}/activity-service/activity/{$activityId}";
-      $weather_url = "{$baseUrl}/weather-service/weather/{$activityId}";
+    $activityUrl = "{$this->ACTIVITY_URL}/{$activityId}";
 
-      $activity_json = file_get_contents($activity_url);
-
+    $this->set([
+      'activity' => $this->getGarminData($activityUrl),
       // TODO: Add this data to the schema and import along with activity
       // summary.
-      //
-      // $details_json = file_get_contents("{$activity_url}/details");
-      // $splits_json = file_get_contents("{$activity_url}/splits");
-      // $weather_json = file_get_contents($weather_url);
+      // 'details' => $this->getGarminData("{$activityUrl}/details"),
+      // 'splits' => $this->getGarminData("{$activityUrl}/splits"),
+      // 'weather' => $this->getGarminData(WEATHER_URL),
+    ]);
+  }
 
-      $this->set([
-        'activity' => json_decode($activity_json),
-        // 'details' => json_decode($details_json),
-        // 'splits' => json_decode($splits_json),
-        // 'weather' => json_decode($weather_json),
-      ]);
-    }
+  private function getGarminData($endpoint) {
+    $json = file_get_contents($endpoint);
+    return json_decode($json);
   }
 
   /**
