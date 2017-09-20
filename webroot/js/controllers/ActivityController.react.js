@@ -77,7 +77,7 @@ const convertActivityMetrics = activityMetrics => {
 
     return converted;
   }, []);
-}
+};
 
 /**
  * ActivityController.react

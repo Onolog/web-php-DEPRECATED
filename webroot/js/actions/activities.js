@@ -2,7 +2,6 @@
 
 import invariant from 'invariant';
 import $ from 'jquery';
-import {find} from 'lodash';
 
 import {
   ACTIVITIES_FETCH,
@@ -125,13 +124,10 @@ function fetchActivityRequest(id: number) {
 }
 
 export function fetchActivity(id: number) {
+  // TODO: Split Activity and ActivityMetrics actions out for more granular
+  // fetching.
   return (dispatch: Function, getState: Function) => {
-    const {activities} = getState();
-
-    // Only fetch if we don't already have the activity.
-    // if (!find(activities, {id})) {
-      dispatch(fetchActivityRequest(id));
-    // }
+    dispatch(fetchActivityRequest(id));
   };
 }
 
