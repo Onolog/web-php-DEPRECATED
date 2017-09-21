@@ -1,14 +1,11 @@
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
+import {Axis, Bar, Bars, Chart} from 'r-d3';
+import {getInnerHeight, getInnerWidth, translate} from 'r-d3/lib/utils';
 import React from 'react';
-
-import Axis from 'components/D3/Axis.react';
-import {Bar, Bars} from 'components/D3/Bar.react';
-import Chart from 'components/D3/Chart.react';
 
 import d3Tooltip from 'containers/d3Tooltip';
 import fullWidthChart from 'containers/fullWidthChart';
-import {getInnerHeight, getInnerWidth, transform} from 'utils/d3Utils';
 
 const TooltipBar = d3Tooltip(Bar);
 
@@ -44,7 +41,7 @@ class BarChart extends React.Component {
           orient="bottom"
           scale={xScale(data, width)}
           tickFormat={xFormat}
-          transform={transform(0, getInnerHeight(height))}
+          transform={translate(0, getInnerHeight(height))}
         />
         <Axis
           className="y-axis"

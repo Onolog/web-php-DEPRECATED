@@ -1,16 +1,13 @@
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
+import {Axis, Chart, Circle, Circles} from 'r-d3';
+import {getInnerHeight, getInnerWidth, translate} from 'r-d3/lib/utils';
 import React from 'react';
-
-import Axis from 'components/D3/Axis.react';
-import {Dot, Dots} from 'components/D3/Dot.react';
-import Chart from 'components/D3/Chart.react';
 
 import d3Tooltip from 'containers/d3Tooltip';
 import fullWidthChart from 'containers/fullWidthChart';
-import {getInnerHeight, getInnerWidth, transform} from 'utils/d3Utils';
 
-const TooltipDot = d3Tooltip(Dot);
+const TooltipCircle = d3Tooltip(Circle);
 
 const xScale = (data, width) => {
   return d3.scaleBand()
@@ -43,7 +40,7 @@ class ScatterChart extends React.Component {
           orient="bottom"
           scale={xScale(data, width)}
           tickFormat={xFormat}
-          transform={transform(0, getInnerHeight(height))}
+          transform={translate(0, getInnerHeight(height))}
         />
         <Axis
           className="y-axis"
@@ -56,20 +53,20 @@ class ScatterChart extends React.Component {
           scale={yScale(data, height)}
           tickSize={getInnerWidth(width)}
         />
-        <Dots>
-          {data.map(this._renderDot)}
-        </Dots>
+        <Circles>
+          {data.map(this._renderCircle)}
+        </Circles>
       </Chart>
     );
   }
 
-  _renderDot = (d, idx) => {
+  _renderCircle = (d, idx) => {
     const {data, height, tooltip, width} = this.props;
     const x = xScale(data, width);
     const y = yScale(data, height);
 
     return (
-      <TooltipDot
+      <TooltipCircle
         key={idx}
         radius={5}
         tooltip={tooltip && tooltip(d)}

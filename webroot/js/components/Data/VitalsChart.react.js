@@ -1,15 +1,12 @@
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
+import {Axis, Chart, Line, MouseTracker} from 'r-d3';
+import {getInnerHeight, getInnerWidth} from 'r-d3/lib/utils';
 import React from 'react';
 
-import Axis from 'components/D3/Axis.react';
-import Chart from 'components/D3/Chart.react';
-import Line from 'components/D3/Line.react';
 import MouseIndicator from 'components/Data/MouseIndicator.react';
-import MouseTracker from 'components/D3/MouseTracker.react';
 
 import fullWidthChart from 'containers/fullWidthChart';
-import {getInnerHeight, getInnerWidth} from 'utils/d3Utils';
 
 class VitalsChart extends React.Component {
   render() {

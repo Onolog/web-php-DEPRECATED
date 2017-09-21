@@ -1,15 +1,12 @@
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
+import {Area, Axis, Chart, MouseTracker} from 'r-d3';
+import {getInnerHeight, getInnerWidth, translate} from 'r-d3/lib/utils';
 import React from 'react';
 
-import Area from 'components/D3/Area.react';
-import Axis from 'components/D3/Axis.react';
-import Chart from 'components/D3/Chart.react';
 import MouseIndicator from 'components/Data/MouseIndicator.react';
-import MouseTracker from 'components/D3/MouseTracker.react';
 
 import fullWidthChart from 'containers/fullWidthChart';
-import {getInnerHeight, getInnerWidth, transform} from 'utils/d3Utils';
 
 const Y_TICKS = 3;
 
@@ -50,7 +47,7 @@ class ElevationChart extends React.Component {
           orient="bottom"
           scale={xScale}
           tickFormat={distance => `${distance.toFixed(1)} mi`}
-          transform={transform(0, innerHeight)}
+          transform={translate(0, innerHeight)}
         />
         <Axis
           className="y-axis"
@@ -68,7 +65,7 @@ class ElevationChart extends React.Component {
         />
         <Area
           data={data}
-          height={height}
+          height={innerHeight}
           x={x}
           y={y}
         />

@@ -1,17 +1,13 @@
 import * as d3 from 'd3';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
+import {Axis, Bar, Bars, Chart} from 'r-d3';
+import {getInnerHeight, getInnerWidth, translate} from 'r-d3/lib/utils';
 import React from 'react';
-
-import Axis from 'components/D3/Axis.react';
-import {Bar, Bars} from 'components/D3/Bar.react';
-import Chart from 'components/D3/Chart.react';
 
 import d3Tooltip from 'containers/d3Tooltip';
 import fullWidthChart from 'containers/fullWidthChart';
-
 import formatDistance from 'utils/formatDistance';
-import {getInnerHeight, getInnerWidth, transform} from 'utils/d3Utils';
 
 const TooltipBar = d3Tooltip(Bar);
 
@@ -43,7 +39,7 @@ class WeeklyMileageChart extends React.Component {
           scale={xScale}
           tickFormat={date => moment(date).format('MMM')}
           ticks={12}
-          transform={transform(0, innerHeight)}
+          transform={translate(0, innerHeight)}
         />
         <Axis
           className="y-axis"

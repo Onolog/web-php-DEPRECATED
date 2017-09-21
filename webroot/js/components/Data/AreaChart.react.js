@@ -1,13 +1,10 @@
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
+import {Area, Axis, Chart} from 'r-d3';
+import {getInnerHeight, getInnerWidth, translate} from 'r-d3/lib/utils';
 import React from 'react';
 
-import Area from 'components/D3/Area.react';
-import Axis from 'components/D3/Axis.react';
-import Chart from 'components/D3/Chart.react';
-
 import fullWidthChart from 'containers/fullWidthChart';
-import {getInnerHeight, getInnerWidth, transform} from 'utils/d3Utils';
 
 class AreaChart extends React.Component {
   static propTypes = {
@@ -20,40 +17,41 @@ class AreaChart extends React.Component {
 
   render() {
     const {data, height, width, xFormat} = this.props;
+    const innerHeight = getInnerHeight(height);
 
-    const xScale = d3.scaleBand()
+    const x = d3.scaleBand()
       .domain(data.map(d => d.xVal))
       .rangeRound([0, getInnerWidth(width)]);
 
-    const yScale = d3.scaleLinear()
+    const y = d3.scaleLinear()
       .domain([0, d3.max(data, d => d.yVal)])
-      .rangeRound([getInnerHeight(height), 0]);
+      .rangeRound([innerHeight, 0]);
 
     return (
       <Chart height={height} width={width}>
         <Axis
           className="x-axis"
           orient="bottom"
-          scale={xScale}
+          scale={x}
           tickFormat={xFormat}
-          transform={transform(0, getInnerHeight(height))}
+          transform={translate(0, innerHeight)}
         />
         <Axis
           className="y-axis"
           orient="left"
-          scale={yScale}
+          scale={y}
         />
         <Axis
           className="y-axis-background"
           orient="right"
-          scale={yScale}
+          scale={y}
           tickSize={getInnerWidth(width)}
         />
         <Area
           data={data}
-          height={height}
-          x={d => xScale(d.xVal)}
-          y={d => yScale(d.yVal)}
+          height={innerHeight}
+          x={d => x(d.xVal)}
+          y={d => y(d.yVal)}
         />
       </Chart>
     );
