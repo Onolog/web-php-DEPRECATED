@@ -16,7 +16,7 @@ import {getAggregateDistance, groupActivities} from 'utils/ActivityUtils';
 
 import {USER_DATA_FETCH} from 'constants/ActionTypes';
 
-import 'components/Data/Data.scss';
+import './css/Data.scss';
 
 const mapStateToProps = ({activities, pendingRequests, shoes, session}) => {
   return {
