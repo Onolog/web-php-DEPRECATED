@@ -168,18 +168,28 @@ class CalendarController extends React.Component {
   };
 
   _onKeyDown = e => {
-    // Don't key through the months if a modal is open.
-    if (this.state.showAddModal || this.state.showImportModal) {
+    const tagName = e.target.tagName.toLowerCase();
+
+    // Don't cycle through the months if...
+    if (
+      // A modal is open...
+      this.state.showAddModal || this.state.showImportModal ||
+      // Typing in an input or textarea...
+      tagName === 'input' || tagName === 'textarea' ||
+      // The `command` or `control` key is also not pressed...
+      !(e.metaKey || e.ctrlKey)
+    ) {
       return;
     }
 
+    // Prevent default browser forward/back actions.
+    e.preventDefault();
+
     switch (e.keyCode) {
       case LEFT:
-        e.preventDefault();
         this._onLastMonthClick();
         break;
       case RIGHT:
-        e.preventDefault();
         this._onNextMonthClick();
         break;
     }
