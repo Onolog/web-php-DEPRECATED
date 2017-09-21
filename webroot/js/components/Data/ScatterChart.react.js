@@ -68,7 +68,7 @@ class ScatterChart extends React.Component {
     return (
       <TooltipCircle
         key={idx}
-        radius={5}
+        r={3}
         tooltip={tooltip && tooltip(d)}
         x={x(d.xVal)}
         y={y(d.yVal)}

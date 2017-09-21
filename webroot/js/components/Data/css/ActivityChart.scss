@@ -1,3 +1,5 @@
+@import './charts.scss';
+
 $pace-color: #34ace4;
 $hr-color: #dd0447;
 
@@ -23,7 +25,8 @@ $hr-color: #dd0447;
 
   .elevation-chart {
     .area {
-      fill: rgba(0, 0, 0, 0.15);
+      fill: #000;
+      fill-opacity: 0.15;
     }
   }
 

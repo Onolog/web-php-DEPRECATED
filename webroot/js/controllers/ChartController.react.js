@@ -15,6 +15,8 @@ import WeeklyMileageChart from 'components/Data/WeeklyMileageChart.react';
 import {metersToFeet, metersToMiles} from 'utils/distanceUtils';
 import speedToPace from 'utils/speedToPace';
 
+import '../components/Data/css/charts.scss';
+
 import {METRICS} from 'constants/Garmin';
 import {ACTIVITIES, ACTIVITY_METRICS} from 'constants/TestData';
 

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
+import {translate} from 'r-d3/lib/utils';
 import React from 'react';
-
-import {transform} from 'utils/d3Utils';
 
 import './css/MouseIndicator.scss';
 
@@ -23,9 +22,9 @@ class MouseIndicator extends React.Component {
         />
         <g
           className="mouse-indicator-data"
-          transform={transform(x(d), y(d))}>
+          transform={translate(x(d), y(d))}>
           <circle r={4} />
-          <text transform={transform(5, -5)}>
+          <text transform={translate(5, -5)}>
             {yFormat(d)}
           </text>
         </g>

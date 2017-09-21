@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
+import {bisect} from 'r-d3/lib/utils';
 import React from 'react';
 
 import ElevationChart from 'components/Data/ElevationChart.react';
 import GoogleMap from 'components/Google/GoogleMap.react';
 import VitalsChart from 'components/Data/VitalsChart.react';
 
-import {bisect} from 'utils/d3Utils';
 import secondsToTime from 'utils/secondsToTime';
 
 import './css/ActivityChart.scss';
