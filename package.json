@@ -74,6 +74,7 @@
     "build": "./scripts/build.sh",
     "build-dev": "export NODE_ENV=\"development\" && npm run build",
     "build-prod": "export NODE_ENV=\"production\" && npm run build",
+    "check": "npm run lint && npm run flow && npm test",
     "deploy": "./scripts/deploy.sh",
     "flow": "flow",
     "lint": "eslint webroot/js/",
