@@ -49,9 +49,9 @@ class AreaChart extends React.Component {
         />
         <Area
           data={data}
-          height={innerHeight}
           x={d => x(d.xVal)}
-          y={d => y(d.yVal)}
+          y0={innerHeight}
+          y1={d => y(d.yVal)}
         />
       </Chart>
     );

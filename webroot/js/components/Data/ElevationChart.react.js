@@ -65,9 +65,9 @@ class ElevationChart extends React.Component {
         />
         <Area
           data={data}
-          height={innerHeight}
           x={x}
-          y={y}
+          y0={innerHeight}
+          y1={y}
         />
         <MouseTracker
           {...otherProps}

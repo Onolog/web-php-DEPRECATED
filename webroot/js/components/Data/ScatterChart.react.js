@@ -53,9 +53,7 @@ class ScatterChart extends React.Component {
           scale={yScale(data, height)}
           tickSize={getInnerWidth(width)}
         />
-        <Circles>
-          {data.map(this._renderCircle)}
-        </Circles>
+        {data.map(this._renderCircle)}
       </Chart>
     );
   }
@@ -67,11 +65,11 @@ class ScatterChart extends React.Component {
 
     return (
       <TooltipCircle
+        cx={x(d.xVal)}
+        cy={y(d.yVal)}
         key={idx}
         r={3}
         tooltip={tooltip && tooltip(d)}
-        x={x(d.xVal)}
-        y={y(d.yVal)}
       />
     );
   };

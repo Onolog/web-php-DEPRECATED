@@ -82,11 +82,11 @@ class LineChart extends React.Component {
 
     return (
       <TooltipCircle
+        cx={x(d.xVal)}
+        cy={y(d.yVal)}
         key={idx}
         r={3}
         tooltip={tooltip && tooltip(d)}
-        x={x(d.xVal)}
-        y={y(d.yVal)}
       />
     );
   }
