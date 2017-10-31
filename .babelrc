@@ -10,7 +10,7 @@
     }
   },
   "presets": [
-    "es2015",
+    "env",
     "flow",
     "react",
     "stage-1",
