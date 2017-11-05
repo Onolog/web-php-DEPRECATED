@@ -1,17 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Daniels from 'constants/Daniels';
+import ScrollContainer from 'components/ScrollContainer/ScrollContainer.react';
+import secondsToTime from 'utils/secondsToTime';
 
-function _formatTime(/*number*/ seconds) /*string|number*/ {
-  // For paces under 100 seconds, just show as seconds
-  if (seconds < 100) {
-    return seconds;
-  }
-  var time = new Date(seconds * 1000);
-  seconds = time.getSeconds();
-  var ss = seconds < 10 ? '0' + seconds : seconds;
-  return time.getMinutes() + ':' + ss;
+import {PACES} from 'constants/Daniels';
+
+function formatTime(seconds) {
+  return seconds < 100 ? seconds : secondsToTime(seconds);
 }
 
 class PaceTable extends React.Component {
@@ -21,7 +17,7 @@ class PaceTable extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="table-container">
         <table className="paces">
           <thead>
             <tr className="header">
@@ -49,48 +45,53 @@ class PaceTable extends React.Component {
             </tr>
           </thead>
         </table>
-        <div className="scrollContent">
+        <ScrollContainer>
           <table className="paces">
             <tbody>
               {this._getRows()}
             </tbody>
           </table>
-        </div>
+        </ScrollContainer>
       </div>
     );
   }
 
   _getRows = () => {
-    var rows = [];
-    var vdots = this.props.vdot ?
-      [this.props.vdot] : Object.keys(Daniels.PACES);
+    const rows = [];
+    const vdots = this.props.vdot ? [this.props.vdot] : Object.keys(PACES);
 
-    vdots.forEach(function(vdot) {
-      rows.push(<tr key={vdot}>{this._getCells(vdot)}</tr>);
-    }.bind(this));
+    vdots.forEach((vdot) => {
+      rows.push(
+        <tr key={vdot}>
+          {this._getCells(vdot)}
+        </tr>
+      );
+    });
 
     return rows;
   };
 
   _getCells = vdot => {
-    var cells = [];
-    var paces = Daniels.PACES[vdot];
+    const cells = [];
+    const paces = PACES[vdot];
 
-    for (var intensity in paces) {
+    for (let intensity in paces) {
       if (!paces.hasOwnProperty(intensity)) {
         continue;
       }
 
-      for (var distance in paces[intensity]) {
+      for (let distance in paces[intensity]) {
         if (!paces[intensity].hasOwnProperty(distance)) {
           continue;
         }
 
-        var key = vdot + '.' + intensity + '.' + distance;
-        var seconds = paces[intensity][distance];
-        var value = seconds ? _formatTime(seconds) : '·';
+        const seconds = paces[intensity][distance];
 
-        cells.push(<td key={key}>{value}</td>);
+        cells.push(
+          <td key={`${vdot}.${intensity}.${distance}`}>
+            {seconds ? formatTime(seconds) : '·'}
+          </td>
+        );
       }
     }
 

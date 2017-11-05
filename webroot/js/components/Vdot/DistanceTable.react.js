@@ -1,28 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Daniels from 'constants/Daniels';
+import ScrollContainer from 'components/ScrollContainer/ScrollContainer.react';
+import secondsToTime from 'utils/secondsToTime';
 
+import {DISTANCES, PACES, TIMES} from 'constants/Daniels';
 
-function _formatTime(/*number*/ seconds) /*string*/ {
-  var timeArray = seconds.toString().split('.');
-  var decimal = timeArray[1] === undefined ? '' : '.' + timeArray[1];
+function formatTime(/*number*/ seconds) /*string*/ {
+  const [sec, dec] = seconds.toString().split('.');
+  const arr = [secondsToTime(sec)];
 
-  var date = new Date(timeArray[0] * 1000);
-  var baseDate = new Date(0);
-
-  var hours = date.getHours() - baseDate.getHours();
-  var minutes = date.getMinutes();
-  seconds = date.getSeconds();
-
-  var mm = hours && (minutes < 10) ? '0' + minutes : minutes;
-  var ss = seconds < 10 ? '0' + seconds : seconds;
-  var time = [mm, ss];
-  if (hours) {
-    time.unshift(hours);
+  if (dec != null) {
+    arr.push(dec);
   }
 
-  return time.join(':') + decimal;
+  return arr.join('.');
 }
 
 /**
@@ -38,32 +30,34 @@ class DistanceTable extends React.Component {
 
   render() {
     return (
-      <div>
-        <table className="paces">
-          <thead>
-            <tr className="header">
-              {this._getHeaderCells()}
-            </tr>
-          </thead>
-        </table>
-        <div className="scrollContent">
+      <div className="table-container">
+        <div className="table-header">
+          <table className="paces">
+            <thead>
+              <tr className="header">
+                {this._getHeaderCells()}
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <ScrollContainer>
           <table className="paces">
             <tbody>
               {this._getRows()}
             </tbody>
           </table>
-        </div>
+        </ScrollContainer>
       </div>
     );
   }
 
   _getHeaderCells = () => /*array*/ {
-    var distances = Daniels.DISTANCES;
-    var headerCells = distances.map(function(distance) {
-      return (
-        <th key={distance.value}>{distance.label}</th>
-      );
-    });
+    const headerCells = DISTANCES.map((distance) => (
+      <th key={distance.value}>
+        {distance.label}
+      </th>
+    ));
+
     headerCells.push(<th key="vdot-r">VDOT</th>);
     headerCells.unshift(<th key="vdot-l">VDOT</th>);
 
@@ -71,25 +65,25 @@ class DistanceTable extends React.Component {
   };
 
   _getRows = () => /*array*/ {
-    var rows = [];
-    var vdots = Object.keys(Daniels.PACES);
+    const {vdot} = this.props;
+    const rows = [];
+    const vdots = vdot ? [vdot] : Object.keys(PACES);
 
-    vdots.forEach(function(vdot) {
+    vdots.forEach((vdot) => {
       rows.push(<tr key={vdot}>{this._getCells(vdot)}</tr>);
-    }.bind(this));
+    });
 
     return rows;
   };
 
   _getCells = vdot => /*array*/ {
-    var cells = [];
-    var times = Daniels.TIMES;
-    var distances = Object.keys(times);
+    const cells = [];
+    const distances = Object.keys(TIMES);
 
-    distances.forEach(function(distance, idx) {
+    distances.forEach((distance, idx) => {
       cells.push(
         <td key={idx}>
-          {_formatTime(times[distance][vdot])}
+          {formatTime(TIMES[distance][vdot])}
         </td>
       );
     });
