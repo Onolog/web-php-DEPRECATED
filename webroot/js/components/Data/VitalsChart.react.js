@@ -1,12 +1,13 @@
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
 import {Axis, Chart, Line, MouseTracker} from 'r-d3';
-import {getInnerHeight, getInnerWidth} from 'r-d3/lib/utils';
+import {getInnerHeight, getInnerWidth, translate} from 'r-d3/lib/utils';
 import React from 'react';
 
 import MouseIndicator from 'components/Data/MouseIndicator.react';
 
 import fullWidthChart from 'containers/fullWidthChart';
+import {MARGIN} from 'constants/d3';
 
 class VitalsChart extends React.Component {
   render() {
@@ -47,6 +48,7 @@ class VitalsChart extends React.Component {
       <Chart
         className={className}
         height={height}
+        transform={translate(MARGIN.left, MARGIN.top)}
         width={width}>
         <Axis
           className="y-axis"

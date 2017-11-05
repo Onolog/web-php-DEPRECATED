@@ -8,6 +8,7 @@ import MouseIndicator from 'components/Data/MouseIndicator.react';
 
 import fullWidthChart from 'containers/fullWidthChart';
 
+import {MARGIN} from 'constants/d3';
 const Y_TICKS = 3;
 
 class ElevationChart extends React.Component {
@@ -40,8 +41,8 @@ class ElevationChart extends React.Component {
       <Chart
         className={className}
         height={height}
-        width={width}
-        xScale={xScale}>
+        transform={translate(MARGIN.left, MARGIN.top)}
+        width={width}>
         <Axis
           className="x-axis"
           orient="bottom"

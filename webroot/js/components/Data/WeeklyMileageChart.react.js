@@ -9,6 +9,8 @@ import d3Tooltip from 'containers/d3Tooltip';
 import fullWidthChart from 'containers/fullWidthChart';
 import formatDistance from 'utils/formatDistance';
 
+import {MARGIN} from 'constants/d3';
+
 const TooltipBar = d3Tooltip(Bar);
 
 class WeeklyMileageChart extends React.Component {
@@ -32,7 +34,10 @@ class WeeklyMileageChart extends React.Component {
       .range([getInnerHeight(height), 0]);
 
     return (
-      <Chart height={height} width={width}>
+      <Chart
+        height={height}
+        transform={translate(MARGIN.left, MARGIN.top)}
+        width={width}>
         <Axis
           className="x-axis"
           orient="bottom"
