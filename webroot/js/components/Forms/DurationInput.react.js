@@ -9,9 +9,7 @@ import HiddenInput from './HiddenInput.react';
 
 import pad from 'utils/pad';
 
-function formatter(value) {
-  return pad(value, 2);
-}
+const formatter = (value) => pad(value, 2);
 
 /**
  * DurationInput.react
@@ -109,4 +107,4 @@ class DurationInput extends React.Component {
   };
 }
 
-module.exports = DurationInput;
+export default DurationInput;

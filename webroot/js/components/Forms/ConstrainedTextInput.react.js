@@ -5,6 +5,7 @@ import React from 'react';
 import {findDOMNode} from 'react-dom';
 
 import {DOWN, UP} from 'constants/KeyCode';
+
 const TYPES = {
   any: 'any',
   number: 'number',
@@ -60,7 +61,7 @@ class ConstrainedTextInput extends React.Component {
     );
 
     this.state = {
-      index: index,
+      index,
       /**
        * Keep track of the last valid index that was registered, as a
        * fallback in case the user enters an invalid value.
@@ -75,22 +76,25 @@ class ConstrainedTextInput extends React.Component {
   }
 
   render() {
-    var value = this.state.tempValue;
+    const {format, maxLength, type, values, ...props} = this.props;
+    const {index, tempValue} = this.state;
+
+    let value = tempValue;
     if (value == null) {
-      value = this.props.values[this.state.index];
-      if (this.props.type === TYPES.number && this.props.format) {
-        value = this.props.format(value);
+      value = values[index];
+      if (type === TYPES.number && format) {
+        value = format(value);
       }
     }
 
     return (
       <input
-        {...this.props}
+        {...props}
         className={cx('constrainedTextInput', this.props.className)}
         onBlur={this._onBlur}
         onChange={this._onKeyboardEntry}
         onKeyDown={this._onKeydown}
-        size={this.props.maxLength}
+        size={maxLength}
         type="text"
         value={value}
       />
@@ -168,4 +172,4 @@ class ConstrainedTextInput extends React.Component {
   };
 }
 
-module.exports = ConstrainedTextInput;
+export default ConstrainedTextInput;
