@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Table} from 'react-bootstrap/lib';
+import {Table} from 'react-bootstrap';
 
 import {map} from 'lodash';
 import {metersToFeet, metersToMiles} from 'utils/distanceUtils';

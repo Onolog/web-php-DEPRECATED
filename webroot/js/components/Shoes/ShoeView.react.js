@@ -2,7 +2,7 @@ import {sortBy} from 'lodash';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Table} from 'react-bootstrap/lib';
+import {Table} from 'react-bootstrap';
 
 import ActivitySection from 'components/Activities/ActivitySection.react';
 import EmptyState from 'components/EmptyState.react';

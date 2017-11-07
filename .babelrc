@@ -1,6 +1,24 @@
 {
   "plugins": [
     "lodash",
+    ["transform-imports", {
+      "lodash": {
+        "transform": "lodash/${member}",
+        "preventFullImport": true
+      },
+      "r-d3": {
+        "transform": "r-d3/lib/${member}",
+        "preventFullImport": true
+      },
+      "react-bootstrap": {
+        "transform": "react-bootstrap/es/${member}",
+        "preventFullImport": true
+      },
+      "react-router": {
+        "transform": "react-router/es/${member}",
+        "preventFullImport": true
+      }
+    }]
   ],
   "env": {
     "production": {

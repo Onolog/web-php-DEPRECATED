@@ -82,7 +82,7 @@ var config = {
     }),
   ]),
   resolve: {
-    extensions: ['.js', '.json', '.jsx'],
+    extensions: ['.js', '.json', '.jsx', '.react.js'],
     modules: [
       JS_ROOT,
       path.resolve(__dirname, 'node_modules'),

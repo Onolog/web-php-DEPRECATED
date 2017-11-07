@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import {OverlayTrigger, Tooltip} from 'react-bootstrap/lib';
+import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Link as RouterLink} from 'react-router';

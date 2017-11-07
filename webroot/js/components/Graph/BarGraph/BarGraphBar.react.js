@@ -1,6 +1,6 @@
 const PropTypes = require('prop-types');
 var React = require('react');
-var {OverlayTrigger, Tooltip} = require('react-bootstrap/lib');
+var {OverlayTrigger, Tooltip} = require('react-bootstrap');
 
 var Link = require('components/Link/Link.react');
 
