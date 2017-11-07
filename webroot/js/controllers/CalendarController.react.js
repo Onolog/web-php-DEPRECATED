@@ -182,14 +182,13 @@ class CalendarController extends React.Component {
       return;
     }
 
-    // Prevent default browser forward/back actions.
-    e.preventDefault();
-
     switch (e.keyCode) {
       case LEFT:
+        e.preventDefault();
         this._onLastMonthClick();
         break;
       case RIGHT:
+        e.preventDefault();
         this._onNextMonthClick();
         break;
     }
