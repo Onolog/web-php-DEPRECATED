@@ -16,7 +16,7 @@ import ShoeView from 'components/Shoes/ShoeView.react';
 import {deleteShoe, viewShoe} from 'actions/shoes';
 import {SHOE_DELETE, SHOE_UPDATE, SHOE_VIEW} from 'constants/ActionTypes';
 
-import 'components/Shoes/css/Shoe.css';
+import 'components/Shoes/css/Shoe.scss';
 
 function getIntParam(params, name) {
   return parseInt(params[name], 10);

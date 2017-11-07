@@ -14,7 +14,7 @@ import ShoeTable from 'components/Shoes/ShoeTable.react';
 
 import {fetchShoes} from 'actions/shoes';
 
-import 'components/Shoes/css/Shoe.css';
+import 'components/Shoes/css/Shoe.scss';
 
 const mapStateToProps = ({shoes}) => {
   return {
@@ -68,7 +68,7 @@ class ShoesController extends React.Component {
             />
           </div>
         </PageHeader>
-        <PageFrame isLoading={isLoading} scroll>
+        <PageFrame fill isLoading={isLoading} scroll>
           {this._renderContent()}
         </PageFrame>
       </AppFullPage>
@@ -98,18 +98,24 @@ class ShoesController extends React.Component {
       </EmptyState>;
 
     return (
-      <Panel header={<h3>Active</h3>}>
+      <div>
+        <h3 className="shoe-type">
+          Active
+        </h3>
         {contents}
-      </Panel>
+      </div>
     );
   };
 
   _renderInactiveShoes = inactiveShoes => {
     if (inactiveShoes && inactiveShoes.length) {
       return (
-        <Panel header={<h3>Inactive</h3>}>
+        <div>
+          <h3 className="shoe-type">
+            Inactive
+          </h3>
           <ShoeTable fill shoes={inactiveShoes} />
-        </Panel>
+        </div>
       );
     }
   };
