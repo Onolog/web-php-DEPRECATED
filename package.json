@@ -45,6 +45,7 @@
     "chunk-manifest-webpack-plugin": "^1.1.2",
     "css-loader": "^0.28.4",
     "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.0.4",
     "eslint": "^4.3.0",
     "eslint-config-ericgio": "^2.0.0",
     "eslint-plugin-flowtype": "^2.35.0",
