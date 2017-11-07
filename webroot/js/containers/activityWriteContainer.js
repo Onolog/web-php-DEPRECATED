@@ -78,6 +78,13 @@ const activityModalContainer = (Component) => {
       if (!isEmpty(garminData)) {
         this.setState({activity: garminUrlToActivity(garminData)});
       }
+
+      if (
+        this.props.date && nextProps.date &&
+        this.props.date.getTime() !== nextProps.date.getTime()
+      ) {
+        this.setState({activity: getNewActivity(nextProps)});
+      }
     }
 
     render() {
