@@ -32,7 +32,7 @@ const ActivityFeed = ({activities, className}) => {
 
   return (
     <div className={cx('activity-feed', className)}>
-      {activities.map(a => (
+      {activities.map((a) => (
         <ActivityFeedItem
           activity={a}
           key={a.id}

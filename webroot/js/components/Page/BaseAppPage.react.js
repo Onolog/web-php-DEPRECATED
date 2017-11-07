@@ -14,7 +14,7 @@ import fbLoader from 'utils/fbLoader';
 const INTERVAL = 60000; // 1 min
 const LOGIN_PATH = '/login';
 
-const renderTitle = title => {
+const renderTitle = (title) => {
   const prefix = 'Onolog';
   return title ? `${prefix} \u00b7 ${title}` : prefix;
 };
@@ -131,7 +131,7 @@ class BaseAppPage extends React.Component {
     const {session} = this.props;
 
     let isLoggedOut = false;
-    FB.getLoginStatus(response => {
+    FB.getLoginStatus((response) => {
       if (response.status !== 'connected') {
         // Logged out from Facebook.
         isLoggedOut = true;

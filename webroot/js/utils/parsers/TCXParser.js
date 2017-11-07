@@ -19,7 +19,7 @@ class TCXParser extends XMLParser {
     }
 
     let activities = [];
-    forEach(activityNodes, activityNode => {
+    forEach(activityNodes, (activityNode) => {
       let activity = (new TCXActivityParser(activityNode)).parse();
       activities.push(activity);
     });

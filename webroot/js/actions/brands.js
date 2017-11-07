@@ -25,8 +25,8 @@ function fetchBrandsRequest(): Function {
     dispatch({type: BRANDS_FETCH});
 
     $.get('/brands.json')
-      .done(response => fetchBrandsSuccess(response, dispatch))
-      .fail(response => fetchBrandsError(response, dispatch));
+      .done((response) => fetchBrandsSuccess(response, dispatch))
+      .fail((response) => fetchBrandsError(response, dispatch));
   };
 }
 

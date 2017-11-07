@@ -71,7 +71,7 @@ class PaceTable extends React.Component {
     return rows;
   };
 
-  _getCells = vdot => {
+  _getCells = (vdot) => {
     const cells = [];
     const paces = PACES[vdot];
 

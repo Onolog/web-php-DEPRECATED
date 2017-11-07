@@ -80,16 +80,16 @@ class ProfileYearPanel extends React.Component {
     switch (this.state.selectedGraph) {
       case MONTHLY:
         groupedActivities = groupActivities.byMonth(activities);
-        tooltip = data => (`
+        tooltip = (data) => (`
           ${moment().month(data.xVal).year(year).format('MMMM YYYY')}
           <div>${data.yVal} Miles</div>
         `);
-        xFormat = m => moment().month(m).format('MMM');
+        xFormat = (m) => moment().month(m).format('MMM');
         break;
       case WEEKLY:
         const data = d3.nest()
-          .key(d => moment.tz(d.start_date, d.timezone).week())
-          .rollup(values => d3.sum(values, v => v.distance))
+          .key((d) => moment.tz(d.start_date, d.timezone).week())
+          .rollup((values) => d3.sum(values, (v) => v.distance))
           .entries(activities);
 
         return (
@@ -161,7 +161,7 @@ class ProfileYearPanel extends React.Component {
     );
   };
 
-  _onChartTypeClick = selectedGraph => {
+  _onChartTypeClick = (selectedGraph) => {
     this.setState({selectedGraph});
   };
 }

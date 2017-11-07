@@ -224,7 +224,7 @@ class Report extends React.Component {
   _renderDailyGraph = () => {
     var monthData = this.state.workoutData.months;
     var monthKeys = Object.keys(monthData);
-    var months = monthKeys.map(monthKey => {
+    var months = monthKeys.map((monthKey) => {
       var month = monthData[monthKey];
       var monthName = moment({
         years: month.year,
@@ -234,7 +234,7 @@ class Report extends React.Component {
 
       var dayData = month.days;
       var dayKeys = Object.keys(dayData);
-      var days = dayKeys.map(dayKey => {
+      var days = dayKeys.map((dayKey) => {
         var day = dayData[dayKey];
         return (
           <BarGraphSectionUnit key={dayKey}>
@@ -263,7 +263,7 @@ class Report extends React.Component {
   _renderWeeklyGraph = () => {
     var weekData = this.state.workoutDataByWeek.weeks;
     var keys = Object.keys(weekData).sort();
-    var weeks = keys.map(key => {
+    var weeks = keys.map((key) => {
       var week = weekData[key];
       var label = week.week < 10 ? '0' + week.week : '' + week.week;
 
@@ -288,7 +288,7 @@ class Report extends React.Component {
   _renderMonthlyGraph = () => {
     var monthData = this.state.workoutData.months;
     var keys = Object.keys(monthData);
-    var months = keys.map(key => {
+    var months = keys.map((key) => {
       var month = monthData[key];
       var monthName = moment({
         years: month.year,

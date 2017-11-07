@@ -13,9 +13,9 @@ const FIELDS = {
 };
 const SIZE_TYPE = ['US', 'UK', 'Europe'];
 const SIZES = {
-  0: range(4, 16.5, 0.5).map(size => ({label: size, value: size})),
-  1: range(2, 16, 0.5).map(size => ({label: size, value: size})),
-  2: range(35, 50).map(size => ({label: size, value: size})),
+  0: range(4, 16.5, 0.5).map((size) => ({label: size, value: size})),
+  1: range(2, 16, 0.5).map((size) => ({label: size, value: size})),
+  2: range(35, 50).map((size) => ({label: size, value: size})),
 };
 
 /**
@@ -117,7 +117,7 @@ class ShoeFields extends React.Component {
     }
   };
 
-  _handleChange = e => {
+  _handleChange = (e) => {
     const {checked, name, value} = e.target;
     let shoe = {...this.props.shoe};
 

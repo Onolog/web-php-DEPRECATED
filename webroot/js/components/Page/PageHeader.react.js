@@ -12,7 +12,7 @@ import './css/PageHeader.css';
 /**
  * PageHeader
  */
-const PageHeader = props => {
+const PageHeader = (props) => {
   const navbarToggle = props.full ?
     <div className="app-page-header-toggle">
       <NavbarToggle

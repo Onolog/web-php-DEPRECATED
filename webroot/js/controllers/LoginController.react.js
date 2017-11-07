@@ -53,7 +53,7 @@ class Login extends React.Component {
     );
   }
 
-  _renderMarketingSection = title => {
+  _renderMarketingSection = (title) => {
     return (
       <div className="marketingSection">
         <div className="container">

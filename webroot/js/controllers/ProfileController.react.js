@@ -146,7 +146,7 @@ class ProfileController extends React.Component {
 
             <div
               className="profile-image-name-container"
-              ref={r => this._profileImageName = r}>
+              ref={(r) => this._profileImageName = r}>
               <div className="profile-image">
                 <FBImage fbid={user.id} height={180} width={180} />
               </div>

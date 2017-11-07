@@ -1,6 +1,6 @@
 import {Children, cloneElement} from 'react';
 
-const AppController = props => {
+const AppController = (props) => {
   return cloneElement(Children.only(props.children));
 };
 

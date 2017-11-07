@@ -20,11 +20,11 @@ class AreaChart extends React.Component {
     const innerHeight = getInnerHeight(height);
 
     const x = d3.scaleBand()
-      .domain(data.map(d => d.xVal))
+      .domain(data.map((d) => d.xVal))
       .rangeRound([0, getInnerWidth(width)]);
 
     const y = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.yVal)])
+      .domain([0, d3.max(data, (d) => d.yVal)])
       .rangeRound([innerHeight, 0]);
 
     return (
@@ -49,9 +49,9 @@ class AreaChart extends React.Component {
         />
         <Area
           data={data}
-          x={d => x(d.xVal)}
+          x={(d) => x(d.xVal)}
           y0={innerHeight}
-          y1={d => y(d.yVal)}
+          y1={(d) => y(d.yVal)}
         />
       </Chart>
     );

@@ -1,7 +1,7 @@
 import {isEqual, partition} from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Button, Panel} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 import AppFullPage from 'components/Page/AppFullPage.react';
@@ -90,7 +90,7 @@ class ShoesController extends React.Component {
     );
   };
 
-  _renderActiveShoes = activeShoes => {
+  _renderActiveShoes = (activeShoes) => {
     const contents = activeShoes && activeShoes.length ?
       <ShoeTable fill shoes={activeShoes} /> :
       <EmptyState>
@@ -107,7 +107,7 @@ class ShoesController extends React.Component {
     );
   };
 
-  _renderInactiveShoes = inactiveShoes => {
+  _renderInactiveShoes = (inactiveShoes) => {
     if (inactiveShoes && inactiveShoes.length) {
       return (
         <div>

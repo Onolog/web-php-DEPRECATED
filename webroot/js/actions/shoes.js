@@ -28,8 +28,8 @@ export function addShoe(shoe: Shoe): Function {
     });
 
     $.post('/shoes/add.json', shoe)
-      .done(response => addShoeSuccess(response, dispatch))
-      .fail(response => addShoeError(response, dispatch));
+      .done((response) => addShoeSuccess(response, dispatch))
+      .fail((response) => addShoeError(response, dispatch));
   };
 }
 
@@ -55,8 +55,8 @@ export function deleteShoe(id: number): Function {
     });
 
     $.post(`/shoes/delete/${id}.json`)
-      .done(response => deleteShoeSuccess(response, dispatch))
-      .fail(response => deleteShoeError(response, dispatch));
+      .done((response) => deleteShoeSuccess(response, dispatch))
+      .fail((response) => deleteShoeError(response, dispatch));
   };
 }
 
@@ -68,12 +68,12 @@ function fetchShoesSuccess(response: Object, dispatch: Function): void {
 }
 
 export function fetchShoes(): Function {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({type: ActionTypes.ALL_SHOES_FETCH});
 
     $.get('/shoes/index.json')
-      .done(response => fetchShoesSuccess(response, dispatch))
-      .fail(response => dispatch({type: ActionTypes.ALL_SHOES_FETCH_ERROR}));
+      .done((response) => fetchShoesSuccess(response, dispatch))
+      .fail((response) => dispatch({type: ActionTypes.ALL_SHOES_FETCH_ERROR}));
   };
 }
 
@@ -105,8 +105,8 @@ export function updateShoe(shoe: Shoe): Function {
     });
 
     $.post(`/shoes/edit/${id}.json`, shoe)
-      .done(response => updateShoeSuccess(response, dispatch))
-      .fail(response => updateShoeError(response, dispatch));
+      .done((response) => updateShoeSuccess(response, dispatch))
+      .fail((response) => updateShoeError(response, dispatch));
   };
 }
 
@@ -135,8 +135,8 @@ export function viewShoe(shoeId: number): Function {
       dispatch({type: ActionTypes.SHOE_VIEW});
 
       $.get(`/shoes/${shoeId}.json`)
-        .done(response => viewShoeSuccess(response, dispatch))
-        .fail(response => viewShoeError(response, dispatch));
+        .done((response) => viewShoeSuccess(response, dispatch))
+        .fail((response) => viewShoeError(response, dispatch));
     }
   };
 }
@@ -173,8 +173,8 @@ export function fetchShoeActivities(shoe: Shoe): Function {
       dispatch({type: ActionTypes.SHOE_ACTIVITIES_FETCH});
 
       $.get(`/shoes/${id}.json`)
-        .done(response => fetchShoeActivitiesSuccess(response, dispatch))
-        .fail(response => fetchShoeActivitiesError(response, dispatch));
+        .done((response) => fetchShoeActivitiesSuccess(response, dispatch))
+        .fail((response) => fetchShoeActivitiesError(response, dispatch));
     }
   };
 }

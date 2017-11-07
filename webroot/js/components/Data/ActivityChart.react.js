@@ -32,7 +32,7 @@ class ActivityChart extends React.Component {
           <GoogleMap
             className="activity-map"
             cursorPos={mousePos}
-            onPolylineMouseMove={index => {
+            onPolylineMouseMove={(index) => {
               this.setState({mousePos: data[index]});
             }}
             path={data}
@@ -55,7 +55,7 @@ class ActivityChart extends React.Component {
             {...commonProps}
             className="hr-chart"
             metric="hr"
-            yFormat={y => y}
+            yFormat={(y) => y}
           />
         </div>
       </div>
@@ -66,12 +66,12 @@ class ActivityChart extends React.Component {
     const mousePos = bisect(
       this.props.data,
       xScale.invert(mouse[0]),
-      d => d.distance
+      (d) => d.distance
     );
     this.setState({mousePos});
   }
 
-  _handleMouseOut = e => {
+  _handleMouseOut = (e) => {
     this.setState({mousePos: null});
   }
 }

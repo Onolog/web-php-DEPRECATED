@@ -9,13 +9,13 @@ import {addActivity, deleteActivity, updateActivity} from 'actions/activities';
 import {hideActivityModal} from 'actions/navigation';
 import garminUrlToActivity from 'utils/garmin/garminUrlToActivity';
 
-const getInitialState = props => ({
+const getInitialState = (props) => ({
   activity: props.initialActivity || getNewActivity(props),
   errors: {},
   isLoading: false,
 });
 
-const getNewActivity = props => {
+const getNewActivity = (props) => {
   const date = props.date || new Date();
   const now = new Date();
 
@@ -42,11 +42,11 @@ const mapStateToProps = ({garminData, pendingRequests}) => {
 const FIELDS = {
   distance: {
     error: 'Please enter a valid distance greater than 0.',
-    isValid: value => !!Number(value),
+    isValid: (value) => !!Number(value),
   },
   'avg_hr': {
     error: 'Please enter a valid heart rate.',
-    isValid: value => !value || isInteger(Number(value)),
+    isValid: (value) => !value || isInteger(Number(value)),
   },
 };
 
@@ -55,7 +55,7 @@ const FIELDS = {
  *
  * Abstracts functionality for creating, editing, or deleting an activity.
  */
-const activityModalContainer = Component => {
+const activityModalContainer = (Component) => {
   class WrappedComponent extends React.Component {
     constructor(props) {
       super(props);
@@ -96,7 +96,7 @@ const activityModalContainer = Component => {
       );
     }
 
-    _handleChange = activity => {
+    _handleChange = (activity) => {
       this.setState({activity});
     };
 
@@ -126,17 +126,17 @@ const activityModalContainer = Component => {
     /**
      * Reset the form when the modal closes.
      */
-    _handleExited = e => {
+    _handleExited = (e) => {
       this.props.dispatch(hideActivityModal());
       this.setState(getInitialState(this.props));
     };
 
-    _handleSave = e => {
+    _handleSave = (e) => {
       const {dispatch, initialActivity} = this.props;
       const {activity} = this.state;
 
       const errors = {};
-      Object.keys(FIELDS).forEach(name => {
+      Object.keys(FIELDS).forEach((name) => {
         const field = FIELDS[name];
         if (!field.isValid(activity[name])) {
           errors[name] = field.error;

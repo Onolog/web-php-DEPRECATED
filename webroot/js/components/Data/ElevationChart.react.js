@@ -26,16 +26,16 @@ class ElevationChart extends React.Component {
     const innerWidth = getInnerWidth(width);
 
     const xScale = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.distance)])
+      .domain([0, d3.max(data, (d) => d.distance)])
       .range([0, innerWidth]);
 
     const yScale = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.elevation)])
+      .domain([0, d3.max(data, (d) => d.elevation)])
       .range([innerHeight, 0]);
 
-    const x = d => xScale(d.distance);
-    const y = d => yScale(d.elevation);
-    const yFormat = elevation => `${elevation} ft`;
+    const x = (d) => xScale(d.distance);
+    const y = (d) => yScale(d.elevation);
+    const yFormat = (elevation) => `${elevation} ft`;
 
     return (
       <Chart
@@ -47,7 +47,7 @@ class ElevationChart extends React.Component {
           className="x-axis"
           orient="bottom"
           scale={xScale}
-          tickFormat={distance => `${distance.toFixed(1)} mi`}
+          tickFormat={(distance) => `${distance.toFixed(1)} mi`}
           transform={translate(0, innerHeight)}
         />
         <Axis
@@ -80,7 +80,7 @@ class ElevationChart extends React.Component {
           height={innerHeight}
           x={x}
           y={y}
-          yFormat={d => yFormat(d.elevation)}
+          yFormat={(d) => yFormat(d.elevation)}
         />
       </Chart>
     );

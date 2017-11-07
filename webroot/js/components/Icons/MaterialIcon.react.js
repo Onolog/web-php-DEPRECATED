@@ -4,7 +4,7 @@ import React from 'react';
 
 import './MaterialIcon.scss';
 
-const MaterialIcon = props => {
+const MaterialIcon = (props) => {
   const {className, dark, flip, icon, inactive, rotate, size} = props;
 
   return (

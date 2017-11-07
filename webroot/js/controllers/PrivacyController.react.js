@@ -7,7 +7,7 @@ import LegalPage from 'components/Page/LegalPage.react';
  *
  * Static page displaying the Privacy Policy.
  */
-const PrivacyPage = props => (
+const PrivacyPage = (props) => (
   <LegalPage title="Privacy Policy">
     <p>
       This privacy policy discloses the privacy practices for

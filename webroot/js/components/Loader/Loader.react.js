@@ -9,7 +9,7 @@ import './Loader.css';
  *
  * Displays a loading indicator.
  */
-const Loader = props => {
+const Loader = (props) => {
   const {background, size, full, className} = props;
 
   return (

@@ -47,7 +47,7 @@ class ActivityCalendar extends React.Component {
   _renderDay = (day, idx) => {
     const dateObject = day.date;
     const dayMoment = moment.tz(dateObject, CURRENT_TIMEZONE);
-    const activities = this.props.activities.filter(activity => {
+    const activities = this.props.activities.filter((activity) => {
       const activityMoment = moment.tz(activity.start_date, activity.timezone);
 
       // Don't use moment.isSame() here, since it won't always work correctly
@@ -60,7 +60,7 @@ class ActivityCalendar extends React.Component {
     });
 
     if (activities.length) {
-      activities.forEach(activity => {
+      activities.forEach((activity) => {
         this._weeklyMileage += activity.distance;
       });
     }

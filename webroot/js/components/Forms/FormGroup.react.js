@@ -6,7 +6,7 @@ import {Col, ControlLabel, FormGroup, HelpBlock} from 'react-bootstrap';
 /**
  * FormRow.react
  */
-const FormRow = props => {
+const FormRow = (props) => {
   const {children, error, inline, label} = props;
 
   return (

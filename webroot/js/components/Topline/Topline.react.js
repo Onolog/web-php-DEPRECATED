@@ -7,7 +7,7 @@ import './Topline.scss';
 /**
  * Topline.react
  */
-const Topline = props => {
+const Topline = (props) => {
   return (
     <ul className={cx('topline', props.className)}>
       {props.children}

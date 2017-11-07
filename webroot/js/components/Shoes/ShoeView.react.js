@@ -115,7 +115,7 @@ class ShoeView extends React.Component {
     );
   };
 
-  _renderRows = activity => {
+  _renderRows = (activity) => {
     const date = moment.tz(
       activity.start_date,
       activity.timezone

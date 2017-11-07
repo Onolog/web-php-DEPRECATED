@@ -7,7 +7,7 @@ import LegalPage from 'components/Page/LegalPage.react';
  *
  * Static page displaying the terms of service.
  */
-const TermsController = props => (
+const TermsController = (props) => (
   <LegalPage title="Terms and Conditions of Use">
     <h3>1. Terms</h3>
     <p>

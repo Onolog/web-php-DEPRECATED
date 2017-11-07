@@ -15,13 +15,13 @@ const xScale = (data, width) => {
   return d3.scaleBand()
     .rangeRound([0, getInnerWidth(width)])
     .padding(0.1)
-    .domain(data.map(d => d.xVal));
+    .domain(data.map((d) => d.xVal));
 };
 
 const yScale = (data, height) => {
   return d3.scaleLinear()
     .rangeRound([getInnerHeight(height), 0])
-    .domain([0, d3.max(data, d => d.yVal)]);
+    .domain([0, d3.max(data, (d) => d.yVal)]);
 };
 
 class BarChart extends React.Component {

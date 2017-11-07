@@ -5,7 +5,7 @@ import React from 'react';
  *
  * Standardized component for when there's no data to display.
  */
-const EmptyState = props => (
+const EmptyState = (props) => (
   <div className="emptyState">
     {props.children}
   </div>

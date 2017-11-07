@@ -9,7 +9,7 @@ import './css/AppFooter.css';
 /**
  * AppFooter.react
  */
-const AppFooter = props => (
+const AppFooter = (props) => (
   <footer className="app-footer">
     <LeftRight className="container-fluid">
       <div>Copyright &copy; {(new Date()).getFullYear()} Onolog</div>

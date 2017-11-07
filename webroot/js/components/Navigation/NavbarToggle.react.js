@@ -7,7 +7,7 @@ import React from 'react';
  * Custom version of ReactBootstrap Navbar.Toggle, which allows adding
  * classnames and attaching click handlers.
  */
-const NavbarToggle = props => {
+const NavbarToggle = (props) => {
   return (
     <button
       {...props}

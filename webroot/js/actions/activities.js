@@ -46,12 +46,12 @@ function addActivityError(response: Object, dispatch: Function): void {
 }
 
 export function addActivity(activity: Activity): Function {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({type: ACTIVITY_ADD});
 
     $.post('/activities/add.json', activity)
-      .done(response => addActivitySuccess(response, dispatch))
-      .fail(response => addActivityError(response, dispatch));
+      .done((response) => addActivitySuccess(response, dispatch))
+      .fail((response) => addActivityError(response, dispatch));
   };
 }
 
@@ -65,12 +65,12 @@ function deleteActivitySuccess(response: Object, dispatch: Function): void {
 }
 
 export function deleteActivity(activityId: number): Function {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({type: ACTIVITY_DELETE});
 
     $.post(`/activities/delete/${activityId}.json`)
-      .done(response => deleteActivitySuccess(response, dispatch))
-      .fail(response => dispatch({type: ACTIVITY_DELETE_ERROR}));
+      .done((response) => deleteActivitySuccess(response, dispatch))
+      .fail((response) => dispatch({type: ACTIVITY_DELETE_ERROR}));
   };
 }
 
@@ -85,13 +85,13 @@ function fetchActivitiesSuccess(response: Object, dispatch: Function): void {
 }
 
 function fetchActivitiesRequest(year: number, month: number): Function {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({type: ACTIVITIES_FETCH});
 
     // TODO: Make this a more general fetch endoint?
     $.get('/activities/index.json', {month, year})
-      .done(response => fetchActivitiesSuccess(response, dispatch))
-      .fail(response => dispatch({type: ACTIVITIES_FETCH_ERROR}));
+      .done((response) => fetchActivitiesSuccess(response, dispatch))
+      .fail((response) => dispatch({type: ACTIVITIES_FETCH_ERROR}));
   };
 }
 
@@ -114,12 +114,12 @@ function fetchActivitySuccess(response: Object, dispatch: Function) {
 }
 
 function fetchActivityRequest(id: number) {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({type: ACTIVITY_FETCH});
 
     $.get(`/activities/${id}.json`)
-      .done(response => fetchActivitySuccess(response, dispatch))
-      .fail(response => dispatch({type: ACTIVITY_FETCH_ERROR}));
+      .done((response) => fetchActivitySuccess(response, dispatch))
+      .fail((response) => dispatch({type: ACTIVITY_FETCH_ERROR}));
   };
 }
 
@@ -147,12 +147,12 @@ export function updateActivity(activity: Activity): Function {
     'You are trying to update an activity that does not exist'
   );
 
-  return dispatch => {
+  return (dispatch) => {
     dispatch({type: ACTIVITY_UPDATE});
 
     $.post(`/activities/edit/${id}.json`, activity)
-      .done(response => updateActivitySuccess(response, dispatch))
-      .fail(response => dispatch({type: ACTIVITY_UPDATE_ERROR}));
+      .done((response) => updateActivitySuccess(response, dispatch))
+      .fail((response) => dispatch({type: ACTIVITY_UPDATE_ERROR}));
   };
 }
 
@@ -176,11 +176,11 @@ function getGarminActivitySuccess(
 }
 
 export function getGarminActivity(activityId: number): Function {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({type: GARMIN_ACTIVITY_FETCH});
 
     $.post(`/activities/scrape/${activityId}.json`)
-      .done(response => getGarminActivitySuccess(response, dispatch))
-      .fail(response => getGarminActivityError(response, dispatch));
+      .done((response) => getGarminActivitySuccess(response, dispatch))
+      .fail((response) => getGarminActivityError(response, dispatch));
   };
 }

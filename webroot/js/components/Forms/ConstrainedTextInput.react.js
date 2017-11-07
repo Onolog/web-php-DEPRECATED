@@ -101,7 +101,7 @@ class ConstrainedTextInput extends React.Component {
     return findDOMNode(this).value;
   };
 
-  _getIndex = value => {
+  _getIndex = (value) => {
     // Explicitly check for empty string in case the user cleared the input.
     if (value !== '' && this.props.type === TYPES.number) {
       // If the values are numbers, cast the value to a number to check it.
@@ -110,7 +110,7 @@ class ConstrainedTextInput extends React.Component {
     return this.props.values.indexOf(value);
   };
 
-  _onKeydown = e => {
+  _onKeydown = (e) => {
     const count = this.props.values.length;
     let index = +this.state.index;
 
@@ -133,7 +133,7 @@ class ConstrainedTextInput extends React.Component {
     this._onChange(index);
   };
 
-  _onBlur = evt => {
+  _onBlur = (evt) => {
     var tempValue = this.state.tempValue;
     if (tempValue == null) {
       return;
@@ -153,11 +153,11 @@ class ConstrainedTextInput extends React.Component {
   /**
    * When typing in a value, store it as a temp value until the blur event.
    */
-  _onKeyboardEntry = e => {
+  _onKeyboardEntry = (e) => {
     this.setState({tempValue: e.target.value});
   };
 
-  _onChange = index => {
+  _onChange = (index) => {
     this.setState({
       index,
       lastValidIndex: index,

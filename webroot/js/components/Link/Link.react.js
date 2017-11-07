@@ -20,7 +20,7 @@ class Link extends React.Component {
     );
   }
 
-  _handleClick = e => {
+  _handleClick = (e) => {
     if (this.props.href === '#') {
       e.preventDefault();
     }

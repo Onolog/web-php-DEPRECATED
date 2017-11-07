@@ -102,7 +102,7 @@ class DurationInput extends React.Component {
     });
   };
 
-  _getHoursValue = duration => /*?number*/ {
+  _getHoursValue = (duration) => /*?number*/ {
     if (duration) {
       return duration.days() * 24 + duration.hours();
     }

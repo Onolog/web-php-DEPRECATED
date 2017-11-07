@@ -6,9 +6,9 @@ import {LinkContainer} from 'react-router-bootstrap';
 
 // `NavDropdown` injects props into all its children, so we need to pass a
 // component to make sure non-DOM props don't get passed to the `<li>`.
-const MenuArrow = props => <li className="arrow" />;
+const MenuArrow = (props) => <li className="arrow" />;
 
-const AccountNavItem = props => {
+const AccountNavItem = (props) => {
   const {arrow, className, onLogout, user, ...otherProps} = props;
   const items = [
     {label: 'Profile', pathname: `/users/${user.id}`},

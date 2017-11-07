@@ -75,7 +75,7 @@ class TCXActivityParser extends XMLParser {
     var track = [];
     var trackpointNodes = trackNode.getElementsByTagName(TAGS.trackPoint);
 
-    forEach(trackpointNodes, trackpointNode => {
+    forEach(trackpointNodes, (trackpointNode) => {
       let point = this.parseTrackpoint(trackpointNode);
       if (point) {
         track.push(point);

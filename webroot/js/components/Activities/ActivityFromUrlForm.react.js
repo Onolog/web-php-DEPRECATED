@@ -55,7 +55,7 @@ class ActivityFromUrlForm extends React.Component {
     );
   }
 
-  _handleUrlChange = e => {
+  _handleUrlChange = (e) => {
     const url = e.target.value;
 
     if (!url) {

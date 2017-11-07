@@ -78,7 +78,7 @@ class FBFriendTokenizer extends React.Component {
     // Get info for any already-tagged friends
     var {friends} = this.props;
     if (friends) {
-      friends.toString().split(',').forEach(fbid => {
+      friends.toString().split(',').forEach((fbid) => {
         batch.push({
           method: 'GET',
           relative_url: `${fbid}?fields=name`,
@@ -93,7 +93,7 @@ class FBFriendTokenizer extends React.Component {
   /**
    * Simulate firing an onChange event
    */
-  _handleChange = selected => {
+  _handleChange = (selected) => {
     this.setState({selected});
 
     this.props.onChange && this.props.onChange({
@@ -107,7 +107,7 @@ class FBFriendTokenizer extends React.Component {
   /**
    * Parse the batched response from the FB Graph API.
    */
-  _handleGraphResponse = response => {
+  _handleGraphResponse = (response) => {
     if (!(response && isArray(response))) {
       return;
     }
@@ -117,7 +117,7 @@ class FBFriendTokenizer extends React.Component {
     var options = JSON.parse(response.shift().body).data;
     var selected = [];
 
-    response.forEach(data => {
+    response.forEach((data) => {
       if (data.code === 200) {
         selected.push(JSON.parse(data.body));
       }

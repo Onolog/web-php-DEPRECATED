@@ -31,7 +31,7 @@ class GoogleMap extends React.Component {
   componentDidMount() {
     GoogleMapsLoader.KEY = API_KEY;
     GoogleMapsLoader.LIBRARIES = ['geometry'];
-    GoogleMapsLoader.load(google => {
+    GoogleMapsLoader.load((google) => {
       // Make Google Maps API globally available.
       window.google = google;
       this._drawMap();
@@ -52,7 +52,7 @@ class GoogleMap extends React.Component {
     return (
       <div
         className={this.props.className}
-        ref={instance => this._instance = instance}
+        ref={(instance) => this._instance = instance}
       />
     );
   }
@@ -127,7 +127,7 @@ class GoogleMap extends React.Component {
     this._updateCursor(this.props);
   };
 
-  _handlePolylineMouseMove = e => {
+  _handlePolylineMouseMove = (e) => {
     if (!this.props.onPolylineMouseMove) {
       return;
     }
@@ -155,7 +155,7 @@ class GoogleMap extends React.Component {
     this.cursor.setPosition(cursorPos);
   }
 
-  _getBoundsForPath = path => {
+  _getBoundsForPath = (path) => {
     const {LatLngBounds, LatLng} = window.google.maps;
     const bounds = new LatLngBounds();
     for (let ii = 0; ii < path.length-1; ii++) {

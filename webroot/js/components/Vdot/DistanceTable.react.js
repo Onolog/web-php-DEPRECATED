@@ -76,7 +76,7 @@ class DistanceTable extends React.Component {
     return rows;
   };
 
-  _getCells = vdot => /*array*/ {
+  _getCells = (vdot) => /*array*/ {
     const cells = [];
     const distances = Object.keys(TIMES);
 

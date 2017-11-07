@@ -63,7 +63,7 @@ class ActivityForm extends React.Component {
             defaultValue={activity[FIELDNAMES.DISTANCE]}
             name={FIELDNAMES.DISTANCE}
             onChange={this._onInputChange}
-            ref={input => this._distanceInput = input}
+            ref={(input) => this._distanceInput = input}
             type="number"
           />
           <span className="colon">miles</span>
@@ -132,7 +132,7 @@ class ActivityForm extends React.Component {
     );
   }
 
-  _onInputChange = e => {
+  _onInputChange = (e) => {
     const {name, value} = e.target;
     const activity = {...this.props.activity};
     activity[name] = value;
@@ -150,7 +150,7 @@ class ActivityForm extends React.Component {
     this._onChange(activity);
   };
 
-  _onChange = activity => {
+  _onChange = (activity) => {
     this.props.onChange(activity);
   };
 }

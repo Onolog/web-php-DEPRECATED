@@ -63,7 +63,7 @@ class DataController extends React.Component {
     );
   }
 
-  _renderToplineStats = activities => {
+  _renderToplineStats = (activities) => {
     const totalMiles = getAggregateDistance(activities);
     const totalRuns = activities.length;
 
@@ -84,7 +84,7 @@ class DataController extends React.Component {
     );
   };
 
-  _renderContent = activities => {
+  _renderContent = (activities) => {
     // Render an empty state when there's no data.
     if (!activities.length) {
       return (
@@ -97,7 +97,7 @@ class DataController extends React.Component {
     const activitiesByYear = groupActivities.byYear(activities);
     const years = keys(activitiesByYear).reverse();
 
-    return years.map(year => {
+    return years.map((year) => {
       return (
         <DataYearPanel
           activities={activitiesByYear[year]}

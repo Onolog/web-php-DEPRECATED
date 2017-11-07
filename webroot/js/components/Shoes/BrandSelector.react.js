@@ -36,7 +36,7 @@ class BrandSelector extends React.Component {
     const selectProps = omit(otherProps, ['dispatch']);
     const options = [];
 
-    brands.forEach(brand => {
+    brands.forEach((brand) => {
       options.push({
         label: brand.name,
         value: brand.id,

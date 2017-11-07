@@ -26,7 +26,7 @@ class LeftRight extends React.Component {
 
   render() {
     const children = [];
-    React.Children.forEach(this.props.children, child => {
+    React.Children.forEach(this.props.children, (child) => {
       children.push(child);
     });
 

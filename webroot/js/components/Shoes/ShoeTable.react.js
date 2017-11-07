@@ -14,7 +14,7 @@ import {fetchShoeActivities} from 'actions/shoes';
 const EDIT = 'edit';
 const VIEW = 'view';
 
-const getInitialState = props => ({
+const getInitialState = (props) => ({
   action: null,
   shown: null,
 });
@@ -63,14 +63,14 @@ class ShoeTable extends React.Component {
     );
   }
 
-  _renderRow = shoe => {
+  _renderRow = (shoe) => {
     const {activities} = this.props;
     const {action, shown} = this.state;
 
     return (
       <tr className={cx({inactive: !!shoe.inactive})} key={shoe.id}>
         <td>
-          <Link onClick={e => this._handleView(e, shoe)}>
+          <Link onClick={(e) => this._handleView(e, shoe)}>
             {shoe.name}
           </Link>
           <ShoeViewModal
@@ -87,7 +87,7 @@ class ShoeTable extends React.Component {
           {shoe.mileage}
         </td>
         <td className="actions">
-          <Link onClick={e => this._handleEdit(e, shoe.id)}>
+          <Link onClick={(e) => this._handleEdit(e, shoe.id)}>
             Edit
           </Link>
           <ShoeModal

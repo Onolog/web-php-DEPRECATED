@@ -84,11 +84,11 @@ class ActivityCalendarDay extends React.Component {
     }
   };
 
-  _renderActivityLink = activity => {
+  _renderActivityLink = (activity) => {
     return <ActivityLink activity={activity} key={activity.id} />;
   };
 
-  _renderWeeklyTotal = dateObject => {
+  _renderWeeklyTotal = (dateObject) => {
     if (dateObject.getDay() === LAST_DAY_OF_WEEK) {
       return (
         <div className="total">

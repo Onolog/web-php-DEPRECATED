@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import PropTypes from 'prop-types';
-import {Axis, Chart, Circle, Circles} from 'r-d3';
+import {Axis, Chart, Circle} from 'r-d3';
 import {getInnerHeight, getInnerWidth, translate} from 'r-d3/lib/utils';
 import React from 'react';
 
@@ -12,13 +12,13 @@ const TooltipCircle = d3Tooltip(Circle);
 const xScale = (data, width) => {
   return d3.scaleBand()
     .rangeRound([0, getInnerWidth(width)])
-    .domain(data.map(d => d.xVal));
+    .domain(data.map((d) => d.xVal));
 };
 
 const yScale = (data, height) => {
   return d3.scaleLinear()
     .rangeRound([getInnerHeight(height), 0])
-    .domain([0, d3.max(data, d => d.yVal)]);
+    .domain([0, d3.max(data, (d) => d.yVal)]);
 };
 
 class ScatterChart extends React.Component {

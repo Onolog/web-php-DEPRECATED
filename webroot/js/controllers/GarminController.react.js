@@ -59,7 +59,7 @@ class GarminUploader extends React.Component {
   /**
    * Convert a Garmin activity to the standardized format.
    */
-  _normalizeActivity = activity => {
+  _normalizeActivity = (activity) => {
     const friends = [
       4280,
       700963,
@@ -91,7 +91,7 @@ class GarminUploader extends React.Component {
     };
   };
 
-  _handleChange = e => {
+  _handleChange = (e) => {
     const {files} = e.target;
     const reader = new FileReader();
 
@@ -99,7 +99,7 @@ class GarminUploader extends React.Component {
     reader.readAsText(files[0]);
   };
 
-  _onLoadEnd = e => {
+  _onLoadEnd = (e) => {
     if (e.target.readyState === FileReader.DONE) {
       const parser = new FileParser();
       const activities = parser.parse(e.target.result);
@@ -113,7 +113,7 @@ class GarminUploader extends React.Component {
         latitude: start.lat,
         longitude: start.lng,
         timestamp: moment(start.time).unix(),
-      }, response => {
+      }, (response) => {
         activity.timezone = response.timeZoneId;
         this.setState({activity: activity});
       });

@@ -48,7 +48,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-const convertActivityMetrics = activityMetrics => {
+const convertActivityMetrics = (activityMetrics) => {
   const meanPace = meanBy(activityMetrics, ({metrics}) => {
     if (metrics[METRICS.SPEED]) {
       return speedToPace(metrics[METRICS.SPEED]);

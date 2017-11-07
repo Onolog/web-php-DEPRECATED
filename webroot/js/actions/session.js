@@ -41,12 +41,12 @@ function logoutSuccess({session}, dispatch) {
 }
 
 function logout() {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({type: SESSION_LOGOUT});
 
     $.post('/users/logout.json')
-      .done(response => logoutSuccess(response, dispatch))
-      .fail(response => logoutError(response, dispatch));
+      .done((response) => logoutSuccess(response, dispatch))
+      .fail((response) => logoutError(response, dispatch));
   };
 }
 
@@ -61,7 +61,7 @@ export function logoutIfNeeded() {
 
 /* Login */
 function login() {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({type: SESSION_LOGIN});
 
     FB.getLoginStatus(({authResponse, status}) => {
@@ -81,11 +81,11 @@ function login() {
 }
 
 function loginRequest(accessToken, dispatch) {
-  FB.api('/me', response => {
+  FB.api('/me', (response) => {
     response.accessToken = accessToken;
     $.post('/users/login.json', response)
-      .done(response => onLoginSuccess(response, dispatch))
-      .fail(response => onLoginError(response, dispatch));
+      .done((response) => onLoginSuccess(response, dispatch))
+      .fail((response) => onLoginError(response, dispatch));
   });
 }
 

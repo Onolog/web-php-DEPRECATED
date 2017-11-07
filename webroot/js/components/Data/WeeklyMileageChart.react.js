@@ -30,7 +30,7 @@ class WeeklyMileageChart extends React.Component {
       .range([0, innerWidth]);
 
     const yScale = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.value)])
+      .domain([0, d3.max(data, (d) => d.value)])
       .range([getInnerHeight(height), 0]);
 
     return (
@@ -42,7 +42,7 @@ class WeeklyMileageChart extends React.Component {
           className="x-axis"
           orient="bottom"
           scale={xScale}
-          tickFormat={date => moment(date).format('MMM')}
+          tickFormat={(date) => moment(date).format('MMM')}
           ticks={12}
           transform={translate(0, innerHeight)}
         />
@@ -58,7 +58,7 @@ class WeeklyMileageChart extends React.Component {
           tickSize={innerWidth}
         />
         <Bars>
-          {data.map(d => this._renderBar(d, xScale, yScale))}
+          {data.map((d) => this._renderBar(d, xScale, yScale))}
         </Bars>
       </Chart>
     );

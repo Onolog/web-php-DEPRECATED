@@ -27,10 +27,10 @@ class VitalsChart extends React.Component {
     const innerWidth = getInnerWidth(width);
 
     const xScale = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.distance)])
+      .domain([0, d3.max(data, (d) => d.distance)])
       .range([0, innerWidth]);
 
-    const yDomain = d3.extent(data, d => d[metric]);
+    const yDomain = d3.extent(data, (d) => d[metric]);
     if (invert) {
       yDomain.reverse();
     }
@@ -39,10 +39,10 @@ class VitalsChart extends React.Component {
       .domain(yDomain)
       .range([innerHeight, 0]);
 
-    const mean = d3.mean(data, d => d[metric]);
+    const mean = d3.mean(data, (d) => d[metric]);
 
-    const x = d => xScale(d.distance);
-    const y = d => yScale(d[metric]);
+    const x = (d) => xScale(d.distance);
+    const y = (d) => yScale(d[metric]);
 
     return (
       <Chart
@@ -68,7 +68,7 @@ class VitalsChart extends React.Component {
           className="mean-line"
           data={[
             {distance: 0, [metric]: mean},
-            {distance: d3.max(data, d => d.distance), [metric]: mean},
+            {distance: d3.max(data, (d) => d.distance), [metric]: mean},
           ]}
           x={x}
           y={y}
@@ -89,7 +89,7 @@ class VitalsChart extends React.Component {
           height={innerHeight}
           x={x}
           y={y}
-          yFormat={d => yFormat(d[metric])}
+          yFormat={(d) => yFormat(d[metric])}
         />
       </Chart>
     );

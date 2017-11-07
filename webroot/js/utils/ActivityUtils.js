@@ -108,7 +108,7 @@ function _groupBy(unit: TimeUnit, activities: Activities): Object {
 
   // Create the shell object keyed by unit of time.
   const grouped = {};
-  range.forEach(value => grouped[value] = []);
+  range.forEach((value) => grouped[value] = []);
 
   // Merge the shell object with the grouped activities.
   return {...grouped, ...activities};

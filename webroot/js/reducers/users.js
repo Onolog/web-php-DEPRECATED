@@ -23,7 +23,7 @@ const users = (state=[], action) => {
     case SETTINGS_FETCH_SUCCESS:
       return action.users;
     case USER_SETTINGS_SAVE_SUCCESS:
-      return state.map(u => user(u, action));
+      return state.map((u) => user(u, action));
     default:
       return state;
   }

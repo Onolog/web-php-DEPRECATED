@@ -79,7 +79,7 @@ class Activity extends React.Component {
     );
   }
 
-  _renderDetailsContent = activity => {
+  _renderDetailsContent = (activity) => {
     const {device, friends, notes} = activity;
 
     let content = [];
@@ -131,7 +131,7 @@ class Activity extends React.Component {
     return content;
   };
 
-  _renderMap = tracks => {
+  _renderMap = (tracks) => {
     if (tracks && tracks.length) {
       return (
         <div className="activityMapContainer">

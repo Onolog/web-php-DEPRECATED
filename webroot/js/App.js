@@ -14,7 +14,7 @@ import ActionTypes from 'constants/ActionTypes';
 
 // Construct the map of possible requests. Initialize each to false.
 const pendingRequests = {};
-values(ActionTypes).forEach(action => pendingRequests[action] = false);
+values(ActionTypes).forEach((action) => pendingRequests[action] = false);
 
 const initialState = {
   activities: [],

@@ -6,7 +6,7 @@ import {Button} from 'react-bootstrap';
  *
  * Renders a custom React FB login button.
  */
-const FBLoginButton = props => (
+const FBLoginButton = (props) => (
   <Button
     bsSize="large"
     bsStyle="primary"

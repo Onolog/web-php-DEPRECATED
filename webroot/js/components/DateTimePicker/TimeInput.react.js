@@ -69,7 +69,7 @@ class TimeInput extends React.Component {
     );
   }
 
-  _onHoursChange = hours => {
+  _onHoursChange = (hours) => {
     var meridiem = this.refs.meridiem.getValue();
 
     // Display is 12-hour, time is 24-hour. Adjust accordingly.
@@ -82,11 +82,11 @@ class TimeInput extends React.Component {
     this._onChange(hours, this.props.minutes);
   };
 
-  _onMinutesChange = minutes => {
+  _onMinutesChange = (minutes) => {
     this._onChange(this.props.hours, minutes);
   };
 
-  _onMeridiemChange = meridiem => {
+  _onMeridiemChange = (meridiem) => {
     var {hours} = this.props;
     hours = (meridiem === MERIDIEM.PM && hours < 12) ? hours + 12 : hours - 12;
     this._onChange(hours, this.props.minutes);

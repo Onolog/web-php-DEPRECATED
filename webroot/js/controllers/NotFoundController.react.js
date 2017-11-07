@@ -13,7 +13,7 @@ import './css/NotFound.scss';
  *
  * Catch-all page if a route doesn't match.
  */
-const NotFoundController = props => (
+const NotFoundController = (props) => (
   <BaseAppPage className="error-page" title="Page Not Found">
     <div className="container">
       <h2>Page not found.</h2>

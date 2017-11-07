@@ -12,13 +12,13 @@ const TooltipCircle = d3Tooltip(Circle);
 const xScale = (data, width) => {
   return d3.scaleBand()
     .rangeRound([0, getInnerWidth(width)])
-    .domain(data.map(d => d.xVal));
+    .domain(data.map((d) => d.xVal));
 };
 
 const yScale = (data, height) => {
   return d3.scaleLinear()
     .rangeRound([getInnerHeight(height), 0])
-    .domain([0, d3.max(data, d => d.yVal)]);
+    .domain([0, d3.max(data, (d) => d.yVal)]);
 };
 
 class LineChart extends React.Component {
@@ -55,8 +55,8 @@ class LineChart extends React.Component {
         />
         <Line
           data={data}
-          x={d => xScale(data, width)(d.xVal)}
-          y={d => yScale(data, height)(d.yVal)}
+          x={(d) => xScale(data, width)(d.xVal)}
+          y={(d) => yScale(data, height)(d.yVal)}
         />
         {this._renderCircles()}
       </Chart>

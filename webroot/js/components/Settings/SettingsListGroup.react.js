@@ -4,13 +4,13 @@ import {Col, Row, ListGroup, ListGroupItem} from 'react-bootstrap';
 
 import './css/SettingsListGroup.css';
 
-const SettingsListGroup = props => (
+const SettingsListGroup = (props) => (
   <ListGroup className="settings-list-group">
     {props.children}
   </ListGroup>
 );
 
-const SettingsListGroupItem = props => (
+const SettingsListGroupItem = (props) => (
   <ListGroupItem className="settings-list-group-item">
     <Row>
       <Col md={3}>

@@ -8,7 +8,7 @@ import MaterialIcon from 'components/Icons/MaterialIcon.react';
 
 import './css/SideNav.css';
 
-const SideNav = props => (
+const SideNav = (props) => (
   <Nav bsStyle="pills" className="app-side-nav" stacked>
     {props.children}
   </Nav>
@@ -35,7 +35,7 @@ const SideNavItem = ({children, className, icon, open, pathname}) => {
     </OverlayTrigger>;
 };
 
-const SideNavItemLabel = props => (
+const SideNavItemLabel = (props) => (
   <span className="app-side-nav-item-label">
     {props.children}
   </span>

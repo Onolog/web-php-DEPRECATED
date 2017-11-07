@@ -14,5 +14,5 @@ export function toggleSideNav(): Function {
 }
 
 export function hideActivityModal(): Function {
-  return dispatch => dispatch({type: ACTIVITY_MODAL_HIDE});
+  return (dispatch) => dispatch({type: ACTIVITY_MODAL_HIDE});
 }

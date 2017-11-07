@@ -32,8 +32,8 @@ function fetchUserDataRequest() {
     dispatch({type: USER_DATA_FETCH});
 
     $.get('/users/data.json')
-      .done(response => fetchUserDataSuccess(response, dispatch))
-      .fail(response => dispatch({type: USER_DATA_FETCH_ERROR}));
+      .done((response) => fetchUserDataSuccess(response, dispatch))
+      .fail((response) => dispatch({type: USER_DATA_FETCH_ERROR}));
   };
 }
 
@@ -68,8 +68,8 @@ function fetchProfileRequest(userId) {
     dispatch({type: PROFILE_FETCH});
 
     $.get(`/users/${userId}.json`)
-      .done(response => fetchProfileSuccess(response, dispatch))
-      .fail(response => fetchProfileError(response, dispatch));
+      .done((response) => fetchProfileSuccess(response, dispatch))
+      .fail((response) => fetchProfileError(response, dispatch));
   };
 }
 
@@ -92,8 +92,8 @@ function fetchSettingsRequest() {
     dispatch({type: SETTINGS_FETCH});
 
     $.get('/users/settings.json')
-      .done(response => fetchSettingsSuccess(response, dispatch))
-      .fail(response => dispatch({type: SETTINGS_FETCH_ERROR}));
+      .done((response) => fetchSettingsSuccess(response, dispatch))
+      .fail((response) => dispatch({type: SETTINGS_FETCH_ERROR}));
   };
 }
 
@@ -119,7 +119,7 @@ export function userSaveSettings(settings: Object): Function {
     dispatch({type: USER_SETTINGS_SAVE});
 
     $.post('/users/edit.json', settings)
-      .done(response => userSaveSettingsSuccess(response, dispatch))
-      .fail(response => dispatch({type: USER_SETTINGS_SAVE_ERROR}));
+      .done((response) => userSaveSettingsSuccess(response, dispatch))
+      .fail((response) => dispatch({type: USER_SETTINGS_SAVE_ERROR}));
   };
 }

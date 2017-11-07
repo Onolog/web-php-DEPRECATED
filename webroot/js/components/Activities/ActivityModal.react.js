@@ -12,7 +12,7 @@ import activityWriteContainer from 'containers/activityWriteContainer';
  *
  * Edit an existing activity or create a new one.
  */
-const ActivityModal = props => {
+const ActivityModal = (props) => {
   const {
     activity,
     errors,

@@ -61,8 +61,8 @@ class Friends extends React.Component {
 
   _getFriends = () => {
     const {FB} = window;
-    FB.getLoginStatus(response => {
-      FB.api('/me/friends', response => {
+    FB.getLoginStatus((response) => {
+      FB.api('/me/friends', (response) => {
         this.setState({friends: response.data});
       });
     });

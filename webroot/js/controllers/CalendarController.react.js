@@ -78,7 +78,7 @@ class CalendarController extends React.Component {
       [] :
       // Filter out activities that aren't within a couple weeks of the selected
       // month, otherwise calendar rendering can be slow.
-      this.props.activities.filter(activity => (
+      this.props.activities.filter((activity) => (
         moment(activity.start_date).isBetween(
           // Create new moments here, since manipulating them mutates the
           // underlying moment.
@@ -148,7 +148,7 @@ class CalendarController extends React.Component {
     );
   };
 
-  _fetchData = m => {
+  _fetchData = (m) => {
     this.props.dispatch(fetchActivities(m.year(), m.month() + 1));
   };
 
@@ -167,7 +167,7 @@ class CalendarController extends React.Component {
     this.setState({showImportModal: true});
   };
 
-  _onKeyDown = e => {
+  _onKeyDown = (e) => {
     const tagName = e.target.tagName.toLowerCase();
 
     // Don't cycle through the months if...
@@ -206,7 +206,7 @@ class CalendarController extends React.Component {
     this._updateCalendar(getMoment(this.props.params).add({months: 1}));
   };
 
-  _updateCalendar = newMoment => {
+  _updateCalendar = (newMoment) => {
     // Don't update if the month hasn't changed.
     if (newMoment.isSame(getMoment(this.props.params), 'month')) {
       return;

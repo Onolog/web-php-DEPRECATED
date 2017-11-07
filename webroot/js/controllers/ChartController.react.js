@@ -42,7 +42,7 @@ const weekData = weekMiles.map((miles, week) => ({
 }));
 
 // TODO: Include timezone in fetched + test data.
-const activities = ACTIVITIES.map(a => ({
+const activities = ACTIVITIES.map((a) => ({
   ...a,
   timezone: 'America/Los_Angeles',
 }));
@@ -75,18 +75,18 @@ class ChartController extends React.Component {
           <BarChart
             data={monthData}
             height={HEIGHT}
-            tooltip={data => (`
+            tooltip={(data) => (`
               <strong>${moment().month(data.xVal).format('MMMM')}</strong>
               <div>${data.yVal} Miles</div>
             `)}
-            xFormat={m => moment().month(m).format('MMM')}
+            xFormat={(m) => moment().month(m).format('MMM')}
           />
         </Panel>
         <Panel header={<h3>Week Data</h3>}>
           <WeeklyMileageChart
             data={d3.nest()
-              .key(d => moment.tz(d.start_date, d.timezone).week())
-              .rollup(values => d3.sum(values, v => v.distance))
+              .key((d) => moment.tz(d.start_date, d.timezone).week())
+              .rollup((values) => d3.sum(values, (v) => v.distance))
               .entries(activities)
             }
             height={200}
@@ -98,33 +98,33 @@ class ChartController extends React.Component {
             data={weekData}
             dots
             height={HEIGHT}
-            tooltip={data => (`
+            tooltip={(data) => (`
               <strong>Week ${moment().week(data.xVal).format('w')}</strong>
               <div>${data.yVal} Miles</div>
             `)}
-            xFormat={w => moment().week(w).format('ww')}
+            xFormat={(w) => moment().week(w).format('ww')}
           />
         </Panel>
         <Panel>
           <AreaChart
             data={weekData}
             height={HEIGHT}
-            tooltip={data => (`
+            tooltip={(data) => (`
               <strong>Week ${moment().week(data.xVal).format('w')}</strong>
               <div>${data.yVal} Miles</div>
             `)}
-            xFormat={w => moment().week(w).format('ww')}
+            xFormat={(w) => moment().week(w).format('ww')}
           />
         </Panel>
         <Panel>
           <ScatterChart
             data={weekData}
             height={HEIGHT}
-            tooltip={data => (`
+            tooltip={(data) => (`
               <strong>Week ${moment().week(data.xVal).format('w')}</strong>
               <div>${data.yVal} Miles</div>
             `)}
-            xFormat={w => moment().week(w).format('ww')}
+            xFormat={(w) => moment().week(w).format('ww')}
           />
         </Panel>
         <Panel>

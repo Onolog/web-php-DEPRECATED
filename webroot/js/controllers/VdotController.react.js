@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormControl, Nav, NavItem, Tab, Tabs} from 'react-bootstrap/lib';
+import {FormControl, Nav, NavItem} from 'react-bootstrap/lib';
 
 import AppFullPage from 'components/Page/AppFullPage.react';
 import DistanceTable from 'components/Vdot/DistanceTable.react';
