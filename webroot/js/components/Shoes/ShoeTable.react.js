@@ -1,84 +1,88 @@
 import cx from 'classnames';
-import {filter} from 'lodash';
+import {sortBy} from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Table} from 'react-bootstrap';
-import {connect} from 'react-redux';
 
-import Link from 'components/Link/Link.react';
-import ShoeModal from './ShoeModal.react';
-import ShoeViewModal from './ShoeViewModal.react';
-
-import {fetchShoeActivities} from 'actions/shoes';
-
-const EDIT = 'edit';
-const VIEW = 'view';
-
-const getInitialState = (props) => ({
-  action: null,
-  shown: null,
-});
-
-const mapStateToProps = ({activities}) => {
-  return {
-    activities,
-  };
-};
+import MaterialIcon from 'components/Icons/MaterialIcon.react';
 
 class ShoeTable extends React.Component {
   static displayName = 'ShoeTable';
 
   static propTypes = {
-    activities: PropTypes.array.isRequired,
-    shoes: PropTypes.array.isRequired,
+    activeShoeId: PropTypes.number.isRequired,
+    onView: PropTypes.func.isRequired,
+    shoes: PropTypes.arrayOf(
+      PropTypes.shape({
+        activity_count: PropTypes.number.isRequired,
+        id: PropTypes.number.isRequired,
+        inactive: PropTypes.bool.isRequired,
+        mileage: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+      })
+    ).isRequired,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = getInitialState(props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // Close dialog when shoes get updated.
-    if (this.state.action === EDIT) {
-      this.setState(getInitialState(nextProps));
-    }
-  }
+  state = {
+    order: 'asc',
+    sortBy: 'name',
+  };
 
   render() {
+    const shoes = sortBy(this.props.shoes, this.state.sortBy);
+    if (this.state.order === 'desc') {
+      shoes.reverse();
+    }
+
     return (
       <Table hover>
         <thead>
           <tr>
-            <th>Name</th>
-            <th className="activities">Activities</th>
-            <th className="mileage">Miles</th>
-            <th />
+            <th onClick={() => this._handleHeaderClick('name')}>
+              Name {this._renderIcon('name')}
+            </th>
+            <th
+              className="activities"
+              onClick={() => this._handleHeaderClick('activity_count')}>
+              Activities {this._renderIcon('activity_count')}
+            </th>
+            <th
+              className="mileage"
+              onClick={() => this._handleHeaderClick('mileage')}>
+              Miles {this._renderIcon('mileage')}
+            </th>
           </tr>
         </thead>
         <tbody>
-          {this.props.shoes.map(this._renderRow)}
+          {shoes.map(this._renderRow)}
         </tbody>
       </Table>
     );
   }
 
+  _renderIcon = (sortBy) => {
+    if (this.state.sortBy === sortBy) {
+      return (
+        <MaterialIcon
+          icon={`menu-${this.state.order === 'asc' ? 'up' : 'down'}`}
+        />
+      );
+    }
+  }
+
   _renderRow = (shoe) => {
-    const {activities} = this.props;
-    const {action, shown} = this.state;
+    const {activeShoeId, onView} = this.props;
 
     return (
-      <tr className={cx({inactive: !!shoe.inactive})} key={shoe.id}>
+      <tr
+        className={cx({
+          active: shoe.id === activeShoeId,
+          inactive: !!shoe.inactive,
+        })}
+        key={shoe.id}
+        onClick={() => onView(shoe)}>
         <td>
-          <Link onClick={(e) => this._handleView(e, shoe)}>
-            {shoe.name}
-          </Link>
-          <ShoeViewModal
-            activities={filter(activities, {shoe_id: shoe.id})}
-            onHide={this._handleHideModal}
-            shoe={shoe}
-            show={action === VIEW && shown === shoe.id}
-          />
+          {shoe.name}
         </td>
         <td className="activities">
           {shoe.activity_count}
@@ -86,42 +90,22 @@ class ShoeTable extends React.Component {
         <td className="mileage">
           {shoe.mileage}
         </td>
-        <td className="actions">
-          <Link onClick={(e) => this._handleEdit(e, shoe.id)}>
-            Edit
-          </Link>
-          <ShoeModal
-            initialShoe={shoe}
-            onHide={this._handleHideModal}
-            show={action === EDIT && shown === shoe.id}
-          />
-        </td>
       </tr>
     );
-  };
+  }
 
-  _handleEdit = (e, shoeId) => {
-    this.setState({
-      action: EDIT,
-      shown: shoeId,
-    });
-  };
+  _handleHeaderClick = (sortBy) => {
+    let order;
+    if (this.state.sortBy === sortBy) {
+      order = this.state.order === 'asc' ? 'desc' : 'asc';
+    } else if (sortBy === 'name') {
+      order = 'asc';
+    } else {
+      order = 'desc';
+    }
 
-  _handleHideModal = () => {
-    this.setState({
-      action: null,
-      shown: null,
-    });
-  };
-
-  _handleView = (e, shoe) => {
-    this.props.dispatch(fetchShoeActivities(shoe));
-
-    this.setState({
-      action: VIEW,
-      shown: shoe.id,
-    });
-  };
+    this.setState({order, sortBy});
+  }
 }
 
-module.exports = connect(mapStateToProps)(ShoeTable);
+export default ShoeTable;

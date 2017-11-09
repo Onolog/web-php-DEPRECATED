@@ -1,4 +1,5 @@
-import {isEqual, partition} from 'lodash';
+import cx from 'classnames';
+import {filter, find, isEqual, partition} from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Button} from 'react-bootstrap';
@@ -6,21 +7,31 @@ import {connect} from 'react-redux';
 
 import AppFullPage from 'components/Page/AppFullPage.react';
 import EmptyState from 'components/EmptyState.react';
+import LeftRight from 'components/LeftRight/LeftRight.react';
 import MaterialIcon from 'components/Icons/MaterialIcon.react';
 import PageFrame from 'components/Page/PageFrame.react';
 import PageHeader from 'components/Page/PageHeader.react';
+import ScrollContainer from 'components/ScrollContainer/ScrollContainer.react';
 import ShoeModal from 'components/Shoes/ShoeModal.react';
 import ShoeTable from 'components/Shoes/ShoeTable.react';
+import ShoeView from 'components/Shoes/ShoeView.react';
 
-import {fetchShoes} from 'actions/shoes';
+import {fetchShoeActivities, fetchShoes} from 'actions/shoes';
 
 import 'components/Shoes/css/Shoe.scss';
 
-const mapStateToProps = ({shoes}) => {
+const mapStateToProps = ({activities, shoes}) => {
   return {
+    activities,
     shoes,
   };
 };
+
+const SectionHeader = (props) => (
+  <h3 className={cx('section-header', props.className)}>
+    {props.children}
+  </h3>
+);
 
 /**
  * ShoesController.react
@@ -31,16 +42,30 @@ class ShoesController extends React.Component {
   static displayName = 'ShoesController';
 
   static propTypes = {
-    shoes: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+    activities: PropTypes.arrayOf(
+      PropTypes.shape({
+        shoe_id: PropTypes.number.isRequired,
+      })
+    ).isRequired,
+    shoes: PropTypes.arrayOf(
+      PropTypes.shape({
+        activity_count: PropTypes.number.isRequired,
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+      })
+    ).isRequired,
   };
 
   state = {
+    activeShoeId: 0,
     isLoading: false,
+    shoe: null,
     show: false,
   };
 
   componentWillMount() {
-    this._fetchData();
+    this.props.dispatch(fetchShoes());
+    this.setState({isLoading: true});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -62,14 +87,15 @@ class ShoesController extends React.Component {
             <Button bsSize="small" onClick={this._handleShowModal}>
               <MaterialIcon icon="plus" /> New Shoe
             </Button>
-            <ShoeModal
-              onHide={this._handleHideModal}
-              show={show}
-            />
           </div>
         </PageHeader>
-        <PageFrame fill isLoading={isLoading} scroll>
+        <PageFrame fill isLoading={isLoading}>
           {this._renderContent()}
+          <ShoeModal
+            initialShoe={this.state.shoe}
+            onHide={this._handleHideModal}
+            show={show}
+          />
         </PageFrame>
       </AppFullPage>
     );
@@ -80,58 +106,113 @@ class ShoesController extends React.Component {
       return;
     }
 
-    const shoes = partition(this.props.shoes, 'inactive');
+    const [inactive, active] = partition(this.props.shoes, 'inactive');
 
     return (
-      <div>
-        {this._renderActiveShoes(shoes[1])}
-        {this._renderInactiveShoes(shoes[0])}
+      <div className="shoes-container">
+        <ScrollContainer className="shoe-list-container">
+          {this._renderActiveShoes(active)}
+          {this._renderInactiveShoes(inactive)}
+        </ScrollContainer>
+        <ScrollContainer className="shoe-details">
+          {this._renderShoeDetails()}
+        </ScrollContainer>
       </div>
     );
-  };
+  }
 
   _renderActiveShoes = (activeShoes) => {
     const contents = activeShoes && activeShoes.length ?
-      <ShoeTable fill shoes={activeShoes} /> :
+      <ShoeTable
+        activeShoeId={this.state.activeShoeId}
+        onView={this._handleShoeView}
+        shoes={activeShoes}
+      /> :
       <EmptyState>
         You do not have any active shoes to display.
       </EmptyState>;
 
     return (
       <div>
-        <h3 className="shoe-type">
+        <SectionHeader className="shoe-type">
           Active
-        </h3>
+        </SectionHeader>
         {contents}
       </div>
     );
-  };
+  }
 
   _renderInactiveShoes = (inactiveShoes) => {
     if (inactiveShoes && inactiveShoes.length) {
       return (
         <div>
-          <h3 className="shoe-type">
+          <SectionHeader className="shoe-type">
             Inactive
-          </h3>
-          <ShoeTable fill shoes={inactiveShoes} />
+          </SectionHeader>
+          <ShoeTable
+            activeShoeId={this.state.activeShoeId}
+            onView={this._handleShoeView}
+            shoes={inactiveShoes}
+          />
         </div>
       );
     }
-  };
+  }
+
+  _renderShoeDetails = () => {
+    const {activeShoeId} = this.state;
+
+    if (!activeShoeId) {
+      return (
+        <EmptyState>
+          No shoe selected.
+        </EmptyState>
+      );
+    }
+
+    const activities = filter(this.props.activities, {shoe_id: activeShoeId});
+    const shoe = find(this.props.shoes, {id: activeShoeId});
+
+    return [
+      <div className="shoe-details-header" key="header">
+        <LeftRight>
+          <h4>{shoe.name}</h4>
+          <Button bsSize="small" onClick={() => this._handleShoeEdit(shoe)}>
+            <MaterialIcon icon="pencil" />
+          </Button>
+        </LeftRight>
+      </div>,
+      <ShoeView
+        activities={activities}
+        isLoading={activities.length !== shoe.activity_count}
+        key="view"
+        shoe={shoe}
+      />,
+    ];
+  }
 
   _handleHideModal = () => {
-    this.setState({show: false});
-  };
+    this.setState({
+      shoe: null,
+      show: false,
+    });
+  }
+
+  _handleShoeEdit = (shoe) => {
+    this.setState({
+      shoe,
+      show: true,
+    });
+  }
+
+  _handleShoeView = (shoe) => {
+    this.props.dispatch(fetchShoeActivities(shoe));
+    this.setState({activeShoeId: shoe.id});
+  }
 
   _handleShowModal = () => {
     this.setState({show: true});
-  };
-
-  _fetchData = () => {
-    this.props.dispatch(fetchShoes());
-    this.setState({isLoading: true});
-  };
+  }
 }
 
 module.exports = connect(mapStateToProps)(ShoesController);

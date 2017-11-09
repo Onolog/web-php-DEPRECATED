@@ -98,7 +98,7 @@ class ShoeView extends React.Component {
     }
 
     return (
-      <Table fill hover>
+      <Table hover>
         <thead>
           <tr>
             <th>Activity Date</th>

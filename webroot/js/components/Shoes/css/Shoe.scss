@@ -4,19 +4,41 @@
 /**
  * Shoe.scss
  */
-
-.shoeList {
-  table-layout: fixed;
+.shoes-container {
+  @include display-flex();
+  height: 100%;
 }
 
-.shoe-type {
+.shoe-list-container {
+  @include flex(1);
+}
+
+.shoe-details {
+  border-left: 1px solid $border-color;
+  width: 40%;
+
+  &-header {
+    /*border-bottom: 1px solid $border-color;*/
+    padding: 10px 15px;
+
+    & h4 {
+      margin: 5px 0 0;
+    }
+  }
+}
+
+.section-header {
   @include heading-tertiary();
   background-color: #f5f5f5;
   border-bottom: 1px solid $border-color;
   margin: 0;
   padding: 10px 15px;
-  position: sticky;
+}
+
+.shoe-type {
+  @include position-sticky();
   top: 0;
+  z-index: 1;
 }
 
 /* Table */
@@ -28,6 +50,10 @@
   text-align: right;
 }
 
+.table tr:hover {
+  cursor: pointer;
+}
+
 .table .inactive,
 .table .inactive a {
   color: #aaa;
@@ -37,32 +63,15 @@
   color: #7ea3c2;
 }
 
-.modal-body .shoeView {
-  margin: -15px;
-}
-
-.workoutDescription {
-  width: 75%;
-}
-
-.workoutDescriptionTruncator {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  word-break: break-all;
-  word-wrap: break-word;
-}
-
-/* TABLET & SMALL SCREEN */
-@media (min-width: 768px) and (max-width: 991px) {
-  .workoutDescription {
-    width: 65%;
-  }
-}
-
 /* MOBILE */
 @media (max-width: 767px) {
-  .workoutDescription {
-    width: 50%;
+  .shoe-details {
+    background-color: #fff;
+    bottom: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 80%;
+    z-index: 1;
   }
 }

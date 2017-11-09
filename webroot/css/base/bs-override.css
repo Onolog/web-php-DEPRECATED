@@ -328,6 +328,7 @@ section + section,
   border-bottom-width: 1px;
   color: #aaa;
   font-size: 10px;
+  font-weight: normal;
   text-transform: uppercase;
 }
 .table > thead > tr > th,

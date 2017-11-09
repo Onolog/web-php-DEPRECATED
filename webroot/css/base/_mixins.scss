@@ -27,3 +27,8 @@
   font-weight: normal;
   text-transform: uppercase;
 }
+
+@mixin position-sticky() {
+  position: -webkit-sticky;
+  position: sticky;
+}

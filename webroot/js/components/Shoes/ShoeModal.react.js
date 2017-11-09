@@ -45,6 +45,12 @@ class ShoeModal extends React.Component {
     this.state = getInitialState(props);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props.initialShoe, nextProps.initialShoe)) {
+      this.setState(getInitialState(nextProps));
+    }
+  }
+
   render() {
     const {initialShoe, show, user} = this.props;
     const {isLoading, shoe} = this.state;
