@@ -62,7 +62,9 @@ class ActivityLink extends React.Component {
     this.setState({isEditing: true});
   };
 
-  _hideModal = () => {
+  _hideModal = (e) => {
+    e && e.stopPropagation();
+
     this.setState({
       isEditing: false,
       isLoading: false,
