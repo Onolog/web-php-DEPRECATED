@@ -89,6 +89,18 @@ $info-col-width: 260px;
     }
   }
 
+  .activity-summary {
+    .nav-pills > li > a {
+      border-radius: 3px;
+      font-size: 11px;
+      padding: 5px;
+    }
+
+    .topline {
+      padding: 15px 0;
+    }
+  }
+
   h4 {
     @include heading-tertiary();
   }

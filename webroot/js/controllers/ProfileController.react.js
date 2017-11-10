@@ -3,7 +3,7 @@ import {find} from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Col, Row} from 'react-bootstrap';
+import {Col, Row, Tab, Tabs} from 'react-bootstrap';
 import {findDOMNode} from 'react-dom';
 import {connect} from 'react-redux';
 
@@ -161,13 +161,11 @@ class ProfileController extends React.Component {
           <Col className="profile-main-col" sm={9}>
             <Row>
               <Col lg={8}>
-                <h4>Activity Summary</h4>
-                {this._renderActivitySummary()}
-                <h4>Recent Activities</h4>
                 <ActivityFeed activities={activities} />
               </Col>
               <Col lg={4}>
-                <h4>Friends</h4>
+                {this._renderActivitySummary()}
+                {/*<h4>Friends</h4>*/}
               </Col>
             </Row>
           </Col>
@@ -183,27 +181,32 @@ class ProfileController extends React.Component {
       return;
     }
 
+    const tabs = [
+      {data: week, title: 'This Week'},
+      {data: month, title: 'This Month'},
+      {data: year, title: 'This Year'},
+    ];
+
     return (
-      <Topline>
-        <Topline.Item annotation="this year" label="Miles">
-          {year.distance}
-        </Topline.Item>
-        <Topline.Item annotation="this year" label="Activities">
-          {year.activity_count}
-        </Topline.Item>
-        <Topline.Item annotation="this month" label="Miles">
-          {month.distance}
-        </Topline.Item>
-        <Topline.Item annotation="this month" label="Activities">
-          {month.activity_count}
-        </Topline.Item>
-        <Topline.Item annotation="this week" label="Miles">
-          {week.distance}
-        </Topline.Item>
-        <Topline.Item annotation="this week" label="Activities">
-          {week.activity_count}
-        </Topline.Item>
-      </Topline>
+      <Tabs
+        animation={false}
+        bsStyle="pills"
+        className="activity-summary"
+        id="activity-summary"
+        justified>
+        {tabs.map(({data, title}, idx) => (
+          <Tab eventKey={idx + 1} key={title} title={title}>
+            <Topline>
+              <Topline.Item label="Miles">
+                {data.distance}
+              </Topline.Item>
+              <Topline.Item label="Activities">
+                {data.activity_count}
+              </Topline.Item>
+            </Topline>
+          </Tab>
+        ))}
+      </Tabs>
     );
   };
 
