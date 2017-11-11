@@ -7,11 +7,8 @@ const TIMEZONES = moment.tz.names();
 /**
  * TimezoneSelector.react
  */
-const TimezoneSelector = ({onChange, timezone, ...otherProps}) => (
-  <select
-    {...otherProps}
-    onChange={(e) => onChange && onChange(e.target.value)}
-    value={timezone}>
+const TimezoneSelector = ({timezone, ...props}) => (
+  <select {...props} value={timezone}>
     {TIMEZONES.map((zone, idx) => (
       <option key={idx} value={zone}>
         {zone}

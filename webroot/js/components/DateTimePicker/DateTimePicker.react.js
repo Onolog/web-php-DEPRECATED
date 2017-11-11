@@ -103,7 +103,8 @@ class DateTimePicker extends React.Component {
     );
   };
 
-  _onTimezoneChange = (timezone) => {
+  _onTimezoneChange = (e) => {
+    const timezone = e.target.value;
     this.setState({timezone});
 
     this.props.onChange(
