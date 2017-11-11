@@ -180,18 +180,9 @@ class UsersController extends AppController {
    */
   public function edit() {
     $user_id = $this->requireLoggedInUser();
-    $data = $this->request->data;
+    $user = $this->Users->get($user_id);
 
-    $user = $this->Users->get($data['id']);
-
-    // Users can only edit their own data!
-    if ($user->id !== $user_id) {
-      throw new UnauthorizedException(
-        'You are not allowed to modify this item.'
-      );
-    }
-
-    $this->Users->patchEntity($user, $data);
+    $this->Users->patchEntity($user, $this->request->data);
 
     if ($user->errors()) {
       throw new BadRequestException(

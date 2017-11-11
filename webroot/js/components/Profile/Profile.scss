@@ -71,6 +71,8 @@ $info-col-width: 260px;
     font-size: 24px;
     line-height: 1.2em;
     margin-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &-details {

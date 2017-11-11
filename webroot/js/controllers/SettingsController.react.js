@@ -1,4 +1,4 @@
-import {isEmpty, isEqual} from 'lodash';
+import {find, isEmpty, isEqual, pick} from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Button} from 'react-bootstrap';
@@ -15,14 +15,17 @@ import SettingsListGroup from 'components/Settings/SettingsListGroup.react';
 import UnitsSettingsSection from 'components/Settings/UnitsSettingsSection.react';
 
 import {fetchSettings, userSaveSettings} from 'actions/users';
-import {SETTINGS_FETCH} from 'constants/ActionTypes';
+import {SETTINGS_FETCH, USER_SETTINGS_SAVE} from 'constants/ActionTypes';
 
 const TITLE = 'Settings';
 
-const mapStateToProps = ({pendingRequests, session}) => {
+const getInitialState = (props) => ({...props.user});
+
+const mapStateToProps = ({pendingRequests, session, users}) => {
+  const user = find(users, {id: session.id});
   return {
     pendingRequests,
-    user: session,
+    user,
   };
 };
 
@@ -31,6 +34,10 @@ const mapStateToProps = ({pendingRequests, session}) => {
  */
 class SettingsController extends React.Component {
   static propTypes = {
+    pendingRequests: PropTypes.shape({
+      [SETTINGS_FETCH]: PropTypes.bool.isRequired,
+      [USER_SETTINGS_SAVE]: PropTypes.bool.isRequired,
+    }).isRequired,
     user: PropTypes.shape({
       distance_units: PropTypes.number.isRequired,
       email: PropTypes.string.isRequired,
@@ -40,7 +47,10 @@ class SettingsController extends React.Component {
     }).isRequired,
   };
 
-  state = {...this.props.user};
+  constructor(props) {
+    super(props);
+    this.state = getInitialState(props);
+  }
 
   componentWillMount() {
     this.props.dispatch(fetchSettings());
@@ -53,8 +63,17 @@ class SettingsController extends React.Component {
     );
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props.user, nextProps.user)) {
+      this.setState(getInitialState(nextProps));
+    }
+  }
+
   render() {
     const {pendingRequests, user} = this.props;
+    const isLoading =
+      pendingRequests[SETTINGS_FETCH] ||
+      pendingRequests[USER_SETTINGS_SAVE];
 
     return (
       <AppFullPage title={TITLE}>
@@ -62,12 +81,15 @@ class SettingsController extends React.Component {
           <Button
             bsSize="small"
             bsStyle="primary"
-            disabled={isEqual(this.state, user)}
+            disabled={isEqual(this.state, user) || isLoading}
             onClick={this._handleSave}>
             Save Changes
           </Button>
         </PageHeader>
-        <PageFrame fill isLoading={pendingRequests[SETTINGS_FETCH]} scroll>
+        <PageFrame
+          fill
+          isLoading={isLoading}
+          scroll>
           {this._renderContent()}
         </PageFrame>
       </AppFullPage>
@@ -141,10 +163,16 @@ class SettingsController extends React.Component {
       return;
     }
 
-    this.props.dispatch(userSaveSettings({
-      ...this.state,
-      id: this.props.user.id,
-    }));
+    // Whitelist the settings that can be updated.
+    const settings = pick(this.state, [
+      'distance_units',
+      'email',
+      'first_name',
+      'last_name',
+      'timezone',
+    ]);
+
+    this.props.dispatch(userSaveSettings(settings));
   };
 }
 

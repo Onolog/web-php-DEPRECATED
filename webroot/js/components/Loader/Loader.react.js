@@ -2,7 +2,7 @@ import cx from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import './Loader.css';
+import './Loader.scss';
 
 /**
  * Loader.react
@@ -19,8 +19,8 @@ const Loader = (props) => {
         'loader-full': full,
       }, className)}>
       <i
-        className={cx('loading-icon', {
-          'loading-icon-lg': size === 'large',
+        className={cx('loader-icon', {
+          'loader-icon-lg': size === 'large',
         })}
       />
     </div>
