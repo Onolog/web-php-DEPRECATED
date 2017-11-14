@@ -1,10 +1,11 @@
-import {keys} from 'lodash';
+import {find, keys} from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {Panel} from 'react-bootstrap';
 import {connect} from 'react-redux';
 
 import AppPage from 'components/Page/AppPage.react';
+import Distance from 'components/Distance/Distance.react';
 import EmptyState from 'components/EmptyState.react';
 import Loader from 'components/Loader/Loader.react';
 import PageHeader from 'components/Page/PageHeader.react';
@@ -18,12 +19,14 @@ import {USER_DATA_FETCH} from 'constants/ActionTypes';
 
 import './css/Data.scss';
 
-const mapStateToProps = ({activities, pendingRequests, shoes, session}) => {
+const mapStateToProps = (state) => {
+  const {activities, pendingRequests, shoes, session, users} = state;
+  const user = find(users, {id: session.id});
   return {
     activities,
     pendingRequests,
     shoes,
-    user: session,
+    user,
   };
 };
 
@@ -64,16 +67,18 @@ class DataController extends React.Component {
   }
 
   _renderToplineStats = (activities) => {
-    const totalMiles = getAggregateDistance(activities);
+    const totalDistance = getAggregateDistance(activities);
     const totalRuns = activities.length;
 
     return (
       <Panel header={<h3>Lifetime Stats</h3>}>
         <Topline>
-          <Topline.Item label="Miles">
-            {totalMiles.toLocaleString()}
+          <Topline.Item
+            annotation={<Distance.Label />}
+            label="Distance">
+            <Distance distance={totalDistance} label={false} />
           </Topline.Item>
-          <Topline.Item label="Runs">
+          <Topline.Item label="Activities">
             {totalRuns.toLocaleString()}
           </Topline.Item>
           <Topline.Item label="Shoes">

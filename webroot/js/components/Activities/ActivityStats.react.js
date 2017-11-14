@@ -2,10 +2,10 @@ import {map} from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import Distance from 'components/Distance/Distance.react';
 import Topline from 'components/Topline/Topline.react';
 
 import calculatePace from 'utils/calculatePace';
-import formatDistance from 'utils/formatDistance';
 import secondsToTime from 'utils/secondsToTime';
 
 /**
@@ -47,14 +47,14 @@ class ActivityStats extends React.Component {
     } = this.props.activity;
 
     const stats = [{
-      annotation: 'miles',
+      annotation: <Distance.Label />,
       label: 'Distance',
-      value: formatDistance(distance),
+      value: <Distance distance={distance} label={false} />,
     }, {
       label: 'Duration',
       value: secondsToTime(duration),
     }, {
-      annotation: 'per mile',
+      annotation: <span>per <Distance.Label abbreviate /></span>,
       label: 'Pace',
       value: calculatePace(distance, duration),
     }];

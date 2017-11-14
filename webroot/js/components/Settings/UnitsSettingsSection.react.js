@@ -4,15 +4,12 @@ import {ControlLabel, FormGroup, Radio} from 'react-bootstrap';
 import AppForm from 'components/Forms/AppForm.react';
 import SettingsListGroup from 'components/Settings/SettingsListGroup.react';
 
-const DISTANCE_UNITS = {
-  MILES: 0,
-  KILOMETERS: 1,
-};
+import {UNITS} from 'constants/metrics';
 
 const UnitsSettingsSection = ({onChange, user}) => {
   const units = [
-    {label: 'Miles', value: DISTANCE_UNITS.MILES},
-    {label: 'Kilometers', value: DISTANCE_UNITS.KILOMETERS},
+    {label: 'Miles', value: UNITS.MILES},
+    {label: 'Kilometers', value: UNITS.KILOMETERS},
   ];
 
   return (

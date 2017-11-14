@@ -1,29 +1,19 @@
 import * as d3 from 'd3';
+import {map} from 'lodash';
 import moment from 'moment-timezone';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  Button,
-  ButtonGroup,
-  ListGroup,
-  ListGroupItem,
-  Panel,
-} from 'react-bootstrap';
+import {Button, ButtonGroup, ListGroup, ListGroupItem, Panel} from 'react-bootstrap';
 
 import BarChart from 'components/Data/BarChart.react';
+import Distance from 'components/Distance/Distance.react';
 import LeftRight from 'components/LeftRight/LeftRight.react';
 import Topline from 'components/Topline/Topline.react';
 import WeeklyMileageChart from 'components/Data/WeeklyMileageChart.react';
 
-import {map} from 'lodash';
-import {
-  getGroupingInfo,
-  getAggregateDistance,
-  groupActivities,
-} from 'utils/ActivityUtils';
+import {getGroupingInfo, getAggregateDistance, groupActivities} from 'utils/ActivityUtils';
 
 const HEIGHT = 200;
-
 const DAILY = 'daily';
 const MONTHLY = 'monthly';
 const WEEKLY = 'weekly';
@@ -82,7 +72,7 @@ class ProfileYearPanel extends React.Component {
         groupedActivities = groupActivities.byMonth(activities);
         tooltip = (data) => (`
           ${moment().month(data.xVal).year(year).format('MMMM YYYY')}
-          <div>${data.yVal} Miles</div>
+          <div>${data.yVal} miles</div>
         `);
         xFormat = (m) => moment().month(m).format('MMM');
         break;
@@ -122,16 +112,23 @@ class ProfileYearPanel extends React.Component {
   };
 
   _renderToplineStats = () => {
-    const {miles, run_count, duration} = getGroupingInfo(this.props.activities);
-    const m = moment.duration(duration, 'seconds');
-    const durationString =
-      `${m.days()}d ${m.hours()}h ${m.minutes()}m ${m.seconds()}s`;
+    const {activities} = this.props;
+    const {activity_count, distance, duration} = getGroupingInfo(activities);
+    const m = moment.duration(duration, 's');
 
     return (
       <Topline>
-        <Topline.Item label="Miles">{miles}</Topline.Item>
-        <Topline.Item label="Runs">{run_count}</Topline.Item>
-        <Topline.Item label="Time">{durationString}</Topline.Item>
+        <Topline.Item
+          annotation={<Distance.Label />}
+          label="Distance">
+          <Distance distance={distance} label={false} />
+        </Topline.Item>
+        <Topline.Item label="Activities">
+          {activity_count}
+        </Topline.Item>
+        <Topline.Item label="Time">
+          {`${m.days()}d ${m.hours()}h ${m.minutes()}m ${m.seconds()}s`}
+        </Topline.Item>
       </Topline>
     );
   };

@@ -9,6 +9,7 @@ import {connect} from 'react-redux';
 
 import ActivityFeed from 'components/Activities/ActivityFeed.react';
 import AppFullPage from 'components/Page/AppFullPage.react';
+import Distance from 'components/Distance/Distance.react';
 import FBImage from 'components/Facebook/FBImage.react';
 import Loader from 'components/Loader/Loader.react';
 import MaterialIcon from 'components/Icons/MaterialIcon.react';
@@ -33,7 +34,7 @@ const ProfileDetails = ({user}) => {
   const userLocation = user.location ?
     <li>
       <MaterialIcon icon="map-marker" />
-      Los Altos, CA
+      {user.location}
     </li> :
     null;
 
@@ -197,8 +198,8 @@ class ProfileController extends React.Component {
         {tabs.map(({data, title}, idx) => (
           <Tab eventKey={idx + 1} key={title} title={title}>
             <Topline>
-              <Topline.Item label="Miles">
-                {data.distance}
+              <Topline.Item annotation={<Distance.Label />} label="Distance">
+                <Distance distance={data.distance} label={false} />
               </Topline.Item>
               <Topline.Item label="Activities">
                 {data.activity_count}

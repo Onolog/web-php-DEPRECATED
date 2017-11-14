@@ -6,9 +6,8 @@ import ActivityLink from 'components/Activities/ActivityLink.react';
 import ActivityModal from 'components/Activities/ActivityModal.react';
 import BaseCalendarDay from 'components/Calendar/BaseCalendarDay.react';
 import CalendarDate from 'components/Calendar/CalendarDate.react';
+import Distance from 'components/Distance/Distance.react';
 import MaterialIcon from 'components/Icons/MaterialIcon.react';
-
-import formatDistance from 'utils/formatDistance';
 
 const LAST_DAY_OF_WEEK = 6; // Saturday (Sunday is 0)
 
@@ -80,21 +79,20 @@ class ActivityCalendarDay extends React.Component {
   _renderActivities = () => /*?object*/ {
     const {activities} = this.props;
     if (activities.length) {
-      return activities.map(this._renderActivityLink);
+      return activities.map((a) => (
+        <ActivityLink activity={a} key={a.id} />
+      ));
     }
-  };
-
-  _renderActivityLink = (activity) => {
-    return <ActivityLink activity={activity} key={activity.id} />;
   };
 
   _renderWeeklyTotal = (dateObject) => {
     if (dateObject.getDay() === LAST_DAY_OF_WEEK) {
       return (
         <div className="total">
-          <span className="distance">
-            {formatDistance(this.props.weeklyMileage)}
-          </span> mi
+          <Distance
+            abbreviate
+            distance={this.props.weeklyMileage}
+          />
         </div>
       );
     }
@@ -109,4 +107,4 @@ class ActivityCalendarDay extends React.Component {
   };
 }
 
-module.exports = ActivityCalendarDay;
+export default ActivityCalendarDay;

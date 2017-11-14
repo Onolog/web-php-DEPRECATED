@@ -162,6 +162,7 @@ class UsersController extends AppController {
     $this->set([
       'activities' => $activities,
       'shoes' => $shoes,
+      'users' => [$user],
     ]);
   }
 
@@ -198,8 +199,12 @@ class UsersController extends AppController {
       );
     }
 
+    // Update session to reflect changes.
+    $this->Auth->setUser($user->toArray());
+
     $this->set([
       'message' => 'Your changes were successfully saved.',
+      'session' => $this->getSession(),
       'users' => [$user],
     ]);
   }

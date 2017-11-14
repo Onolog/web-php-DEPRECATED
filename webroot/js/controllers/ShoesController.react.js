@@ -42,11 +42,7 @@ class ShoesController extends React.Component {
   static displayName = 'ShoesController';
 
   static propTypes = {
-    activities: PropTypes.arrayOf(
-      PropTypes.shape({
-        shoe_id: PropTypes.number.isRequired,
-      })
-    ).isRequired,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     shoes: PropTypes.arrayOf(
       PropTypes.shape({
         activity_count: PropTypes.number.isRequired,

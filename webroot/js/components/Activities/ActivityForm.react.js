@@ -3,13 +3,13 @@ import React from 'react';
 import {findDOMNode} from 'react-dom';
 import {FormControl} from 'react-bootstrap';
 
-import ShoeSelector from 'components/Shoes/ShoeSelector.react';
-
 import AppForm from 'components/Forms/AppForm.react';
 import DateTimePicker from 'components/DateTimePicker/DateTimePicker.react';
+import Distance from 'components/Distance/Distance.react';
 import DurationInput from 'components/Forms/DurationInput.react';
 import FBFriendTokenizer from 'components/Facebook/FBFriendTokenizer.react';
 import FormRow from 'components/Forms/FormGroup.react';
+import ShoeSelector from 'components/Shoes/ShoeSelector.react';
 
 import calculatePace from 'utils/calculatePace';
 
@@ -66,7 +66,9 @@ class ActivityForm extends React.Component {
             ref={(input) => this._distanceInput = input}
             type="number"
           />
-          <span className="colon">miles</span>
+          <span className="colon">
+            <Distance.Label />
+          </span>
         </FormRow>
 
         <FormRow className="time" label="Duration">
@@ -77,7 +79,7 @@ class ActivityForm extends React.Component {
             onChange={this._onInputChange}
           />
           <span className="colon">
-            {pace} per mile
+            {pace} per <Distance.Label abbreviate />
           </span>
         </FormRow>
 

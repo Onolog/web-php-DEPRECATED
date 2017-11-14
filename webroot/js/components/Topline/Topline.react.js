@@ -19,7 +19,7 @@ class ToplineItem extends React.Component {
   static displayName = 'ToplineItem';
 
   static propTypes = {
-    annotation: PropTypes.string,
+    annotation: PropTypes.node,
     label: PropTypes.string.isRequired,
   };
 
@@ -48,6 +48,13 @@ class ToplineItem extends React.Component {
   };
 }
 
-Topline.Item = ToplineItem;
+const ToplineUnit = ({children}) => (
+  <span className="topline-unit">
+    {children}
+  </span>
+);
 
-module.exports = Topline;
+Topline.Item = ToplineItem;
+Topline.Unit = ToplineUnit;
+
+export default Topline;

@@ -1,12 +1,11 @@
+import {isEqual} from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import ActivityModal from './ActivityModal.react';
 import ActivityViewModal from './ActivityViewModal.react';
+import Distance from 'components/Distance/Distance.react';
 import Link from 'components/Link/Link.react';
-
-import formatDistance from 'utils/formatDistance';
-import {isEqual} from 'lodash';
 
 /**
  * ActivityLink.react
@@ -50,9 +49,10 @@ class ActivityLink extends React.Component {
 
     return (
       <Link className="workout" href="#" onClick={this._showModal}>
-        <span className="distance">
-          {formatDistance(activity.distance)}
-        </span> mi
+        <Distance
+          abbreviate
+          distance={activity.distance}
+        />
         {modal}
       </Link>
     );

@@ -44,7 +44,7 @@ class SettingsController extends React.Component {
       first_name: PropTypes.string.isRequired,
       last_name: PropTypes.string.isRequired,
       timezone: PropTypes.string.isRequired,
-    }).isRequired,
+    }),
   };
 
   constructor(props) {

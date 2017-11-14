@@ -34,6 +34,10 @@ const mapStateToProps = ({activities, pendingRequests}) => {
 class CalendarController extends React.Component {
   static propTypes = {
     activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+    pendingRequests: PropTypes.shape({
+      [ACTIVITIES_FETCH]: PropTypes.bool.isRequired,
+      [ACTIVITY_ADD]: PropTypes.bool.isRequired,
+    }).isRequired,
   };
 
   state = {

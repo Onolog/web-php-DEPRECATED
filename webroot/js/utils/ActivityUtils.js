@@ -18,8 +18,8 @@ type TimeUnit = 'year' | 'month' | 'week' | 'dayOfYear';
  */
 export function getGroupingInfo(activities: Activities): Object {
   return {
-    miles: getAggregateDistance(activities),
-    run_count: activities.length,
+    activity_count: activities.length,
+    distance: getAggregateDistance(activities),
     duration: getAggregateDuration(activities),
   };
 }

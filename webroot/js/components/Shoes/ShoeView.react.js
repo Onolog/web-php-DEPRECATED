@@ -5,11 +5,11 @@ import React from 'react';
 import {Table} from 'react-bootstrap';
 
 import ActivitySection from 'components/Activities/ActivitySection.react';
+import Distance from 'components/Distance/Distance.react';
 import EmptyState from 'components/EmptyState.react';
 import Loader from 'components/Loader/Loader.react';
 import Topline from 'components/Topline/Topline.react';
 
-import formatDistance from 'utils/formatDistance';
 import secondsToTime from 'utils/secondsToTime';
 
 /**
@@ -56,8 +56,10 @@ class ShoeView extends React.Component {
       <div className="shoeView">
         <ActivitySection>
           <Topline>
-            <Topline.Item label="Miles">
-              {shoe.mileage}
+            <Topline.Item
+              annotation={<Distance.Label />}
+              label="Distance">
+              <Distance distance={shoe.mileage} label={false} />
             </Topline.Item>
             <Topline.Item label="Activities">
               {shoe.activity_count}
@@ -102,7 +104,9 @@ class ShoeView extends React.Component {
         <thead>
           <tr>
             <th>Activity Date</th>
-            <th className="mileage">Distance</th>
+            <th className="mileage">
+              <Distance.Label />
+            </th>
             <th className="time">Duration</th>
           </tr>
         </thead>
@@ -127,7 +131,10 @@ class ShoeView extends React.Component {
           {date}
         </td>
         <td className="mileage">
-          {`${formatDistance(activity.distance)} mi`}
+          <Distance
+            distance={activity.distance}
+            label={false}
+          />
         </td>
         <td className="time">
           {secondsToTime(activity.duration)}

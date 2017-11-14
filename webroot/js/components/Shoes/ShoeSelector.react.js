@@ -6,9 +6,16 @@ import {connect} from 'react-redux';
 import Select from 'components/Select/Select.react';
 import {fetchShoes} from 'actions/shoes';
 
-const mapStoreToProps = ({shoes}) => {
+import {convertDistance} from 'utils/distanceUtils';
+import formatDistance from 'utils/formatDistance';
+import getDistanceUnitString from 'utils/getDistanceUnitString';
+
+import {UNITS} from 'constants/metrics';
+
+const mapStoreToProps = ({session, shoes}) => {
   return {
     shoes,
+    units: (session && session.distance_units) || UNITS.MILES,
   };
 };
 
@@ -25,6 +32,10 @@ class ShoeSelector extends React.Component {
       PropTypes.number,
       PropTypes.string,
     ]),
+    units: PropTypes.oneOf([
+      UNITS.KILOMETERS,
+      UNITS.MILES,
+    ]).isRequired,
     shoes: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       mileage: PropTypes.number.isRequired,
@@ -67,9 +78,14 @@ class ShoeSelector extends React.Component {
 
     let options = [];
     if (shoes && shoes.length) {
+      const {units} = this.props;
+
       shoes.forEach((shoe) => {
+        const distance = formatDistance(convertDistance(shoe.mileage, units));
+        const distanceLabel = getDistanceUnitString(units, true);
+
         options.push({
-          label: `${shoe.name} (${shoe.mileage} miles)`,
+          label: `${shoe.name} (${distance} ${distanceLabel})`,
           value: shoe.id,
         });
       });
@@ -79,4 +95,4 @@ class ShoeSelector extends React.Component {
   };
 }
 
-module.exports = connect(mapStoreToProps)(ShoeSelector);
+export default connect(mapStoreToProps)(ShoeSelector);

@@ -28,13 +28,12 @@
       line-height: 1em;
       margin-bottom: 5px;
     }
+
+    & + & {
+      border-left: 1px solid $border-color-light;
+    }
   }
 }
-
-.topline-item + .topline-item {
-  border-left: 1px solid $border-color-light;
-}
-
 
 /* Tablet & Mobile */
 @media (max-width: 767px) {

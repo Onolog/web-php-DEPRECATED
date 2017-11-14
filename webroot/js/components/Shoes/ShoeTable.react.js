@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {Table} from 'react-bootstrap';
 
+import Distance from 'components/Distance/Distance.react';
 import MaterialIcon from 'components/Icons/MaterialIcon.react';
 
 class ShoeTable extends React.Component {
@@ -39,17 +40,19 @@ class ShoeTable extends React.Component {
         <thead>
           <tr>
             <th onClick={() => this._handleHeaderClick('name')}>
-              Name {this._renderIcon('name')}
+              Name {this._renderArrow('name')}
             </th>
             <th
               className="activities"
               onClick={() => this._handleHeaderClick('activity_count')}>
-              Activities {this._renderIcon('activity_count')}
+              Activities {this._renderArrow('activity_count')}
             </th>
             <th
               className="mileage"
               onClick={() => this._handleHeaderClick('mileage')}>
-              Miles {this._renderIcon('mileage')}
+              <Distance.Label />
+              {' '}
+              {this._renderArrow('mileage')}
             </th>
           </tr>
         </thead>
@@ -60,7 +63,7 @@ class ShoeTable extends React.Component {
     );
   }
 
-  _renderIcon = (sortBy) => {
+  _renderArrow = (sortBy) => {
     if (this.state.sortBy === sortBy) {
       return (
         <MaterialIcon
@@ -88,7 +91,7 @@ class ShoeTable extends React.Component {
           {shoe.activity_count}
         </td>
         <td className="mileage">
-          {shoe.mileage}
+          <Distance distance={shoe.mileage} label={false} />
         </td>
       </tr>
     );
