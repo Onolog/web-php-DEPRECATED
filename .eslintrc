@@ -13,7 +13,13 @@
   "plugins": [
     "flowtype"
   ],
-  "rules": {},
+  "rules": {
+    "react/jsx-tag-spacing": [2, {
+      "afterOpening": "never",
+      "beforeSelfClosing": "always",
+      "closingSlash": "never"
+    }]
+  },
   "settings": {
     "flowtype": {
       "onlyFilesWithFlowAnnotation": true
