@@ -7,13 +7,9 @@
  * zeroes and restricting floats to 2 decimal places.
  */
 export default function formatDistance(distance: number | string): string {
-  // We may get irrational values for floats, so restrict
-  // to 2 decimal places.
-  if (typeof distance === 'number') {
-    distance = distance.toFixed(2);
-  }
-
-  // Trim trailing zeroes by converting to a number and then
-  // converting back to a string.
-  return (+distance).toString();
+  // Trim trailing zeroes and format by converting to a number and then
+  // converting back to a localized number string.
+  return (+distance).toLocaleString([], {
+    maximumFractionDigits: 2,
+  });
 }
