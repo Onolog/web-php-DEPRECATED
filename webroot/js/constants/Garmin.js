@@ -9,16 +9,19 @@ export const BASE_IMG_URL = 'https://static.garmincdn.com/com.garmin.connect/con
 export const BASE_STORE_URL = 'https://buy.garmin.com/shop/shop.do';
 
 export const METRICS = {
-  SUM_ELAPSED_DURATION: 0,
-  LATITUDE: 1,
-  SUM_MOVING_DURATION: 2,
-  ELEVATION: 3,
-  HEART_RATE: 4,
-  SUM_DURATION: 5,
-  SUM_DISTANCE: 6,
-  TIMESTAMP: 7,
-  SPEED: 8,
-  LONGITUDE: 9,
+  SUM_ELAPSED_DURATION: 'sumElapsedDuration',
+  LATITUDE: 'directLatitude',
+  SUM_MOVING_DURATION: 'sumMovingDuration',
+  UNCORRECTED_ELEVATION: 'directUncorrectedElevation',
+  ELEVATION: 'directElevation',
+  HEART_RATE: 'directHeartRate',
+  SUM_DURATION: 'sumDuration',
+  SUM_DISTANCE: 'sumDistance',
+  TIMESTAMP: 'directTimestamp',
+  CORRECTED_ELEVATION: 'directCorrectedElevation',
+  SPEED: 'directSpeed',
+  LONGITUDE: 'directLongitude',
+  VERTICAL_SPEED: 'directVerticalSpeed',
 };
 
 // URL for downloading activities

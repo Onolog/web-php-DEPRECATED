@@ -116,9 +116,9 @@ class ActivitiesController extends AppController {
     $activityId = $activity->garmin_activity_id;
 
     if ($activityId) {
-      $endpoint = "{$this->ACTIVITY_URL}{$activityId}/details?maxChartSize=1000";
-      $data = $this->getGarminData($endpoint);
-      $metrics = $data->activityDetailMetrics;
+      $metrics = $this->getGarminActivityDetails($activityId, [
+        'maxChartSize' => 1000,
+      ]);
     }
 
     $this->set([
@@ -255,9 +255,31 @@ class ActivitiesController extends AppController {
     ]);
   }
 
+  private function getGarminActivityDetails($activityId, $params) {
+    $endpoint = "{$this->ACTIVITY_URL}{$activityId}/details";
+
+    if (is_array($params)) {
+      $endpoint .= '?' . http_build_query($params);
+    }
+
+    $data = $this->getGarminData($endpoint);
+    $metrics = [];
+
+    // Normalize data structure by converting to keyed array.
+    foreach ($data['activityDetailMetrics'] as $point) {
+      $m = [];
+      foreach ($point['metrics'] as $index => $metric) {
+        $m[$data['metricDescriptors'][$index]['key']] = $metric;
+      }
+      $metrics[] = $m;
+    }
+
+    return $metrics;
+  }
+
   private function getGarminData($endpoint) {
     $json = file_get_contents($endpoint);
-    return json_decode($json);
+    return json_decode($json, true /* Decode as an array*/);
   }
 
   /**

@@ -49,13 +49,13 @@ const mapStateToProps = (state, props) => {
 };
 
 const convertActivityMetrics = (activityMetrics) => {
-  const meanPace = meanBy(activityMetrics, ({metrics}) => {
+  const meanPace = meanBy(activityMetrics, (metrics) => {
     if (metrics[METRICS.SPEED]) {
       return speedToPace(metrics[METRICS.SPEED]);
     }
   });
 
-  return activityMetrics.reduce((converted, {metrics}, idx, metricsArr) => {
+  return activityMetrics.reduce((converted, metrics, idx, metricsArr) => {
     const lat = metrics[METRICS.LATITUDE];
     const lng = metrics[METRICS.LONGITUDE];
 
